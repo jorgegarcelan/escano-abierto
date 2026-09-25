@@ -110,12 +110,14 @@ HERRAMIENTA_SESION = {
     "input_schema": {
         "type": "object",
         "properties": {
+            "titular": {"type": "string", "description": "Titular informativo de menos de 14 palabras, con el hecho "
+                                                        "principal de la jornada y sin adjetivos valorativos."},
             "resumen": {"type": "string", "description": "3-4 frases informativas, sin adjetivos valorativos."},
             "titulos": {"type": "array", "items": {"type": "string"},
                         "description": "Un título de menos de 12 palabras por asunto, en el mismo orden, "
                                        "con el formato 'Proponente · tema' o 'Pregunta de X a Y · tema'."},
         },
-        "required": ["resumen", "titulos"],
+        "required": ["titular", "resumen", "titulos"],
     },
 }
 
@@ -124,7 +126,7 @@ def resumir_sesion(organo: str, fecha: str, asuntos: list[str], lineas: list[str
     """Resumen de la sesión y títulos legibles para los asuntos (que el Diario escribe en mayúsculas)."""
     material = ("ASUNTOS:\n" + "\n".join(f"{i + 1}. {a}" for i, a in enumerate(asuntos))
                 + "\n\nINTERVENCIONES Y VOTACIONES:\n" + "\n".join(lineas))[:40_000]
-    clave = _clave("sesion", organo, fecha, material)
+    clave = _clave("sesion-v2", organo, fecha, material)  # v2: añade el titular
     cache = ANALISIS / f"{clave}.json"
     if cache.exists():
         return json.loads(cache.read_text())

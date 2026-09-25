@@ -60,7 +60,28 @@ def titulo_legible(item: str) -> str:
     return t[:1].upper() + t[1:].lower() if t.isupper() else t
 
 
-def _votacion_web(v: dict) -> dict:
+def diputados(votaciones: list[dict]) -> list[list[str]]:
+    """[nombre, grupo] de cada diputado que aparece en las votaciones, en orden estable.
+
+    El grupo es el del voto más reciente. La web usa este orden para leer la cadena `v` de cada votación.
+    """
+    grupo: dict[str, str] = {}
+    for v in sorted(votaciones, key=lambda v: (v["fecha"], v.get("numero") or 0)):
+        for d in v.get("votos", []):
+            grupo[d["diputado"]] = d["grupo"]
+    return sorted(([n, g] for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
+
+
+def votos_compactos(v: dict, indice: dict[str, int]) -> str:
+    """Una letra por diputado (S, N, A, X = no vota, - = no figura en esta votación)."""
+    letras = ["-"] * len(indice)
+    for d in v.get("votos", []):
+        if d["diputado"] in indice:
+            letras[indice[d["diputado"]]] = d["voto"]
+    return "".join(letras)
+
+
+def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
     return {
         "id": v["id"], "fecha": v["fecha"], "tipo": tipo_votacion(v), "titulo": v["titulo"],
         "proponente": proponente(v["titulo"]) or "?", "exp": v.get("exp") or "",
@@ -69,12 +90,15 @@ def _votacion_web(v: dict) -> dict:
         "conteo": v.get("conteo", {}),
         "discrepantes": [f"{d['diputado']} ({d['grupo']})" for d in v.get("discrepantes", [])],
         "json": v.get("json", ""),
+        "v": votos_compactos(v, indice) if indice and v.get("votos") else "",
     }
 
 
 def construir(con_ia: bool = True) -> dict:
     votaciones = [v for f in sorted(VOTACIONES.glob("*.json")) for v in json.loads(f.read_text())]
-    web_votos = [_votacion_web(v) for v in votaciones]
+    lista_diputados = diputados(votaciones)
+    indice = {n: i for i, (n, _) in enumerate(lista_diputados)}
+    web_votos = [_votacion_web(v, indice) for v in votaciones]
     por_fecha: dict[str, list[dict]] = defaultdict(list)
     for v in web_votos:
         por_fecha[v["fecha"]].append(v)
@@ -118,10 +142,10 @@ def construir(con_ia: bool = True) -> dict:
         for v in votos_dia:
             lineas.append(f"- Votación: {v['titulo'][:160]} → Sí {v['si']}, No {v['no']}, Abst. {v['abst']}")
 
-        resumen, titulos = "", []
+        resumen, titular, titulos = "", "", []
         if con_ia and (lineas or asuntos):
             r = resumir_sesion(ses["organo"], ses["fecha"], [titulo_legible(a) for a in asuntos], lineas)
-            resumen, titulos = r.get("resumen", ""), r.get("titulos", [])
+            resumen, titular, titulos = r.get("resumen", ""), r.get("titular", ""), r.get("titulos", [])
 
         puntos = []
         for i, asunto in enumerate(asuntos):
@@ -149,7 +173,7 @@ def construir(con_ia: bool = True) -> dict:
         sesiones_web.append({
             "id": ses["id"], "fecha": ses["fecha"], "organo": ses["organo"],
             "sesion": f"Sesión nº {ses['sesion']}" if ses.get("sesion") else ses["organo"],
-            "ds": ses["ds"], "dsNombre": ses["id"], "resumen": resumen, "puntos": puntos,
+            "ds": ses["ds"], "dsNombre": ses["id"], "titular": titular, "resumen": resumen, "puntos": puntos,
             "reacciones": dict(reacciones),
         })
         if ses["serie"] == "PL":
@@ -189,6 +213,7 @@ def construir(con_ia: bool = True) -> dict:
             "grupos": grupos,
             "sesiones": sesiones_web,
             "votaciones": web_votos,
+            "diputados": lista_diputados,
         },
         "intervenciones": ivs_web,
     }

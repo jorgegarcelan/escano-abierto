@@ -19,7 +19,7 @@ class ClienteFalso:
         self.llamadas += 1
         herramienta = kw["tool_choice"]["name"]
         if herramienta == "registrar_sesion":
-            datos = {"resumen": "Sesión de control centrada en Ceuta.", "titulos": ["Feijóo a Sánchez · imagen de España"]}
+            datos = {"titular": "Ceuta centra el control al Gobierno", "resumen": "Sesión de control centrada en Ceuta.", "titulos": ["Feijóo a Sánchez · imagen de España"]}
         else:
             texto = kw["messages"][0]["content"]
             datos = {"resumen": "Resumen.", "tono": "combativo", "intensidad": 4, "temas": ["Ceuta"],
@@ -46,7 +46,8 @@ def test_construir(tmp_path, monkeypatch):
         "informacion": {"sesion": 200, "numeroVotacion": 1, "fecha": "23/9/2026", "titulo": "Proposiciones no de Ley.",
                         "textoExpediente": "Proposición no de Ley del Grupo Parlamentario Vasco (EAJ-PNV), sobre la Y vasca."},
         "totales": {"afavor": 1, "enContra": 0, "abstenciones": 0, "noVotan": 0},
-        "votaciones": [{"diputado": "Uno, A", "grupo": "GV (EAJ-PNV)", "voto": "Sí"}]})]))
+        "votaciones": [{"diputado": "Uno, A", "grupo": "GV (EAJ-PNV)", "voto": "Sí"},
+                       {"diputado": "Dos, B", "grupo": "GS", "voto": "No vota"}]})]))
 
     salida = mod_construir.construir(con_ia=True)
     datos, interv = salida["datos"], salida["intervenciones"]
@@ -55,6 +56,9 @@ def test_construir(tmp_path, monkeypatch):
     assert sin_ds["ds"] is None and sin_ds["puntos"][0]["votos"] == ["200-1"]
     assert datos["votaciones"][0]["proponente"] == "PNV"
     assert datos["votaciones"][0]["tipo"] == "Proposición no de ley"
+    assert datos["diputados"] == [["Uno, A", "PNV"], ["Dos, B", "PSOE"]]
+    assert datos["votaciones"][0]["v"] == "SX"                              # una letra por diputado
+    assert next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")["titular"].startswith("Ceuta")
     assert all(i["g"] != "MESA" for i in interv)
     sanchez = next(i for i in interv if i["orador"] == "Sánchez Pérez-Castejón")
     assert sanchez["cita"] == "hay que temer a quien se lo quiere quitar"   # cita verificada
