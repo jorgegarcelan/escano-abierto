@@ -260,7 +260,10 @@ def procesar_diario(ruta: Path, serie: str, numero: int, mapa: dict[str, str]) -
         "intervenciones": [asdict(i) for i in ivs],
     }
     SESIONES.mkdir(parents=True, exist_ok=True)
-    (SESIONES / f"{ses['id']}.json").write_text(json.dumps(ses, ensure_ascii=False, indent=1))
+    # Una intervención por línea: compacto (la legislatura entera son cientos de Diarios) y legible en un diff.
+    cabecera_ = json.dumps({k: v for k, v in ses.items() if k != "intervenciones"}, ensure_ascii=False)[:-1]
+    cuerpo = ",\n".join(json.dumps(i, ensure_ascii=False) for i in ses["intervenciones"])
+    (SESIONES / f"{ses['id']}.json").write_text(f'{cabecera_}, "intervenciones": [\n{cuerpo}\n]}}\n')
     return ses
 
 

@@ -49,6 +49,23 @@ El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa so
 
 Las redes sociales necesitan direcciones absolutas: al desplegar, define `ESCANO_URL_SITIO` (p. ej. `https://escanoabierto.es`) antes de `construir`.
 
+## Leyes, agenda y semanas
+
+- `python -m escano agenda` descarga la **tramitación** de todos los proyectos y proposiciones de ley de la legislatura (`data/leyes.json`, de los datos abiertos de iniciativas) y el **orden del día** de los plenos convocados esta semana y la siguiente (`data/agenda.json`, del PDF enlazado en la agenda del Congreso). `actualizar` lo hace también.
+- La pestaña **Leyes** muestra el embudo de la legislatura, quién propone y quién consigue, el «congelador» (iniciativas cuyo plazo de enmiendas se amplía semana tras semana) y cuánto tarda una ley; cada iniciativa tiene su línea de vida en `#iniciativa-<expediente>`.
+- **La semana en el Congreso** (`#semana-AAAA-Sww`) resume cada semana sin IA: la votación más ajustada, las leyes que se han movido, los decretos, las tomas en consideración y quién votó distinto a su grupo. Cada semana tiene página para compartir y entra en el RSS general.
+- La portada anuncia el **próximo pleno** con su orden del día.
+
+## Toda la legislatura
+
+Para descargar la XV Legislatura desde el principio (agosto de 2023):
+
+```bash
+python -m escano actualizar --desde 2023-08-17 --sin-ia
+```
+
+Las votaciones se guardan compactas (`data/votaciones/AAAA-MM-DD.json`: la lista de diputados del día una vez y una letra por diputado en cada votación) para que la legislatura entera quepa en el repositorio. Las tarjetas para compartir (`site/og/`) no se versionan: se dibujan al construir.
+
 ## Búsqueda y RSS
 
 La lupa de la barra (o `/`, o Ctrl/⌘+K) busca a la vez en diputados, votaciones, iniciativas, sesiones, temas e intervenciones, sin servidor y tolerando una errata por palabra.

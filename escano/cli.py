@@ -6,15 +6,17 @@
     python -m escano construir                  # solo regenera la web con lo ya descargado
     python -m escano reprocesar                 # rehace sesiones y votaciones desde los ficheros descargados, sin red
     python -m escano calidad                    # indicadores del parser por sesión
+    python -m escano agenda                     # solo el orden del día de los próximos plenos
 """
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ProcessPoolExecutor
 from datetime import date, timedelta
 
 import json
 
-from . import calidad, diario, diputados, hemiciclo, organos, votaciones
+from . import agenda, calidad, diario, diputados, hemiciclo, leyes, organos, votaciones
 from .config import CRUDOS, VOTACIONES
 from .construir import construir
 
@@ -37,6 +39,9 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
     print(f"· Diputados en activo: {len(diputados.actualizar())}")
     print(f"· Plano del hemiciclo: {len(hemiciclo.actualizar()['escanos'])} escaños")
     print(f"· Comisiones: {len(organos.actualizar())}")
+    print(f"· Iniciativas legislativas: {len(leyes.actualizar()['iniciativas'])}")
+    ag = agenda.actualizar()
+    print(f"· Agenda: {len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión")
 
     mapa = votaciones.mapa_diputados()
     estado = diario.leer_estado()
@@ -62,20 +67,31 @@ def reprocesar(con_ia: bool) -> None:
     print("· Votaciones")
     for f in sorted(VOTACIONES.glob("*.json")):
         nuevas = []
-        for v in json.loads(f.read_text()):
+        for v in votaciones.leer_dia(f):
             crudo = descargar_cache(v.get("json", ""))
             nuevas.append(votaciones.leer_votacion(json.loads(crudo.decode("utf-8-sig")), v["json"]) if crudo else v)
-        f.write_text(json.dumps(nuevas, ensure_ascii=False, indent=1))
+        votaciones.guardar_dia(f.stem, nuevas)
         print(f"  {f.stem}: {len(nuevas)}")
     mapa = votaciones.mapa_diputados()
     print("· Diarios")
-    for ruta in sorted(CRUDOS.glob(f"DSCD-{diario.LEGISLATURA}-*.pdf")):
-        _, _, serie, numero = ruta.stem.split("-")
-        ses = diario.procesar_diario(ruta, serie, int(numero), mapa)
-        print(f"  {ses['id']}: {ses['fecha']} · {ses['organo']} · {len(ses['intervenciones'])} turnos")
+    rutas = sorted(CRUDOS.glob(f"DSCD-{diario.LEGISLATURA}-*.pdf"))
+    # Cada Diario es independiente: se procesan en paralelo (pdftotext es lo que más tarda).
+    with ProcessPoolExecutor() as ex:
+        for ses in ex.map(_procesar, rutas, [mapa] * len(rutas), chunksize=4):
+            if ses:
+                print(f"  {ses['id']}: {ses['fecha']} · {ses['organo']} · {len(ses['intervenciones'])} turnos")
     print("· Construyendo la web" + (" (sin IA)" if not con_ia else ""))
     construir(con_ia=con_ia)
     calidad.imprimir(calidad.informe())
+
+
+def _procesar(ruta, mapa):
+    _, _, serie, numero = ruta.stem.split("-")
+    try:
+        return diario.procesar_diario(ruta, serie, int(numero), mapa)
+    except Exception as e:  # un PDF raro no debe parar la legislatura entera
+        print(f"  {ruta.name}: no se pudo procesar ({e})")
+        return None
 
 
 def descargar_cache(url: str) -> bytes | None:
@@ -108,6 +124,7 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("--sin-ia", action="store_true")
 
     sub.add_parser("calidad", help="indicadores del parser por sesión")
+    sub.add_parser("agenda", help="descarga el orden del día de los próximos plenos y la tramitación de leyes")
 
     args = p.parse_args(argv)
     if args.orden == "actualizar":
@@ -124,5 +141,9 @@ def main(argv: list[str] | None = None) -> None:
         construir(con_ia=not args.sin_ia)
     elif args.orden == "reprocesar":
         reprocesar(con_ia=not args.sin_ia)
+    elif args.orden == "agenda":
+        ag = agenda.actualizar()
+        print(f"{len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión, "
+              f"{len(leyes.actualizar()['iniciativas'])} iniciativas legislativas")
     elif args.orden == "calidad":
         raise SystemExit(1 if calidad.imprimir(calidad.informe()) else 0)

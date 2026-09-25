@@ -34,3 +34,19 @@ def test_leer_votacion():
     assert v["grupos"] == {"PP": "S", "JUNTS": "S", "PSOE": "N", "PNV": "N"}
     assert v["conteo"]["PSOE"] == {"N": 1, "X": 1}
     assert v["discrepantes"] == []
+
+
+def test_formato_compacto_ida_y_vuelta(tmp_path, monkeypatch):
+    from escano import votaciones as mv
+    monkeypatch.setattr(mv, "VOTACIONES", tmp_path)
+    a = mv.derivar({"id": "1-1", "fecha": "2026-09-09", "si": 2, "no": 1, "json": "u", "votos": [
+        {"diputado": "A, Ana", "grupo": "PP", "voto": "S", "asiento": 3},
+        {"diputado": "B, Bea", "grupo": "PP", "voto": "S", "asiento": None},
+        {"diputado": "C, Carlos", "grupo": "PSOE", "voto": "N", "asiento": 7}]})
+    b = mv.derivar({"id": "1-2", "fecha": "2026-09-09", "si": 1, "no": 0, "json": "u", "votos": [
+        {"diputado": "C, Carlos", "grupo": "PSOE", "voto": "S", "asiento": 7}]})
+    mv.guardar_dia("2026-09-09", [a, b])
+    assert '"v": "-", ' not in (tmp_path / "2026-09-09.json").read_text()
+    x, y = mv.leer_todas()
+    assert x == a and y == b                 # nada se pierde al compactar
+    assert y["grupos"] == {"PSOE": "S"}

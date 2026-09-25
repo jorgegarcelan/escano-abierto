@@ -11,6 +11,7 @@ que se regeneran igual y solo se reescriben si su contenido cambia.
 """
 from __future__ import annotations
 
+import hashlib
 import html
 import os
 import re
@@ -175,6 +176,10 @@ class Tarjeta:
         return b.getvalue()
 
 
+def _baja(d: list) -> bool:
+    return len(d) > 8 and bool(d[8])
+
+
 def _escanos_voto(v: dict, dips: list, plano: dict) -> list[tuple]:
     out = []
     for i, d in enumerate(dips):
@@ -210,8 +215,10 @@ def tarjeta_diputado(i: int, dips: list, grupos: dict, plano: dict) -> bytes:
     t.texto((64, y + 14), linea, t.geist(26, 500), APAGADO, 560, 2)
     if plano.get("ancho") and dips[i][5] is not None:
         escanos = []
+        yo = dips[i]
         for j, d in enumerate(dips):
-            if d[5] is None:
+            # Solo los diputados de hoy; a quien ya no lo es se le pinta en su antiguo escaño.
+            if d[5] is None or (j != i and (_baja(d) or (_baja(yo) and (d[5], d[6]) == (yo[5], yo[6])))):
                 continue
             base = _hex(grupos.get(d[1], {}).get("color", "#8A8F98"))
             escanos.append((d[5], d[6], (255, 255, 255) if j == i else _mezcla(FONDO, base, .38), 4 if j == i else 0))
@@ -236,9 +243,10 @@ def tarjeta_sesion(s: dict, votos: list, dips: list, plano: dict) -> bytes:
     return t.png()
 
 
-def tarjeta_iniciativa(exp: str, titulo: str, votos: list, dips: list, plano: dict) -> bytes:
+def tarjeta_iniciativa(exp: str, titulo: str, votos: list, dips: list, plano: dict, ley: dict | None = None) -> bytes:
     t = Tarjeta()
-    t.d.text((64, 150), f"{TIPO_EXP.get(exp[:3], 'Iniciativa').upper()} · {exp}", font=t.geist(21, 600), fill=APAGADO)
+    tipo = ley["tipo"] + (" orgánica" if ley.get("organica") else "") if ley else TIPO_EXP.get(exp[:3], "Iniciativa")
+    t.d.text((64, 150), f"{tipo.upper()} · {exp}", font=t.geist(21, 600), fill=APAGADO)
     y = t.texto((64, 190), titulo, t.geist(46, 650), TINTA, 560, 4, 1.12)
     if votos:
         ult = votos[-1]
@@ -249,13 +257,59 @@ def tarjeta_iniciativa(exp: str, titulo: str, votos: list, dips: list, plano: di
     return t.png()
 
 
+def _etapas(t: "Tarjeta", ley: dict, x: int, y: int, ancho: int):
+    """Las seis etapas de la tramitación en una fila de puntos, con la alcanzada resaltada."""
+    paso = ancho / (len(ETAPAS) - 1)
+    corta = ley["estado"] not in ("en trámite", "aprobada")
+    t.d.line([(x, y), (x + paso * min(ley["etapa"], 5), y)], fill=TINTA, width=3)
+    t.d.line([(x + paso * ley["etapa"], y), (x + ancho, y)], fill=LINEA, width=3)
+    for k, nombre in enumerate(ETAPAS):
+        cx = x + paso * k
+        on, cortada = k <= ley["etapa"], corta and k == ley["etapa"] + 1
+        color = TINTA if on else (VOTO["N"] if cortada else (94, 100, 109))
+        r = 11 if on else 9
+        t.d.ellipse([cx - r, y - r, cx + r, y + r], fill=color if on else FONDO, outline=color, width=3)
+        t.d.text((cx, y + 30), nombre, font=t.geist(17, 600 if on else 500), fill=TINTA if on else APAGADO, anchor="ma")
+
+
+def tarjeta_ley(ley: dict) -> bytes:
+    t = Tarjeta()
+    tipo = ley["tipo"] + (" orgánica" if ley.get("organica") else "")
+    t.d.text((64, 150), f"{tipo.upper()} · {ley['exp']}", font=t.geist(21, 600), fill=APAGADO)
+    y = t.texto((64, 190), ley["titulo"], t.geist(50, 650), TINTA, 1070, 3, 1.12)
+    color = VOTO["S"] if ley["estado"] == "aprobada" else VOTO["N"] if ley["estado"] in ("rechazada", "inadmitida") \
+        else (245, 197, 66) if ley["estado"] == "en trámite" else (139, 146, 156)
+    t.etiqueta(64, max(y + 18, 380), ESTADO_LEY.get(ley["estado"], ley["estado"]).upper(), color)
+    if ley["estado"] == "en trámite" and ley.get("ampliaciones", 0) >= 8:
+        t.d.text((64 + 24 + t.geist(20, 700).getlength(ESTADO_LEY["en trámite"].upper()) + 20, max(y + 18, 380) + 18),
+                 f"Plazo de enmiendas ampliado {ley['ampliaciones']} veces", font=t.geist(22, 500), fill=APAGADO, anchor="lm")
+    _etapas(t, ley, 120, 500, 960)
+    return t.png()
+
+
+def tarjeta_semana(sem: dict, vs: list, votos_por_id: dict, dips: list, plano: dict) -> bytes:
+    t = Tarjeta()
+    a, b = sem["desde"].split("-"), sem["hasta"].split("-")
+    rango = (f"{int(a[2])}–{int(b[2])} {MESES[int(b[1]) - 1].upper()} {b[0]}" if a[1] == b[1]
+             else f"{int(a[2])} {MESES[int(a[1]) - 1][:3].upper()} – {int(b[2])} {MESES[int(b[1]) - 1][:3].upper()} {b[0]}")
+    t.d.text((64, 150), f"LA SEMANA EN EL CONGRESO · {rango}", font=t.geist(21, 600), fill=APAGADO)
+    t.texto((64, 190), sem["titular"], t.geist(46, 650), TINTA, 560, 5, 1.12)
+    t.d.text((64, 560), f"{len(vs)} votaciones · {sem['aprobadas']} aprobadas · {len(vs) - sem['aprobadas']} rechazadas",
+             font=t.geist(26, 600), fill=TINTA, anchor="ls")
+    dest = votos_por_id.get((sem["ajustadas"] or [None])[0])
+    if dest and plano.get("ancho"):
+        t.hemiciclo(plano, _escanos_voto(dest, dips, plano), (660, 130, 1150, 520))
+        t.d.text((905, 548), f"La más ajustada: {dest['si']} – {dest['no']}", font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+    return t.png()
+
+
 def tarjeta_portada(plano: dict, dips: list) -> bytes:
     t = Tarjeta()
     t.d.text((64, 250), "ESCAÑO", font=t.doto(120), fill=TINTA)
     t.d.text((64, 370), "ABIERTO", font=t.doto(120), fill=TINTA)
     t.d.text((68, 520), "Qué se dijo en el Congreso y cómo se votó.", font=t.geist(30, 500), fill=APAGADO)
     if plano.get("ancho"):
-        grises = [(d[5], d[6], (94, 100, 109), 0) for d in dips if d[5] is not None]
+        grises = [(d[5], d[6], (94, 100, 109), 0) for d in dips if d[5] is not None and not _baja(d)]
         t.hemiciclo(plano, grises, (660, 130, 1150, 520))
     return t.png()
 
@@ -358,6 +412,28 @@ def _entradas_diputado(i: int, d: list, votaciones: list, ivs: list, fecha_ses: 
     return out
 
 
+ESTADO_LEY = {"en trámite": "En trámite", "aprobada": "Es ley", "rechazada": "Rechazada", "retirada": "Retirada",
+              "decaída": "Decaída", "subsumida": "Subsumida", "inadmitida": "Inadmitida"}
+ETAPAS = ["Presentada", "Admitida", "En comisión", "Aprobada en el Congreso", "Senado", "Ley"]
+
+
+def corto(t: str, n: int = 140) -> str:
+    return t if len(t) <= n else t[:n].rsplit(" ", 1)[0] + "…"
+
+
+def _entradas_tramitacion(ley: dict, ruta: str) -> list[dict]:
+    """Cada fase nueva de la tramitación es una entrada: «Pasa a Comisión de Justicia · Informe»."""
+    out = []
+    for k, f in enumerate(ley["fases"]):
+        if not f["desde"]:
+            continue
+        que = f["fase"] if f["organo"] == "Concluido" else " · ".join(x for x in (f["organo"], f["fase"]) if x)
+        out.append({"id": f"fase-{ley['exp']}-{k}", "fecha": f["desde"], "enlace": ruta + "/",
+                    "titulo": ("Termina su tramitación: " if f["organo"] == "Concluido" else "Nueva fase: ") + que,
+                    "desc": f"{corto(ley['titulo'], 200)}. Desde el {fecha_larga(f['desde'])}."})
+    return out
+
+
 def generar(salida: dict, plano: dict) -> dict:
     """Escribe las páginas, las tarjetas, los canales RSS, sitemap.xml y robots.txt. Devuelve cuántos ha escrito."""
     datos = salida["datos"]
@@ -365,8 +441,11 @@ def generar(salida: dict, plano: dict) -> dict:
     escritas = {"paginas": 0, "tarjetas": 0, "rss": 0}
     urls = [""]
 
-    def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta) -> None:
-        imagen = f"og/{ruta}.png"
+    def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta, clave: str = "") -> None:
+        """clave: resumen de lo que dibuja la tarjeta cuando puede cambiar (una ley que avanza, la semana en
+        curso). Va en el nombre del fichero, así que un cambio da una tarjeta nueva y las redes no se quedan
+        con la vieja en caché."""
+        imagen = f"og/{ruta}-{hashlib.sha1(clave.encode()).hexdigest()[:8]}.png" if clave else f"og/{ruta}.png"
         feed = ruta.startswith(("diputado/", "iniciativa/"))
         escritas["paginas"] += _escribir_si_cambia(SITIO / ruta / "index.html",
                                                    _pagina(ruta, hashweb, titulo, desc, imagen, feed))
@@ -374,6 +453,10 @@ def generar(salida: dict, plano: dict) -> dict:
         # Una tarjeta ya dibujada no se vuelve a dibujar: su contenido no cambia.
         if not destino.exists():
             escritas["tarjetas"] += _escribir_si_cambia(destino, tarjeta())
+            if clave:
+                for vieja in destino.parent.glob(ruta.rsplit("/", 1)[-1] + "-*.png"):
+                    if vieja != destino:
+                        vieja.unlink()
         urls.append(ruta + "/")
 
     for i, d in enumerate(dips):
@@ -397,15 +480,34 @@ def generar(salida: dict, plano: dict) -> dict:
         poner(f"sesion/{slug(s['id'])}", f"sesion-{s['id']}", titulo, desc,
               lambda s=s, vs=vs: tarjeta_sesion(s, vs, dips, plano))
 
+    leyes = {l["exp"]: l for l in (salida.get("leyes") or {}).get("iniciativas", [])}
     iniciativas: dict[str, dict] = {}
     for v in sorted(datos["votaciones"], key=lambda v: (v["fecha"], v["id"])):
         if v.get("exp"):
             iniciativas.setdefault(v["exp"], {"titulo": re.sub(r"\s*\([^()]*\)\s*$", "", v["titulo"]), "votos": []})["votos"].append(v)
+    for exp, ley in leyes.items():
+        ini = iniciativas.setdefault(exp, {"votos": []})
+        ini["titulo"], ini["ley"] = corto(ley["titulo"]), ley
     for exp, ini in iniciativas.items():
-        ult = ini["votos"][-1]
-        desc = f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}. {resultado(ult)} por {ult['si']} a {ult['no']} el {fecha_larga(ult['fecha'])}."
-        poner(f"iniciativa/{exp.replace('/', '-')}", f"iniciativa-{exp.replace('/', '-')}", ini["titulo"], desc,
-              lambda exp=exp, ini=ini: tarjeta_iniciativa(exp, ini["titulo"], ini["votos"], dips, plano))
+        ley, votos = ini.get("ley"), ini["votos"]
+        partes = [f"{ley['tipo'] if ley else TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}."]
+        if ley:
+            partes.append(f"{ESTADO_LEY.get(ley['estado'], ley['estado'])}: {ley['situacion'] if ley['estado'] == 'en trámite' else ley['resultado']}.")
+        if votos:
+            ult = votos[-1]
+            partes.append(f"Última votación: {resultado(ult).lower()} por {ult['si']} a {ult['no']} el {fecha_larga(ult['fecha'])}.")
+        clave = f"{ley['estado']}|{ley['etapa']}|{votos[-1]['id'] if votos else ''}" if ley else ""
+        poner(f"iniciativa/{exp.replace('/', '-')}", f"iniciativa-{exp.replace('/', '-')}", ini["titulo"], " ".join(partes),
+              lambda exp=exp, ini=ini: (tarjeta_iniciativa(exp, ini["titulo"], ini["votos"], dips, plano, ini.get("ley"))
+                                        if ini["votos"] else tarjeta_ley(ini["ley"])), clave)
+
+    for sem in salida.get("semanas", []):
+        vs = [votos_por_id[x] for x in sem["votaciones"] if x in votos_por_id]
+        desc = (f"{len(vs)} votaciones en el Pleno: {sem['aprobadas']} aprobadas y {len(vs) - sem['aprobadas']} rechazadas. "
+                f"{sem['discrepancias']} votos distintos al del propio grupo." + (f" {len(sem['leyes'])} leyes se han movido." if sem["leyes"] else ""))
+        clave = f"{sem['titular']}|{len(vs)}|{sem['aprobadas']}|{sem['ajustadas'][:1]}"
+        poner(f"semana/{sem['id']}", f"semana-{sem['id']}", sem["titular"], desc,
+              lambda sem=sem, vs=vs: tarjeta_semana(sem, vs, votos_por_id, dips, plano), clave)
 
     # ---- RSS: general, por diputado (solo lo destacable) y por iniciativa
     from .construir import _clave_apellidos
@@ -423,8 +525,13 @@ def generar(salida: dict, plano: dict) -> dict:
             general.append({"id": f"sesion-{x['id']}", "fecha": x["fecha"], "enlace": f"sesion/{slug(x['id'])}/",
                             "titulo": f"{x['organo']}, {fecha_larga(x['fecha'])}",
                             "desc": x.get("titular") or x["resumen"][:400]})
+    for sem in salida.get("semanas", [])[:-1]:  # la semana en curso aún no ha terminado
+        general.append({"id": f"semana-{sem['id']}", "fecha": sem["hasta"], "enlace": f"semana/{sem['id']}/",
+                        "titulo": f"La semana en el Congreso: {sem['titular']}",
+                        "desc": f"Del {fecha_larga(sem['desde'])} al {fecha_larga(sem['hasta'])}. {len(sem['votaciones'])} votaciones, "
+                                f"{sem['aprobadas']} aprobadas."})
     escritas["rss"] = _escribir_si_cambia(SITIO / "rss.xml", rss(
-        "rss.xml", "Escaño Abierto", "Votaciones y sesiones del Congreso de los Diputados.", "", general))
+        "rss.xml", "Escaño Abierto", "Votaciones, sesiones y resumen semanal del Congreso de los Diputados.", "", general))
 
     por_apellidos: dict[str, list[int]] = {}
     for i, d in enumerate(dips):
@@ -441,18 +548,21 @@ def generar(salida: dict, plano: dict) -> dict:
             f"Cuándo vota distinto de su grupo y qué dice en sus intervenciones.", ruta + "/",
             _entradas_diputado(i, d, datos["votaciones"], ivs_dip.get(i, []), fecha_ses)))
 
+    debates: dict[str, list] = {}
+    for x in datos["sesiones"]:
+        for k, p in enumerate(x.get("puntos", [])):
+            if p.get("exp") and p.get("estado") != "sin-ds":
+                debates.setdefault(p["exp"], []).append({
+                    "id": f"debate-{x['id']}-{k}", "fecha": x["fecha"], "enlace": f"sesion/{slug(x['id'])}/",
+                    "titulo": f"Debate en {x['organo']}: {p['titulo']}", "desc": f"{p.get('tipo', '')}. {fecha_larga(x['fecha'])}.".lstrip(". ")})
     for exp, ini in iniciativas.items():
         ruta = f"iniciativa/{exp.replace('/', '-')}"
-        ents = [_entrada_voto(v) for v in ini["votos"]]
-        for x in datos["sesiones"]:
-            for k, p in enumerate(x.get("puntos", [])):
-                if p.get("exp") == exp and p.get("estado") != "sin-ds":
-                    ents.append({"id": f"debate-{x['id']}-{k}", "fecha": x["fecha"], "enlace": f"sesion/{slug(x['id'])}/",
-                                 "titulo": f"Debate en {x['organo']}: {p['titulo']}",
-                                 "desc": f"{p.get('tipo', '')}. {fecha_larga(x['fecha'])}.".lstrip(". ")})
+        ents = [_entrada_voto(v) for v in ini["votos"]] + debates.get(exp, [])
+        if ini.get("ley"):
+            ents += _entradas_tramitacion(ini["ley"], ruta)
         escritas["rss"] += _escribir_si_cambia(SITIO / ruta / "rss.xml", rss(
-            f"{ruta}/rss.xml", f"{ini['titulo']} · Escaño Abierto", f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}: debates y votaciones.",
-            ruta + "/", ents))
+            f"{ruta}/rss.xml", f"{ini['titulo']} · Escaño Abierto",
+            f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}: tramitación, debates y votaciones.", ruta + "/", ents))
 
     portada = SITIO / "og" / "portada.png"
     if not portada.exists():

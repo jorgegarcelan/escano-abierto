@@ -4,7 +4,7 @@ from dataclasses import asdict
 from pathlib import Path
 from types import SimpleNamespace
 
-from escano import analisis, construir as mod_construir, votaciones
+from escano import agenda, analisis, construir as mod_construir, leyes, paginas, votaciones
 from escano.diario import dividir
 
 TEXTO = (Path(__file__).parent / "fixtures" / "diario_muestra.txt").read_text()
@@ -29,10 +29,12 @@ class ClienteFalso:
 
 
 def test_construir(tmp_path, monkeypatch):
-    for mod, nombre, sub in [(mod_construir, "SESIONES", "sesiones"), (mod_construir, "VOTACIONES", "votaciones"),
-                             (mod_construir, "SITIO", "site"), (analisis, "ANALISIS", "analisis")]:
+    for mod, nombre, sub in [(mod_construir, "SESIONES", "sesiones"), (votaciones, "VOTACIONES", "votaciones"),
+                             (mod_construir, "SITIO", "site"), (paginas, "SITIO", "site"), (analisis, "ANALISIS", "analisis")]:
         (tmp_path / sub).mkdir(exist_ok=True)
         monkeypatch.setattr(mod, nombre, tmp_path / sub)
+    for mod in (leyes, agenda):  # sin tramitación ni agenda descargadas
+        monkeypatch.setattr(mod, "FICHERO", tmp_path / f"{mod.__name__}.json")
     monkeypatch.setattr(mod_construir, "MVP", tmp_path / "sin-mvp.json")
     falso = ClienteFalso()
     monkeypatch.setattr(analisis, "_cliente", lambda: falso)
@@ -65,8 +67,8 @@ def test_construir(tmp_path, monkeypatch):
     assert sin_ds["ds"] is None and sin_ds["puntos"][0]["votos"] == ["200-1"]
     assert datos["votaciones"][0]["proponente"] == "PNV"
     assert datos["votaciones"][0]["tipo"] == "Proposición no de ley"
-    assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17", 10, 20, 7],
-                                  ["Dos, B", "PSOE", "", "", "", None, None, None]]
+    assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17", 10, 20, 7, ""],
+                                  ["Dos, B", "PSOE", "", "", "", None, None, None, ""]]
     assert datos["votaciones"][0]["v"] == "SX"                              # una letra por diputado
     assert next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")["titular"].startswith("Ceuta")
     s205 = next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")

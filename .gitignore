@@ -5,3 +5,6 @@ __pycache__/
 data/raw/
 .pytest_cache/
 .DS_Store
+
+# Tarjetas para compartir: se dibujan en cada construcción (python -m escano construir)
+site/og/

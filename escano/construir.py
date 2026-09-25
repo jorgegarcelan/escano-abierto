@@ -12,8 +12,9 @@ from collections import Counter, defaultdict
 from datetime import date
 
 from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as mod_organos
+from . import agenda as mod_agenda, leyes as mod_leyes, semanas as mod_semanas, votaciones as mod_votaciones
 from .analisis import analizar, resumir_sesion
-from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
+from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
 
 MVP = DATOS / "mvp.json"  # análisis del prototipo; solo rellenan lo que el pipeline aún no ha analizado
 
@@ -106,20 +107,32 @@ def titulo_legible(item: str) -> str:
     return t[:1].upper() + t[1:].lower() if t.isupper() else t
 
 
-def diputados(votaciones: list[dict]) -> list[list[str]]:
-    """[nombre, grupo, circunscripción, formación, alta, x, y, código] de cada diputado (x, y: su escaño en el plano) que aparece en las votaciones, en orden estable.
+def diputados(votaciones: list[dict]) -> list[list]:
+    """[nombre, grupo, circunscripción, formación, alta, x, y, código, baja] de cada diputado que aparece en las
+    votaciones, en orden estable. x, y: su escaño en el plano; baja: fecha en que dejó el escaño, o "".
 
     El grupo es el del voto más reciente. La web usa este orden para leer la cadena `v` de cada votación.
+    Quien ya no es diputado no está en el plano actual: se le sitúa en el escaño que ocupaba (el número de
+    asiento de las votaciones), que hoy tiene otro diputado con posición conocida.
     """
     grupo: dict[str, str] = {}
+    asiento: dict[str, int] = {}
     for v in sorted(votaciones, key=lambda v: (v["fecha"], v.get("numero") or 0)):
         for d in v.get("votos", []):
             grupo[d["diputado"]] = d["grupo"]
+            if d.get("asiento"):
+                asiento[d["diputado"]] = d["asiento"]
     ficha, plano = mod_diputados.leer(), mod_hemiciclo.leer()["escanos"]
+    por_asiento = {asiento[n]: plano[n] for n in plano if n in asiento}
+    ultimos = {d["diputado"] for d in (max(votaciones, key=lambda v: (v["fecha"], v.get("numero") or 0))["votos"]
+                                       if votaciones else [])}
+
     def fila(n, g):
-        f, e = ficha.get(n, {}), plano.get(n, {})
+        f = ficha.get(n, {})
+        baja = f.get("baja", "") or ("" if (n in ultimos or n in plano or (f and not f.get("baja"))) else "sí")
+        e = plano.get(n) or (por_asiento.get(asiento.get(n), {}) if baja else {})
         return [n, g, f.get("circunscripcion", ""), f.get("formacion", ""), f.get("alta", ""),
-                e.get("x"), e.get("y"), e.get("codigo")]
+                e.get("x"), e.get("y"), plano.get(n, {}).get("codigo"), baja]
     return sorted((fila(n, g) for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
 
 
@@ -132,7 +145,7 @@ def votos_compactos(v: dict, indice: dict[str, int]) -> str:
     return "".join(letras)
 
 
-def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
+def _votacion_web(v: dict, indice: dict[str, int] | None = None, actual: dict[str, str] | None = None) -> dict:
     return {
         "id": v["id"], "fecha": v["fecha"], "tipo": tipo_votacion(v),
         "titulo": titulo_votacion(v["titulo"], v.get("subgrupo", "")), "titulo_fuente": "oficial", "texto": v["titulo"],
@@ -143,7 +156,16 @@ def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
         "discrepantes": [f"{d['diputado']} ({d['grupo']})" for d in v.get("discrepantes", [])],
         "json": v.get("json", ""),
         "v": votos_compactos(v, indice) if indice and v.get("votos") else "",
+        **({"cg": cg} if (cg := cambios_de_grupo(v, indice, actual)) else {}),
     }
+
+
+def cambios_de_grupo(v: dict, indice: dict[str, int] | None, actual: dict[str, str] | None) -> dict[str, str]:
+    """{posición: grupo} de quien votó desde un grupo distinto del actual (p. ej. Podemos, en SUMAR hasta 2023)."""
+    if not indice or not actual:
+        return {}
+    return {str(indice[d["diputado"]]): d["grupo"] for d in v.get("votos", [])
+            if d["diputado"] in indice and d["grupo"] != actual.get(d["diputado"])}
 
 
 def completar_con_mvp(sesiones: list[dict], ivs: list[dict], votos: list[dict]) -> None:
@@ -185,10 +207,11 @@ def completar_con_mvp(sesiones: list[dict], ivs: list[dict], votos: list[dict]) 
 
 
 def construir(con_ia: bool = True) -> dict:
-    votaciones = [v for f in sorted(VOTACIONES.glob("*.json")) for v in json.loads(f.read_text())]
+    votaciones = mod_votaciones.leer_todas()
     lista_diputados = diputados(votaciones)
     indice = {d[0]: i for i, d in enumerate(lista_diputados)}
-    web_votos = [_votacion_web(v, indice) for v in votaciones]
+    actual = {d[0]: d[1] for d in lista_diputados}
+    web_votos = [_votacion_web(v, indice, actual) for v in votaciones]
     por_fecha: dict[str, list[dict]] = defaultdict(list)
     for v in web_votos:
         por_fecha[v["fecha"]].append(v)
@@ -320,6 +343,10 @@ def construir(con_ia: bool = True) -> dict:
         },
         "intervenciones": ivs_web,
     }
+    leyes = mod_leyes.leer()
+    salida["leyes"] = leyes
+    salida["semanas"] = mod_semanas.calcular(web_votos, sesiones_web, ivs_web, leyes["iniciativas"], lista_diputados)
+    salida["agenda"] = mod_agenda.leer()
     escribir_web(salida)
     try:
         from .paginas import generar
@@ -386,7 +413,17 @@ def escribir_web(salida: dict) -> None:
         "meses": [{"mes": m, "sesiones": len(c["sesiones"]), "votaciones": len(c["votaciones"]),
                    "intervenciones": len(c["intervenciones"])} for m, c in sorted(meses.items())],
     }
+    agenda = salida.get("agenda") or {}
+    indice["agenda"] = {"plenos": agenda.get("plenos", []), "comisiones": agenda.get("comisiones", [])}
+    indice["semanas"] = [s["id"] for s in salida.get("semanas", [])]
     (carpeta / "indice.json").write_text(json.dumps(indice, ensure_ascii=False))
+    (carpeta / "semanas.json").write_text(json.dumps(salida.get("semanas", []), ensure_ascii=False))
+    leyes = salida.get("leyes") or {"iniciativas": [], "aprobadas": []}
+    (carpeta / "leyes.json").write_text(json.dumps({
+        "iniciativas": [{**{k: x for k, x in i.items() if k != "fases"},
+                         "fases": [[f["organo"], f["fase"], f["desde"], f["hasta"]] for f in i["fases"]]}
+                        for i in leyes["iniciativas"]],
+        "aprobadas": leyes["aprobadas"]}, ensure_ascii=False))
     (carpeta / "diputados-extra.json").write_text(
         json.dumps(extras_diputados([x[0] for x in d["diputados"]]), ensure_ascii=False))
     (SITIO / "data.json").unlink(missing_ok=True)   # formato anterior, en un solo fichero

@@ -103,7 +103,7 @@ main{padding-top:20px}
 .periodo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding-top:14px;font-size:13px;color:var(--muted)}
 .periodo-bar label{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
 .periodo-bar select{font:500 13.5px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:4px 8px}
-section.view{display:grid;gap:18px}
+section.view{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 section.view[hidden]{display:none}
 .view-intro{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
 .view-intro h2{font-size:24px}
@@ -267,7 +267,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 .hero-vote{margin:0;display:grid;gap:12px;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);padding:20px 20px 18px;box-shadow:var(--sombra)}
 .hero-vote .hv-t{margin:0;font-weight:500;text-align:center;max-width:46ch;justify-self:center;text-wrap:balance}
 .hero-vote .hv-sub{font-size:12.5px;color:var(--muted);text-align:center;margin-top:-6px}
-.sec{display:grid;gap:14px;padding-top:36px}
+.sec{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding-top:36px}
 .sec-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
 .sec-h h2{font-size:24px}
 .sec-h p{margin:0;color:var(--muted);font-size:14px;max-width:60ch}
@@ -293,6 +293,120 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 .vcard .vc-s{font-size:12px;color:var(--muted)}
 @media (max-width:900px){
   .vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* leyes */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px}
+.embudo{display:grid;gap:6px}
+.emb-row{display:grid;grid-template-columns:minmax(120px,190px) 1fr 76px;gap:10px;align-items:center;font-size:13.5px}
+.emb-row .trk{height:14px}
+.emb-row .trk i{display:block;height:100%;background:var(--ink);border-radius:0 4px 4px 0;min-width:2px}
+.emb-row .n{text-align:right;font-variant-numeric:tabular-nums}
+.emb-row .n small,.aut-row .n,.cong-row .n small{color:var(--muted)}
+.autores{display:grid;gap:4px}
+.aut-row,.cong-row{appearance:none;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:var(--r-ctl);padding:5px 6px}
+.aut-row:hover,.cong-row:hover{background:var(--sunk)}
+.aut-row{display:grid;grid-template-columns:minmax(110px,200px) 1fr 90px;gap:10px;align-items:center;font-size:13.5px}
+.aut-row .trk{position:relative;height:14px;background:var(--sunk);border:1px solid var(--line);border-radius:0 4px 4px 0;min-width:4px;box-sizing:border-box}
+.aut-row .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:0 3px 3px 0}
+.aut-row .trk i.t{opacity:.35}
+.aut-row .n{text-align:right;font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+.aut-row .n b{color:var(--ink)}
+.cong{display:grid;gap:2px}
+.cong-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(80px,1fr) 88px;gap:12px;align-items:center}
+.cong-row .t{font-size:14px;font-weight:500;line-height:1.3;min-width:0}
+.cong-row .t small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cong-row .trk i{display:block;height:12px;border-radius:0 4px 4px 0;background:repeating-linear-gradient(90deg,var(--ink) 0 5px,transparent 5px 7px)}
+.cong-row .n{text-align:right;font-variant-numeric:tabular-nums}
+svg.dur{width:100%;height:auto;overflow:visible}
+svg.dur .grid{stroke:var(--line);stroke-width:1}
+svg.dur .ax{font:11px var(--sans);fill:var(--muted)}
+svg.dur .lab{font:12px var(--sans);fill:var(--ink)}
+svg.dur .pt{fill:var(--ink);fill-opacity:.55;stroke:var(--surface);stroke-width:2;cursor:pointer}
+svg.dur .pt:hover{fill-opacity:1}
+svg.dur .med{stroke:var(--no);stroke-width:2}
+.gantt{display:grid;gap:3px}
+.g-row{display:grid;grid-template-columns:minmax(120px,230px) 1fr;gap:12px;align-items:center;font-size:12.5px}
+.g-lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.g-trk{position:relative;height:14px;background:linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat}
+.g-trk i{position:absolute;top:1px;bottom:1px;border-radius:3px;background:color-mix(in srgb,var(--ink) 70%,var(--surface));min-width:3px}
+.g-trk i.abierta{background:var(--abst)}
+.g-trk i.fin{background:var(--si)}
+.g-eje .g-trk{background:none;height:16px}
+.g-eje b{position:absolute;top:0;transform:translateX(-50%);font-weight:400;font-size:11px;color:var(--muted)}
+.g-eje b::before{content:"";position:absolute;left:50%;bottom:100%;height:6px;border-left:1px solid var(--line)}
+.leyes-t tr[data-ini]{cursor:pointer}
+.leyes-t tr[data-ini]:hover td{background:var(--sunk)}
+.leyes-t td.t b{font-weight:500}
+.leyes-t td.t small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.leyes-t .nm{white-space:nowrap;font-size:13px}
+.pasos{display:inline-flex;gap:3px;vertical-align:middle}
+.pasos i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line-strong);box-sizing:border-box}
+.pasos i.on{background:var(--ink);border-color:var(--ink)}
+.pasos i.x{border-color:var(--no);background:linear-gradient(45deg,transparent 42%,var(--no) 42% 58%,transparent 58%)}
+.etapas{list-style:none;margin:6px 0 16px;padding:0;display:grid;grid-template-columns:repeat(6,1fr);counter-reset:e}
+.etapas li{position:relative;padding-top:22px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.25}
+.etapas li::before{content:"";position:absolute;top:4px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid var(--line-strong);background:var(--surface);box-sizing:border-box;z-index:1}
+.etapas li::after{content:"";position:absolute;top:9px;left:-50%;width:100%;height:2px;background:var(--line)}
+.etapas li:first-child::after{display:none}
+.etapas li.on{color:var(--ink);font-weight:600}
+.etapas li.on::before{background:var(--ink);border-color:var(--ink)}
+.etapas li.on::after{background:var(--ink)}
+.etapas li.corte{color:var(--no)}
+.etapas li.corte::before{border-color:var(--no);background:var(--surface)}
+.ley-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 24px;margin:0 0 16px}
+.ley-datos dt{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ley-datos dd{margin:2px 0 0;font-size:14px}
+/* la semana */
+.btn:disabled{opacity:.35;cursor:default;pointer-events:none}
+.sem-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 14px}
+.sem-nav select{font:inherit;padding:6px 8px;border-radius:var(--r-ctl);border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);max-width:100%}
+.sem-top{margin-top:18px}
+.sem-dest{appearance:none;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;display:grid;gap:8px;text-align:center}
+.sem-dest .sv-t{font-weight:500}
+.sv-list{display:grid;border-top:1px solid var(--line)}
+.sv-row{appearance:none;background:none;border:0;border-bottom:1px solid var(--line);font:inherit;color:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:9px 4px}
+.sv-row:hover{background:var(--sunk)}
+.sv-f{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.sv-t{min-width:0}
+.sv-t small{display:block;font-size:12px;color:var(--muted)}
+.sv-n{font-variant-numeric:tabular-nums;font-weight:600}
+.sem-leyes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.sem-leyes li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between}
+.sem-leyes .linklike{text-align:left;font-size:14px}
+.sem-cita blockquote{margin:0 0 6px;font-family:var(--display);font-size:18px;line-height:1.35}
+.sem-cita figcaption{font-size:13px;color:var(--muted)}
+.rebeldes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.reb{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:center;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:10px 12px}
+.reb:hover{border-color:var(--line-strong)}
+.reb small{display:block;color:var(--muted);font-size:12px}
+.sem-card{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%}
+.sem-card b{font-family:var(--display);font-size:clamp(20px,2.6vw,26px);font-weight:600;line-height:1.2}
+.sem-card:hover{border-color:var(--line-strong)}
+/* próximo pleno */
+.agenda .od-cab h3{font-size:clamp(20px,2.4vw,24px);margin:4px 0 2px}
+.od-sec{border-top:1px solid var(--line);padding:8px 0}
+.od-sec summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;list-style:none}
+.od-sec summary::-webkit-details-marker{display:none}
+.od-sec summary::before{content:"▸";color:var(--muted);transition:transform .2s}
+.od-sec[open] summary::before{transform:rotate(90deg)}
+.od-sec summary .n{margin-left:auto;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.od{list-style:none;margin:8px 0 2px;padding:0;display:grid;gap:8px}
+.od li{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:14px;line-height:1.35}
+.od-g{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.od-t small{display:block;font-size:12px;color:var(--muted)}
+.od-e{font-size:12px;color:var(--muted);white-space:nowrap}
+@media (max-width:640px){
+  .emb-row{grid-template-columns:110px 1fr 64px}
+  .aut-row{grid-template-columns:92px 1fr auto;gap:8px;font-size:13px}
+  .cong-row{grid-template-columns:minmax(0,1fr) 74px}
+  .cong-row .trk{display:none}
+  .etapas{grid-template-columns:repeat(3,1fr);row-gap:14px}
+  .etapas li:nth-child(4)::after{display:none}
+  .sv-row{grid-template-columns:44px minmax(0,1fr) auto}
+  .sv-row .res{display:none}
+  .od li{grid-template-columns:52px minmax(0,1fr)}
+  .od-e{grid-column:2}
 }
 
 /* temas */
@@ -573,6 +687,7 @@ body.con-buscador{overflow:hidden}
         <button role="tab" id="tab-inicio" aria-controls="inicio" aria-selected="true">Inicio</button>
         <button role="tab" id="tab-dias" aria-controls="dias" aria-selected="false">Por día</button>
         <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
+        <button role="tab" id="tab-leyes" aria-controls="leyes" aria-selected="false">Leyes</button>
         <button role="tab" id="tab-temas" aria-controls="temas" aria-selected="false">Temas</button>
         <button role="tab" id="tab-diputados" aria-controls="diputados" aria-selected="false">Diputados</button>
         <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Grupos</button>
@@ -592,6 +707,8 @@ body.con-buscador{overflow:hidden}
     <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
     <section class="view" id="votaciones" role="tabpanel" aria-labelledby="tab-votaciones" hidden></section>
     <section class="view" id="metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden></section>
+    <section class="view" id="leyes" role="tabpanel" aria-labelledby="tab-leyes" hidden></section>
+    <section class="view" id="semana" aria-label="La semana en el Congreso" hidden></section>
   </main>
 
   <div id="tip" hidden></div>
@@ -722,11 +839,14 @@ function asientos(N){
   const paso = Math.min(...radios.map((r,i)=>Math.PI*r*100/Math.max(1,n[i]-1)), (1-r0)*100/(filas-1));
   return _layouts[N] = {pts: out, rad: paso*.42};
 }
+// Grupo desde el que votó el diputado i en v (cg lleva solo los cambios respecto a su grupo actual).
+const fechaCorta = iso => { const [y,m,dd]=iso.split("-").map(Number); return `${dd} ${MESES[m-1]} ${y}`; };
+const grupoEn = (v,i) => v.cg?.[i] || DIPS[i][1];
 function escanosDe(v){
   // Lista de {n, g, x} por diputado: del voto nominal si lo hay; si no, del recuento por grupo.
   let lista = [];
   if (v.v && DIPS.length===v.v.length){
-    for (let i=0;i<v.v.length;i++){ const x=v.v[i]; if (x!=="-") lista.push({n:DIPS[i][0], g:DIPS[i][1], x, i}); }
+    for (let i=0;i<v.v.length;i++){ const x=v.v[i]; if (x!=="-") lista.push({n:DIPS[i][0], g:grupoEn(v,i), x, i}); }
   } else if (v.conteo && Object.keys(v.conteo).length){
     for (const [g,c] of Object.entries(v.conteo)) for (const [x,k] of Object.entries(c)) for (let i=0;i<k;i++) lista.push({n:"", g, x});
   } else return null;
@@ -736,7 +856,8 @@ function escanosDe(v){
 }
 // Plano real del hemiciclo (coordenadas de cada escaño en la página oficial del Congreso).
 const PLANO = DATA.hemiciclo || null;
-const CON_PLANO = !!PLANO && DIPS.filter(d=>d[5]!=null).length >= DIPS.length*.9;
+// Hay plano si casi todos los diputados de hoy tienen escaño en él (quien dejó el acta puede no tenerlo).
+const CON_PLANO = !!PLANO && DIPS.filter(d=>!d[8] && d[5]!=null).length >= DIPS.filter(d=>!d[8]).length*.9;
 const ESC_R = 5.3;
 function gobiernoSinEscano(){
   // Ministros que no son diputados: se sientan en el banco azul, pero no votan.
@@ -903,7 +1024,7 @@ const decideIntro = `Un grupo decide una votación si, de haber actuado de otra 
 const sinTildes = t => t.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 const slug = n => sinTildes(n).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const legible = n => n.includes(", ") ? n.split(", ").reverse().join(" ") : n;
-const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", alta:d[4]||"", cod:d[7]||null, slug:slug(d[0])}));
+const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", alta:d[4]||"", cod:d[7]||null, baja:d[8]||"", slug:slug(d[0])}));
 const DIP_NOMBRE = Object.fromEntries(DIP.map(d=>[d.n,d]));
 // Foto y ficha oficiales del Congreso, a partir del código del diputado (vienen del plano del hemiciclo).
 const fotoDip = d => d?.cod ? `https://www.congreso.es/docu/imgweb/diputados/${d.cod}_15.jpg` : null;
@@ -919,7 +1040,7 @@ const MIVOTO = {S:"Sí",N:"No",A:"Abstención",X:"No vota"};
 const statsDip = (() => {
   const st = DIP.map(()=>({vot:0, aus:0, dis:0, con:0}));
   VOTOS_NOM.forEach(v=>DIP.forEach(d=>{ const x=v.v[d.i]; if(x==="-") return; const s=st[d.i];
-    if (x==="X") { s.aus++; return; } s.vot++; const gp=v.grupos[d.g]; if (["S","N","A"].includes(gp)) { if (x===gp) s.con++; else s.dis++; } }));
+    if (x==="X") { s.aus++; return; } s.vot++; const gp=v.grupos[grupoEn(v,d.i)]; if (["S","N","A"].includes(gp)) { if (x===gp) s.con++; else s.dis++; } }));
   const ivsPor = {}; IVS.forEach(i=>{ const d=dipDeOrador(i.orador); if (d) (ivsPor[d.i] ||= []).push(i); });
   return st.map((s,i)=>({...s, part: s.vot+s.aus ? s.vot/(s.vot+s.aus) : null, lealtad: s.con+s.dis ? s.con/(s.con+s.dis) : null, ivs: ivsPor[i]||[]}));
 })();
@@ -929,7 +1050,8 @@ let dipFiltro = {q:"", g:"TODOS", orden:"dis", circ:null};
 let dipSel = null;
 function hemiDiputado(d){
   if (CON_PLANO && DIPS[d.i][5]!=null){
-    const seats = DIP.filter(e=>DIPS[e.i][5]!=null).map(e=>{ const yo=e===d, x=DIPS[e.i][5], y=DIPS[e.i][6];
+    const mismoSitio = e => DIPS[e.i][5]===DIPS[d.i][5] && DIPS[e.i][6]===DIPS[d.i][6];
+    const seats = DIP.filter(e=>DIPS[e.i][5]!=null && (e===d || (!e.baja && !(d.baja && mismoSitio(e))))).map(e=>{ const yo=e===d, x=DIPS[e.i][5], y=DIPS[e.i][6];
       return `<circle class="${yo?"yo":"otro"}" cx="${x}" cy="${y}" r="${yo?ESC_R*1.7:ESC_R}" ${yo?"":`fill="${G[e.g]?.color}"`} data-n="${esc(e.n)}" data-g="${e.g}" data-x="-"></circle>`; }).join("");
     return `<svg class="hemi real" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Su escaño en el hemiciclo">${gobiernoSinEscano()}${seats}</svg>`;
   }
@@ -942,13 +1064,15 @@ function hemiDiputado(d){
 function renderDiputados(){
   if (dipSel && DIP_SLUG[dipSel]) return renderFicha(DIP_SLUG[dipSel]);
   const q = sinTildes(dipFiltro.q.trim());
-  let lista = DIP.filter(d=>(dipFiltro.g==="TODOS"||d.g===dipFiltro.g) && (!dipFiltro.circ || d.circ===dipFiltro.circ) && (!q || sinTildes(d.n+" "+legible(d.n)+" "+d.circ).includes(q)));
+  let lista = DIP.filter(d=>(dipFiltro.g==="BAJA" ? d.baja : !d.baja && (dipFiltro.g==="TODOS"||d.g===dipFiltro.g)) && (!dipFiltro.circ || d.circ===dipFiltro.circ) && (!q || sinTildes(d.n+" "+legible(d.n)+" "+d.circ).includes(q)));
   const S = statsDip, ord = dipFiltro.orden;
   lista.sort((a,b)=> ord==="dis" ? S[b.i].dis-S[a.i].dis || a.n.localeCompare(b.n,"es")
     : ord==="part" ? (S[a.i].part??2)-(S[b.i].part??2) || a.n.localeCompare(b.n,"es")
     : ord==="ivs" ? S[b.i].ivs.length-S[a.i].ivs.length || a.n.localeCompare(b.n,"es")
     : a.n.localeCompare(b.n,"es"));
-  const chips = ["TODOS",...ORDEN_HEMI].map(g=>`<button class="chipbtn" data-dg="${g}" aria-pressed="${dipFiltro.g===g}">${g==="TODOS"?"Todos":gdot(g)+g}</button>`).join("");
+  const nBajas = DIP.filter(d=>d.baja).length;
+  const chips = ["TODOS",...ORDEN_HEMI].map(g=>`<button class="chipbtn" data-dg="${g}" aria-pressed="${dipFiltro.g===g}">${g==="TODOS"?"Todos":gdot(g)+g}</button>`).join("")
+    + (nBajas ? `<button class="chipbtn" data-dg="BAJA" aria-pressed="${dipFiltro.g==="BAJA"}">Dejaron el escaño · ${nBajas}</button>` : "");
   const th = (k,l,cls="") => `<th class="${cls}"><button data-dord="${k}" aria-pressed="${ord===k}">${l}${ord===k?" ↓":""}</button></th>`;
   $("#diputados").innerHTML = `
     <div class="view-intro"><div><h2>Diputados</h2><p>Los 350 diputados con su voto en las ${VOTOS_NOM.length} votaciones incluidas: cuánto participan, cuántas veces se apartan de su grupo y cuántas intervenciones tienen analizadas. Pulsa uno para ver su ficha, o un escaño en cualquier hemiciclo.</p></div></div>
@@ -967,9 +1091,9 @@ function renderDiputados(){
 function renderFicha(d){
   const s = statsDip[d.i], grupo = G[d.g];
   const alta = d.alta ? (()=>{ const [y,m,dd]=d.alta.split("-").map(Number); return `${dd} ${MESES[m-1]} ${y}`; })() : "";
-  const filas = VOTOS_NOM.map(v=>{ const x=v.v[d.i]; if (x==="-") return ""; const gp=v.grupos[d.g]||"?"; const dis=["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp; const dd=dt(v.fecha);
+  const filas = VOTOS_NOM.map(v=>{ const x=v.v[d.i]; if (x==="-") return ""; const gp=v.grupos[grupoEn(v,d.i)]||"?"; const dis=["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp; const dd=dt(v.fecha);
     return `<tr class="${dis?"dis":""}"><td class="num" style="white-space:nowrap">${dd.d} ${dd.m}</td><td class="t"><button class="linklike" style="text-decoration:none;text-align:left;font-weight:400" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button></td>
-      <td><span class="mivoto ${x}">${MIVOTO[x]}</span></td><td><span class="gp ${gp==="?"?"q":gp}">${d.g}<span class="v">${VLABEL[gp]}</span></span></td><td><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></td></tr>`; }).join("");
+      <td><span class="mivoto ${x}">${MIVOTO[x]}</span></td><td><span class="gp ${gp==="?"?"q":gp}">${grupoEn(v,d.i)}<span class="v">${VLABEL[gp]}</span></span></td><td><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></td></tr>`; }).join("");
   const kpis = [[pct(s.part),"participación",`${s.vot} de ${s.vot+s.aus} votaciones`],[pct(s.lealtad),"con su grupo",""],[s.dis,s.dis===1?"vez distinto a su grupo":"veces distinto a su grupo","",s.dis>0],[s.ivs.length,s.ivs.length===1?"intervención analizada":"intervenciones analizadas",""]]
     .map(([n,l,t,a])=>`<div class="kpi ${a?"alert":""}"${t?` title="${t}"`:""}><b>${n}</b><span>${l}</span></div>`).join("");
   $("#diputados").innerHTML = `
@@ -977,7 +1101,7 @@ function renderFicha(d){
     <div class="ficha-top">
       <div class="ficha-id">${imgFoto(d, "foto-dip", ` style="--grupo:${grupo?.color||"var(--line)"}"`)}<div><div class="eyebrow">${esc(d.circ||"Circunscripción sin dato")} · ${esc(grupo?.nombre||d.g)}</div>
         <h2>${esc(legible(d.n))}</h2>
-        <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}</p>
+        <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}${d.baja?` · ${d.baja.includes("-")?`Dejó el escaño el ${fechaCorta(d.baja)}`:"Ya no es diputado"}`:""}</p>
         <p class="meta ficha-acc">${d.cod?`<a href="${fichaOficial(d)}" target="_blank" rel="noopener">Ficha oficial en el Congreso ↗</a>`:""}${botonCompartir("diputado/"+d.slug, legible(d.n))}${botonRss("diputado/"+d.slug)}</p></div></div>
       <div>${hemiDiputado(d)}</div>
     </div>
@@ -1164,8 +1288,10 @@ const slugExp = x => x.replace("/","-");
 let iniSel = null;
 const urlIniciativa = x => `https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=${encodeURIComponent(x)}`;
 function renderIniciativa(x){
-  const ini = INICIATIVAS[x];
-  const titulo = ini.votos[0] ? baseTitulo(ini.votos[0].titulo) : ini.debates[0]?.p.titulo || x;
+  const ini = INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]};
+  const ley = LEYES?.porExp[x];
+  if (!LEYES && /^12[1-5]\//.test(x)) cargarLeyes().then(()=>{ if (iniSel===x && !$("#votaciones").hidden) renderIniciativa(x); });
+  const titulo = ley ? tituloLey(ley) : ini.votos[0] ? baseTitulo(ini.votos[0].titulo) : ini.debates[0]?.p.titulo || x;
   const ev = [
     ...ini.debates.map(({s,p})=>({f:s.fecha, k:0, html:`<li><div class="when">${esc(fechaLarga(s.fecha))} · ${esc(s.organo)}</div><div class="what">Debate: ${esc(p.titulo)}</div>
       <div class="extra">${IVS.filter(i=>i.s===s.id && matchItem(i,p)).length?`<span>${IVS.filter(i=>i.s===s.id && matchItem(i,p)).length} intervenciones analizadas</span>`:`<span>Sin analizar</span>`}<button class="linklike" style="font-size:13px" data-go="dias" data-anchor="s-${s.id}">Ver la sesión</button></div></li>`})),
@@ -1173,13 +1299,269 @@ function renderIniciativa(x){
       <div class="extra"><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span><span>Sí ${v.si} · No ${v.no} · Abst. ${v.abst}</span><button class="linklike" style="font-size:13px" data-go="votaciones" data-anchor="v-${v.id}">Ver votación</button></div></li>`}))
   ].sort((a,b)=>a.f.localeCompare(b.f) || a.k-b.k);
   $("#votaciones").innerHTML = `
-    <button class="back" data-ini-volver>← Todas las votaciones</button>
-    <div class="view-intro"><div><div class="eyebrow">${esc(TIPO_EXP[x.slice(0,3)]||"Iniciativa")} · <span class="mono">${esc(x)}</span></div><h2 style="font-size:clamp(26px,3.6vw,38px);margin-top:8px">${esc(titulo)}</h2>
-      <p>Lo que ha pasado con esta iniciativa en el periodo que cubre Escaño Abierto. <a href="${urlIniciativa(x)}" target="_blank" rel="noopener">Tramitación completa en la web del Congreso</a>.</p>
+    <button class="back" data-ini-volver="${ley?"leyes":"votaciones"}">← ${ley?"Todas las leyes":"Todas las votaciones"}</button>
+    <div class="view-intro"><div><div class="eyebrow">${esc(ley?.tipo || TIPO_EXP[x.slice(0,3)] || "Iniciativa")}${ley?.organica?" orgánica":""} · <span class="mono">${esc(x)}</span></div><h2 style="font-size:clamp(26px,3.6vw,38px);margin-top:8px">${esc(titulo)}</h2>
+      <p>${ley?"Su recorrido por el Congreso, fase a fase, y lo que se ha votado y debatido sobre ella.":"Lo que ha pasado con esta iniciativa en el periodo que cubre Escaño Abierto."} <a href="${urlIniciativa(x)}" target="_blank" rel="noopener">Tramitación completa en la web del Congreso</a>.</p>
       <p>${botonCompartir("iniciativa/"+slugExp(x), titulo)}${botonRss("iniciativa/"+slugExp(x))}</p></div></div>
-    <ol class="timeline">${ev.map(e=>e.html).join("")}</ol>`;
+    ${ley ? tramitacion(ley) : ""}
+    ${ev.length ? `${ley?`<section class="sec"><div class="sec-h"><h2>Debates y votaciones</h2><p>En el periodo que tienes seleccionado.</p></div>`:""}<ol class="timeline">${ev.map(e=>e.html).join("")}</ol>${ley?"</section>":""}` : (ley ? "" : `<p class="nota">No hay debates ni votaciones de esta iniciativa en el periodo seleccionado.</p>`)}`;
 }
-function irIniciativa(x){ iniSel=x; rendered.votaciones=false; show("votaciones",false); try{ history.replaceState(null,"","#iniciativa-"+slugExp(x)); }catch(e){} window.scrollTo(0,0); }
+function irIniciativa(x){ INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]}; iniSel=x; rendered.votaciones=false; show("votaciones",false); try{ history.replaceState(null,"","#iniciativa-"+slugExp(x)); }catch(e){} window.scrollTo(0,0); }
+
+/* ---------- leyes: la tramitación de la legislatura ---------- */
+let LEYES = null, leyesPromesa = null;
+function cargarLeyes(){
+  if (LEYES) return Promise.resolve(LEYES);
+  return leyesPromesa ||= fetch("datos/leyes.json").then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{
+    j = j || {iniciativas:[], aprobadas:[]};
+    j.porExp = Object.fromEntries(j.iniciativas.map(i=>[i.exp,i]));
+    INDICE_BUSCAR = null;
+    return LEYES = j; });
+}
+const ETAPAS = ["Presentadas","Admitidas a debate","Con informe en comisión","Aprobadas en el Congreso","Pasaron por el Senado","Leyes"];
+const ETAPA_UNA = ["Presentada","Admitida a debate","Informe en comisión","Aprobada en el Congreso","Senado","Ley"];
+const ESTADO_LEY = {"en trámite":["En trámite","mix"], aprobada:["Es ley","ok"], rechazada:["Rechazada","ko"], retirada:["Retirada","mix"], "decaída":["Decaída","mix"], subsumida:["Subsumida","mix"], inadmitida:["Inadmitida","ko"]};
+const AUTOR = {GOB:"Gobierno", SEN:"Senado", CCAA:"Parlamentos autonómicos", DIP:"Diputados"};
+const autorNombre = a => AUTOR[a] || a;
+const autorColor = a => G[a]?.color || "var(--line-strong)";
+const autorDot = a => `<span class="dot" style="background:${autorColor(a)}"></span>`;
+const tituloLey = l => l.titulo.length > 120 ? l.titulo.slice(0,120).replace(/\s+\S*$/,"")+"…" : l.titulo;
+const cerrada = l => !["en trámite","aprobada"].includes(l.estado);
+const hoyISO = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const dias = (a,b) => Math.round((Date.parse(b)-Date.parse(a))/864e5);
+const pasosLey = l => `<span class="pasos" title="${esc(ETAPA_UNA[l.etapa])}${cerrada(l)?" · "+ESTADO_LEY[l.estado][0]:""}">${ETAPAS.map((_,k)=>`<i class="${k<=l.etapa?"on":""}${cerrada(l)&&k===l.etapa+1?" x":""}"></i>`).join("")}</span>`;
+const chipLey = l => { const [t,c]=ESTADO_LEY[l.estado]||[l.estado,"mix"]; return `<span class="res ${c}">${t}</span>`; };
+let leyFiltro = {estado:"todas", autor:"TODOS", q:"", todas:false};
+
+function embudo(lista, titulo, sub){
+  const c = ETAPAS.map((_,k)=>lista.filter(i=>i.etapa>=k).length), max = c[0]||1;
+  return `<div class="chart"><h3>${titulo}</h3><p class="sub">${sub}</p><div class="embudo">${c.map((x,k)=>`
+    <div class="emb-row" data-tip="${esc(`<b>${ETAPAS[k]}</b><br>${x} de ${c[0]} (${pct(x/max)})`)}"><span class="lab">${ETAPAS[k]}</span>
+      <span class="trk"><i style="width:${Math.max(x/max*100,.8)}%"></i></span><span class="n"><b>${x}</b>${k?` <small>${pct(x/max)}</small>`:""}</span></div>`).join("")}</div></div>`;
+}
+function leyesPorAutor(I){
+  const c = {};
+  I.forEach(i=>i.autores.forEach(a=>{ const x=(c[a] ||= {p:0,t:0,l:0}); x.p++; if (i.etapa>=1) x.t++; if (i.estado==="aprobada") x.l++; }));
+  const filas = Object.keys(c).sort((a,b)=>c[b].p-c[a].p), max = Math.max(...filas.map(a=>c[a].p));
+  return `<div class="autores">${filas.map(a=>{ const x=c[a];
+    return `<button class="aut-row" data-lf-autor="${a}" data-tip="${esc(`<b>${autorNombre(a)}</b><br>${x.p} presentadas · ${x.t} admitidas a debate · ${x.l} convertidas en ley`)}">
+      <span class="g">${autorDot(a)}${esc(autorNombre(a))}</span>
+      <span class="trk" style="width:${x.p/max*100}%"><i class="t" style="width:${x.t/x.p*100}%;background:${autorColor(a)}"></i><i class="l" style="width:${x.l/x.p*100}%;background:${autorColor(a)}"></i></span>
+      <span class="n">${x.p} · ${x.t} · <b>${x.l}</b></span></button>`; }).join("")}</div>
+    <div class="key"><span><i style="background:var(--sunk);border:1px solid var(--line)"></i>presentadas</span><span><i style="background:color-mix(in srgb,var(--ink) 35%,var(--surface))"></i>admitidas a debate</span><span><i style="background:var(--ink)"></i>convertidas en ley</span></div>`;
+}
+function congelador(I){
+  const c = I.filter(i=>i.estado==="en trámite" && i.ampliaciones>=8).sort((a,b)=>b.ampliaciones-a.ampliaciones).slice(0,10);
+  if (!c.length) return "";
+  const max = c[0].ampliaciones;
+  return `<div class="cong">${c.map(i=>`<button class="cong-row" data-ini="${i.exp}" data-tip="${esc(`<b>${tituloLey(i)}</b><br>Plazo de enmiendas ampliado ${i.ampliaciones} veces · ${i.situacion}`)}">
+    <span class="t">${esc(tituloLey(i))}<small>${i.autores.map(autorDot).join("")}${esc(i.autores.map(autorNombre).join(", "))} · ${esc(i.situacion)}</small></span>
+    <span class="trk"><i style="width:${i.ampliaciones/max*100}%"></i></span><span class="n"><b>${i.ampliaciones}</b> <small>semanas</small></span></button>`).join("")}</div>`;
+}
+function duracionLeyes(I){
+  const L = I.filter(i=>i.estado==="aprobada" && i.presentada && i.fecha_resultado).map(i=>({...i, d:dias(i.presentada,i.fecha_resultado)}));
+  if (L.length < 3) return "";
+  const W = 640, H = 128, izq = 110, max = Math.max(...L.map(i=>i.d)), x = d => izq + d/max*(W-izq-16);
+  const filas = [["Proyecto de ley","Del Gobierno",34],["Proposición de ley","De los grupos y otros",86]];
+  const med = a => { const s=a.map(i=>i.d).sort((p,q)=>p-q); return s.length ? s[Math.floor(s.length/2)] : null; };
+  const ticks = [0,180,365,540,730,910,1095].filter(t=>t<=max);
+  return `<svg class="dur" viewBox="0 0 ${W} ${H}" role="img" aria-label="Días entre la presentación y la aprobación definitiva de cada ley">
+    ${ticks.map(t=>`<line x1="${x(t)}" x2="${x(t)}" y1="12" y2="${H-18}" class="grid"/><text x="${x(t)}" y="${H-4}" class="ax" text-anchor="middle">${t?(t%365===0?`${t/365} año${t>365?"s":""}`:`${Math.round(t/30.4)} meses`):"0"}</text>`).join("")}
+    ${filas.map(([tipo,lab,y])=>{ const g=L.filter(i=>i.tipo===tipo), m=med(g);
+      return `<text x="0" y="${y+4}" class="lab">${lab}</text>${m!=null?`<line x1="${x(m)}" x2="${x(m)}" y1="${y-16}" y2="${y+16}" class="med"/><text x="${x(m)+4}" y="${y-18}" class="ax">mediana: ${Math.round(m/30.4)} meses</text>`:""}
+        ${g.map(i=>`<circle cx="${x(i.d).toFixed(1)}" cy="${y}" r="5" class="pt" data-ini="${i.exp}" data-tip="${esc(`<b>${tituloLey(i)}</b><br>${i.d} días: de ${fechaCorta(i.presentada)} a ${fechaCorta(i.fecha_resultado)}`)}"/>`).join("")}`; }).join("")}
+  </svg>`;
+}
+function listaLeyes(){
+  const I = LEYES.iniciativas, q = sinTildes(leyFiltro.q.trim()), f = leyFiltro;
+  const otras = ["retirada","decaída","subsumida","inadmitida"];
+  const L = I.filter(i=>(f.estado==="todas" || (f.estado==="otras" ? otras.includes(i.estado) : i.estado===f.estado))
+      && (f.autor==="TODOS" || i.autores.includes(f.autor)) && (!q || sinTildes(`${i.titulo} ${i.exp} ${i.comision}`).includes(q)))
+    .sort((a,b)=>(b.fases.at(-1)?.[2]||b.presentada).localeCompare(a.fases.at(-1)?.[2]||a.presentada));
+  const vis = f.todas ? L : L.slice(0,40);
+  return `<div class="dtable-wrap"><table class="dt leyes-t"><thead><tr><th>Iniciativa</th><th>Autor</th><th>Etapa</th><th>Estado</th></tr></thead><tbody>
+    ${vis.map(i=>`<tr data-ini="${i.exp}"><td class="t"><b>${esc(tituloLey(i))}</b><small><span class="mono">${i.exp}</span> · ${esc(i.estado==="en trámite"?i.situacion:i.resultado)}</small></td>
+      <td>${i.autores.map(a=>`<span class="nm">${autorDot(a)}${esc(a==="GOB"?"Gobierno":a in AUTOR?AUTOR[a]:a)}</span>`).join("<br>")}</td><td>${pasosLey(i)}</td><td>${chipLey(i)}</td></tr>`).join("")
+      || `<tr><td colspan="4" class="nota">Ninguna iniciativa coincide.</td></tr>`}</tbody></table></div>
+    ${L.length>vis.length?`<p><button class="btn" data-lf-todas>Ver las ${L.length}</button></p>`:""}`;
+}
+function renderLeyes(){
+  const el = $("#leyes");
+  if (!LEYES){ el.innerHTML = `<p class="nota">Cargando la tramitación de la legislatura…</p>`;
+    cargarLeyes().then(()=>{ if (!$("#leyes").hidden) renderLeyes(); else rendered.leyes=false; }); return; }
+  const I = LEYES.iniciativas;
+  if (!I.length){ el.innerHTML = `<p class="nota">Aún no hay datos de tramitación. Ejecuta <code>python -m escano agenda</code> y vuelve a construir la web.</p>`; return; }
+  const n = (...es) => I.filter(i=>es.includes(i.estado)).length;
+  const pub = LEYES.aprobadas||[], nRdl = pub.filter(x=>x.tipo==="Real decreto-ley").length;
+  const proy = I.filter(i=>i.tipo==="Proyecto de ley"), prop = I.filter(i=>i.tipo!=="Proyecto de ley");
+  const kpis = [[I.length,"proyectos y proposiciones de ley"],[n("aprobada"),"convertidos en ley"],[n("en trámite"),"siguen en trámite"],
+    [n("rechazada","inadmitida"),"rechazados",true],[n("retirada","decaída","subsumida"),"retirados o decaídos"],[nRdl,"reales decretos-leyes del Gobierno"]]
+    .map(([x,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${x}</b><span>${l}</span></div>`).join("");
+  const estados = [["todas","Todas"],["en trámite","En trámite"],["aprobada","Leyes"],["rechazada","Rechazadas"],["otras","Retiradas o decaídas"]];
+  const autoresSel = ["TODOS","GOB",...ORDEN_HEMI,"SEN","CCAA"].filter(a=>a==="TODOS"||I.some(i=>i.autores.includes(a)));
+  el.innerHTML = `
+    <div class="view-intro"><div><h2>Leyes de la legislatura</h2><p>Todo lo que ha entrado en el Congreso para convertirse en ley desde agosto de 2023 y hasta dónde ha llegado: los proyectos del Gobierno y las proposiciones de los grupos, del Senado y de los parlamentos autonómicos. Datos abiertos del Congreso, actualizados cada día.</p></div></div>
+    <div class="kpis">${kpis}</div>
+    <section class="sec"><div class="sec-h"><h2>El embudo</h2><p>Cuántas iniciativas alcanzan cada etapa de la tramitación.</p></div>
+      <div class="grid2">${embudo(proy,"Proyectos de ley","Los presenta el Gobierno y entran directamente en tramitación.")}${embudo(prop,"Proposiciones de ley","Las presentan los grupos, el Senado o las comunidades; el Pleno decide si las admite a debate.")}</div></section>
+    <section class="sec"><div class="sec-h"><h2>Quién propone y quién consigue</h2><p>Iniciativas de cada autor: presentadas, admitidas a debate y convertidas en ley. Pulsa uno para ver las suyas.</p></div>
+      <div class="chart">${leyesPorAutor(I)}</div></section>
+    ${congelador(I)?`<section class="sec"><div class="sec-h"><h2>El congelador</h2><p>Iniciativas vivas cuyo plazo de enmiendas se ha ampliado más veces. La Mesa lo prorroga cada semana; mientras tanto, la ley no avanza.</p></div>
+      <div class="chart">${congelador(I)}</div></section>`:""}
+    ${duracionLeyes(I)?`<section class="sec"><div class="sec-h"><h2>Cuánto tarda una ley</h2><p>Días desde que se presenta hasta que termina su tramitación, para cada ley aprobada. Pulsa un punto para ver su historia.</p></div>
+      <div class="chart">${duracionLeyes(I)}</div></section>`:""}
+    <section class="sec" id="leyes-lista"><div class="sec-h"><h2>Todas las iniciativas</h2></div>
+      <div class="controls"><input id="ley-q" type="search" placeholder="Buscar por título, expediente o comisión…" value="${esc(leyFiltro.q)}" aria-label="Buscar iniciativa legislativa">
+        <select id="ley-autor" aria-label="Autor">${autoresSel.map(a=>`<option value="${a}"${leyFiltro.autor===a?" selected":""}>${a==="TODOS"?"Todos los autores":esc(autorNombre(a))}</option>`).join("")}</select></div>
+      <div class="controls">${estados.map(([k,l])=>`<button class="chipbtn" data-lf-estado="${k}" aria-pressed="${leyFiltro.estado===k}">${l}</button>`).join("")}</div>
+      <div id="leyes-tabla">${listaLeyes()}</div></section>
+    ${pub.length?`<p class="nota">Publicadas en el BOE en esta legislatura: ${pub.filter(x=>x.tipo==="Ley").length} leyes, ${pub.filter(x=>x.tipo==="Ley orgánica").length} leyes orgánicas y ${nRdl} reales decretos-leyes.</p>`:""}`;
+  $("#ley-q").addEventListener("input", e=>{ leyFiltro.q=e.target.value; leyFiltro.todas=false; $("#leyes-tabla").innerHTML=listaLeyes(); });
+  $("#ley-autor").addEventListener("change", e=>{ leyFiltro.autor=e.target.value; leyFiltro.todas=false; $("#leyes-tabla").innerHTML=listaLeyes(); });
+}
+function pintarFiltroLeyes(){
+  document.querySelectorAll("[data-lf-estado]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lfEstado===leyFiltro.estado));
+  const s=$("#ley-autor"); if (s) s.value=leyFiltro.autor;
+  $("#leyes-tabla").innerHTML = listaLeyes();
+}
+
+/* La tramitación de una iniciativa, en su página: etapas, fases en el tiempo y documentos. */
+function tramitacion(l){
+  const pasos = ETAPA_UNA.map((e,k)=>`<li class="${k<=l.etapa?"on":""}${cerrada(l)&&k===l.etapa+1?" corte":""}"><span>${e}</span></li>`).join("");
+  const hoy = hoyISO(), fs = l.fases.filter(f=>f[2]);
+  let gantt = "";
+  if (fs.length){
+    const t0 = Date.parse(l.presentada || fs[0][2]), t1 = Math.max(...fs.map(f=>Date.parse(f[3]||hoy)), t0+864e5*30);
+    const x = t => ((t-t0)/(t1-t0)*100).toFixed(2);
+    const anios = []; for (let a=new Date(t0).getFullYear()+1; a<=new Date(t1).getFullYear(); a++) anios.push(a);
+    gantt = `<div class="gantt" role="img" aria-label="Fases de la tramitación en el tiempo">
+      ${fs.map(f=>{ const a=+x(Date.parse(f[2])), w=Math.max(+x(Date.parse(f[3]||hoy))-a, .6);
+        const nombre = f[1] ? `${f[0].replace(/^Comisión de /,"C. de ")} · ${f[1]}` : f[0];
+        return `<div class="g-row"><span class="g-lab" title="${esc(nombre)}">${esc(nombre)}</span><span class="g-trk"><i class="${f[3]?"":"abierta"}${f[0]==="Concluido"?" fin":""}" style="left:${a}%;width:${w}%" data-tip="${esc(`<b>${nombre}</b><br>${fechaCorta(f[2])} – ${f[3]?fechaCorta(f[3]):"sigue abierta"} (${dias(f[2],f[3]||hoy)} días)`)}"></i></span></div>`; }).join("")}
+      <div class="g-row g-eje"><span></span><span class="g-trk">${anios.map(a=>`<b style="left:${x(Date.parse(a+"-01-01"))}%">${a}</b>`).join("")}</span></div>
+    </div>`;
+  }
+  const ds = (l.diarios||[]).map(id=>{ const s=DATA.sesiones.find(x=>x.id===id); const [, , serie, num] = id.split("-");
+    const lab = `${serie==="PL"?"Pleno":"Comisión"} · DS nº ${num}`;
+    return s ? `<button class="linklike" data-go="dias" data-anchor="s-${s.id}">${lab}</button>` : `<a href="https://www.congreso.es/public_oficiales/L15/CONG/DS/${serie}/${id}.PDF" target="_blank" rel="noopener">${lab}</a>`; });
+  const datos = [["Autor", l.autores.map(a=>`${autorDot(a)}${esc(autorNombre(a))}`).join(", ")],["Presentada", l.presentada?fechaCorta(l.presentada):"–"],
+    ["Tramitación", esc(l.tramitacion||"Ordinaria")],["Comisión", esc(l.comision||"–")],
+    ["Situación", l.estado==="en trámite" ? esc(l.situacion) : `${chipLey(l)} ${esc(l.resultado)}${l.fecha_resultado?` · ${fechaCorta(l.fecha_resultado)}`:""}`]];
+  if (l.ampliaciones) datos.push(["Enmiendas", `Plazo ampliado ${l.ampliaciones} ${l.ampliaciones===1?"vez":"veces"}`]);
+  return `<section class="sec"><div class="sec-h"><h2>Tramitación</h2>${l.bocg?`<a href="${l.bocg}" target="_blank" rel="noopener">Texto en el BOCG ↗</a>`:""}</div>
+    <ol class="etapas${cerrada(l)?" cerrada":""}">${pasos}</ol>
+    <dl class="ley-datos">${datos.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
+    ${gantt?`<div class="chart">${gantt}</div>`:""}
+    ${ds.length?`<p class="nota">Debates en el Diario de Sesiones: ${ds.join(" · ")}</p>`:""}</section>`;
+}
+
+/* ---------- la semana en el Congreso ---------- */
+let SEMANAS = null, semanasPromesa = null, semSel = null;
+function cargarSemanas(){
+  if (SEMANAS) return Promise.resolve(SEMANAS);
+  return semanasPromesa ||= fetch("datos/semanas.json").then(r=>r.ok?r.json():[]).catch(()=>[]).then(j=>{ INDICE_BUSCAR = null; return SEMANAS=j; });
+}
+async function datosDeMeses(ms){
+  await Promise.all(ms.filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`).then(r=>r.json()).then(j=>{ CARGADOS[m]=j; }).catch(()=>{})));
+  const vs = {}, ss = {};
+  ms.forEach(m=>{ const c=CARGADOS[m]; if (!c) return; c.votaciones.forEach(v=>vs[v.id]=v); c.sesiones.forEach(s=>ss[s.id]=s); });
+  return {vs, ss};
+}
+function rangoSemana(s){
+  const [a,b] = [s.desde, s.hasta].map(x=>x.split("-").map(Number));
+  const M = MESES_LARGOS;
+  return a[1]===b[1] ? `${a[2]}–${b[2]} de ${M[b[1]-1]} de ${b[0]}` : `${a[2]} de ${M[a[1]-1]}${a[0]!==b[0]?` de ${a[0]}`:""} – ${b[2]} de ${M[b[1]-1]} de ${b[0]}`;
+}
+// Ir a una votación o a una sesión aunque no esté en el periodo cargado: se carga su mes.
+function irVotacion(id, fecha){
+  if (VOTES[id]) return ir("votaciones", "v-"+id);
+  try{ history.replaceState(null,"","#votacion-"+id); }catch(e){}
+  arrancar(fecha.slice(0,7));
+}
+function irSesion(id, fecha){
+  if (DATA.sesiones.some(s=>s.id===id)) return ir("dias", "s-"+id);
+  try{ history.replaceState(null,"","#sesion-"+id); }catch(e){}
+  arrancar(fecha.slice(0,7));
+}
+const filaVoto = v => { const d=dt(v.fecha); return `<button class="sv-row" data-irv="${v.id}" data-f="${v.fecha}"><span class="sv-f">${d.w.slice(0,3)} ${d.d}</span><span class="sv-t">${esc(v.titulo)}<small>${esc(v.tipo)}</small></span><span class="sv-n">${v.si}–${v.no}</span><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></button>`; };
+async function renderSemana(){
+  const el = $("#semana");
+  if (!SEMANAS){ el.innerHTML = `<p class="nota">Cargando…</p>`; await cargarSemanas(); }
+  if (!SEMANAS.length){ el.innerHTML = `<p class="nota">Aún no hay semanas con actividad.</p>`; return; }
+  let k = SEMANAS.findIndex(s=>s.id===semSel); if (k<0) k = SEMANAS.length-1;
+  const s = SEMANAS[k], quiero = s.id; semSel = quiero;
+  const {vs, ss} = await datosDeMeses([...new Set([s.desde, s.hasta, ...s.fechas].map(f=>f.slice(0,7)))].filter(m=>INDICE.meses.some(x=>x.mes===m)));
+  if (semSel !== quiero) return;
+  const V = s.votaciones.map(id=>vs[id]).filter(Boolean), aj = s.ajustadas.map(id=>vs[id]).filter(Boolean);
+  const kpis = [[V.length,"votaciones en el Pleno"],[s.aprobadas,"aprobadas"],[V.length-s.aprobadas,"rechazadas"],[s.discrepancias,s.discrepancias===1?"voto distinto al de su grupo":"votos distintos al de su grupo"],[s.sesiones.length,"sesiones"],[s.intervenciones,"intervenciones analizadas"]]
+    .filter(([n],i)=>n || i<3).map(([n,l])=>`<div class="kpi"><b>${n}</b><span>${l}</span></div>`).join("");
+  const opciones = SEMANAS.slice().reverse().map(x=>`<option value="${x.id}"${x.id===s.id?" selected":""}>${rangoSemana(x)}</option>`).join("");
+  const dest = aj[0];
+  const leyes = s.leyes.length ? `<div class="chart"><h3>Leyes que se han movido</h3><ul class="sem-leyes">${s.leyes.slice(0,8).map(e=>`<li><button class="linklike" data-ini="${e.exp}">${esc(e.titulo.length>110?e.titulo.slice(0,110)+"…":e.titulo)}</button><span class="pill ${e.evento.startsWith("Es ley")||e.evento.startsWith("Aprobada")?"st-analizado":e.evento==="Rechazada"?"st-pendiente":"st-parcial"}">${esc(e.evento)}</span></li>`).join("")}</ul>${s.leyes.length>8?`<p class="nota">Y ${s.leyes.length-8} más.</p>`:""}</div>` : "";
+  const rdl = s.rdl.map(id=>vs[id]).filter(Boolean), tomas = s.tomas.map(id=>vs[id]).filter(Boolean);
+  const rebeldes = s.rebeldes.map(([i,n])=>{ const d=DIP[i]; return d ? `<button class="reb" data-dip="${d.slug}">${imgFoto(d,"avatar foto",` style="--grupo:${G[d.g]?.color}"`) || `<span class="avatar" style="background:${G[d.g]?.color}">${esc(iniciales(legible(d.n)))}</span>`}<span><b>${esc(legible(d.n))}</b><small>${esc(d.g)} · ${n} ${n===1?"voto":"votos"} distinto${n===1?"":"s"} a su grupo</small></span></button>` : ""; }).join("");
+  el.innerHTML = `
+    <div class="view-intro"><div><div class="eyebrow">La semana en el Congreso · ${esc(rangoSemana(s))}</div>
+      <h2 style="font-size:clamp(26px,3.6vw,40px);margin-top:8px">${esc(s.titular)}</h2>
+      <p>${botonCompartir("semana/"+s.id, s.titular)}${botonRss("")}</p></div></div>
+    <nav class="sem-nav" aria-label="Otras semanas"><button class="btn" data-sem="${SEMANAS[k-1]?.id||""}" ${k?"":"disabled"}>← Anterior</button>
+      <select id="sem-sel" aria-label="Elegir semana">${opciones}</select>
+      <button class="btn" data-sem="${SEMANAS[k+1]?.id||""}" ${k<SEMANAS.length-1?"":"disabled"}>Siguiente →</button></nav>
+    <div class="kpis">${kpis}</div>
+    <div class="grid2 sem-top">
+      ${dest?`<div class="chart"><h3>La más ajustada</h3><button class="sem-dest" data-irv="${dest.id}" data-f="${dest.fecha}"><div class="hemi-wrap">${hemiciclo(dest,{grande:true})}<div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${resLabel(dest)}</span></div></div><span class="sv-t">${esc(dest.titulo)}</span></button></div>`:""}
+      ${leyes || (s.citas.length?`<div class="chart"><h3>Frases de la semana</h3>${s.citas.map(c=>`<figure class="sem-cita"><blockquote><mark>«${esc(c.cita)}»</mark></blockquote><figcaption>${gdot(c.g)}${esc(c.orador)}</figcaption></figure>`).join("")}</div>`:"")}
+    </div>
+    ${leyes && s.citas.length?`<section class="sec"><div class="sec-h"><h2>Frases de la semana</h2></div><div class="grid2">${s.citas.map(c=>`<figure class="sem-cita chart"><blockquote><mark>«${esc(c.cita)}»</mark></blockquote><figcaption>${gdot(c.g)}${esc(c.orador)}</figcaption></figure>`).join("")}</div></section>`:""}
+    ${rdl.length?`<section class="sec"><div class="sec-h"><h2>Decretos del Gobierno</h2><p>Los reales decretos-leyes necesitan que el Congreso los convalide en un mes.</p></div><div class="sv-list">${rdl.map(filaVoto).join("")}</div></section>`:""}
+    ${tomas.length?`<section class="sec"><div class="sec-h"><h2>Tomas en consideración</h2><p>Proposiciones de ley que el Pleno decide si admite a debate.</p></div><div class="sv-list">${tomas.map(filaVoto).join("")}</div></section>`:""}
+    ${rebeldes?`<section class="sec"><div class="sec-h"><h2>Por libre</h2><p>Diputados que más veces votaron distinto a la mayoría de su grupo esta semana.</p></div><div class="rebeldes">${rebeldes}</div></section>`:""}
+    ${s.temas.length?`<section class="sec"><div class="sec-h"><h2>De qué se habló</h2></div><div class="controls">${s.temas.map(([t,n])=>`<button class="chipbtn" data-tema="${esc(t)}">${esc(t)} <small>${n}</small></button>`).join("")}</div></section>`:""}
+    ${V.length?`<section class="sec"><div class="sec-h"><h2>Todas las votaciones</h2></div><div class="sv-list">${V.map(filaVoto).join("")}</div></section>`:""}
+    ${s.sesiones.length?`<section class="sec"><div class="sec-h"><h2>Sesiones</h2></div><div class="controls">${s.sesiones.map(id=>{ const x=ss[id]; if (!x) return ""; const d=dt(x.fecha); return `<button class="chipbtn" data-irs="${x.id}" data-f="${x.fecha}">${d.w.slice(0,3)} ${d.d} · ${esc(x.organo.length>48?x.organo.slice(0,47)+"…":x.organo)}</button>`; }).join("")}</div></section>`:""}`;
+  $("#sem-sel").addEventListener("change", e=>irSemana(e.target.value));
+}
+function irSemana(id){ semSel = id || null; rendered.semana = false; show("semana", false); try{ history.replaceState(null,"","#semana-"+semSel); }catch(e){} window.scrollTo(0,0); }
+
+/* ---------- lo que viene: el próximo pleno ---------- */
+function proximoPleno(){
+  const hoy = hoyISO(), ag = DATA.agenda || {};
+  const p = (ag.plenos||[]).filter(x=>x.dias.length && x.dias.at(-1) >= hoy).sort((a,b)=>a.dias[0].localeCompare(b.dias[0]))[0];
+  if (!p) return "";
+  const secciones = []; p.puntos.forEach(x=>{ let s=secciones.at(-1); if (!s || s.t!==x.seccion) secciones.push(s={t:x.seccion, ps:[]}); s.ps.push(x); });
+  const diasTxt = p.dias.map(f=>{ const d=dt(f); return `${d.w} ${d.d}`; }).join(" y ") + ` de ${MESES_LARGOS[+p.dias.at(-1).slice(5,7)-1]}`;
+  const enCurso = p.dias[0] <= hoy;
+  const punto = x => { const esLey = x.exp.some(e=>/^12[1-5]\//.test(e)), exp = x.exp[0];
+    return `<li>${x.grupo?`<span class="od-g" title="${esc(autorNombre(x.grupo))}">${autorDot(x.grupo)}${esc(x.grupo==="GOB"?"Gob.":x.grupo)}</span>`:`<span class="od-g"></span>`}
+      <span class="od-t">${x.autor?`<small>${esc(x.autor)} → ${esc(x.a)}</small>`:""}${esc(x.titulo.length>170?x.titulo.slice(0,170)+"…":x.titulo)}</span>
+      ${exp?(esLey||INICIATIVAS[exp]?`<button class="linklike mono od-e" data-ini="${exp}">${exp}</button>`:`<span class="mono od-e">${exp}</span>`):""}</li>`; };
+  const coms = (ag.comisiones||[]).filter(c=>c.fecha>=hoy && c.fecha<=p.dias.at(-1));
+  return `<section class="sec agenda"><div class="sec-h"><h2>${enCurso?"Esta semana en el Pleno":"Próximo pleno"}</h2><a href="${p.pdf}" target="_blank" rel="noopener">Orden del día oficial (PDF) ↗</a></div>
+    <div class="chart"><div class="od-cab"><div class="eyebrow">Sesión plenaria nº ${esc(p.sesion)}</div><h3>${esc(diasTxt[0].toUpperCase()+diasTxt.slice(1))}</h3>
+      <p class="sub">${resumenOrden(secciones)}</p></div>
+      ${secciones.map(s=>`<details class="od-sec"${s.ps.length<=4?" open":""}><summary><b>${esc(s.t)}</b><span class="n">${s.ps.length}</span></summary><ul class="od">${s.ps.map(punto).join("")}</ul></details>`).join("")}
+      ${coms.length?`<details class="od-sec"><summary><b>Comisiones hasta entonces</b><span class="n">${coms.length}</span></summary><ul class="od">${coms.map(c=>{ const d=dt(c.fecha); return `<li><span class="od-g">${d.w.slice(0,3)} ${d.d}</span><span class="od-t"><small>${esc(c.hora)}</small>${esc(c.organo)}${c.asunto?`: ${esc(c.asunto.length>160?c.asunto.slice(0,160)+"…":c.asunto)}`:""}</span></li>`; }).join("")}</ul></details>`:""}
+    </div></section>`;
+}
+// «Toma en consideración de Proposiciones de Ley» (2) -> «2 tomas en consideración».
+const SECCION_CORTA = [[/^toma en consideraci/i,"toma en consideración","tomas en consideración"],[/^proposiciones no de ley/i,"proposición no de ley","proposiciones no de ley"],
+  [/^mociones/i,"moción","mociones"],[/^preguntas/i,"pregunta","preguntas"],[/^interpelaciones/i,"interpelación","interpelaciones"],
+  [/^debates? de totalidad/i,"debate de totalidad","debates de totalidad"],[/convenios internacionales/i,"convenio internacional","convenios internacionales"],
+  [/^dictámen(es)? de comisi[oó]n(es)? sobre (iniciativas|proyectos|proposiciones)/i,"dictamen de ley","dictámenes de ley"],[/^convalidaci[oó]n/i,"decreto-ley","decretos-leyes"]];
+function resumenOrden(secciones){
+  let resto = 0; const partes = [];
+  secciones.forEach(s=>{ const m = SECCION_CORTA.find(([re])=>re.test(s.t)); const n = s.ps.length;
+    if (m) partes.push(`${n} ${n===1?m[1]:m[2]}`); else resto += n; });
+  if (resto) partes.push(`${resto} ${resto===1?"asunto más":"asuntos más"}`);
+  return partes.join(" · ");
+}
+function tarjetaSemana(){
+  if (!SEMANAS) return "";
+  const s = SEMANAS.at(-1); if (!s) return "";
+  return `<section class="sec"><div class="sec-h"><h2>La semana en el Congreso</h2><button class="linklike" data-sem="${s.id}">Semanas anteriores</button></div>
+    <button class="sem-card chart" data-sem="${s.id}"><span class="eyebrow">${esc(rangoSemana(s))}</span><b>${esc(s.titular)}</b>
+      <span class="sub">${s.votaciones.length} votaciones · ${s.aprobadas} aprobadas · ${s.discrepancias} votos distintos al de su grupo${s.leyes.length?` · ${s.leyes.length} leyes se han movido`:""}</span><span class="linklike">Leer el resumen →</span></button></section>`;
+}
 
 /* ---------- datos extra de los diputados (biografía, comisiones, turnos), bajo demanda ---------- */
 let EXTRA = null, extraPromesa = null;
@@ -1202,7 +1584,7 @@ function valorMetrica(d){
 function hemiDatos(){
   if (!CON_PLANO) return "";
   const m = mapaHemi.metrica, q = sinTildes(mapaHemi.q.trim());
-  const ds = DIP.filter(d=>DIPS[d.i][5]!=null);
+  const ds = DIP.filter(d=>DIPS[d.i][5]!=null && !d.baja);
   const vals = ds.map(valorMetrica).filter(v=>v!=null);
   // Escala: más intenso = más ausencias (participación), más votos distintos o más turnos.
   const lo = Math.min(...vals), hi = Math.max(...vals);
@@ -1232,7 +1614,7 @@ function reproductor(){
   const dias = diasConVotos(); if (!dias.length) return "";
   repro.fecha ||= dias[0];
   const vs = votosDelDia(repro.fecha); if (!vs.length) return "";
-  const seats = DIP.filter(d=>DIPS[d.i][5]!=null).map(d=>`<circle cx="${DIPS[d.i][5]}" cy="${DIPS[d.i][6]}" r="${ESC_R}" data-i="${d.i}" data-n="${esc(d.n)}" data-g="${d.g}" data-x="-"></circle>`).join("");
+  const seats = DIP.filter(d=>DIPS[d.i][5]!=null && !d.baja).map(d=>`<circle cx="${DIPS[d.i][5]}" cy="${DIPS[d.i][6]}" r="${ESC_R}" data-i="${d.i}" data-n="${esc(d.n)}" data-g="${d.g}" data-x="-"></circle>`).join("");
   return `<div class="repro">
     <div class="repro-cab"><div><h3>La sesión, votación a votación</h3><p class="sub">Cada escaño cambia de color con el voto de su diputado.</p></div>
       <label class="repro-dia">Día <select id="repro-dia">${dias.map(f=>{const d=dt(f);return `<option value="${f}"${f===repro.fecha?" selected":""}>${d.d} ${d.m} · ${votosDelDia(f).length} votaciones</option>`;}).join("")}</select></label></div>
@@ -1386,6 +1768,8 @@ function renderInicio(){
       ${heroVoto}
     </div>
     <div class="kpis" aria-label="${esc(DATA.meta.periodo)} en cifras">${kpis}</div>
+    ${proximoPleno()}
+    <div id="home-semana">${tarjetaSemana()}</div>
     ${cara}
     ${vcards?`<section class="sec"><div class="sec-h"><h2>Las más ajustadas</h2><button class="linklike" data-go="votaciones">Ver las ${DATA.votaciones.length} votaciones</button></div><div class="vgrid">${vcards}</div></section>`:""}
     ${rankingDecide()?`<section class="sec"><div class="sec-h"><h2>Quién decide</h2><p>Veces que cada grupo inclinó el resultado de una votación.</p></div>
@@ -1393,6 +1777,7 @@ function renderInicio(){
     ${TEMAS.length?`<section class="sec"><div class="sec-h"><h2>De qué se ha hablado</h2><button class="linklike" data-go="temas">Explorar los temas</button></div>
       <div class="temas-top"><div class="chart"><p class="sub" style="margin:0">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(TEMAS.slice(0,8))}</div>
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
+  if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
 
 /* ---------- días ---------- */
@@ -1408,7 +1793,7 @@ function renderDias(){
         const pivs = ivs.filter(i=>matchItem(i,p));
         const stLabel = {analizado:"Analizado",parcial:"Parcial",pendiente:"Sin analizar","sin-ds":"Diario pendiente"}[p.estado];
         return `<div class="punto">
-          <div class="punto-h"><span class="tipo">${esc(p.tipo)}</span><span class="t">${esc(p.titulo)}${p.exp?` <span class="mono" style="color:var(--muted)">${esc(p.exp)}</span>`:""}</span><span class="pill st-${p.estado}">${stLabel}</span></div>
+          <div class="punto-h"><span class="tipo">${esc(p.tipo)}</span><span class="t">${esc(p.titulo)}${p.exp?(/^12[1-5]\//.test(p.exp)?` <button class="linklike mono" style="color:var(--muted);font-size:inherit" data-ini="${esc(p.exp)}">${esc(p.exp)}</button>`:` <span class="mono" style="color:var(--muted)">${esc(p.exp)}</span>`):""}</span><span class="pill st-${p.estado}">${stLabel}</span></div>
           ${p.nota?`<p class="nota">${esc(p.nota)}</p>`:""}
           ${p.preguntas?`<ul class="qlist">${p.preguntas.map(q=>`<li><span class="gp">${gdot(q[1])}${esc(q[0])}</span><span>${esc(q[2])}</span></li>`).join("")}</ul>`:""}
           ${pivs.length?`<details class="ivs"${pivs.length<=4?" open":""}><summary>${pivs.length} intervenciones</summary><div class="iv-list">${pivs.map(ivCard).join("")}</div></details>`:""}
@@ -1545,7 +1930,8 @@ function renderMetodo(){
     <ul>
       <li><b>Diario de Sesiones</b> del Pleno y de las comisiones (PDF oficial), para lo que se dijo.</li>
       <li><b>Datos abiertos de votaciones</b> (un JSON por votación con el voto de cada diputado), para cómo se votó.</li>
-      <li><b>Órdenes del día</b>, para los asuntos y las preguntas aún sin Diario publicado.</li>
+      <li><b>Órdenes del día</b> de los plenos convocados (PDF de la agenda semanal), para lo que se va a debatir y votar.</li>
+      <li><b>Datos abiertos de iniciativas</b> (proyectos y proposiciones de ley), para la tramitación de cada ley: autor, fases con sus fechas, situación actual, resultado y ampliaciones del plazo de enmiendas.</li>
       <li><b>Plano del hemiciclo y fichas de diputados</b> de la web del Congreso, para el escaño de cada diputado, su foto oficial y el enlace a su ficha.</li>
     </ul>
     <h3>Análisis</h3>
@@ -1557,6 +1943,10 @@ function renderMetodo(){
       <li>El <b>termómetro</b> cuenta las anotaciones del Diario (aplausos, risas, rumores, protestas, llamadas al orden) y las asigna al turno de palabra en el que aparecen.</li>
       <li>Sin análisis de IA, el título de cada votación es un <b>resumen automático del texto oficial</b> y conserva las palabras del grupo que presenta la iniciativa; se marca como «título oficial».</li>
       <li>El <b>hemiciclo</b> dibuja a los 350 diputados en su escaño real, según el plano oficial del Congreso, con su voto nominal. Abajo está la Mesa; en la primera fila, el banco azul del Gobierno (los ministros que no son diputados aparecen como huecos: no votan).</li>
+      <li>El <b>embudo</b> de las leyes cuenta hasta qué etapa llegó cada iniciativa según las fases de su tramitación oficial: admitida a debate (toma en consideración, o directamente si es un proyecto del Gobierno o viene del Senado), informe de la ponencia en comisión, aprobación en el Congreso, paso por el Senado y publicación como ley.</li>
+      <li>El <b>congelador</b> ordena las iniciativas vivas por el número de veces que la Mesa ha ampliado su plazo de enmiendas; cada ampliación suele ser de una semana.</li>
+      <li><b>La semana en el Congreso</b> se escribe con reglas fijas, sin IA: el titular es, por este orden, un decreto derogado, una ley que termina su tramitación, una votación decidida por diez votos o menos, o el balance de votaciones.</li>
+      <li>Quien ha dejado el escaño sigue apareciendo en las votaciones de su tiempo, en el asiento que ocupaba; en cada votación se usa el grupo desde el que votó.</li>
       <li>En la portada, la <b>votación destacada</b> es la de menor diferencia entre síes y noes del último pleno, y el <b>cara a cara</b> es la primera pregunta de control de la última sesión analizada. Se eligen con una regla fija, no a mano.</li>
     </ul>
     <h3>Garantías</h3>
@@ -1574,7 +1964,7 @@ function renderMetodo(){
 // Un índice en memoria con lo que ya ha cargado la web: diputados, votaciones, iniciativas, sesiones,
 // temas e intervenciones. Sin servidor. Ignora tildes y mayúsculas y tolera una errata por palabra larga.
 let INDICE_BUSCAR = null;
-const TIPOS_BUSCAR = [["d","Diputados"],["v","Votaciones"],["i","Iniciativas"],["s","Sesiones"],["t","Temas"],["iv","Intervenciones"]];
+const TIPOS_BUSCAR = [["d","Diputados"],["l","Leyes"],["v","Votaciones"],["i","Iniciativas"],["w","Semanas"],["s","Sesiones"],["t","Temas"],["iv","Intervenciones"]];
 function indiceBuscar(){
   if (INDICE_BUSCAR) return INDICE_BUSCAR;
   const e = [];
@@ -1583,6 +1973,8 @@ function indiceBuscar(){
   DATA.votaciones.forEach(v=>{ const dd=dt(v.fecha); poner("v", v.titulo, `${dd.d} ${dd.m} · ${resLabel(v)} ${v.si}–${v.no}`, `${v.exp||""} ${v.tipo} ${v.texto||""}`, {hash:"votacion-"+v.id}); });
   Object.values(INICIATIVAS).forEach(x=>{ const t = x.votos[0] ? baseTitulo(x.votos[0].titulo) : x.debates[0]?.p.titulo || x.exp; poner("i", t, `${TIPO_EXP[x.exp.slice(0,3)]||"Iniciativa"} · ${x.exp}`, x.exp, {hash:"iniciativa-"+slugExp(x.exp)}); });
   DATA.sesiones.forEach(s=>{ const dd=dt(s.fecha); poner("s", `${s.organo}, ${dd.d} ${dd.m}`, s.titular || (s.resumen||"").slice(0,120) || s.sesion, `${s.resumen||""} ${(s.puntos||[]).map(p=>p.titulo).join(" ")}`, {hash:"sesion-"+s.id}); });
+  (LEYES?.iniciativas||[]).forEach(l=>poner("l", tituloLey(l), `${l.tipo} · ${l.exp} · ${ESTADO_LEY[l.estado]?.[0]||l.estado}`, `${l.exp} ${l.comision} ${l.autores.map(autorNombre).join(" ")}`, {hash:"iniciativa-"+slugExp(l.exp)}));
+  (SEMANAS||[]).forEach(w=>poner("w", w.titular, `Semana del ${rangoSemana(w)}`, "", {hash:"semana-"+w.id}));
   TEMAS.forEach(t=>poner("t", t.label, `${t.n} intervenciones`, "", {tema:t.k}));
   IVS.forEach(i=>poner("iv", `${i.orador}: ${i.resumen.slice(0,90)}${i.resumen.length>90?"…":""}`, `${gname(i.g)} · ${(DATA.sesiones.find(s=>s.id===i.s)||{}).organo||""}`, `${i.cita||""} ${i.temas.join(" ")} ${i.item}`, {hash:"sesion-"+i.s}));
   return INDICE_BUSCAR = e;
@@ -1621,6 +2013,7 @@ function abrirBuscador(){
     document.getElementById("bu-q").addEventListener("input", e=>pintarBusqueda(e.target.value));
   }
   dlg.hidden = false; document.body.classList.add("con-buscador");
+  if (!LEYES || !SEMANAS) Promise.all([cargarLeyes(), cargarSemanas()]).then(()=>{ const q=document.getElementById("bu-q"); if (q.value.trim()) pintarBusqueda(q.value); });
   const q = document.getElementById("bu-q"); q.value = ""; pintarBusqueda(""); setTimeout(()=>q.focus(), 0);
 }
 function cerrarBuscador(){ const d=document.getElementById("buscador"); if (d) d.hidden=true; document.body.classList.remove("con-buscador"); }
@@ -1632,7 +2025,7 @@ function pintarBusqueda(q){
   let k = 0; const orden = [];
   cont.innerHTML = TIPOS_BUSCAR.map(([t,l])=>{ const g = buscaRes.filter(e=>e.tipo===t).slice(0,t==="d"?6:5); if(!g.length) return "";
     return `<div class="bu-grupo"><div class="bu-tit">${l}</div>${g.map(e=>{ orden.push(e); const i=k++;
-      return `<button class="bu-item" role="option" data-bu="${i}" aria-selected="${i===0}">${e.ir.foto?imgFoto(e.ir.foto,"mini-foto",` style="--grupo:${G[e.ir.foto.g]?.color}"`):`<span class="bu-ico">${{v:"◉",i:"§",s:"▦",t:"#",iv:"❝"}[e.tipo]||"·"}</span>`}<span class="bu-txt"><b>${esc(e.titulo)}</b><small>${esc(e.sub)}</small></span></button>`; }).join("")}</div>`; }).join("");
+      return `<button class="bu-item" role="option" data-bu="${i}" aria-selected="${i===0}">${e.ir.foto?imgFoto(e.ir.foto,"mini-foto",` style="--grupo:${G[e.ir.foto.g]?.color}"`):`<span class="bu-ico">${{v:"◉",i:"§",l:"§",w:"◷",s:"▦",t:"#",iv:"❝"}[e.tipo]||"·"}</span>`}<span class="bu-txt"><b>${esc(e.titulo)}</b><small>${esc(e.sub)}</small></span></button>`; }).join("")}</div>`; }).join("");
   buscaRes = orden;
 }
 function irResultado(e){
@@ -1660,8 +2053,8 @@ document.addEventListener("keydown", e=>{
 
 /* ---------- RSS ---------- */
 // Solo hay canal para lo que tiene página propia (diputados, iniciativas con votación).
-const botonRss = ruta => (ruta.startsWith("iniciativa/") && !INICIATIVAS[ruta.slice(11).replace("-","/")]?.votos.length) ? "" :
-  `<a class="btn-rss" href="${ruta}/rss.xml" title="Recibe en tu lector de RSS lo que pase aquí">${ICONO_RSS}Seguir</a>`;
+const botonRss = ruta => (ruta.startsWith("iniciativa/") && !INICIATIVAS[ruta.slice(11).replace("-","/")]?.votos.length && !/^iniciativa\/12[1-5]-/.test(ruta)) ? "" :
+  `<a class="btn-rss" href="${ruta?ruta+"/":""}rss.xml" title="Recibe en tu lector de RSS lo que pase aquí">${ICONO_RSS}Seguir</a>`;
 const ICONO_RSS = `<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><circle cx="3" cy="13" r="2" fill="currentColor"/><path d="M1.5 7.5a7 7 0 0 1 7 7M1.5 2a12.5 12.5 0 0 1 12.5 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
 /* ---------- compartir ---------- */
@@ -1679,19 +2072,21 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","temas","diputados","grupos","oradores","metodo"];
+const TABS = ["inicio","dias","votaciones","leyes","temas","diputados","grupos","oradores","metodo"];
+const VISTAS = [...TABS, "semana"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {leyes:renderLeyes, semana:renderSemana, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 function show(id, push){
   // Enlaces de las páginas para compartir: #votacion-<id> y #sesion-<id> llevan a su vista.
   if (id && id.startsWith("votacion-") && VOTES[id.slice(9)]){ const a="v-"+id.slice(9); setTimeout(()=>ir("votaciones", a), 0); id="votaciones"; push=false; }
   else if (id && id.startsWith("sesion-")){ const a="s-"+id.slice(7); setTimeout(()=>ir("dias", a), 0); id="dias"; push=false; }
   if (id && id.startsWith("diputado-")){ const sl=id.slice(9); if (DIP_SLUG[sl]){ if (dipSel!==sl){ dipSel=sl; rendered.diputados=false; } id="diputados"; push=false; } }
   else if (id==="diputados" && push && dipSel){ dipSel=null; rendered.diputados=false; }
-  if (id && id.startsWith("iniciativa-")){ const x=id.slice(11).replace("-","/"); if (INICIATIVAS[x]){ if (iniSel!==x){ iniSel=x; rendered.votaciones=false; } id="votaciones"; push=false; } }
+  if (id && id.startsWith("iniciativa-")){ const x=id.slice(11).replace("-","/"); if (INICIATIVAS[x] || /^\d{3}\/\d{6}$/.test(x)){ INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]}; if (iniSel!==x){ iniSel=x; rendered.votaciones=false; } id="votaciones"; push=false; } }
+  if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
   else if (id==="votaciones" && push && iniSel){ iniSel=null; rendered.votaciones=false; }
-  if(!TABS.includes(id)) id="inicio";
-  TABS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t).setAttribute("aria-selected", t===id); });
+  if(!VISTAS.includes(id)) id="inicio";
+  VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t)?.setAttribute("aria-selected", t===id); });
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
 }
@@ -1719,8 +2114,20 @@ document.addEventListener("click", e=>{
   const rk = e.target.closest("[data-repro-k]");
   if (rk){ reproParar(); repro.k=+rk.dataset.reproK; reproPintar(); return; }
   const ib = e.target.closest("[data-ini]");
-  if (ib && INICIATIVAS[ib.dataset.ini]){ tip.hidden=true; irIniciativa(ib.dataset.ini); return; }
-  if (e.target.closest("[data-ini-volver]")){ iniSel=null; rendered.votaciones=false; show("votaciones",true); window.scrollTo(0,0); return; }
+  if (ib){ tip.hidden=true; irIniciativa(ib.dataset.ini); return; }
+  const sm = e.target.closest("[data-sem]");
+  if (sm && sm.dataset.sem){ irSemana(sm.dataset.sem); return; }
+  const iv = e.target.closest("[data-irv]");
+  if (iv){ irVotacion(iv.dataset.irv, iv.dataset.f); return; }
+  const is = e.target.closest("[data-irs]");
+  if (is){ irSesion(is.dataset.irs, is.dataset.f); return; }
+  const lfe = e.target.closest("[data-lf-estado]");
+  if (lfe){ leyFiltro.estado=lfe.dataset.lfEstado; leyFiltro.todas=false; pintarFiltroLeyes(); return; }
+  const lfa = e.target.closest("[data-lf-autor]");
+  if (lfa){ leyFiltro.autor = leyFiltro.autor===lfa.dataset.lfAutor ? "TODOS" : lfa.dataset.lfAutor; leyFiltro.todas=false; pintarFiltroLeyes(); document.getElementById("leyes-lista")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); return; }
+  if (e.target.closest("[data-lf-todas]")){ leyFiltro.todas=true; $("#leyes-tabla").innerHTML=listaLeyes(); return; }
+  const iv0 = e.target.closest("[data-ini-volver]");
+  if (iv0){ iniSel=null; rendered.votaciones=false; show(iv0.dataset.iniVolver||"votaciones",true); window.scrollTo(0,0); return; }
   const tc = e.target.closest("[data-circ]");
   if (tc){ dipFiltro.circ = dipFiltro.circ===tc.dataset.circ ? null : tc.dataset.circ; renderDiputados(); document.getElementById("dip-tabla")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); return; }
   const mm = e.target.closest("[data-mapa]");
