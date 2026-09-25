@@ -711,14 +711,15 @@ const fechaLarga = iso => { const [y,m,d]=iso.split("-").map(Number); return new
 const margen = v => Math.abs(v.si-v.no);
 const iniciales = n => n.split(/[\s-]+/).filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
 function renderInicio(){
-  const plenos = DATA.sesiones.filter(s=>s.organo==="Pleno" && s.resumen).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  const ses = plenos[0] || DATA.sesiones[0];
+  const plenos = DATA.sesiones.filter(s=>s.organo==="Pleno" && (s.resumen||s.titular)).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  const ses = plenos[0] || DATA.sesiones.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
+  if (!ses){ $("#inicio").innerHTML = '<p class="nota">Todavía no hay sesiones.</p>'; return; }
   const fr = frases(ses.resumen);
   let titular = ses.titular, lede;
   if (titular) lede = ses.resumen;
   else {
     // Sin titular generado: la primera frase del resumen; si es larga, hasta la primera coma.
-    titular = fr.shift() || ses.sesion;
+    titular = fr.shift() || `${ses.organo}: ${DATA.votaciones.filter(v=>v.fecha===ses.fecha).length} votaciones`;
     const c = titular.indexOf(", ", 30);
     if (titular.length > 90 && c > 0){
       const resto = titular.slice(c+2);
@@ -818,7 +819,7 @@ function renderDias(){
       return `<article class="session" id="s-${s.id}">
         <div class="session-head"><div><div class="organ">${esc(s.organo)}</div><h3>${esc(s.sesion)}</h3></div>
           <div class="meta-links">${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
-        <p class="sum">${esc(s.resumen)}</p>
+        ${s.resumen?`<p class="sum">${esc(s.resumen)}</p>`:""}${s.nota?`<p class="nota">${esc(s.nota)}</p>`:""}
         ${ivs.length?`<div style="display:grid;gap:6px"><div class="eyebrow">Tono de las intervenciones analizadas</div>${toneBar(ivs)}${toneLegend(ivs)}</div>`:""}
         ${s.reacciones && Object.keys(s.reacciones).length?`<p class="nota">En la Cámara: ${Object.entries(s.reacciones).map(([k,n])=>`${esc(k.replace(/_/g," "))} <b class="num">${n}</b>`).join(" · ")}</p>`:""}
         <div class="puntos">${puntos}</div>

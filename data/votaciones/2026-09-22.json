@@ -1,0 +1,3635 @@
+[
+ {
+  "id": "199-1",
+  "sesion": 199,
+  "numero": 1,
+  "fecha": "2026-09-22",
+  "tipo": "Toma en consideración de Proposiciones de Ley",
+  "titulo": "Proposición de Ley del Grupo Parlamentario Vasco (EAJ-PNV), de reforma de la Ley Orgánica 1/2025, de 2 de enero, de medidas en materia de eficiencia en el Servicio Público de Justicia; y de modificación de la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, en cuanto a los procesos de familia con personas menores de edad.",
+  "subgrupo": "",
+  "exp": null,
+  "asentimiento": false,
+  "si": 340,
+  "no": 7,
+  "abst": 0,
+  "novota": 3,
+  "aprobada": true,
+  "grupos": {
+   "ERC": "N",
+   "PP": "S",
+   "VOX": "S",
+   "PSOE": "S",
+   "MIXTO": "S",
+   "SUMAR": "S",
+   "JUNTS": "S",
+   "BILDU": "S",
+   "PNV": "S"
+  },
+  "conteo": {
+   "ERC": {
+    "N": 7
+   },
+   "PP": {
+    "S": 136,
+    "X": 1
+   },
+   "VOX": {
+    "S": 32
+   },
+   "PSOE": {
+    "S": 121
+   },
+   "MIXTO": {
+    "S": 9
+   },
+   "SUMAR": {
+    "S": 26
+   },
+   "JUNTS": {
+    "S": 6,
+    "X": 1
+   },
+   "BILDU": {
+    "S": 6
+   },
+   "PNV": {
+    "S": 4,
+    "X": 1
+   }
+  },
+  "discrepantes": [],
+  "votos": [
+   {
+    "diputado": "Salvador i Duch, Jordi",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Granollers Cunillera, Inés",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Álvaro Vidal, Francesc-Marc",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Estrems Fayos, Etna",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Jordà i Roura, Teresa",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Rufián Romero, Gabriel",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Vallugera Balañà, Pilar",
+    "grupo": "ERC",
+    "voto": "N"
+   },
+   {
+    "diputado": "Palencia Rubio, Héctor",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cabezón Casas, Tomás",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alcaraz Martos, Francisco José",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez Moreno, María de las Nieves",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Conde Bajén, Agustín",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez Ortiz, Isabel María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bravo Baena, Juan",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sahuquillo García, Luis Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rey de las Heras, Luis Alfonso",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rojas García, Carlos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fernández Hernández, Pedro",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Castilla Álvarez, María Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez Osma, Daniel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Senderos Oraá, Daniel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jerez Antequera, Juan Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Perea i Conillas, María Mercè",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aranda Vargas, Francisco",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Verdejo Vicente, Ferran",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Serrada Pariente, David",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Félix, Manuel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Tellado Filgueira, Miguel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez López, Álvaro",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Muñoz de la Iglesia, Ester",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fagúndez Campo, Antidio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Franco González, Silvia",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fernández Benéitez, Andrea",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Delgado Arce, Celso Luis",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santana Perera, Noemí",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Velasco Morillo, Elvira",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Zaragoza Alonso, José",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Valido García, Cristina",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Poblador Pacheco, María Araceli",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Serrano Martínez, Juan Francisco",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jiménez Linuesa, Beatriz",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Garrido Valenzuela, Irene",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Verano Domínguez, Bella",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cuesta Rodríguez, María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez Coronado, Pablo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramajo Prada, Óscar",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Teniente Sánchez, Cristina",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lorente Anaya, Macarena",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "García López, Maribel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Díaz Marín, Raúl",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Calleja, Patricia",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aizcorbe Torra, Juan José",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez García, José María",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rallo Lombarte, Artemi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Floriano Corrales, Carlos Javier",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ros Martínez, Susana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Román Jasanada, Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez Martín, María Lourdes",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sáez Alonso-Muñumer, Pablo",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Martínez, Andreu",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Seijo, María Luz",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aceves Galindo, José Luis",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fúnez de Gregorio, Carmen",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hoyo Juliá, Belén",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ruiz Boix, Juan Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Acedo Reyes, Sofía",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez del Río, José",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Prieto Serrano, María Isabel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Díaz, María Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Maraver, Ángel",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gallardo Barrena, Pedro Ignacio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cobo Carmona, Ana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vázquez Jiménez, María del Mar",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Valero Morales, Juan Antonio",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Marqués Atés, Amador",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mínguez García, Montse",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Plaza García, Inés",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fernández González, María Mercedes",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Garre Murcia, Cristóbal",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cortés Carballo, Mario",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gil de Reboleño Lastortres, Esther",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Hierro, Lander",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez Recuerda, Isabel Gema",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Tarno Blanco, Ricardo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Puente Santiago, Óscar",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sanz Martínez, Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Guijarro García, Txema",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Morales Álvarez, Álvaro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez Carner, Arnau",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Peña Camarero, Esther",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Arribas Maroto, Manuel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Redondo Cárdenas, Gonzalo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Merino Martínez, Javier",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramos Esteban, César Joaquín",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Serra, Santi",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Gómez, Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Argota Castro, Trinidad Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Gomis, David",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Maldonado López, Adriana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Andrés Añón, Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "De las Cuevas Cortés, Félix",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fabra Part, Alberto",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Clavell López, Óscar",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lamuà Estañol, Marc",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cercas Mena, Blanca",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Romero Pozo, Rafaela",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Gurrutxaga, María Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Folch Blanc, Javier José",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Garrido Jiménez, Elisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gil Lázaro, Ignacio",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bermúdez de Castro Fernández, José Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Tomás Olivares, Violante",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Álvarez, Patxi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "González-Robatto Perote, Jacobo",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cofiño Fernández, Rafael",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Del Valle Rodríguez, Emilio Jesús",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santiago Romero, Enrique Fernando",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Salas, José Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pose Mesura, Modesto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sancho Íñiguez, Herminio Rufino",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Requena Ruiz, Juan Diego",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mesquida Mayans, Joan",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santana Aguilera, Ada",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Álvarez González, Alicia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Agüera Gago, Cristina",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Iniesta Egido, Isabel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sáez Cruz, Emilio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Adrio Taracido, María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Gómez de Celis, Alfonso",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Noriega Gómez, Javier",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Diouf Dioh, Luc Andre",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Álvarez Fanjul, Beatriz",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Borrego Cortés, Isabel María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Rodríguez, Margarita",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sayas López, Sergio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Catalán Higueras, Alberto",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín García, Pedro Samuel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moro Almaraz, María Jesús",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Ojeda, Carlos Alberto",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Crespín Rubio, Rafaela",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lima García, Laura María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rojas Manrique, Juan Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rivera Arias, Engracia",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Flores Juberías, Carlos",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Abades Martínez, Cristina",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Olano Vela, Jaime Eduardo de",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Celaya Brey, Javier",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Argüelles García, Silverio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Micó Micó, Àgueda",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ibáñez Mezquita, Alberto",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "González López, Nahuel",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Faneca López, María Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cruz Santana, Gabriel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Velarde Gómez, Martina",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Blanquer Alcaraz, Patricia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mellado Sierra, Valle",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Parra Gallego, Agustín",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Blanco, Nacho",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "De Luna Tobarra, Llanos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Belmonte Gómez, Rafael Benigno",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rojo Blas, Alberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Torregrosa, Maribel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Nasarre Oliva, Begoña",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ibáñez Hernando, Ángel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Quintanilla Navarro, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Salmerón, Joaquín",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alía Aguado, María Pilar",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Velasco Retamosa, José Manuel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Armengol Socias, Francina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Herrera García, Milena",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Corujo Berriel, María Dolores",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Marí Bosó, José Vicente",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Pérez-Castejón, Pedro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mercadal Baquero, Pepe",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Leal Fernández, Isaura",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vidal Matas, Vicenç",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Figaredo Álvarez-Sala, José María",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hoces Íñiguez, Ignacio",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Morís, Roberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vázquez Blanco, Ana Belén",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Quintana Carballo, Rosa",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moraleja Gómez, Tristana María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Puy Fraga, Pedro",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "González Vázquez, Marta",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hernando Fraile, Rafael Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Méndez Monasterio, Lourdes",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moneo Díez, María Sandra",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sastre Uyá, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Campos Asensi, Jorge",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Belda Pérez-Pedrero, Enrique",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bendodo Benasayag, Elías",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Parra Aparicio, Julia",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Melgarejo Moreno, Joaquín",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pascual Rocamora, Sandra",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Labella, Ana",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fernández Ríos, Tomás",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Navarro Lacoba, Carmen",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Montesinos de Miguel, Macarena",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Pérez, César",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Ramírez, Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sarrià Morell, Vicent Manuel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Trenzano Rubio, Marta",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Urriza, Carlos",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "González Gracia, Juan Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Simancas Simancas, Rafael",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rives Arcayna, Caridad",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gutiérrez Prieto, Sergio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cantalapiedra Álvarez, María de las Mercedes",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Delgado-Taramona Hernández, Jimena",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Muñoz Abrines, Pedro",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rego Candamil, Néstor",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gavin i Valls, Isidre",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Nogueras i Camero, Míriam",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cervera Pinart, Josep Maria",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Calvo Gómez, Pilar",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Madrenas i Mir, Marta",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Reynal Reillo, Esperanza",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "De Rosa Torner, Fernando",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Armario González, Blanca",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alfonso Cendón, Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bolaños García, Félix",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alfonso Silvestre, Alma",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mariscal Anaya, Guillermo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Almeida, Andrés Alberto",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sémper Pascual, Borja",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aragonés Mendiguchía, Carlos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Madrid Olmo, Bartolomé",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Belarra Urteaga, Ione",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mariscal Zabala, Manuel",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Cano, Ignacio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Adanero, Carlos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sierra Caballero, Francisco",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alonso Cantorné, Fèlix",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "De los Santos González, Jaime Miguel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Narbona Ruiz, Cristina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Guinart Moreno, Lídia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Azorín Salar, Lázaro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Clemente Muñoz, Raquel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Herrero Bono, José Alberto",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Sierra, María del Mar",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Carazo Hermoso, Eduardo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ruiz Solás, María de la Cabeza",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "De Meer Méndez, Rocío",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Matute García de Jalón, Oskar",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pozueta Fernández, Isabel",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Iñarritu García, Jon",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fullaondo la Cruz, Marije",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Serna, Javier",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rueda Perelló, Patricia",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Chamorro Delmo, Ricardo",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Soler Mur, Alejandro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Beamonte Mesa, Luis María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Macías Gata, Alfonso Carlos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cavacasillas Rodríguez, Antonio",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aizpurua Arzallus, Mertxe",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Agirretxea Urresti, Joseba Andoni",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Legarda Uriarte, Mikel",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Romero Vilches, María de los Reyes",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sagastizabal Unzetabarrenetxea, Idoia",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Barbero, Verónica",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santos Maraver, Agustín",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gamarra Ruiz-Clavijo, Concepción",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Álvarez de Toledo Peralta-Ramos, Cayetana",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Asarta Cuevas, Alberto",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Abascal Conde, Santiago",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Robles López, Joaquín",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cruz-Guzmán García, María Soledad",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Marcos Ortega, Milagros",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cobo Pérez, Noelia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Paniagua Núñez, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cobo Vega, Manuel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ortega Smith-Molina, Francisco Javier",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vidal Sáez, Aina",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pisarello Prados, Gerardo",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Badia Casas, Eloi",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mejías Sánchez, Carina",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Boada Danés, Júlia",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alós López, Ana Isabel",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Andala Ubbi, Teslem",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pedreño Molina, Juan Luis",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Llamazares Domingo, Esther",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Carballedo Berlanga, María Eugenia",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Díaz Pérez, Yolanda",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez de Millán Parro, María José",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hernández Quero, Carlos",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "Varela Pazos, Marta",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Nacarino-Brabo Jiménez, Aurora",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Conde López, Francisco José",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hispán Iglesias de Ussel, Pablo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Guardiola Salmerón, Mirian",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Conesa Coma, Ignasi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Losada Fernández, José",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lorenzo Cazorla, Juan Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Palacios, Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gutiérrez Santiago, Víctor",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Soldevilla Novials, Alba",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Suárez, Esther",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moreno Fernández, Mª Isabel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ruiz de Diego, Víctor Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mayoral de Lamo, Alberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Camino Miñana, Víctor",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Zamora, Cristina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mayoral Pérez, Jesús",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Almodóvar Sánchez, Emilia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Torres Tejada, María",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Paré Aregall, Josep",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gracia Blanco, Marta",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aguirre Gil de Biedma, Rocío",
+    "grupo": "VOX",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Tagliafico, Candela",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Núñez Guijarro, José Enrique",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Uriarte Bengoechea, Edurne",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lago Peñas, Manuel",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "De la Rosa Baena, Olvido",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero Rodríguez, Patricia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Barrio Baroja, Carmelo",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Chavarría, María Montserrat",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hita Téllez, Guillermo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bayón Rolo, Juan Andrés",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vedrina Conesa, María Elisa",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sainz Martín, María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moreno Borrás, Cristina",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero García, Mercedes",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Almirón Ruiz, Oriol",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Canelo Matito, Andrea",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pagès i Massó, Josep",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Montávez Aguillaume, Vicente",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Molina León, Ainhoa",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Recas Martín, Alda",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Quintero Hernández, Jonay",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cuevas Larrosa, Raúl",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gómez Piña, Luis Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ogou i Corbi, Viviane",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero Gabirondo, Mikel",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Renteria Lasanta, Nerea",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Blanco Arrúe, Gabriel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cacho Isla, Iván",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Simarro Vicens, Carlos",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Antuñano Colina, Pablo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Herrer, María Elvira",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jódar Pérez, Irene",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aznar Teruel, Evarist",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "González Herdaro, Ana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vergara Román, Laura",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Marín Aparicio, Inmaculada",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pachón Martín, Brígida",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bondía Pinós, María Elena",
+    "grupo": "PP",
+    "voto": "S"
+   },
+   {
+    "diputado": "Taibo Monelos, Diego",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cruset Domènech, Josep Maria",
+    "grupo": "JUNTS",
+    "voto": "X"
+   },
+   {
+    "diputado": "Núñez Feijóo, Alberto",
+    "grupo": "PP",
+    "voto": "X"
+   },
+   {
+    "diputado": "Vaquero Montero, Maribel",
+    "grupo": "PNV",
+    "voto": "X"
+   }
+  ],
+  "json": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion199/20260922/Votacion001/VOT_20260922205120.json"
+ },
+ {
+  "id": "199-2",
+  "sesion": 199,
+  "numero": 2,
+  "fecha": "2026-09-22",
+  "tipo": "Toma en consideración de Proposiciones de Ley",
+  "titulo": "Proposición de Ley del Grupo Parlamentario Mixto, de jubilación sin penalización.",
+  "subgrupo": "",
+  "exp": null,
+  "asentimiento": false,
+  "si": 178,
+  "no": 33,
+  "abst": 136,
+  "novota": 3,
+  "aprobada": true,
+  "grupos": {
+   "VOX": "N",
+   "MIXTO": "S",
+   "PSOE": "S",
+   "SUMAR": "S",
+   "JUNTS": "S",
+   "ERC": "S",
+   "BILDU": "S",
+   "PNV": "S",
+   "PP": "A"
+  },
+  "conteo": {
+   "VOX": {
+    "N": 32
+   },
+   "MIXTO": {
+    "N": 1,
+    "S": 8
+   },
+   "PSOE": {
+    "S": 121
+   },
+   "SUMAR": {
+    "S": 26
+   },
+   "JUNTS": {
+    "S": 6,
+    "X": 1
+   },
+   "ERC": {
+    "S": 7
+   },
+   "BILDU": {
+    "S": 6
+   },
+   "PNV": {
+    "S": 4,
+    "X": 1
+   },
+   "PP": {
+    "A": 136,
+    "X": 1
+   }
+  },
+  "discrepantes": [
+   {
+    "diputado": "Ortega Smith-Molina, Francisco Javier",
+    "grupo": "MIXTO",
+    "voto": "N"
+   }
+  ],
+  "votos": [
+   {
+    "diputado": "Alcaraz Martos, Francisco José",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Fernández Hernández, Pedro",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Aizcorbe Torra, Juan José",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Sánchez García, José María",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Sáez Alonso-Muñumer, Pablo",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Ramírez del Río, José",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "López Maraver, Ángel",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "García Gomis, David",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Gil Lázaro, Ignacio",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "González-Robatto Perote, Jacobo",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Del Valle Rodríguez, Emilio Jesús",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Flores Juberías, Carlos",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Figaredo Álvarez-Sala, José María",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Hoces Íñiguez, Ignacio",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Méndez Monasterio, Lourdes",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Campos Asensi, Jorge",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Fernández Ríos, Tomás",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Armario González, Blanca",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Rodríguez Almeida, Andrés Alberto",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Mariscal Zabala, Manuel",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Ruiz Solás, María de la Cabeza",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "De Meer Méndez, Rocío",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Rueda Perelló, Patricia",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Chamorro Delmo, Ricardo",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Romero Vilches, María de los Reyes",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Asarta Cuevas, Alberto",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Abascal Conde, Santiago",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Robles López, Joaquín",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Ortega Smith-Molina, Francisco Javier",
+    "grupo": "MIXTO",
+    "voto": "N"
+   },
+   {
+    "diputado": "Mejías Sánchez, Carina",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Rodríguez de Millán Parro, María José",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Hernández Quero, Carlos",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Aguirre Gil de Biedma, Rocío",
+    "grupo": "VOX",
+    "voto": "N"
+   },
+   {
+    "diputado": "Cobo Pérez, Noelia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vidal Sáez, Aina",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pisarello Prados, Gerardo",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Badia Casas, Eloi",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Boada Danés, Júlia",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Andala Ubbi, Teslem",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Díaz Pérez, Yolanda",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Conesa Coma, Ignasi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Losada Fernández, José",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lorenzo Cazorla, Juan Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Palacios, Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gutiérrez Santiago, Víctor",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Soldevilla Novials, Alba",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Suárez, Esther",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Moreno Fernández, Mª Isabel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ruiz de Diego, Víctor Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mayoral de Lamo, Alberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Camino Miñana, Víctor",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Zamora, Cristina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mayoral Pérez, Jesús",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Almodóvar Sánchez, Emilia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Paré Aregall, Josep",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gracia Blanco, Marta",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Tagliafico, Candela",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lago Peñas, Manuel",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "De la Rosa Baena, Olvido",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero Rodríguez, Patricia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Chavarría, María Montserrat",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Hita Téllez, Guillermo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sainz Martín, María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero García, Mercedes",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Almirón Ruiz, Oriol",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Canelo Matito, Andrea",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pagès i Massó, Josep",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Montávez Aguillaume, Vicente",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Estrems Fayos, Etna",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Recas Martín, Alda",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Quintero Hernández, Jonay",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gómez Piña, Luis Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ogou i Corbi, Viviane",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Otero Gabirondo, Mikel",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Renteria Lasanta, Nerea",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Blanco Arrúe, Gabriel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cacho Isla, Iván",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Antuñano Colina, Pablo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jódar Pérez, Irene",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "González Herdaro, Ana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vergara Román, Laura",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pachón Martín, Brígida",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Taibo Monelos, Diego",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Diouf Dioh, Luc Andre",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Rodríguez, Margarita",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Catalán Higueras, Alberto",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Crespín Rubio, Rafaela",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rivera Arias, Engracia",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Micó Micó, Àgueda",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ibáñez Mezquita, Alberto",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "González López, Nahuel",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Faneca López, María Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cruz Santana, Gabriel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Velarde Gómez, Martina",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Blanquer Alcaraz, Patricia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mellado Sierra, Valle",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rojo Blas, Alberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Nasarre Oliva, Begoña",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Salmerón, Joaquín",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Armengol Socias, Francina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Herrera García, Milena",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Corujo Berriel, María Dolores",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Pérez-Castejón, Pedro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mercadal Baquero, Pepe",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Leal Fernández, Isaura",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vidal Matas, Vicenç",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Morís, Roberto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Ramírez, Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sarrià Morell, Vicent Manuel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Trenzano Rubio, Marta",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Granollers Cunillera, Inés",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Álvaro Vidal, Francesc-Marc",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Vallugera Balañà, Pilar",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jordà i Roura, Teresa",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Urriza, Carlos",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "González Gracia, Juan Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Simancas Simancas, Rafael",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rives Arcayna, Caridad",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gutiérrez Prieto, Sergio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rego Candamil, Néstor",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gavin i Valls, Isidre",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Nogueras i Camero, Míriam",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cervera Pinart, Josep Maria",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Calvo Gómez, Pilar",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Madrenas i Mir, Marta",
+    "grupo": "JUNTS",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alfonso Cendón, Javier",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Bolaños García, Félix",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Belarra Urteaga, Ione",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Cano, Ignacio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sierra Caballero, Francisco",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Alonso Cantorné, Fèlix",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Narbona Ruiz, Cristina",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Guinart Moreno, Lídia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Azorín Salar, Lázaro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Matute García de Jalón, Oskar",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pozueta Fernández, Isabel",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Iñarritu García, Jon",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fullaondo la Cruz, Marije",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Serna, Javier",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Soler Mur, Alejandro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aizpurua Arzallus, Mertxe",
+    "grupo": "BILDU",
+    "voto": "S"
+   },
+   {
+    "diputado": "Agirretxea Urresti, Joseba Andoni",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Legarda Uriarte, Mikel",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sagastizabal Unzetabarrenetxea, Idoia",
+    "grupo": "PNV",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Barbero, Verónica",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santos Maraver, Agustín",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rufián Romero, Gabriel",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez Moreno, María de las Nieves",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pérez Ortiz, Isabel María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sahuquillo García, Luis Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rey de las Heras, Luis Alfonso",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Castilla Álvarez, María Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Senderos Oraá, Daniel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Jerez Antequera, Juan Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Perea i Conillas, María Mercè",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aranda Vargas, Francisco",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Verdejo Vicente, Ferran",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Serrada Pariente, David",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fagúndez Campo, Antidio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Fernández Benéitez, Andrea",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santana Perera, Noemí",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Zaragoza Alonso, José",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Valido García, Cristina",
+    "grupo": "MIXTO",
+    "voto": "S"
+   },
+   {
+    "diputado": "Poblador Pacheco, María Araceli",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Serrano Martínez, Juan Francisco",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García López, Maribel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Díaz Marín, Raúl",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rallo Lombarte, Artemi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ros Martínez, Susana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martín Martínez, Andreu",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Seijo, María Luz",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Aceves Galindo, José Luis",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ruiz Boix, Juan Carlos",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sánchez Díaz, María Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cobo Carmona, Ana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Salvador i Duch, Jordi",
+    "grupo": "ERC",
+    "voto": "S"
+   },
+   {
+    "diputado": "Valero Morales, Juan Antonio",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Marqués Atés, Amador",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Mínguez García, Montse",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Plaza García, Inés",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Gil de Reboleño Lastortres, Esther",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Martínez Hierro, Lander",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Puente Santiago, Óscar",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sanz Martínez, Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Guijarro García, Txema",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Morales Álvarez, Álvaro",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramírez Carner, Arnau",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Peña Camarero, Esther",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Arribas Maroto, Manuel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Redondo Cárdenas, Gonzalo",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Ramos Esteban, César Joaquín",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Argota Castro, Trinidad Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Maldonado López, Adriana",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Andrés Añón, Carmen",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Lamuà Estañol, Marc",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cercas Mena, Blanca",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Romero Pozo, Rafaela",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "García Gurrutxaga, María Luisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Garrido Jiménez, Elisa",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "López Álvarez, Patxi",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Cofiño Fernández, Rafael",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santiago Romero, Enrique Fernando",
+    "grupo": "SUMAR",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Salas, José Antonio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Pose Mesura, Modesto",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sancho Íñiguez, Herminio Rufino",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Santana Aguilera, Ada",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Álvarez González, Alicia",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Iniesta Egido, Isabel",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Sáez Cruz, Emilio",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Adrio Taracido, María",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Rodríguez Gómez de Celis, Alfonso",
+    "grupo": "PSOE",
+    "voto": "S"
+   },
+   {
+    "diputado": "Palencia Rubio, Héctor",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cabezón Casas, Tomás",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Conde Bajén, Agustín",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Bravo Baena, Juan",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Rojas García, Carlos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pérez Osma, Daniel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "García Félix, Manuel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Tellado Filgueira, Miguel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pérez López, Álvaro",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Muñoz de la Iglesia, Ester",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Franco González, Silvia",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Delgado Arce, Celso Luis",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Velasco Morillo, Elvira",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Jiménez Linuesa, Beatriz",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Garrido Valenzuela, Irene",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Verano Domínguez, Bella",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cuesta Rodríguez, María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pérez Coronado, Pablo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Ramajo Prada, Óscar",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Teniente Sánchez, Cristina",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Lorente Anaya, Macarena",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Rodríguez Calleja, Patricia",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Floriano Corrales, Carlos Javier",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Román Jasanada, Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Ramírez Martín, María Lourdes",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Fúnez de Gregorio, Carmen",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Hoyo Juliá, Belén",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Acedo Reyes, Sofía",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Prieto Serrano, María Isabel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Gallardo Barrena, Pedro Ignacio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Vázquez Jiménez, María del Mar",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Fernández González, María Mercedes",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Garre Murcia, Cristóbal",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cortés Carballo, Mario",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pérez Recuerda, Isabel Gema",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Tarno Blanco, Ricardo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Merino Martínez, Javier",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Rodríguez Serra, Santi",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Martínez Gómez, Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "De las Cuevas Cortés, Félix",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Fabra Part, Alberto",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Clavell López, Óscar",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Folch Blanc, Javier José",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Bermúdez de Castro Fernández, José Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Tomás Olivares, Violante",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Requena Ruiz, Juan Diego",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Mesquida Mayans, Joan",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Agüera Gago, Cristina",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Noriega Gómez, Javier",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Álvarez Fanjul, Beatriz",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Borrego Cortés, Isabel María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sayas López, Sergio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Martín García, Pedro Samuel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Moro Almaraz, María Jesús",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sánchez Ojeda, Carlos Alberto",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Lima García, Laura María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Rojas Manrique, Juan Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Abades Martínez, Cristina",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Olano Vela, Jaime Eduardo de",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Celaya Brey, Javier",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Argüelles García, Silverio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Parra Gallego, Agustín",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Martín Blanco, Nacho",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "De Luna Tobarra, Llanos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Belmonte Gómez, Rafael Benigno",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sánchez Torregrosa, Maribel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Ibáñez Hernando, Ángel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Quintanilla Navarro, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Alía Aguado, María Pilar",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Velasco Retamosa, José Manuel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Marí Bosó, José Vicente",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Vázquez Blanco, Ana Belén",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Quintana Carballo, Rosa",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Moraleja Gómez, Tristana María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Puy Fraga, Pedro",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "González Vázquez, Marta",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Hernando Fraile, Rafael Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Moneo Díez, María Sandra",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sastre Uyá, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Belda Pérez-Pedrero, Enrique",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Bendodo Benasayag, Elías",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Parra Aparicio, Julia",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Melgarejo Moreno, Joaquín",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pascual Rocamora, Sandra",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Martínez Labella, Ana",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Navarro Lacoba, Carmen",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Montesinos de Miguel, Macarena",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sánchez Pérez, César",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cantalapiedra Álvarez, María de las Mercedes",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Delgado-Taramona Hernández, Jimena",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Muñoz Abrines, Pedro",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Reynal Reillo, Esperanza",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "De Rosa Torner, Fernando",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Alfonso Silvestre, Alma",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Mariscal Anaya, Guillermo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sémper Pascual, Borja",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Aragonés Mendiguchía, Carlos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Madrid Olmo, Bartolomé",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "García Adanero, Carlos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "De los Santos González, Jaime Miguel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Clemente Muñoz, Raquel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Herrero Bono, José Alberto",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Sánchez Sierra, María del Mar",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Carazo Hermoso, Eduardo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Beamonte Mesa, Luis María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Macías Gata, Alfonso Carlos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cavacasillas Rodríguez, Antonio",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Gamarra Ruiz-Clavijo, Concepción",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Álvarez de Toledo Peralta-Ramos, Cayetana",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cruz-Guzmán García, María Soledad",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Marcos Ortega, Milagros",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Paniagua Núñez, Miguel Ángel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cobo Vega, Manuel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Alós López, Ana Isabel",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Pedreño Molina, Juan Luis",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Llamazares Domingo, Esther",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Carballedo Berlanga, María Eugenia",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Varela Pazos, Marta",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Nacarino-Brabo Jiménez, Aurora",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Conde López, Francisco José",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Hispán Iglesias de Ussel, Pablo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Guardiola Salmerón, Mirian",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Torres Tejada, María",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Núñez Guijarro, José Enrique",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Uriarte Bengoechea, Edurne",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Barrio Baroja, Carmelo",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Bayón Rolo, Juan Andrés",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Vedrina Conesa, María Elisa",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Moreno Borrás, Cristina",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Molina León, Ainhoa",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cuevas Larrosa, Raúl",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Simarro Vicens, Carlos",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Rodríguez Herrer, María Elvira",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Aznar Teruel, Evarist",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Marín Aparicio, Inmaculada",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Bondía Pinós, María Elena",
+    "grupo": "PP",
+    "voto": "A"
+   },
+   {
+    "diputado": "Cruset Domènech, Josep Maria",
+    "grupo": "JUNTS",
+    "voto": "X"
+   },
+   {
+    "diputado": "Núñez Feijóo, Alberto",
+    "grupo": "PP",
+    "voto": "X"
+   },
+   {
+    "diputado": "Vaquero Montero, Maribel",
+    "grupo": "PNV",
+    "voto": "X"
+   }
+  ],
+  "json": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion199/20260922/Votacion002/VOT_20260922205122.json"
+ }
+]
