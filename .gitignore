@@ -8,3 +8,4 @@ data/raw/
 
 # Tarjetas para compartir: se dibujan en cada construcción (python -m escano construir)
 site/og/
+.vercel

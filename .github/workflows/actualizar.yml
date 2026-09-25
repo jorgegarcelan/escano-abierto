@@ -1,18 +1,20 @@
-name: Actualizar datos y publicar
+name: Actualizar datos
+
+# Cada mañana descarga lo nuevo del Congreso (votaciones, Diarios, agenda, leyes, preguntas, declaraciones),
+# reconstruye los datos de la web y los guarda en el repositorio. El push dispara el despliegue en Vercel, que
+# dibuja las tarjetas para compartir y publica site/.
 
 on:
   schedule:
-    - cron: "17 5 * * 2-6"   # de martes a sábado, 05:17 UTC (07:17 en Madrid en verano)
+    - cron: "17 5 * * 1-6"   # de lunes a sábado, 05:17 UTC (07:17 en Madrid en verano)
   workflow_dispatch:
     inputs:
       desde:
-        description: "Fecha inicial (AAAA-MM-DD). Vacío = últimos 10 días"
+        description: "Fecha inicial de votaciones (AAAA-MM-DD). Vacío = últimos 10 días"
         required: false
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: actualizar
@@ -21,6 +23,7 @@ concurrency:
 jobs:
   actualizar:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,25 +33,28 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
-      - name: Descargar, analizar y construir
+      # Los PDF y JSON descargados no se versionan; la caché evita volver a pedirlos al Congreso.
+      - uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: crudos-${{ github.run_id }}
+          restore-keys: crudos-
+      - name: Descargar y construir
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ESCANO_MODELO: ${{ vars.ESCANO_MODELO }}
+          ESCANO_SIN_TARJETAS: "1"   # las tarjetas las dibuja Vercel al desplegar
         run: |
-          if [ -n "${{ github.event.inputs.desde }}" ]; then
-            python -m escano actualizar --desde "${{ github.event.inputs.desde }}"
-          else
-            python -m escano actualizar
-          fi
-      - name: Guardar datos en el repositorio
+          ARGS=""
+          [ -n "${{ github.event.inputs.desde }}" ] && ARGS="--desde ${{ github.event.inputs.desde }}"
+          # Con la clave de Anthropic en los secretos, analiza con IA; sin ella, solo datos oficiales.
+          [ -z "$ANTHROPIC_API_KEY" ] && ARGS="$ARGS --sin-ia"
+          python -m escano actualizar $ARGS
+      - name: Guardar en el repositorio
         run: |
           git config user.name "escano-bot"
           git config user.email "escano-bot@users.noreply.github.com"
-          git add data site/data.json
-          git diff --cached --quiet || git commit -m "Datos del $(date -u +%F)"
+          git add data site
+          git diff --cached --quiet && exit 0
+          git commit -m "Datos del $(date -u +%F)"
           git push
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - uses: actions/deploy-pages@v4

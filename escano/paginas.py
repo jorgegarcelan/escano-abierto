@@ -26,7 +26,13 @@ from .temas import NOMBRE as NOMBRE_TEMA, TEMAS
 
 # Dirección pública de la web (p. ej. https://escanoabierto.es). Las redes necesitan URLs absolutas para
 # las imágenes; sin ella, las páginas llevan rutas relativas a la raíz del sitio.
-URL_SITIO = os.environ.get("ESCANO_URL_SITIO", "").rstrip("/")
+# En Vercel, si no se define, se usa el dominio de producción del proyecto.
+URL_SITIO = (os.environ.get("ESCANO_URL_SITIO") or
+             (f"https://{os.environ['VERCEL_PROJECT_PRODUCTION_URL']}" if os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") else "")
+             ).rstrip("/")
+# Dibujar las tarjetas lleva unos minutos. La actualización diaria (GitHub Actions) no las necesita: las
+# dibuja el despliegue en Vercel, que construye la web a partir del repositorio.
+DIBUJAR = not os.environ.get("ESCANO_SIN_TARJETAS")
 FUENTES = Path(__file__).parent / "fuentes"
 W, H = 1200, 630
 FONDO, TINTA, APAGADO, LINEA = (8, 9, 11), (238, 238, 232), (139, 146, 156), (31, 35, 42)
@@ -485,7 +491,7 @@ def generar(salida: dict, plano: dict) -> dict:
                                                    _pagina(ruta, hashweb, titulo, desc, imagen, feed))
         destino = SITIO / imagen
         # Una tarjeta ya dibujada no se vuelve a dibujar: su contenido no cambia.
-        if not destino.exists():
+        if DIBUJAR and not destino.exists():
             escritas["tarjetas"] += _escribir_si_cambia(destino, tarjeta())
             if clave:
                 for vieja in destino.parent.glob(ruta.rsplit("/", 1)[-1] + "-*.png"):
@@ -635,7 +641,7 @@ def generar(salida: dict, plano: dict) -> dict:
             f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}: tramitación, debates y votaciones.", ruta + "/", ents))
 
     portada = SITIO / "og" / "portada.png"
-    if not portada.exists():
+    if DIBUJAR and not portada.exists():
         escritas["tarjetas"] += _escribir_si_cambia(portada, tarjeta_portada(plano, dips))
 
     base = URL_SITIO or ""

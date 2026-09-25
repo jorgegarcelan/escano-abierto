@@ -87,11 +87,12 @@ La web usa la marca **Marcador** por defecto: el panel de votaciones del hemicic
 
 ## Publicación automática
 
-`.github/workflows/actualizar.yml` se ejecuta de martes a sábado por la mañana: descarga lo nuevo, analiza solo lo que no está en caché, guarda los datos en el repo y publica la web en GitHub Pages.
+La web se publica en **Vercel** a partir del repositorio de GitHub:
 
-1. Crea el secreto `ANTHROPIC_API_KEY` en *Settings → Secrets and variables → Actions*.
-2. (Opcional) Crea la variable `ESCANO_MODELO` para elegir modelo.
-3. En *Settings → Pages*, elige **GitHub Actions** como origen.
+- **Cada mañana**, `.github/workflows/actualizar.yml` descarga lo nuevo del Congreso (votaciones, Diarios, agenda, leyes, preguntas, declaraciones), reconstruye los datos y hace push. Sin el secreto `ANTHROPIC_API_KEY` funciona sin IA; con él (y opcionalmente la variable `ESCANO_MODELO`), analiza las intervenciones nuevas.
+- **Cada push** despliega en Vercel. El build (`scripts/vercel-build.sh`, configurado en `vercel.json`) ejecuta `python -m escano construir --sin-ia` y dibuja las tarjetas Open Graph, que no se versionan. Las URL absolutas de tarjetas, RSS y sitemap salen del dominio de producción de Vercel, o de `ESCANO_URL_SITIO` si se define en el proyecto.
+
+Para que los push desplieguen, la app de Vercel en GitHub debe tener acceso al repositorio (Vercel → proyecto → *Settings → Git → Connect Git Repository*).
 
 ## Estructura
 
