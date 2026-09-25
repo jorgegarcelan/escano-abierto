@@ -70,7 +70,10 @@ nav.tabs button:hover{color:var(--ink)}
 .kpi b{font-family:var(--serif);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
 .kpi span{color:var(--muted);font-size:13px;max-width:14ch;line-height:1.25}
 .kpi.alert b{color:var(--no)}
-main{padding-top:28px}
+main{padding-top:20px}
+.periodo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding-top:14px;font-size:13px;color:var(--muted)}
+.periodo-bar label{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
+.periodo-bar select{font:500 13.5px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;padding:4px 8px}
 section.view{display:grid;gap:18px}
 section.view[hidden]{display:none}
 .view-intro{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
@@ -207,6 +210,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
   @keyframes asiento{from{opacity:0;transform:scale(.2)}}
 }
 .hemi-wrap{position:relative}
+.hemi-lazy{width:100%;aspect-ratio:248/120;border-radius:50% 50% 0 0/100% 100% 0 0;background:var(--sunk);opacity:.5}
 .hemi-center{text-align:center;line-height:1;margin-top:10px}
 .hemi-center b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.4vw,38px);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .hemi-center span{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
@@ -401,6 +405,19 @@ table.upset td.esc{color:var(--muted);font-variant-numeric:tabular-nums;padding-
 .timeline .what{font-weight:500;margin-top:2px}
 .timeline .extra{font-size:13px;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
 .expbtn{appearance:none;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px}
+/* mayorías en el tiempo */
+svg.gan{display:block;max-width:none}
+.gan-grid{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:start}
+svg.gan text{font:500 10.5px var(--sans);fill:var(--muted)} svg.gan text.g{font-weight:600;fill:var(--ink)}
+svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{opacity:.7}
+.multiples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 20px}
+.mult{margin:0;display:grid;gap:4px}
+.mult figcaption{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.mult svg{display:block;width:100%;height:auto;overflow:visible}
+.mult .ax{stroke:var(--line);stroke-width:1} .mult .ax.mid{stroke:var(--line-strong)}
+.mult text{font:500 10px var(--sans);fill:var(--muted)} .mult text.fin{font-weight:600;fill:var(--ink);font-size:11px}
+@media (max-width:720px){ .multiples{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
 @media (max-width:720px){ .mapa-wrap{grid-template-columns:1fr} .th-row{grid-template-columns:96px 1fr 36px} .tile .es{display:none} }
 
 @media (max-width:720px){ .ficha-top{grid-template-columns:1fr} .decide-row{grid-template-columns:64px 1fr 40px} }
@@ -451,6 +468,7 @@ table.upset td.esc{color:var(--muted);font-variant-numeric:tabular-nums;padding-
     </div>
   </header>
 
+  <div class="periodo-bar"><label for="periodo">Periodo</label><select id="periodo" aria-label="Periodo que se muestra"></select><span id="periodo-info"></span></div>
   <main>
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
@@ -467,10 +485,47 @@ table.upset td.esc{color:var(--muted);font-variant-numeric:tabular-nums;padding-
 </div>
 
 <script>
-fetch("data.json", {cache: "no-store"}).then(r => r.json()).then(j => iniciar(j.datos, j.intervenciones))
-  .catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudo cargar data.json. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
+/* ---------- carga por meses ---------- */
+// datos/indice.json trae lo común y la lista de meses; cada mes está en datos/AAAA-MM.json.
+const CARGADOS = {};
+let INDICE = null, ctl = null;
+const MESES_LARGOS = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const nombreMes = m => { const [y,mm]=m.split("-").map(Number); return `${MESES_LARGOS[mm-1][0].toUpperCase()+MESES_LARGOS[mm-1].slice(1)} ${y}`; };
+function periodos(){
+  const ms = INDICE.meses.map(m=>m.mes);
+  const out = [["reciente","Últimos 3 meses", ms.slice(-3)], ...ms.slice().reverse().map(m=>[m, nombreMes(m), [m]])];
+  if (ms.length > 3) out.push(["todo","Toda la legislatura", ms]);
+  return out;
+}
+function textoPeriodo(fechas){
+  if (!fechas.length) return "";
+  const f = iso => { const [y,m,d]=iso.split("-").map(Number); return {d, m:MESES_LARGOS[m-1], y}; };
+  const a = f(fechas[0]), b = f(fechas[fechas.length-1]);
+  return a.y===b.y ? `${a.d} de ${a.m} – ${b.d} de ${b.m} de ${b.y}` : `${a.d} de ${a.m} de ${a.y} – ${b.d} de ${b.m} de ${b.y}`;
+}
+async function arrancar(clave){
+  const lista = periodos(), p = lista.find(x=>x[0]===clave) || lista[0];
+  await Promise.all(p[2].filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`, {cache:"no-store"}).then(r=>r.json()).then(j=>{ CARGADOS[m]=j; })));
+  const sesiones=[], votaciones=[], ivs=[];
+  p[2].forEach(m=>{ const c=CARGADOS[m]; sesiones.push(...c.sesiones); votaciones.push(...c.votaciones); ivs.push(...c.intervenciones); });
+  const DATA = {...INDICE, meta:{...INDICE.meta, periodo: textoPeriodo(sesiones.map(s=>s.fecha).sort())}, sesiones, votaciones};
+  try{ localStorage.setItem("periodo", p[0]); }catch(e){}
+  const sel = document.getElementById("periodo");
+  sel.innerHTML = lista.map(([k,l])=>`<option value="${k}"${k===p[0]?" selected":""}>${l}</option>`).join("");
+  document.getElementById("periodo-info").textContent = `${DATA.meta.periodo} · ${sesiones.length} sesiones · ${votaciones.length} votaciones`;
+  iniciar(DATA, ivs);
+}
+fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
+  INDICE = j;
+  let clave = "reciente"; try{ clave = localStorage.getItem("periodo") || clave; }catch(e){}
+  document.getElementById("periodo").addEventListener("change", e => arrancar(e.target.value));
+  return arrancar(clave);
+}).catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudieron cargar los datos. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
 
 function iniciar(DATA, IVS){
+// Al cambiar de periodo se vuelve a llamar: se retiran los listeners del arranque anterior.
+ctl?.abort(); ctl = new AbortController();
+const SIG = {signal: ctl.signal};
 const G = DATA.grupos;
 const PARL = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","MIXTO"];
 const TONES = ["combativo","crítico","irónico","defensivo","técnico","conciliador","propositivo"];
@@ -508,8 +563,8 @@ function voteRow(v, compact){
   const w = x => (x/tot*100).toFixed(2)+"%";
   const gp = PARL.map(g=>{ const x=v.grupos[g]||"?"; return `<span class="gp ${x==="?"?"q":x}" title="${G[g].nombre}: ${VLABEL[x]}">${gdot(g)}${g}<span class="v">${VLABEL[x]}</span></span>`; }).join("");
   const d = dt(v.fecha);
-  const hemi = hemiciclo(v);
-  return `<article class="vote${hemi?" con-hemi":""}" id="v-${v.id}">${hemi?`<div class="hemi-col">${hemi}</div>`:""}
+  const hemi = (v.v && v.v.length===DIPS.length) || (v.conteo && Object.keys(v.conteo).length);
+  return `<article class="vote${hemi?" con-hemi":""}" id="v-${v.id}">${hemi?`<div class="hemi-col"><div class="hemi-lazy" data-hemi="${v.id}" role="img" aria-label="Hemiciclo de la votación"></div></div>`:""}
     <div class="vote-h"><div class="t">${esc(v.titulo)}<div class="sub">${compact?"":`${d.d} ${d.m} · `}${esc(v.tipo)} · ${v.proponente==="GOB"?"Gobierno":esc(v.proponente)} · ${v.exp?`<button class="expbtn mono" data-ini="${esc(v.exp)}" data-tip="Ver la iniciativa ${esc(v.exp)}">${esc(v.exp)}</button>`:""}${v.titulo_fuente==="oficial"?" "+`<span class="oficial" data-tip="Título abreviado del texto oficial del expediente. Conserva las palabras del grupo que presenta la iniciativa.">título oficial</span>`:""}</div></div>
       <span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></div>
     <div class="stack" role="img" aria-label="Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}">
@@ -590,8 +645,8 @@ document.addEventListener("pointerover", e=>{
   const g=c.dataset.g, x=c.dataset.x;
   tip.innerHTML = `${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
   const b=c.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false;
-});
-window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true});
+}, SIG);
+window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true, signal:ctl.signal});
 
 $("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
 
@@ -856,6 +911,50 @@ function tablaMayorias(max=10){
   </tbody></table></div>`;
 }
 
+/* ---------- mayorías a lo largo del tiempo ---------- */
+const votosCrono = () => DATA.votaciones.slice().sort((a,b)=>a.fecha.localeCompare(b.fecha) || a.id.localeCompare(b.id, undefined, {numeric:true}));
+function matrizGanadores(){
+  // Una columna por votación y una fila por grupo: color del grupo si estaba en bloque en el lado ganador.
+  const vs = votosCrono(); if (!vs.length) return "";
+  const gs = ORDEN_HEMI, celda = 12, hueco = 2, sepDia = 10, L = 2, top = 18, alto = celda+hueco;
+  let x = L, dia = null; const cols = [];
+  vs.forEach(v=>{ if (dia && v.fecha!==dia) x += sepDia; cols.push({v, x}); dia = v.fecha; x += celda+hueco; });
+  const W = x + 4, H = top + gs.length*alto + 30;
+  const dias = []; cols.forEach(c=>{ const u=dias[dias.length-1]; if (!u || u.f!==c.v.fecha) dias.push({f:c.v.fecha, x0:c.x, x1:c.x+celda}); else u.x1=c.x+celda; });
+  const txt = {S:"sí",N:"no",A:"abstención",D:"dividido","?":"sin dato"};
+  const celdas = cols.map(({v,x})=>{ const w = passed(v)?"S":"N";
+    return `<g data-go="votaciones" data-anchor="v-${v.id}" style="cursor:pointer">
+      <rect x="${x}" y="2" width="${celda}" height="${celda-2}" rx="2" fill="var(${passed(v)?"--si":"--no"})" data-tip="${esc(`<b>${esc(v.titulo)}</b><br>${resLabel(v)} · ${v.si} a ${v.no}`)}"/>
+      ${gs.map((g,r)=>{ const p=v.grupos[g]||"?", y=top+r*alto, gana=p===w;
+        const tip = `<b>${esc(v.titulo)}</b><br>${G[g].nombre}: ${txt[p]||p} · ${gana?"en el lado ganador":"no ganó"}`;
+        return gana ? `<rect x="${x}" y="${y}" width="${celda}" height="${celda}" rx="2" fill="${G[g].color}" data-tip="${esc(tip)}"/>`
+          : ["S","N"].includes(p) ? `<rect x="${x+.75}" y="${y+.75}" width="${celda-1.5}" height="${celda-1.5}" rx="2" fill="none" stroke="var(--line-strong)" stroke-width="1" data-tip="${esc(tip)}"/>`
+          : `<circle cx="${x+celda/2}" cy="${y+celda/2}" r="1.6" fill="var(--line-strong)" data-tip="${esc(tip)}"/>`; }).join("")}</g>`; }).join("");
+  const filas = gs.map((g,r)=>`<text class="g" x="0" y="${top+r*alto+celda-1}">${g}</text>`).join("");
+  const fechas = dias.map(d=>{ const t=dt(d.f); return `<line x1="${d.x0}" x2="${d.x1}" y1="${H-22}" y2="${H-22}" stroke="var(--line-strong)"/><text x="${(d.x0+d.x1)/2}" y="${H-8}" text-anchor="middle">${t.d} ${t.m}</text>`; }).join("");
+  return `<div class="gan-grid"><svg class="gan" viewBox="0 0 48 ${H}" width="48" height="${H}" aria-hidden="true">${filas}</svg>
+    <div class="mx-wrap gan-wrap"><svg class="gan" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Grupos en el lado ganador de cada votación">${celdas}${fechas}</svg></div></div>
+    <div class="key"><span><i style="background:var(--ink);border-radius:2px"></i>en el lado ganador (color del grupo)</span><span><i style="background:none;box-shadow:inset 0 0 0 1px var(--line-strong);border-radius:2px"></i>votó con el perdedor</span><span><i style="width:4px;height:4px;border-radius:50%;background:var(--line-strong)"></i>abstención o dividido</span><span><i style="background:var(--si)"></i><i style="background:var(--no);margin-left:-3px"></i>fila superior: aprobada / rechazada</span></div>`;
+}
+function semanaDe(iso){ const [y,m,d]=iso.split("-").map(Number); const f=new Date(Date.UTC(y,m-1,d)); const dia=(f.getUTCDay()+6)%7; f.setUTCDate(f.getUTCDate()-dia); return f.toISOString().slice(0,10); }
+function ganadasPorSemana(){
+  const vs = votosCrono(); const semanas = [...new Set(vs.map(v=>semanaDe(v.fecha)))];
+  if (semanas.length < 2) return "";
+  const serie = g => semanas.map(s=>{ const w = vs.filter(v=>semanaDe(v.fecha)===s); const con = w.filter(v=>["S","N","A","D"].includes(v.grupos[g]));
+    const gan = con.filter(v=>v.grupos[g]===(passed(v)?"S":"N")).length; return con.length ? {s, p:gan/con.length, gan, n:con.length} : {s, p:null, gan:0, n:0}; });
+  const W=200, H=92, L=6, R=34, T=10, B=18, x=i=>L+i*(W-L-R)/Math.max(1,semanas.length-1), y=p=>T+(1-p)*(H-T-B);
+  const etiqueta = s => { const t=dt(s); return `${t.d} ${t.m}`; };
+  return `<div class="multiples">${ORDEN_HEMI.map(g=>{ const d=serie(g), pts=d.map((e,i)=>e.p==null?null:[x(i),y(e.p),e]).filter(Boolean); const ult=pts[pts.length-1];
+    return `<figure class="mult"><figcaption>${gdot(g)}${g}</figcaption><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${G[g].nombre}: votaciones ganadas por semana">
+      <line class="ax mid" x1="${L}" x2="${W-R}" y1="${y(.5)}" y2="${y(.5)}"/>
+      <line class="ax" x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}"/><line class="ax" x1="${L}" x2="${W-R}" y1="${y(1)}" y2="${y(1)}"/>
+      <polyline points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" fill="none" stroke="${G[g].color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${pts.map(([px,py,e])=>`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4" fill="${G[g].color}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(`<b>${G[g].nombre}</b> · semana del ${etiqueta(e.s)}<br>Ganó ${e.gan} de ${e.n} votaciones (${Math.round(e.p*100)} %)`)}"/>`).join("")}
+      ${ult?`<text x="${W-R+4}" y="${ult[1]+4}" class="fin">${Math.round(ult[2].p*100)} %</text>`:""}
+      <text x="${L}" y="${H-3}" class="lbl">${etiqueta(semanas[0])}</text><text x="${W-R}" y="${H-3}" text-anchor="end" class="lbl">${etiqueta(semanas[semanas.length-1])}</text>
+    </svg></figure>`; }).join("")}</div>`;
+}
+
 /* ---------- mapa de circunscripciones ---------- */
 // [abreviatura, fila, columna] en una rejilla que imita la geografía; todas las casillas del mismo tamaño.
 const TESELAS = {"Coruña (A)":["COR",0,0],"Lugo":["LUG",0,1],"Asturias":["AST",0,2],"Cantabria":["CAN",0,3],"Bizkaia":["BIZ",0,4],"Gipuzkoa":["GIP",0,5],
@@ -921,14 +1020,17 @@ const margen = v => Math.abs(v.si-v.no);
 const iniciales = n => n.split(/[\s-]+/).filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
 function renderInicio(){
   const plenos = DATA.sesiones.filter(s=>s.organo==="Pleno" && (s.resumen||s.titular)).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  const ses = plenos[0] || DATA.sesiones.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
+  const recientes = DATA.sesiones.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  const ses = plenos[0] || recientes.find(s=>s.organo==="Pleno") || recientes[0];
   if (!ses){ $("#inicio").innerHTML = '<p class="nota">Todavía no hay sesiones.</p>'; return; }
   const fr = frases(ses.resumen);
   let titular = ses.titular, lede;
   if (titular) lede = ses.resumen;
   else {
     // Sin titular generado: la primera frase del resumen; si es larga, hasta la primera coma.
-    titular = fr.shift() || `${ses.organo}: ${DATA.votaciones.filter(v=>v.fecha===ses.fecha).length} votaciones`;
+    const nv = DATA.votaciones.filter(v=>v.fecha===ses.fecha).length, np = (ses.puntos||[]).length;
+    titular = fr.shift() || (nv ? `${ses.organo}: ${nv} ${nv===1?"votación":"votaciones"}` : `${ses.organo}: ${np} ${np===1?"asunto":"asuntos"} en el orden del día`);
+    if (!fr.length && !ses.resumen && np) fr.push("En el orden del día: " + ses.puntos.slice(0,3).map(p=>p.titulo).join("; ") + (np>3?"…":"."));
     const c = titular.indexOf(", ", 30);
     if (titular.length > 90 && c > 0){
       const resto = titular.slice(c+2);
@@ -988,7 +1090,7 @@ function renderInicio(){
   $("#inicio").innerHTML = `
     <div class="hero">
       <div>
-        <div class="eyebrow">Último pleno · ${esc(fechaLarga(ses.fecha))}</div>
+        <div class="eyebrow">${ses.organo==="Pleno"?"Último pleno":"Última sesión"} · ${esc(fechaLarga(ses.fecha))}</div>
         <h2 class="hero-h">${esc(titular)}</h2>
         ${lede?`<p class="hero-lede">${esc(lede)}</p>`:""}
         <div class="hero-cta"><button class="btn primary" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión</button><button class="btn" data-go="votaciones">Todas las votaciones</button></div>
@@ -1067,6 +1169,8 @@ function renderGrupos(){
     <div class="view-intro"><div><h2>Grupos parlamentarios</h2><p>Cuánto intervino cada grupo y con qué tono, qué mayorías se formaron, cuánto ruido hubo en la Cámara y qué grupos votan juntos.</p></div></div>
     <div class="gtable-wrap"><table><thead><tr><th>Grupo</th><th>Interv.</th><th>Intensidad</th><th>Tono</th><th>Temas principales</th><th>Votaciones ganadas</th></tr></thead><tbody>${rows}</tbody></table></div>
     ${toneLegend(IVS)}
+    ${DATA.votaciones.length?`<div class="chart"><h3>Quién gana cada votación</h3><p class="sub">Cada columna es una votación, en orden cronológico; cada fila, un grupo. El cuadro se rellena con el color del grupo cuando votó en bloque con el lado ganador. Pulsa una columna para ir a la votación.</p>${matrizGanadores()}</div>`:""}
+    ${ganadasPorSemana()?`<div class="chart"><h3>Votaciones ganadas, semana a semana</h3><p class="sub">Parte de las votaciones de cada semana en las que el grupo, en bloque, estuvo en el lado ganador. La línea gris del centro marca el 50 %; arriba, el 100 %.</p>${ganadasPorSemana()}</div>`:""}
     <div class="chart"><h3>Mayorías</h3><p class="sub">Qué grupos estaban, en bloque, en el lado ganador de cada votación: los que votaron sí en las aprobadas y los que votaron no en las rechazadas. Cada fila es una combinación; los escaños son los que suman esos grupos.</p>${tablaMayorias()}</div>
     <div class="two">
       <div class="chart"><h3>Termómetro de la cámara</h3><p class="sub">Aplausos, risas, rumores y protestas que anota el Diario de Sesiones en cada pleno.</p>${termometroSesiones()||'<p class="nota">Sin datos.</p>'}</div>
@@ -1076,8 +1180,9 @@ function renderGrupos(){
       <div class="panel"><h3>Afinidad de voto</h3><p>Probabilidad de que un diputado de cada grupo, tomados al azar, votaran lo mismo, de media en las ${DATA.votaciones.length} votaciones.</p><div class="heat-wrap">${heat}</div></div>
       <div class="panel"><h3>Cohesión</h3><p>Parte de los diputados de cada grupo que votó con la mayoría de su grupo, de media.</p><div class="coh">${coh.map(([g,c])=>`<div class="coh-row" data-tip="${esc(`${G[g].nombre}: ${pct(c)} de sus diputados vota con la mayoría del grupo`)}"><span class="g" style="font-weight:600;display:inline-flex;gap:6px;align-items:center">${gdot(g)}${g}</span><span class="trk"><b style="width:${(c*100).toFixed(1)}%"></b></span><span class="n">${(c*100).toFixed(1).replace(".",",")} %</span></div>`).join("")}</div></div>
       ${respPanel()}
-      <div class="panel"><h3>De qué se habló</h3><p>Temas más repetidos en las intervenciones de diputados y Gobierno.</p><div class="topics">${topics.map(([t,n])=>`<div class="topic"><span>${esc(t)}</span><span class="tb" style="width:${n/max*100}%"></span><span class="n">${n}</span></div>`).join("")}</div></div>
     </div>`;
+  // La matriz de ganadores se abre por las votaciones más recientes.
+  requestAnimationFrame(()=>{ const w=$("#grupos .gan-wrap"); if (w) w.scrollLeft = w.scrollWidth; });
 }
 
 function respPanel(){
@@ -1196,7 +1301,7 @@ function ir(tab, anchor){
   if (el){ el.scrollIntoView({block:"start"}); window.scrollBy(0,-72); el.animate?.([{outline:"2px solid var(--ink)"},{outline:"2px solid transparent"}],{duration:1600}); }
   else window.scrollTo(0,0);
 }
-TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window.scrollTo(0,0); }));
+TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window.scrollTo(0,0); }, SIG));
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
@@ -1221,9 +1326,15 @@ document.addEventListener("click", e=>{
     if (enTemas) window.scrollTo(0,y); else { show("temas",true); window.scrollTo(0,0); } return; }
   const t = e.target.closest("[data-tema]");
   if (t){ orFilter = {q:t.dataset.tema, g:"TODOS"}; rendered.oradores=false; ir("oradores"); }
-});
+}, SIG);
 show((location.hash||"").slice(1), false);
-window.addEventListener("hashchange", ()=>{ show(location.hash.slice(1), false); window.scrollTo(0,0); });
+window.addEventListener("hashchange", ()=>{ show(location.hash.slice(1), false); window.scrollTo(0,0); }, SIG);
+// Hemiciclos perezosos: se dibujan al acercarse a la pantalla.
+const vigia = new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; vigia.unobserve(el); const v=VOTES[el.dataset.hemi]; if (v) el.outerHTML = hemiciclo(v); }), {rootMargin:"600px 0px"});
+const hidratar = () => document.querySelectorAll("main .hemi-lazy:not([data-vigilado])").forEach(el=>{ el.dataset.vigilado="1"; vigia.observe(el); });
+const mo = new MutationObserver(hidratar); mo.observe(document.querySelector("main"), {childList:true, subtree:true});
+ctl.signal.addEventListener("abort", ()=>{ mo.disconnect(); vigia.disconnect(); });
+hidratar();
 }
 </script>
 

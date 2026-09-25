@@ -44,7 +44,7 @@
   },
   {
    "orden": 3,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "Del diputado don Alberto Núñez Feijóo, del Grupo Parlamentario Popular en el Congreso, que formula al señor presidente del Gobierno: ¿Cree usted que se ha degradado la imagen de España? (Número de expediente 180/001158).",
@@ -96,7 +96,7 @@
   },
   {
    "orden": 7,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "Del diputado don Alberto Núñez Feijóo, del Grupo Parlamentario Popular en el Congreso, que formula al señor presidente del Gobierno: ¿Cree usted que se ha degradado la imagen de España? (Número de expediente 180/001158).",
@@ -156,7 +156,7 @@
   },
   {
    "orden": 12,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "De la diputada doña Míriam Nogueras i Camero, del Grupo Parlamentario Junts per Catalunya, que formula al señor presidente del Gobierno: ¿Qué opina el Gobierno sobre la situación actual? (Número de expediente 180/001153)",
@@ -202,7 +202,7 @@
   },
   {
    "orden": 16,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "De la diputada doña Míriam Nogueras i Camero, del Grupo Parlamentario Junts per Catalunya, que formula al señor presidente del Gobierno: ¿Qué opina el Gobierno sobre la situación actual? (Número de expediente 180/001153)",
@@ -259,7 +259,7 @@
   },
   {
    "orden": 21,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "De la diputada doña Mertxe Aizpurua Arzallus, del Grupo Parlamentario Euskal Herria Bildu, que formula al señor presidente del Gobierno: ¿Está dispuesto a tomar las decisiones que sean necesarias para, en lo que resta de legislatura, ampliar derechos laborales y sociales? (Número de expediente 180/001168)",
@@ -284,9 +284,9 @@
   },
   {
    "orden": 23,
-   "orador": "Aizpuruaarzallus",
+   "orador": "Aizpurua Arzallus",
    "cargo": null,
-   "grupo": "?",
+   "grupo": "BILDU",
    "item": "De la diputada doña Mertxe Aizpurua Arzallus, del Grupo Parlamentario Euskal Herria Bildu, que formula al señor presidente del Gobierno: ¿Está dispuesto a tomar las decisiones que sean necesarias para, en lo que resta de legislatura, ampliar derechos laborales y sociales? (Número de expediente 180/001168)",
    "exp": "180/001168",
    "seccion": "PREGUNTAS",
@@ -308,7 +308,7 @@
   },
   {
    "orden": 25,
-   "orador": "Sánchez Pérez‑Castejón",
+   "orador": "Sánchez Pérez-Castejón",
    "cargo": "Presidente del Gobierno",
    "grupo": "GOB",
    "item": "De la diputada doña Mertxe Aizpurua Arzallus, del Grupo Parlamentario Euskal Herria Bildu, que formula al señor presidente del Gobierno: ¿Está dispuesto a tomar las decisiones que sean necesarias para, en lo que resta de legislatura, ampliar derechos laborales y sociales? (Número de expediente 180/001168)",
@@ -727,7 +727,7 @@
   {
    "orden": 59,
    "orador": "Aagesen Muñoz",
-   "cargo": "Vicepresidenta Tercera y Ministra para la Transición Ecológicay el Reto Demográfico",
+   "cargo": "Vicepresidenta Tercera y Ministra para la Transición Ecológica y el Reto Demográfico",
    "grupo": "GOB",
    "item": "Del diputado don Guillermo Mariscal Anaya, del Grupo Parlamentario Popular en el Congreso, que formula a la señora vicepresidenta tercera y ministra para la Transición Ecológica y el Reto Demográfico: ¿Hacia dónde nos lleva su desastrosa política energética? (Número de expediente 180/001161)",
    "exp": "180/001161",
@@ -1345,7 +1345,7 @@
   {
    "orden": 110,
    "orador": "Hereu Boher",
-   "cargo": "Ministro de Industriay Turismo",
+   "cargo": "Ministro de Industria y Turismo",
    "grupo": "GOB",
    "item": "De la diputada doña Inés Granollers Cunillera, del Grupo Parlamentario Republicano, que formula al señor ministro de Industria y Turismo: ¿Está garantizada la competitividad industrial? (Número de expediente 180/001152)",
    "exp": "180/001152",
@@ -1403,7 +1403,7 @@
   },
   {
    "orden": 115,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "Del diputado don Miguel Tellado Filgueira, del Grupo Parlamentario Popular en el Congreso, que formula al señor ministro del Interior: ¿Ha vuelto Ceuta a la normalidad? (Número de expediente 180/001165)",
@@ -1452,7 +1452,7 @@
   },
   {
    "orden": 119,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "Del diputado don Miguel Tellado Filgueira, del Grupo Parlamentario Popular en el Congreso, que formula al señor ministro del Interior: ¿Ha vuelto Ceuta a la normalidad? (Número de expediente 180/001165)",
@@ -1511,7 +1511,7 @@
   },
   {
    "orden": 124,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "DEL DIPUTADO DON ELÍAS BENDODO BENASAYAG, DEL GRUPO PARLAMENTARIO POPULAR EN EL CONGRESO, QUE FORMULA AL SEÑOR MINISTRO DEL INTERIOR: ¿CREE QUE ESTÁ ACTUANDO CON DILIGENCIA EN SUS RESPONSABILIDADES COMO MINISTRO? (Número de expediente 180/001166).",
@@ -1561,7 +1561,7 @@
   },
   {
    "orden": 128,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "DEL DIPUTADO DON ELÍAS BENDODO BENASAYAG, DEL GRUPO PARLAMENTARIO POPULAR EN EL CONGRESO, QUE FORMULA AL SEÑOR MINISTRO DEL INTERIOR: ¿CREE QUE ESTÁ ACTUANDO CON DILIGENCIA EN SUS RESPONSABILIDADES COMO MINISTRO? (Número de expediente 180/001166).",
@@ -1618,7 +1618,7 @@
   },
   {
    "orden": 133,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "DEL DIPUTADO DON IGNACIO GIL LÁZARO, DEL GRUPO PARLAMENTARIO VOX, QUE FORMULA AL SEÑOR MINISTRO DEL INTERIOR: ¿VA A SEGUIR ENGAÑANDO A LOS CEUTÍES? (Número de expediente 180/001157).",
@@ -1666,7 +1666,7 @@
   },
   {
    "orden": 137,
-   "orador": "Grande‑Marlaska Gómez",
+   "orador": "Grande-Marlaska Gómez",
    "cargo": "Ministro del Interior",
    "grupo": "GOB",
    "item": "DEL DIPUTADO DON IGNACIO GIL LÁZARO, DEL GRUPO PARLAMENTARIO VOX, QUE FORMULA AL SEÑOR MINISTRO DEL INTERIOR: ¿VA A SEGUIR ENGAÑANDO A LOS CEUTÍES? (Número de expediente 180/001157).",
@@ -3477,13 +3477,24 @@
    "item": "Proyecto de ley por la que se modifican el texto refundido de la Ley General de Derechos de las Personas con Discapacidad y de su Inclusión Social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las Personas en Situación de Dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española. «BOCG. Congreso de los Diputados», serie A, número 64‑1, de 24 de julio de 2025. (Número de expediente 121/000064)",
    "exp": "121/000064",
    "seccion": "ENMIENDAS DEL SENADO",
-   "texto": "Muchas gracias, señora Tomás. En nombre del Gobierno, tiene la palabra el señor ministro de Derechos Sociales, Consumo y Agenda 2030. El señor MINISTRO DE DERECHOS SOCIALES, CONSUMO Y AGENDA 2030 (Bustinduy Amador): Muchas gracias, presidenta, y muchas gracias a las portavoces y a los portavoces de todos los grupos parlamentarios por participar en este punto importante. Es verdad, es una realidad que muchos de los temas que ocupan gran parte del debate político en esta Cámara pasarán y dejarán poca huella, pero hay otros debates que no, y este será uno de ellos. Hoy se culmina la reforma de las leyes de discapacidad y dependencia, después de tres años de durísimo trabajo por parte del ministerio y también de esta Cámara. Aunque la historia es mucho más larga, la historia incluye el plan de choque para la dependencia que se realizó en la legislatura pasada desde el ministerio de Ione Belarra y con el trabajo de Nacho Álvarez y de tanta gente; siguió por la utilización de los fondos europeos, el componente 22, con 3000 millones de euros para modernizar la infraestructura social y el sistema de la dependencia en España ―ningún país europeo hizo algo parecido―; ha continuado en el trabajo de la estrategia de desinstitucionalización con todas las comunidades autónomas de todos los signos políticos, trabajando a una para cambiar nuestro modelo de cuidados; siguió con la aprobación histórica de la reforma constitucional del artículo 49, de la primera reforma social de la historia de nuestra carta magna, que mandató al Gobierno y a esta Cámara a hacer lo que hoy está culminando: enviar al Boletín Oficial del Estado la que es la mayor reforma social en décadas en este país. (Aplausos). Es un camino que, por supuesto, no ha estado exento —‌ ni lo va a estar— de dificultades, de la complejidad propia de esta legislatura y de los tiempos que vivimos, pero reviste una importancia singular, y por eso he querido intervenir, para recalcarlo y que quede reflejado en el Diario de Sesiones; una importancia que no es solo para el Gobierno ni para este ministerio ―por mucho que haber podido participar de este proceso sea el mayor honor que me vaya a llevar de la política―, sino para más de cuatro millones de compatriotas con discapacidad, para 1,7 millones de personas atendidas hoy en día por nuestro sistema de la dependencia, para medio millón de trabajadoras en el sector de los cuidados de larga duración, para una sociedad, en su conjunto, que está atravesada a día de hoy por las desigualdades y las insuficiencias que genera nuestro sistema de atención social, de protección social. Lo es para quien cuida hoy de un ser querido, lo es para quien descubre la realidad que supone la necesidad de cuidar a alguien a quien se quiere en términos de jornada, de esfuerzo, de implicación y de soledad muchas veces, especialmente para las mujeres. Y lo es también para unas generaciones que apenas empiezan a formularse la pregunta acerca de a ellos quién les va a cuidar, en una sociedad en la que vivimos mucho más tiempo —‌ lo que es un logro y una conquista democrática y reflejo de todo lo que ha avanzado este país en las últimas décadas—, pero en la que planea con fuerza la pregunta sobre cómo queremos vivir en esos años y qué necesitamos para poder vivir más. Y lo es para el Estado social, que avanza asumiendo que la cuestión de los cuidados no es individual, no es una cuestión familiar, no es una cuestión privada: es una necesidad que penetra en nuestra sociedad transversalmente y, por tanto, a la que hay que dar una respuesta democrática, generando derechos, generando igualdad de oportunidades, de condiciones ante las mismas necesidades. Y es también particularmente importante para reafirmar una excepción, la excepción española, que en un momento en el mundo en el que lo que abunda y lo que avanza son los conflictos, son las guerras, son los rearmes, son los recortes, este país sigue apostando por convertir nuestra sociedad en un lugar más justo, por seguir ampliando la red de protección social, por seguir generando derechos. Y lo es, si me permiten la osadía, también para ustedes, porque un día podrán mirar hacia atrás, la labor parlamentaria que realizaron en esta sede y podrán decir: Yo voté a favor de esa reforma en el Congreso —‌ eso para quienes voten a favor, por supuesto; no para los que no lo puedan decir—. Creo que será una forma de honrar el mandato que asumieron en esta Cámara. Desde luego, nosotros nos hemos dejado la vida en llegar a este día, pero somos plenamente conscientes de que, si esto está sucediendo hoy aquí, si hemos llegado hasta aquí, es gracias al trabajo del CERMI, de la ONCE, de COCEMFE, de Plena Inclusión, de CEAFA, de CEOMA, de la Plataforma Unitaria de Auxiliares de Ayuda a Domicilio, de los sindicatos de clase, de las plataformas de mayores, de las organizaciones de la discapacidad, del tercer sector, en su conjunto. Y hoy una vez más, como han hecho todos los portavoces parlamentarios, quiero agradecer y reconocer su labor, expresar mi admiración por haber sabido ejercer de manera ejemplar la responsabilidad y el papel que las organizaciones sociales tienen en una democracia. Ya los griegos decían en la antigua Grecia que cuando la democracia degenera se convierte en demagogia ―también esta tarde hemos escuchado bastante demagogia aquí―, pero lo que precisamente diferencia un régimen del otro es la existencia de organización social, de conciencia, de presión, de movilización para hacer que la democracia cumpla con el propósito que es el suyo, que es garantizar la igualdad de derechos y oportunidades y el reparto de la riqueza y de los recursos, que es lo que está haciendo el Estado social hoy en día. Gracias a la existencia de un sector social como el que tenemos en España seguimos avanzando y este tipo de consenso, este tipo de avances son posibles. Y, en esta legislatura tan compleja, tan difícil, lo han conseguido ya en distintas ocasiones, han conseguido teñir de verde el arco parlamentario. Lo hicieron con el artículo 49, con la ley ELA, con el decreto ley que dotó de 500 millones de euros para el despliegue de esa ley, con el decreto ley que puso 6200 millones de euros para hacer posible esta transformación del modelo de cuidados y también con la reforma de las leyes que hoy culmina. Bueno, de verde entero, no; siempre ha habido una excepción, que es la ultraderecha, que sistemáticamente ha votado en contra de cada una de estas reformas, y yo hoy quiero decirlo aquí para que se sepa, para que conste y esto les persiga para siempre. Cuando esta Cámara en un ejercicio de consenso absolutamente transversal, que es el de la sociedad española, se ha puesto de acuerdo para atender las reclamaciones, las demandas más justas de nuestros compatriotas más vulnerables, para hacerles la vida un poco mejor, ustedes siempre han votado en contra, sistemáticamente. Esa es la verdad y debe conocerse. De hecho, lo que han hecho ahora en el Senado, después de haber votado en contra de la reforma de estas leyes, es decir, de haber intentado oponerse a que existieran, bloquearlas para que no sucedieran, ha sido introducir una enmienda para decir: ya que va a salir, ya que se van a ampliar derechos, ya que va a mejorar la protección social de las personas con discapacidad y en situación de dependencia, asegurémonos de que no reciban ninguna de esas prestaciones o ayuda quienes nosotros no queremos, quienes tengan otra religión, o los nombres que a ustedes no les gustan, los solicitantes de asilo… ¡Qué vergüenza! Por muy grande que sea el crucifijo que lleven, ¡qué malos cristianos son! Por muy grande que sea la banderita que lleven, ¡qué malos patriotas son! De verdad, ¡que se sepa esto y que les persiga! (Aplausos). Y en ese arco parlamentario el Partido Popular unas veces ha estado en el verde y otras en el amarillo, a veces lo han apoyado y otras se han abstenido. En el caso de esta reforma, cuando pasó por aquí hace dos meses desde esta tribuna yo les agradecí con total sinceridad que ustedes se abstuvieran, que modificaran en el último minuto el sentido de su voto. Lo que había sucedido antes es que en el largo año de trabajos en la Comisión de Derechos Sociales ustedes no quisieron participar en la ponencia y votaron en contra de todo. Pero retiraron sus propias enmiendas y vinieron aquí a decir que se abstenían, y al final yo se lo agradecí. Porque era importante que saliera adelante esta ley con un consenso suficiente, porque la ley no tenía memoria económica y porque promulgar nuevos derechos sin que tuviera la financiación suficiente era generar frustración; algo así venían a expresar entonces ustedes. Pero luego en el Senado ya nada de todo esto vale, y, sin negociar ni hablar con el Gobierno de nada, cuando ya no importan las memorias económicas ni nada de todo esto, han añadido un montón de cuestiones, algunas importantísimas, otras incomprensibles, y es evidente que en el planteamiento hoy hay la voluntad de generar un choque, en el que yo no voy a entrar. Como he hecho siempre en el pasado con estas cuestiones ―lo mismo les digo a ustedes y a todos los portavoces de los grupos parlamentarios que con buena voluntad y propósito constructivo han planteado la cuestión de la CUME y otras tantas necesidades acuciantes― y como creo que ha hecho la ministra de Inclusión esta mañana aquí, lo que voy a hacer es comprometerme a sacarlo adelante con el mayor consenso posible, de la manera más coherente posible, y no solo en referencia a estas cuestiones, sino respecto a otras también que han quedado aparcadas sobre protección a las familias, a las familias numerosas, a las monomarentales, etcétera, que han quedado aparcadas porque ni siquiera han querido sentarse a hablar de la ley de familias. La vamos a traer aquí y lo vamos a hacer bien y vamos a seguir avanzando, sin instrumentalizar ni utilizar como arma arrojadiza cuestiones tan absolutamente imprescindibles, urgentes y necesarias. Y la pregunta para cuando hoy se vote aquí es: ¿y ahora qué?, ¿ahora qué pasa? Y esto me permite —‌ termino con esto— ahondar en una cuestión que ha rondado en el debate parlamentario y en la tramitación de estas normas desde el principio. ¿Esto cómo se financia? ¿Cómo se pueden garantizar estos derechos? Se ha mencionado hoy mismo también. ¿La financiación de esta ley es real o no lo es? Pues yo digo hoy aquí que, a diferencia de otras veces en que se aprueban leyes aquí y se mandan al Boletín Oficial del Estado, no hay que esperar al desarrollo reglamentario para ver la transformación, a que la ley se vaya desplegando, y esto es así porque hemos hecho una cosa inédita en la política social de este país, y es que aprobamos la financiación de este cambio de modelo por adelantado, antes de que se pudiera culminar esta reforma con estas leyes. Y miren a lo que me refiero: desde que se votó aquí el 14 de julio el decreto ley de financiación extraordinaria para el nuevo sistema de cuidados, la comunidad de Andalucía ha recibido en julio y agosto 105 millones de euros más, Aragón 16, Asturias 8,7, Baleares 9, Canarias 26, Cantabria 6, Castilla‑La Mancha 26, Castilla y León 37, Cataluña 63, Comunidad Valenciana 56, Extremadura 12, Galicia 30, la Comunidad de Madrid 75, Murcia, 16, La Rioja 2,7, Navarra 4 y el País Vasco 19,9. Estas son estimaciones de las nóminas transferidas en los meses de julio y agosto, que totalizan un incremento adicional de 517444 000 euros adicionales solo en julio y agosto respecto a lo que se venía recibiendo. Esta cantidad será de 6200 millones de euros el año que viene —‌ garantizado—, lo que implica que al año que viene se va a multiplicar por cinco —‌ repito, por cinco— la financiación de la dependencia que destinaba el Gobierno de Mariano Rajoy antes de la moción de censura. Esto, que son hechos, son transferencias realizadas a las comunidades autónomas, es lo que planteamos desde el principio, que íbamos a poner la financiación por adelantado para hacer posible la refundación del modelo de cuidados que implican las leyes que se aprueban hoy. ¿Y para qué va a servir esto? En primer lugar, con esta financiación extraordinaria —‌ y a pesar de que esta ley, entre otras cosas, reduce de seis meses a tres meses el plazo máximo para otorgar las prestaciones que tienen lasAdministraciones—, la lista de espera en el año 2027 debe reducirse a la mitad y debe desaparecer en el año 2028; objetivo número uno, que vamos a monitorizar con las comunidades autónomas mes a mes a partir de ahora. Las listas de espera deben desaparecer de la dependencia para 2028. (Aplausos). En segundo lugar, es una urgencia imprescindible —‌ y lo recoge la ley también— mejorar las condiciones de trabajo, y especialmente las condiciones salariales en el sector de los cuidados y de la dependencia. La renegociación de los convenios, las licitaciones, todas las renegociaciones en curso, la negociación colectiva deben implicar, dado que existen todos estos recursos adicionales puestos a disposición de las comunidades autónomas, una mejora sustantiva de las condiciones retributivas en el sector. Y, en tercer lugar, el despliegue del cambio de modelo, que será necesariamente progresivo y gradual, debe notarse de manera inmediata. La teleasistencia como derecho subjetivo, la transformación de la ayuda a domicilio, de los centros de día, la asistencia personal como un servicio, las prestaciones transitorias, los bancos de productos de apoyo, las viviendas asistidas, la domotización de viviendas, la accesibilidad universal, etcétera, la refundación de nuestro sistema de los cuidados tiene que arrancar desde ya, porque cuenta con los recursos necesarios para ello. Y termino con una última reflexión. La asunción de los cuidados como una obligación democrática y, por tanto, como pilar de nuestro sistema de protección social no se refiere solo a las situaciones de dependencia o a las personas con discapacidad. Cuidar y ser cuidados es algo que atraviesa los ciclos vitales desde que inician hasta que acaban. El sistema de cuidados propio de un Estado social del siglo XXI debe abarcar el conjunto de esas realidades vitales. Y, para empezar —‌ y este es el siguiente paso que les anuncio desde aquí—, el sistema de cuidados en España debe incluir una prestación universal por crianza, para acabar con la pobreza infantil en este país. (Aplausos). En pocas semanas tendremos en esta Cámara el debate de los presupuestos generales del Estado: por parte del Ministerio de Derechos Sociales será un debate sobre la prestación universal por crianza. Los veo a todos ustedes, señorías, en ese debate. Será un placer. Muchas gracias. (Aplausos).",
+   "texto": "Muchas gracias, señora Tomás. En nombre del Gobierno, tiene la palabra el señor ministro de Derechos Sociales, Consumo y Agenda 2030.",
+   "reacciones": {}
+  },
+  {
+   "orden": 290,
+   "orador": "Bustinduy Amador",
+   "cargo": "Ministro de Derechos Sociales, Consumo y Agenda 2030",
+   "grupo": "GOB",
+   "item": "Proyecto de ley por la que se modifican el texto refundido de la Ley General de Derechos de las Personas con Discapacidad y de su Inclusión Social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las Personas en Situación de Dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española. «BOCG. Congreso de los Diputados», serie A, número 64‑1, de 24 de julio de 2025. (Número de expediente 121/000064)",
+   "exp": "121/000064",
+   "seccion": "ENMIENDAS DEL SENADO",
+   "texto": "Muchas gracias, presidenta, y muchas gracias a las portavoces y a los portavoces de todos los grupos parlamentarios por participar en este punto importante. Es verdad, es una realidad que muchos de los temas que ocupan gran parte del debate político en esta Cámara pasarán y dejarán poca huella, pero hay otros debates que no, y este será uno de ellos. Hoy se culmina la reforma de las leyes de discapacidad y dependencia, después de tres años de durísimo trabajo por parte del ministerio y también de esta Cámara. Aunque la historia es mucho más larga, la historia incluye el plan de choque para la dependencia que se realizó en la legislatura pasada desde el ministerio de Ione Belarra y con el trabajo de Nacho Álvarez y de tanta gente; siguió por la utilización de los fondos europeos, el componente 22, con 3000 millones de euros para modernizar la infraestructura social y el sistema de la dependencia en España ―ningún país europeo hizo algo parecido―; ha continuado en el trabajo de la estrategia de desinstitucionalización con todas las comunidades autónomas de todos los signos políticos, trabajando a una para cambiar nuestro modelo de cuidados; siguió con la aprobación histórica de la reforma constitucional del artículo 49, de la primera reforma social de la historia de nuestra carta magna, que mandató al Gobierno y a esta Cámara a hacer lo que hoy está culminando: enviar al Boletín Oficial del Estado la que es la mayor reforma social en décadas en este país. (Aplausos). Es un camino que, por supuesto, no ha estado exento —‌ ni lo va a estar— de dificultades, de la complejidad propia de esta legislatura y de los tiempos que vivimos, pero reviste una importancia singular, y por eso he querido intervenir, para recalcarlo y que quede reflejado en el Diario de Sesiones; una importancia que no es solo para el Gobierno ni para este ministerio ―por mucho que haber podido participar de este proceso sea el mayor honor que me vaya a llevar de la política―, sino para más de cuatro millones de compatriotas con discapacidad, para 1,7 millones de personas atendidas hoy en día por nuestro sistema de la dependencia, para medio millón de trabajadoras en el sector de los cuidados de larga duración, para una sociedad, en su conjunto, que está atravesada a día de hoy por las desigualdades y las insuficiencias que genera nuestro sistema de atención social, de protección social. Lo es para quien cuida hoy de un ser querido, lo es para quien descubre la realidad que supone la necesidad de cuidar a alguien a quien se quiere en términos de jornada, de esfuerzo, de implicación y de soledad muchas veces, especialmente para las mujeres. Y lo es también para unas generaciones que apenas empiezan a formularse la pregunta acerca de a ellos quién les va a cuidar, en una sociedad en la que vivimos mucho más tiempo —‌ lo que es un logro y una conquista democrática y reflejo de todo lo que ha avanzado este país en las últimas décadas—, pero en la que planea con fuerza la pregunta sobre cómo queremos vivir en esos años y qué necesitamos para poder vivir más. Y lo es para el Estado social, que avanza asumiendo que la cuestión de los cuidados no es individual, no es una cuestión familiar, no es una cuestión privada: es una necesidad que penetra en nuestra sociedad transversalmente y, por tanto, a la que hay que dar una respuesta democrática, generando derechos, generando igualdad de oportunidades, de condiciones ante las mismas necesidades. Y es también particularmente importante para reafirmar una excepción, la excepción española, que en un momento en el mundo en el que lo que abunda y lo que avanza son los conflictos, son las guerras, son los rearmes, son los recortes, este país sigue apostando por convertir nuestra sociedad en un lugar más justo, por seguir ampliando la red de protección social, por seguir generando derechos. Y lo es, si me permiten la osadía, también para ustedes, porque un día podrán mirar hacia atrás, la labor parlamentaria que realizaron en esta sede y podrán decir: Yo voté a favor de esa reforma en el Congreso —‌ eso para quienes voten a favor, por supuesto; no para los que no lo puedan decir—. Creo que será una forma de honrar el mandato que asumieron en esta Cámara. Desde luego, nosotros nos hemos dejado la vida en llegar a este día, pero somos plenamente conscientes de que, si esto está sucediendo hoy aquí, si hemos llegado hasta aquí, es gracias al trabajo del CERMI, de la ONCE, de COCEMFE, de Plena Inclusión, de CEAFA, de CEOMA, de la Plataforma Unitaria de Auxiliares de Ayuda a Domicilio, de los sindicatos de clase, de las plataformas de mayores, de las organizaciones de la discapacidad, del tercer sector, en su conjunto. Y hoy una vez más, como han hecho todos los portavoces parlamentarios, quiero agradecer y reconocer su labor, expresar mi admiración por haber sabido ejercer de manera ejemplar la responsabilidad y el papel que las organizaciones sociales tienen en una democracia. Ya los griegos decían en la antigua Grecia que cuando la democracia degenera se convierte en demagogia ―también esta tarde hemos escuchado bastante demagogia aquí―, pero lo que precisamente diferencia un régimen del otro es la existencia de organización social, de conciencia, de presión, de movilización para hacer que la democracia cumpla con el propósito que es el suyo, que es garantizar la igualdad de derechos y oportunidades y el reparto de la riqueza y de los recursos, que es lo que está haciendo el Estado social hoy en día. Gracias a la existencia de un sector social como el que tenemos en España seguimos avanzando y este tipo de consenso, este tipo de avances son posibles. Y, en esta legislatura tan compleja, tan difícil, lo han conseguido ya en distintas ocasiones, han conseguido teñir de verde el arco parlamentario. Lo hicieron con el artículo 49, con la ley ELA, con el decreto ley que dotó de 500 millones de euros para el despliegue de esa ley, con el decreto ley que puso 6200 millones de euros para hacer posible esta transformación del modelo de cuidados y también con la reforma de las leyes que hoy culmina. Bueno, de verde entero, no; siempre ha habido una excepción, que es la ultraderecha, que sistemáticamente ha votado en contra de cada una de estas reformas, y yo hoy quiero decirlo aquí para que se sepa, para que conste y esto les persiga para siempre. Cuando esta Cámara en un ejercicio de consenso absolutamente transversal, que es el de la sociedad española, se ha puesto de acuerdo para atender las reclamaciones, las demandas más justas de nuestros compatriotas más vulnerables, para hacerles la vida un poco mejor, ustedes siempre han votado en contra, sistemáticamente. Esa es la verdad y debe conocerse. De hecho, lo que han hecho ahora en el Senado, después de haber votado en contra de la reforma de estas leyes, es decir, de haber intentado oponerse a que existieran, bloquearlas para que no sucedieran, ha sido introducir una enmienda para decir: ya que va a salir, ya que se van a ampliar derechos, ya que va a mejorar la protección social de las personas con discapacidad y en situación de dependencia, asegurémonos de que no reciban ninguna de esas prestaciones o ayuda quienes nosotros no queremos, quienes tengan otra religión, o los nombres que a ustedes no les gustan, los solicitantes de asilo… ¡Qué vergüenza! Por muy grande que sea el crucifijo que lleven, ¡qué malos cristianos son! Por muy grande que sea la banderita que lleven, ¡qué malos patriotas son! De verdad, ¡que se sepa esto y que les persiga! (Aplausos). Y en ese arco parlamentario el Partido Popular unas veces ha estado en el verde y otras en el amarillo, a veces lo han apoyado y otras se han abstenido. En el caso de esta reforma, cuando pasó por aquí hace dos meses desde esta tribuna yo les agradecí con total sinceridad que ustedes se abstuvieran, que modificaran en el último minuto el sentido de su voto. Lo que había sucedido antes es que en el largo año de trabajos en la Comisión de Derechos Sociales ustedes no quisieron participar en la ponencia y votaron en contra de todo. Pero retiraron sus propias enmiendas y vinieron aquí a decir que se abstenían, y al final yo se lo agradecí. Porque era importante que saliera adelante esta ley con un consenso suficiente, porque la ley no tenía memoria económica y porque promulgar nuevos derechos sin que tuviera la financiación suficiente era generar frustración; algo así venían a expresar entonces ustedes. Pero luego en el Senado ya nada de todo esto vale, y, sin negociar ni hablar con el Gobierno de nada, cuando ya no importan las memorias económicas ni nada de todo esto, han añadido un montón de cuestiones, algunas importantísimas, otras incomprensibles, y es evidente que en el planteamiento hoy hay la voluntad de generar un choque, en el que yo no voy a entrar. Como he hecho siempre en el pasado con estas cuestiones ―lo mismo les digo a ustedes y a todos los portavoces de los grupos parlamentarios que con buena voluntad y propósito constructivo han planteado la cuestión de la CUME y otras tantas necesidades acuciantes― y como creo que ha hecho la ministra de Inclusión esta mañana aquí, lo que voy a hacer es comprometerme a sacarlo adelante con el mayor consenso posible, de la manera más coherente posible, y no solo en referencia a estas cuestiones, sino respecto a otras también que han quedado aparcadas sobre protección a las familias, a las familias numerosas, a las monomarentales, etcétera, que han quedado aparcadas porque ni siquiera han querido sentarse a hablar de la ley de familias. La vamos a traer aquí y lo vamos a hacer bien y vamos a seguir avanzando, sin instrumentalizar ni utilizar como arma arrojadiza cuestiones tan absolutamente imprescindibles, urgentes y necesarias. Y la pregunta para cuando hoy se vote aquí es: ¿y ahora qué?, ¿ahora qué pasa? Y esto me permite —‌ termino con esto— ahondar en una cuestión que ha rondado en el debate parlamentario y en la tramitación de estas normas desde el principio. ¿Esto cómo se financia? ¿Cómo se pueden garantizar estos derechos? Se ha mencionado hoy mismo también. ¿La financiación de esta ley es real o no lo es? Pues yo digo hoy aquí que, a diferencia de otras veces en que se aprueban leyes aquí y se mandan al Boletín Oficial del Estado, no hay que esperar al desarrollo reglamentario para ver la transformación, a que la ley se vaya desplegando, y esto es así porque hemos hecho una cosa inédita en la política social de este país, y es que aprobamos la financiación de este cambio de modelo por adelantado, antes de que se pudiera culminar esta reforma con estas leyes. Y miren a lo que me refiero: desde que se votó aquí el 14 de julio el decreto ley de financiación extraordinaria para el nuevo sistema de cuidados, la comunidad de Andalucía ha recibido en julio y agosto 105 millones de euros más, Aragón 16, Asturias 8,7, Baleares 9, Canarias 26, Cantabria 6, Castilla‑La Mancha 26, Castilla y León 37, Cataluña 63, Comunidad Valenciana 56, Extremadura 12, Galicia 30, la Comunidad de Madrid 75, Murcia, 16, La Rioja 2,7, Navarra 4 y el País Vasco 19,9. Estas son estimaciones de las nóminas transferidas en los meses de julio y agosto, que totalizan un incremento adicional de 517444 000 euros adicionales solo en julio y agosto respecto a lo que se venía recibiendo. Esta cantidad será de 6200 millones de euros el año que viene —‌ garantizado—, lo que implica que al año que viene se va a multiplicar por cinco —‌ repito, por cinco— la financiación de la dependencia que destinaba el Gobierno de Mariano Rajoy antes de la moción de censura. Esto, que son hechos, son transferencias realizadas a las comunidades autónomas, es lo que planteamos desde el principio, que íbamos a poner la financiación por adelantado para hacer posible la refundación del modelo de cuidados que implican las leyes que se aprueban hoy. ¿Y para qué va a servir esto? En primer lugar, con esta financiación extraordinaria —‌ y a pesar de que esta ley, entre otras cosas, reduce de seis meses a tres meses el plazo máximo para otorgar las prestaciones que tienen lasAdministraciones—, la lista de espera en el año 2027 debe reducirse a la mitad y debe desaparecer en el año 2028; objetivo número uno, que vamos a monitorizar con las comunidades autónomas mes a mes a partir de ahora. Las listas de espera deben desaparecer de la dependencia para 2028. (Aplausos). En segundo lugar, es una urgencia imprescindible —‌ y lo recoge la ley también— mejorar las condiciones de trabajo, y especialmente las condiciones salariales en el sector de los cuidados y de la dependencia. La renegociación de los convenios, las licitaciones, todas las renegociaciones en curso, la negociación colectiva deben implicar, dado que existen todos estos recursos adicionales puestos a disposición de las comunidades autónomas, una mejora sustantiva de las condiciones retributivas en el sector. Y, en tercer lugar, el despliegue del cambio de modelo, que será necesariamente progresivo y gradual, debe notarse de manera inmediata. La teleasistencia como derecho subjetivo, la transformación de la ayuda a domicilio, de los centros de día, la asistencia personal como un servicio, las prestaciones transitorias, los bancos de productos de apoyo, las viviendas asistidas, la domotización de viviendas, la accesibilidad universal, etcétera, la refundación de nuestro sistema de los cuidados tiene que arrancar desde ya, porque cuenta con los recursos necesarios para ello. Y termino con una última reflexión. La asunción de los cuidados como una obligación democrática y, por tanto, como pilar de nuestro sistema de protección social no se refiere solo a las situaciones de dependencia o a las personas con discapacidad. Cuidar y ser cuidados es algo que atraviesa los ciclos vitales desde que inician hasta que acaban. El sistema de cuidados propio de un Estado social del siglo XXI debe abarcar el conjunto de esas realidades vitales. Y, para empezar —‌ y este es el siguiente paso que les anuncio desde aquí—, el sistema de cuidados en España debe incluir una prestación universal por crianza, para acabar con la pobreza infantil en este país. (Aplausos). En pocas semanas tendremos en esta Cámara el debate de los presupuestos generales del Estado: por parte del Ministerio de Derechos Sociales será un debate sobre la prestación universal por crianza. Los veo a todos ustedes, señorías, en ese debate. Será un placer. Muchas gracias. (Aplausos).",
    "reacciones": {
     "aplausos": 5
    }
   },
   {
-   "orden": 290,
+   "orden": 291,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3494,7 +3505,7 @@
    "reacciones": {}
   },
   {
-   "orden": 291,
+   "orden": 292,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3505,7 +3516,7 @@
    "reacciones": {}
   },
   {
-   "orden": 292,
+   "orden": 293,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3516,7 +3527,7 @@
    "reacciones": {}
   },
   {
-   "orden": 293,
+   "orden": 294,
    "orador": "Celaya Brey",
    "cargo": null,
    "grupo": "PP",
@@ -3529,7 +3540,7 @@
    }
   },
   {
-   "orden": 294,
+   "orden": 295,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3542,7 +3553,7 @@
    }
   },
   {
-   "orden": 295,
+   "orden": 296,
    "orador": "Rodríguez Almeida",
    "cargo": null,
    "grupo": "VOX",
@@ -3555,7 +3566,7 @@
    }
   },
   {
-   "orden": 296,
+   "orden": 297,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3566,7 +3577,7 @@
    "reacciones": {}
   },
   {
-   "orden": 297,
+   "orden": 298,
    "orador": "Catalán Higueras",
    "cargo": null,
    "grupo": "MIXTO",
@@ -3577,7 +3588,7 @@
    "reacciones": {}
   },
   {
-   "orden": 298,
+   "orden": 299,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3588,7 +3599,7 @@
    "reacciones": {}
   },
   {
-   "orden": 299,
+   "orden": 300,
    "orador": "Rego Candamil",
    "cargo": null,
    "grupo": "MIXTO",
@@ -3601,7 +3612,7 @@
    }
   },
   {
-   "orden": 300,
+   "orden": 301,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3612,7 +3623,7 @@
    "reacciones": {}
   },
   {
-   "orden": 301,
+   "orden": 302,
    "orador": "Velarde Gómez",
    "cargo": null,
    "grupo": "MIXTO",
@@ -3625,7 +3636,7 @@
    }
   },
   {
-   "orden": 302,
+   "orden": 303,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3636,7 +3647,7 @@
    "reacciones": {}
   },
   {
-   "orden": 303,
+   "orden": 304,
    "orador": "Legarda Uriarte",
    "cargo": null,
    "grupo": "PNV",
@@ -3647,7 +3658,7 @@
    "reacciones": {}
   },
   {
-   "orden": 304,
+   "orden": 305,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3658,7 +3669,7 @@
    "reacciones": {}
   },
   {
-   "orden": 305,
+   "orden": 306,
    "orador": "Madrenas i Mir",
    "cargo": null,
    "grupo": "JUNTS",
@@ -3669,7 +3680,7 @@
    "reacciones": {}
   },
   {
-   "orden": 306,
+   "orden": 307,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3680,7 +3691,7 @@
    "reacciones": {}
   },
   {
-   "orden": 307,
+   "orden": 308,
    "orador": "Álvaro Vidal",
    "cargo": null,
    "grupo": "ERC",
@@ -3693,7 +3704,7 @@
    }
   },
   {
-   "orden": 308,
+   "orden": 309,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3704,7 +3715,7 @@
    "reacciones": {}
   },
   {
-   "orden": 309,
+   "orden": 310,
    "orador": "Andala Ubbi",
    "cargo": null,
    "grupo": "SUMAR",
@@ -3717,7 +3728,7 @@
    }
   },
   {
-   "orden": 310,
+   "orden": 311,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3728,7 +3739,7 @@
    "reacciones": {}
   },
   {
-   "orden": 311,
+   "orden": 312,
    "orador": "Montávez Aguillaume",
    "cargo": null,
    "grupo": "PSOE",
@@ -3742,7 +3753,7 @@
    }
   },
   {
-   "orden": 312,
+   "orden": 313,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3753,7 +3764,7 @@
    "reacciones": {}
   },
   {
-   "orden": 313,
+   "orden": 314,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3764,7 +3775,7 @@
    "reacciones": {}
   },
   {
-   "orden": 314,
+   "orden": 315,
    "orador": "Catalán Higueras",
    "cargo": null,
    "grupo": "MIXTO",
@@ -3775,7 +3786,7 @@
    "reacciones": {}
   },
   {
-   "orden": 315,
+   "orden": 316,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3786,7 +3797,7 @@
    "reacciones": {}
   },
   {
-   "orden": 316,
+   "orden": 317,
    "orador": "Cacho Isla",
    "cargo": null,
    "grupo": "PSOE",
@@ -3799,7 +3810,7 @@
    }
   },
   {
-   "orden": 317,
+   "orden": 318,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3810,7 +3821,7 @@
    "reacciones": {}
   },
   {
-   "orden": 318,
+   "orden": 319,
    "orador": "Sagastizabal Unzetabarrenetxea",
    "cargo": null,
    "grupo": "PNV",
@@ -3821,7 +3832,7 @@
    "reacciones": {}
   },
   {
-   "orden": 319,
+   "orden": 320,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3832,7 +3843,7 @@
    "reacciones": {}
   },
   {
-   "orden": 320,
+   "orden": 321,
    "orador": "Otero Gabirondo",
    "cargo": null,
    "grupo": "BILDU",
@@ -3845,7 +3856,7 @@
    }
   },
   {
-   "orden": 321,
+   "orden": 322,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3856,7 +3867,7 @@
    "reacciones": {}
   },
   {
-   "orden": 322,
+   "orden": 323,
    "orador": "Badia Casas",
    "cargo": null,
    "grupo": "SUMAR",
@@ -3869,7 +3880,7 @@
    }
   },
   {
-   "orden": 323,
+   "orden": 324,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3882,7 +3893,7 @@
    }
   },
   {
-   "orden": 324,
+   "orden": 325,
    "orador": "Rueda Perelló",
    "cargo": null,
    "grupo": "VOX",
@@ -3897,7 +3908,7 @@
    }
   },
   {
-   "orden": 325,
+   "orden": 326,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3908,7 +3919,7 @@
    "reacciones": {}
   },
   {
-   "orden": 326,
+   "orden": 327,
    "orador": "García Adanero",
    "cargo": null,
    "grupo": "PP",
@@ -3922,7 +3933,7 @@
    }
   },
   {
-   "orden": 327,
+   "orden": 328,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3933,7 +3944,7 @@
    "reacciones": {}
   },
   {
-   "orden": 328,
+   "orden": 329,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3944,7 +3955,7 @@
    "reacciones": {}
   },
   {
-   "orden": 329,
+   "orden": 330,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3955,7 +3966,7 @@
    "reacciones": {}
   },
   {
-   "orden": 330,
+   "orden": 331,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3966,7 +3977,7 @@
    "reacciones": {}
   },
   {
-   "orden": 331,
+   "orden": 332,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3977,7 +3988,7 @@
    "reacciones": {}
   },
   {
-   "orden": 332,
+   "orden": 333,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3988,7 +3999,7 @@
    "reacciones": {}
   },
   {
-   "orden": 333,
+   "orden": 334,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -3999,7 +4010,7 @@
    "reacciones": {}
   },
   {
-   "orden": 334,
+   "orden": 335,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4010,7 +4021,7 @@
    "reacciones": {}
   },
   {
-   "orden": 335,
+   "orden": 336,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4021,7 +4032,7 @@
    "reacciones": {}
   },
   {
-   "orden": 336,
+   "orden": 337,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4032,7 +4043,7 @@
    "reacciones": {}
   },
   {
-   "orden": 337,
+   "orden": 338,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4043,7 +4054,7 @@
    "reacciones": {}
   },
   {
-   "orden": 338,
+   "orden": 339,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4054,7 +4065,7 @@
    "reacciones": {}
   },
   {
-   "orden": 339,
+   "orden": 340,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4065,7 +4076,7 @@
    "reacciones": {}
   },
   {
-   "orden": 340,
+   "orden": 341,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4076,7 +4087,7 @@
    "reacciones": {}
   },
   {
-   "orden": 341,
+   "orden": 342,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4087,7 +4098,7 @@
    "reacciones": {}
   },
   {
-   "orden": 342,
+   "orden": 343,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4098,7 +4109,7 @@
    "reacciones": {}
   },
   {
-   "orden": 343,
+   "orden": 344,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4111,7 +4122,7 @@
    }
   },
   {
-   "orden": 344,
+   "orden": 345,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4124,7 +4135,7 @@
    }
   },
   {
-   "orden": 345,
+   "orden": 346,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4137,7 +4148,7 @@
    }
   },
   {
-   "orden": 346,
+   "orden": 347,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4150,7 +4161,7 @@
    }
   },
   {
-   "orden": 347,
+   "orden": 348,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4161,7 +4172,7 @@
    "reacciones": {}
   },
   {
-   "orden": 348,
+   "orden": 349,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4174,7 +4185,7 @@
    }
   },
   {
-   "orden": 349,
+   "orden": 350,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4185,7 +4196,7 @@
    "reacciones": {}
   },
   {
-   "orden": 350,
+   "orden": 351,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4198,7 +4209,7 @@
    }
   },
   {
-   "orden": 351,
+   "orden": 352,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4211,7 +4222,7 @@
    }
   },
   {
-   "orden": 352,
+   "orden": 353,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4224,7 +4235,7 @@
    }
   },
   {
-   "orden": 353,
+   "orden": 354,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4235,7 +4246,7 @@
    "reacciones": {}
   },
   {
-   "orden": 354,
+   "orden": 355,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4246,7 +4257,7 @@
    "reacciones": {}
   },
   {
-   "orden": 355,
+   "orden": 356,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4257,7 +4268,7 @@
    "reacciones": {}
   },
   {
-   "orden": 356,
+   "orden": 357,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4268,7 +4279,7 @@
    "reacciones": {}
   },
   {
-   "orden": 357,
+   "orden": 358,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4279,7 +4290,7 @@
    "reacciones": {}
   },
   {
-   "orden": 358,
+   "orden": 359,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4290,7 +4301,7 @@
    "reacciones": {}
   },
   {
-   "orden": 359,
+   "orden": 360,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4301,7 +4312,7 @@
    "reacciones": {}
   },
   {
-   "orden": 360,
+   "orden": 361,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4312,7 +4323,7 @@
    "reacciones": {}
   },
   {
-   "orden": 361,
+   "orden": 362,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4323,7 +4334,7 @@
    "reacciones": {}
   },
   {
-   "orden": 362,
+   "orden": 363,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4334,7 +4345,7 @@
    "reacciones": {}
   },
   {
-   "orden": 363,
+   "orden": 364,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4345,7 +4356,7 @@
    "reacciones": {}
   },
   {
-   "orden": 364,
+   "orden": 365,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4356,7 +4367,7 @@
    "reacciones": {}
   },
   {
-   "orden": 365,
+   "orden": 366,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4367,7 +4378,7 @@
    "reacciones": {}
   },
   {
-   "orden": 366,
+   "orden": 367,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4378,7 +4389,7 @@
    "reacciones": {}
   },
   {
-   "orden": 367,
+   "orden": 368,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4389,7 +4400,7 @@
    "reacciones": {}
   },
   {
-   "orden": 368,
+   "orden": 369,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4400,7 +4411,7 @@
    "reacciones": {}
   },
   {
-   "orden": 369,
+   "orden": 370,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4411,7 +4422,7 @@
    "reacciones": {}
   },
   {
-   "orden": 370,
+   "orden": 371,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4422,7 +4433,7 @@
    "reacciones": {}
   },
   {
-   "orden": 371,
+   "orden": 372,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4433,7 +4444,7 @@
    "reacciones": {}
   },
   {
-   "orden": 372,
+   "orden": 373,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4444,7 +4455,7 @@
    "reacciones": {}
   },
   {
-   "orden": 373,
+   "orden": 374,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4455,7 +4466,7 @@
    "reacciones": {}
   },
   {
-   "orden": 374,
+   "orden": 375,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4466,7 +4477,7 @@
    "reacciones": {}
   },
   {
-   "orden": 375,
+   "orden": 376,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4477,7 +4488,7 @@
    "reacciones": {}
   },
   {
-   "orden": 376,
+   "orden": 377,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4488,7 +4499,7 @@
    "reacciones": {}
   },
   {
-   "orden": 377,
+   "orden": 378,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4499,7 +4510,7 @@
    "reacciones": {}
   },
   {
-   "orden": 378,
+   "orden": 379,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4510,7 +4521,7 @@
    "reacciones": {}
   },
   {
-   "orden": 379,
+   "orden": 380,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4521,7 +4532,7 @@
    "reacciones": {}
   },
   {
-   "orden": 380,
+   "orden": 381,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4532,7 +4543,7 @@
    "reacciones": {}
   },
   {
-   "orden": 381,
+   "orden": 382,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4543,7 +4554,7 @@
    "reacciones": {}
   },
   {
-   "orden": 382,
+   "orden": 383,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4554,7 +4565,7 @@
    "reacciones": {}
   },
   {
-   "orden": 383,
+   "orden": 384,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4565,7 +4576,7 @@
    "reacciones": {}
   },
   {
-   "orden": 384,
+   "orden": 385,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4576,7 +4587,7 @@
    "reacciones": {}
   },
   {
-   "orden": 385,
+   "orden": 386,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4587,7 +4598,7 @@
    "reacciones": {}
   },
   {
-   "orden": 386,
+   "orden": 387,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4598,7 +4609,7 @@
    "reacciones": {}
   },
   {
-   "orden": 387,
+   "orden": 388,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4609,7 +4620,7 @@
    "reacciones": {}
   },
   {
-   "orden": 388,
+   "orden": 389,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4620,7 +4631,7 @@
    "reacciones": {}
   },
   {
-   "orden": 389,
+   "orden": 390,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4631,7 +4642,7 @@
    "reacciones": {}
   },
   {
-   "orden": 390,
+   "orden": 391,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4642,7 +4653,7 @@
    "reacciones": {}
   },
   {
-   "orden": 391,
+   "orden": 392,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4653,7 +4664,7 @@
    "reacciones": {}
   },
   {
-   "orden": 392,
+   "orden": 393,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4666,7 +4677,7 @@
    }
   },
   {
-   "orden": 393,
+   "orden": 394,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4677,7 +4688,7 @@
    "reacciones": {}
   },
   {
-   "orden": 394,
+   "orden": 395,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
@@ -4688,7 +4699,7 @@
    "reacciones": {}
   },
   {
-   "orden": 395,
+   "orden": 396,
    "orador": "Presidenta",
    "cargo": "Presidenta",
    "grupo": "MESA",
