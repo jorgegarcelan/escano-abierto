@@ -446,11 +446,19 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .mult svg{display:block;width:100%;height:auto;overflow:visible}
 .mult .ax{stroke:var(--line);stroke-width:1} .mult .ax.mid{stroke:var(--line-strong)}
 .mult text{font:500 7px var(--sans);fill:var(--muted)} .mult text.fin{font-weight:600;fill:var(--ink);font-size:8.5px}
+/* fotos oficiales */
+.ficha-id{display:flex;gap:22px;align-items:center}
+.foto-dip{width:104px;aspect-ratio:3/4;object-fit:cover;object-position:50% 20%;flex:none;border-radius:var(--r-card);background:var(--sunk);box-shadow:0 0 0 3px var(--grupo),0 0 0 4px var(--bg)}
+.mini-foto{width:28px;height:28px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none;background:var(--sunk);box-shadow:0 0 0 2px var(--grupo)}
+.avatar.foto{object-fit:cover;object-position:50% 18%;background:var(--sunk);box-shadow:0 0 0 2px var(--grupo)}
+.tip-foto{float:left;width:38px;height:48px;object-fit:cover;object-position:50% 18%;border-radius:4px;margin:0 8px 0 -2px}
+#tip{overflow:hidden}
+
 @media (max-width:720px){ .multiples{grid-template-columns:repeat(2,minmax(0,1fr))} }
 
 @media (max-width:720px){ .mapa-wrap{grid-template-columns:1fr} .th-row{grid-template-columns:96px 1fr 36px} .tile .es{display:none} }
 
-@media (max-width:720px){ .ficha-top{grid-template-columns:1fr} .decide-row{grid-template-columns:64px 1fr 40px} }
+@media (max-width:720px){ .foto-dip{width:78px} .ficha-id{gap:14px} .ficha-top{grid-template-columns:1fr} .decide-row{grid-template-columns:64px 1fr 40px} }
 
 @media (max-width:720px){ .tema-panel{grid-template-columns:1fr} .rank-row{grid-template-columns:110px 1fr} }
 
@@ -702,7 +710,8 @@ document.addEventListener("pointerover", e=>{
   if (dt_){ tip.innerHTML = dt_.dataset.tip; const b=dt_.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false; return; }
   const c = e.target.closest?.(".hemi [data-x]"); if(!c){ tip.hidden=true; return; }
   const g=c.dataset.g, x=c.dataset.x;
-  tip.innerHTML = `${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
+  const dFoto = fotoDip(DIP_NOMBRE[c.dataset.n]);
+  tip.innerHTML = `${dFoto?`<img class="tip-foto" src="${dFoto}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
   const b=c.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false;
 }, SIG);
 window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true, signal:ctl.signal});
@@ -818,7 +827,13 @@ const decideIntro = `Un grupo decide una votación si, de haber actuado de otra 
 const sinTildes = t => t.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 const slug = n => sinTildes(n).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const legible = n => n.includes(", ") ? n.split(", ").reverse().join(" ") : n;
-const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", alta:d[4]||"", slug:slug(d[0])}));
+const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", alta:d[4]||"", cod:d[7]||null, slug:slug(d[0])}));
+const DIP_NOMBRE = Object.fromEntries(DIP.map(d=>[d.n,d]));
+// Foto y ficha oficiales del Congreso, a partir del código del diputado (vienen del plano del hemiciclo).
+const fotoDip = d => d?.cod ? `https://www.congreso.es/docu/imgweb/diputados/${d.cod}_15.jpg` : null;
+const fichaOficial = d => `https://www.congreso.es/es/hemiciclo?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_diputadomodule_mostrarFicha=true&codParlamentario=${d.cod}&idLegislatura=XV`;
+// «lazy» solo en listados largos; las fotos que se ven siempre se piden en el momento.
+const imgFoto = (d, cls, extra="", lazy=false) => fotoDip(d) ? `<img class="${cls}" src="${fotoDip(d)}" alt=""${lazy?' loading="lazy"':""} referrerpolicy="no-referrer" onerror="this.remove()"${extra}>` : "";
 const DIP_SLUG = Object.fromEntries(DIP.map(d=>[d.slug,d]));
 const porApellidos = {};
 DIP.forEach(d=>{ const k=sinTildes(d.n.split(",")[0]).trim(); (porApellidos[k] ||= []).push(d); });
@@ -865,7 +880,7 @@ function renderDiputados(){
     <div class="controls" id="dip-tabla"><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></div>
     <div class="controls" id="dip-g">${chips}${dipFiltro.circ?`<button class="chipbtn" aria-pressed="true" data-circ="${esc(dipFiltro.circ)}">${esc(nombreCirc(dipFiltro.circ))} ✕</button>`:""}</div>
     <div class="dtable-wrap"><table class="dt"><thead><tr>${th("nom","Diputado")}<th>Circunscripción</th>${th("part","Participación","num")}${th("dis","Distinto a su grupo","num")}${th("ivs","Interv.","num")}</tr></thead>
-      <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>
+      <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${imgFoto(d, "mini-foto", ` style="--grupo:${G[d.g]?.color}"`, true) || gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>
     <p class="nota">Participación: votaciones en las que votó (sí, no o abstención) sobre las que le correspondían. Una ausencia puede tener causas justificadas.</p>`;
   const inp=$("#dip-q");
   inp.addEventListener("input", e=>{ dipFiltro.q=e.target.value; const pos=e.target.selectionStart; renderDiputados(); const n=$("#dip-q"); n.focus(); n.setSelectionRange(pos,pos); });
@@ -881,9 +896,10 @@ function renderFicha(d){
   $("#diputados").innerHTML = `
     <button class="back" data-dip-volver>← Todos los diputados</button>
     <div class="ficha-top">
-      <div><div class="eyebrow">${esc(d.circ||"Circunscripción sin dato")} · ${esc(grupo?.nombre||d.g)}</div>
+      <div class="ficha-id">${imgFoto(d, "foto-dip", ` style="--grupo:${grupo?.color||"var(--line)"}"`)}<div><div class="eyebrow">${esc(d.circ||"Circunscripción sin dato")} · ${esc(grupo?.nombre||d.g)}</div>
         <h2>${esc(legible(d.n))}</h2>
-        <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}</p></div>
+        <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}</p>
+        ${d.cod?`<p class="meta"><a href="${fichaOficial(d)}" target="_blank" rel="noopener">Ficha oficial en el Congreso ↗</a></p>`:""}</div></div>
       <div>${hemiDiputado(d)}</div>
     </div>
     <div class="kpis">${kpis}</div>
@@ -1134,7 +1150,7 @@ function renderInicio(){
     const preg = IVS.slice(0,k).reverse().find(i=>i.s===resp.s && i.item===resp.item && i.g!=="GOB" && i.g!=="COMP");
     if (preg){
       const sR = DATA.sesiones.find(s=>s.id===resp.s), d = dt(sR.fecha);
-      const lado = (i,extra) => `<div><div class="who"><span class="avatar" style="background:${G[i.g].color}">${esc(iniciales(i.orador))}</span><div><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span></div></div>
+      const lado = (i,extra) => `<div><div class="who">${imgFoto(dipDeOrador(i.orador), "avatar foto", ` style="--grupo:${G[i.g].color}"`) || `<span class="avatar" style="background:${G[i.g].color}">${esc(iniciales(i.orador))}</span>`}<div><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span></div></div>
         ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}<p>${esc(i.resumen)}</p>${extra||""}</div>`;
       cara = `<section class="sec"><div class="sec-h"><h2>Cara a cara</h2><p>La primera pregunta al Gobierno de la última sesión analizada y su respuesta.</p></div>
         <div class="face">${lado(preg)}${lado(resp, ["sí","parcial","no"].includes(resp.responde)?`<p class="nota"><span class="pill resp-${resp.responde==="sí"?"si":resp.responde}">¿Contesta? ${esc(resp.responde)}</span> ${esc(resp.responde_motivo||"")}</p>`:"")}
@@ -1320,6 +1336,7 @@ function renderMetodo(){
       <li><b>Diario de Sesiones</b> del Pleno y de las comisiones (PDF oficial), para lo que se dijo.</li>
       <li><b>Datos abiertos de votaciones</b> (un JSON por votación con el voto de cada diputado), para cómo se votó.</li>
       <li><b>Órdenes del día</b>, para los asuntos y las preguntas aún sin Diario publicado.</li>
+      <li><b>Plano del hemiciclo y fichas de diputados</b> de la web del Congreso, para el escaño de cada diputado, su foto oficial y el enlace a su ficha.</li>
     </ul>
     <h3>Análisis</h3>
     <ul>
