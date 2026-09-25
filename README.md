@@ -2,7 +2,7 @@
 
 Plenos y comparecencias del Congreso de los Diputados, resumidos y analizados: qué se dijo, en qué tono, si el Gobierno contestó a lo que se le preguntó y cómo votó cada grupo y cada diputado.
 
-La web es estática (`site/`) y lee un único fichero, `site/data.json`, que genera el pipeline de Python a partir de los datos oficiales del Congreso.
+La web es estática (`site/`) y lee los ficheros de `site/datos/` que genera el pipeline de Python a partir de los datos oficiales del Congreso: `indice.json` con lo común (grupos, diputados, meses disponibles) y un `AAAA-MM.json` por mes, para no cargar toda la legislatura de golpe.
 
 ## Qué hace
 
@@ -11,7 +11,7 @@ La web es estática (`site/`) y lee un único fichero, `site/data.json`, que gen
 | Votaciones | Datos abiertos del Congreso (un JSON por votación, con el voto de cada diputado) | `data/votaciones/AAAA-MM-DD.json` con recuentos por grupo, posición mayoritaria y diputados que votaron distinto a su grupo |
 | Diarios de Sesiones | PDF oficial del Pleno (`PL`) y de las comisiones (`CO`) | `data/sesiones/DSCD-15-PL-205.json` con cada turno de palabra, su orador, grupo, asunto, expediente y las reacciones que anota el Diario (aplausos, rumores, protestas) |
 | Análisis | API de Claude | Resumen, tono, intensidad (1-5), temas, una cita **verificada literalmente** y, en respuestas del Gobierno, si contesta a la pregunta. Todo queda en caché en `data/analisis/` |
-| Web | Todo lo anterior | `site/data.json` con vistas por día, grupo, orador y votación |
+| Web | Todo lo anterior | `site/datos/indice.json` y `site/datos/AAAA-MM.json` |
 
 ## Puesta en marcha
 
@@ -35,11 +35,13 @@ Otras órdenes:
 python -m escano actualizar --desde 2026-09-01   # desde una fecha
 python -m escano actualizar --sin-ia             # solo descarga y estructura, sin llamar a la API
 python -m escano diario PL 205                   # procesa un Diario concreto
-python -m escano construir                       # regenera site/data.json con lo ya descargado
+python -m escano construir                       # regenera los datos de la web con lo ya descargado
+python -m escano reprocesar --sin-ia             # rehace sesiones y votaciones desde data/raw, sin red (tras cambiar el parser)
+python -m escano calidad                         # indicadores del parser por sesión
 python -m pytest                                 # tests (no necesitan red ni API)
 ```
 
-El repositorio trae en `site/data.json` los datos del MVP (15–23 de septiembre de 2026) para que la web funcione desde el primer momento. La primera ejecución de `actualizar` los sustituye.
+El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa solo en las sesiones que el pipeline aún no ha analizado con IA.
 
 ## Publicación automática
 
@@ -58,7 +60,9 @@ escano/
   votaciones.py   votaciones nominales desde los datos abiertos
   diario.py       PDF del Diario → turnos de palabra
   analisis.py     llamadas a Claude (salida estructurada + caché)
-  construir.py    une todo en site/data.json
+  construir.py    une todo en site/datos/
+  diputados.py    diputados en activo (circunscripción, formación)
+  calidad.py      indicadores del parser
   cli.py          python -m escano …
 site/             web estática
 data/             datos generados (se versionan, salvo data/raw)

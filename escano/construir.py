@@ -1,4 +1,8 @@
-"""Une Diarios, análisis y votaciones en site/data.json, el único fichero que lee la web."""
+"""Une Diarios, análisis y votaciones en los ficheros que lee la web (site/datos/).
+
+site/datos/indice.json lleva lo común (grupos, diputados, meses disponibles) y site/datos/AAAA-MM.json las
+sesiones, votaciones e intervenciones de cada mes, para que la web no tenga que cargar toda la legislatura.
+"""
 from __future__ import annotations
 
 import json
@@ -308,6 +312,33 @@ def construir(con_ia: bool = True) -> dict:
         },
         "intervenciones": ivs_web,
     }
-    SITIO.mkdir(parents=True, exist_ok=True)
-    (SITIO / "data.json").write_text(json.dumps(salida, ensure_ascii=False))
+    escribir_web(salida)
     return salida
+
+
+def escribir_web(salida: dict) -> None:
+    """Parte la salida por meses: site/datos/indice.json y site/datos/AAAA-MM.json."""
+    d = salida["datos"]
+    fecha_sesion = {s["id"]: s["fecha"] for s in d["sesiones"]}
+    meses: dict[str, dict] = defaultdict(lambda: {"sesiones": [], "votaciones": [], "intervenciones": []})
+    for s in d["sesiones"]:
+        meses[s["fecha"][:7]]["sesiones"].append(s)
+    for v in d["votaciones"]:
+        meses[v["fecha"][:7]]["votaciones"].append(v)
+    for i in salida["intervenciones"]:
+        meses[fecha_sesion.get(i["s"], "0000-00")[:7]]["intervenciones"].append(i)
+
+    carpeta = SITIO / "datos"
+    carpeta.mkdir(parents=True, exist_ok=True)
+    for viejo in carpeta.glob("????-??.json"):
+        if viejo.stem not in meses:
+            viejo.unlink()
+    for mes, contenido in meses.items():
+        (carpeta / f"{mes}.json").write_text(json.dumps(contenido, ensure_ascii=False))
+    indice = {
+        "meta": d["meta"], "grupos": d["grupos"], "diputados": d["diputados"],
+        "meses": [{"mes": m, "sesiones": len(c["sesiones"]), "votaciones": len(c["votaciones"]),
+                   "intervenciones": len(c["intervenciones"])} for m, c in sorted(meses.items())],
+    }
+    (carpeta / "indice.json").write_text(json.dumps(indice, ensure_ascii=False))
+    (SITIO / "data.json").unlink(missing_ok=True)   # formato anterior, en un solo fichero

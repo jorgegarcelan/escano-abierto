@@ -23,7 +23,9 @@ from .red import descargar
 
 MAYUS = "A-ZÁÉÍÓÚÜÑÀÈÌÒÙÏÇ"
 RE_TURNO = re.compile(
-    rf"^(?P<art>El|La) señora? (?P<nombre>[{MAYUS}][{MAYUS}'’ .,\-\u2010\u2011\n]*?)"
+    # Un turno empieza a principio de línea o tras el final de una frase en la misma línea; con `-raw`
+    # a veces llega pegado («ElseñorDIRECTORDE…»).
+    rf"(?:^|(?<=[.!?)»…] ))(?P<art>El|La) ?señora? ?(?P<nombre>[{MAYUS}][{MAYUS}0-9'’ .,\-\u2010\u2011\n]*?)"
     rf"(?:\s*\((?P<paren>[^)]*)\))?:[ \t]*",
     re.M,
 )
@@ -153,7 +155,9 @@ def cuerpo(texto: str) -> str:
 
 def clasificar(nombre: str, paren: str | None, mapa: dict[str, str], es_comision: bool) -> tuple[str, str | None, str]:
     """Devuelve (orador, cargo, grupo)."""
-    nombre = " ".join(nombre.replace("\u2011", "-").replace("\u2010", "-").split())
+    guion = lambda t: t.replace("\u2011", "-").replace("\u2010", "-")
+    nombre = " ".join(guion(nombre).split())
+    paren = guion(paren) if paren else paren
     if paren:  # «PRESIDENTE DEL GOBIERNO (Sánchez Pérez-Castejón)» o «VICEPRESIDENTA (Navarro Garzón)»
         cargo, orador = _titulo(nombre), " ".join(paren.split())
         if nombre in OFICIOS_MESA:
@@ -164,7 +168,11 @@ def clasificar(nombre: str, paren: str | None, mapa: dict[str, str], es_comision
         return _titulo(nombre), " ".join(paren.split()), mapa.get(_sin_tildes(nombre), "COMP" if es_comision else "?")
     if nombre in OFICIOS_MESA:
         return _titulo(nombre), _titulo(nombre), "MESA"
-    grupo = mapa.get(_sin_tildes(nombre))
+    clave = _sin_tildes(nombre)
+    grupo = mapa.get(clave) or mapa.get(re.sub(r"^de ", "", clave))
+    if grupo is None:  # «MARTA MADRENAS I MIR»: nombre de pila delante de los apellidos
+        sufijos = {g for k, g in mapa.items() if clave.endswith(" " + k)}
+        grupo = sufijos.pop() if len(sufijos) == 1 else None
     if grupo is None:  # a veces el Diario usa un solo apellido
         candidatos = {g for k, g in mapa.items() if k.startswith(_sin_tildes(nombre))}
         grupo = candidatos.pop() if len(candidatos) == 1 else ("COMP" if es_comision else "?")
@@ -181,9 +189,20 @@ def encabezados(texto: str) -> dict[str, str]:
     return salida
 
 
+def _clave_rotulo(nombre: str, paren: str | None) -> str:
+    return re.sub(r"\s+", "", f"{nombre}|{paren or ''}").replace("\u2011", "-")
+
+
+def rotulos(texto: str) -> dict[str, tuple[str, str | None]]:
+    """Presentación de cada orador tal como sale en modo normal, con los espacios bien puestos."""
+    return {_clave_rotulo(m.group("nombre"), m.group("paren")): (m.group("nombre"), m.group("paren"))
+            for m in RE_TURNO.finditer(cuerpo(limpiar(texto)))}
+
+
 def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = False,
-            titulos: dict[str, str] | None = None) -> list[Intervencion]:
-    mapa, titulos = mapa or {}, titulos or {}
+            titulos: dict[str, str] | None = None,
+            nombres: dict[str, tuple[str, str | None]] | None = None) -> list[Intervencion]:
+    mapa, titulos, nombres = mapa or {}, titulos or {}, nombres or {}
     cuerpo_txt = cuerpo(limpiar(texto))
 
     # Asuntos y secciones con su posición en el texto.
@@ -219,7 +238,8 @@ def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = 
                 seccion = t
         texto_turno = " ".join(bruto.split())
         reacciones = {k: len(re.findall(p, texto_turno, re.I)) for k, p in REACCIONES.items()}
-        orador, cargo, grupo = clasificar(m.group("nombre"), m.group("paren"), mapa, es_comision)
+        nombre, paren = nombres.get(_clave_rotulo(m.group("nombre"), m.group("paren")), (m.group("nombre"), m.group("paren")))
+        orador, cargo, grupo = clasificar(nombre, paren, mapa, es_comision)
         salida.append(Intervencion(n, orador, cargo, grupo, item, exp, seccion, texto_turno,
                                    {k: v for k, v in reacciones.items() if v}))
     return salida
@@ -229,7 +249,8 @@ def procesar_diario(ruta: Path, serie: str, numero: int, mapa: dict[str, str]) -
     """Extrae y guarda las intervenciones de un Diario en data/sesiones/<id>.json."""
     texto = texto_pdf(ruta)
     cab = cabecera(texto_pdf(ruta, portada=True), serie)
-    ivs = dividir(texto, mapa, es_comision=(serie == "CO"), titulos=encabezados(texto_pdf(ruta, normal=True)))
+    normal = texto_pdf(ruta, normal=True)
+    ivs = dividir(texto, mapa, es_comision=(serie == "CO"), titulos=encabezados(normal), nombres=rotulos(normal))
     ses = {
         "id": f"DSCD-{LEGISLATURA}-{serie}-{numero}",
         "serie": serie,

@@ -74,7 +74,10 @@ def test_construir(tmp_path, monkeypatch):
     feijoo = next(i for i in interv if i["orador"] == "Núñez Feijóo")
     assert feijoo["cita"] is None                                            # cita inventada descartada
     assert feijoo["responde"] == "no aplica"
-    assert json.loads((tmp_path / "site" / "data.json").read_text())["datos"]["sesiones"]
+    indice = json.loads((tmp_path / "site" / "datos" / "indice.json").read_text())
+    assert [m["mes"] for m in indice["meses"]] == ["2026-09"] and indice["diputados"]
+    mes = json.loads((tmp_path / "site" / "datos" / "2026-09.json").read_text())
+    assert len(mes["sesiones"]) == 2 and mes["votaciones"][0]["id"] == "200-1" and mes["intervenciones"]
 
     llamadas = falso.llamadas
     mod_construir.construir(con_ia=True)   # segunda vez: todo sale de la caché
