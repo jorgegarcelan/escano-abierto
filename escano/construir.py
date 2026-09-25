@@ -7,6 +7,7 @@ import unicodedata
 from collections import Counter, defaultdict
 from datetime import date
 
+from . import diputados as mod_diputados
 from .analisis import analizar, resumir_sesion
 from .config import INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
 
@@ -61,7 +62,7 @@ def titulo_legible(item: str) -> str:
 
 
 def diputados(votaciones: list[dict]) -> list[list[str]]:
-    """[nombre, grupo] de cada diputado que aparece en las votaciones, en orden estable.
+    """[nombre, grupo, circunscripción, formación, alta] de cada diputado que aparece en las votaciones, en orden estable.
 
     El grupo es el del voto más reciente. La web usa este orden para leer la cadena `v` de cada votación.
     """
@@ -69,7 +70,9 @@ def diputados(votaciones: list[dict]) -> list[list[str]]:
     for v in sorted(votaciones, key=lambda v: (v["fecha"], v.get("numero") or 0)):
         for d in v.get("votos", []):
             grupo[d["diputado"]] = d["grupo"]
-    return sorted(([n, g] for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
+    ficha = mod_diputados.leer()
+    return sorted(([n, g, ficha.get(n, {}).get("circunscripcion", ""), ficha.get(n, {}).get("formacion", ""),
+                    ficha.get(n, {}).get("alta", "")] for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
 
 
 def votos_compactos(v: dict, indice: dict[str, int]) -> str:
@@ -97,7 +100,7 @@ def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
 def construir(con_ia: bool = True) -> dict:
     votaciones = [v for f in sorted(VOTACIONES.glob("*.json")) for v in json.loads(f.read_text())]
     lista_diputados = diputados(votaciones)
-    indice = {n: i for i, (n, _) in enumerate(lista_diputados)}
+    indice = {d[0]: i for i, d in enumerate(lista_diputados)}
     web_votos = [_votacion_web(v, indice) for v in votaciones]
     por_fecha: dict[str, list[dict]] = defaultdict(list)
     for v in web_votos:

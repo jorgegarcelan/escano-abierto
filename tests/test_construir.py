@@ -49,6 +49,10 @@ def test_construir(tmp_path, monkeypatch):
         "votaciones": [{"diputado": "Uno, A", "grupo": "GV (EAJ-PNV)", "voto": "Sí"},
                        {"diputado": "Dos, B", "grupo": "GS", "voto": "No vota"}]})]))
 
+    from escano import diputados as mod_dip
+    monkeypatch.setattr(mod_dip, "FICHERO", tmp_path / "diputados.json")
+    (tmp_path / "diputados.json").write_text(json.dumps(mod_dip.leer_activos([
+        {"NOMBRE": "Uno, A", "CIRCUNSCRIPCION": "Bizkaia", "FORMACIONELECTORAL": "EAJ-PNV", "FECHAALTA": "17/08/2023"}])))
     salida = mod_construir.construir(con_ia=True)
     datos, interv = salida["datos"], salida["intervenciones"]
     assert {s["fecha"] for s in datos["sesiones"]} == {"2026-09-16", "2026-09-23"}
@@ -56,7 +60,7 @@ def test_construir(tmp_path, monkeypatch):
     assert sin_ds["ds"] is None and sin_ds["puntos"][0]["votos"] == ["200-1"]
     assert datos["votaciones"][0]["proponente"] == "PNV"
     assert datos["votaciones"][0]["tipo"] == "Proposición no de ley"
-    assert datos["diputados"] == [["Uno, A", "PNV"], ["Dos, B", "PSOE"]]
+    assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17"], ["Dos, B", "PSOE", "", "", ""]]
     assert datos["votaciones"][0]["v"] == "SX"                              # una letra por diputado
     assert next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")["titular"].startswith("Ceuta")
     assert all(i["g"] != "MESA" for i in interv)

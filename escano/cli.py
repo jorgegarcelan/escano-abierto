@@ -10,7 +10,7 @@ from __future__ import annotations
 import argparse
 from datetime import date, timedelta
 
-from . import diario, votaciones
+from . import diario, diputados, votaciones
 from .construir import construir
 
 
@@ -28,6 +28,8 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
         n = len(votaciones.actualizar_dia(d))
         if n:
             print(f"  {d}: {n} votaciones")
+
+    print(f"· Diputados en activo: {len(diputados.actualizar())}")
 
     mapa = votaciones.mapa_diputados()
     estado = diario.leer_estado()
