@@ -28,6 +28,10 @@
 <meta property="og:title" content="Escaño Abierto">
 <meta property="og:description" content="Qué se dijo en el Congreso y cómo se votó.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="og/portada.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -488,6 +492,14 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .comp-foto{width:64px!important;height:64px!important}
 .comp-centro{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:220px}
 .comp-pct{font-family:var(--display);font-size:44px;font-variant-numeric:tabular-nums;line-height:1}
+/* compartir */
+.compartir{appearance:none;font:600 12px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:3px 10px;cursor:pointer;white-space:nowrap}
+.compartir:hover{background:var(--ink);color:var(--bg)}
+.vote-acc{display:inline-flex;gap:8px;align-items:center}
+.ficha-acc{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+#aviso{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:600;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#aviso.visible{opacity:1;transform:translate(-50%,0)}
+
 @media (max-width:720px){ .repro-cuerpo{grid-template-columns:1fr} .comp{grid-template-columns:1fr} }
 
 @media (max-width:720px){ .multiples{grid-template-columns:repeat(2,minmax(0,1fr))} }
@@ -642,7 +654,7 @@ function voteRow(v, compact){
   const hemi = (v.v && v.v.length===DIPS.length) || (v.conteo && Object.keys(v.conteo).length);
   return `<article class="vote${hemi?" con-hemi":""}" id="v-${v.id}">${hemi?`<div class="hemi-col"><div class="hemi-lazy" data-hemi="${v.id}" role="img" aria-label="Hemiciclo de la votación"></div></div>`:""}
     <div class="vote-h"><div class="t">${esc(v.titulo)}<div class="sub">${compact?"":`${d.d} ${d.m} · `}${esc(v.tipo)} · ${v.proponente==="GOB"?"Gobierno":esc(v.proponente)} · ${v.exp?`<button class="expbtn mono" data-ini="${esc(v.exp)}" data-tip="Ver la iniciativa ${esc(v.exp)}">${esc(v.exp)}</button>`:""}${v.titulo_fuente==="oficial"?" "+`<span class="oficial" data-tip="Título abreviado del texto oficial del expediente. Conserva las palabras del grupo que presenta la iniciativa.">título oficial</span>`:""}</div></div>
-      <span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></div>
+      <span class="vote-acc"><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span>${botonCompartir("votacion/"+v.id, v.titulo)}</span></div>
     <div class="stack" role="img" aria-label="Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}">
       <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
     <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">JSON oficial</a></div>
@@ -938,7 +950,7 @@ function renderFicha(d){
       <div class="ficha-id">${imgFoto(d, "foto-dip", ` style="--grupo:${grupo?.color||"var(--line)"}"`)}<div><div class="eyebrow">${esc(d.circ||"Circunscripción sin dato")} · ${esc(grupo?.nombre||d.g)}</div>
         <h2>${esc(legible(d.n))}</h2>
         <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}</p>
-        ${d.cod?`<p class="meta"><a href="${fichaOficial(d)}" target="_blank" rel="noopener">Ficha oficial en el Congreso ↗</a></p>`:""}</div></div>
+        <p class="meta ficha-acc">${d.cod?`<a href="${fichaOficial(d)}" target="_blank" rel="noopener">Ficha oficial en el Congreso ↗</a>`:""}${botonCompartir("diputado/"+d.slug, legible(d.n))}</p></div></div>
       <div>${hemiDiputado(d)}</div>
     </div>
     <div class="kpis">${kpis}</div>
@@ -1135,7 +1147,8 @@ function renderIniciativa(x){
   $("#votaciones").innerHTML = `
     <button class="back" data-ini-volver>← Todas las votaciones</button>
     <div class="view-intro"><div><div class="eyebrow">${esc(TIPO_EXP[x.slice(0,3)]||"Iniciativa")} · <span class="mono">${esc(x)}</span></div><h2 style="font-size:clamp(26px,3.6vw,38px);margin-top:8px">${esc(titulo)}</h2>
-      <p>Lo que ha pasado con esta iniciativa en el periodo que cubre Escaño Abierto. <a href="${urlIniciativa(x)}" target="_blank" rel="noopener">Tramitación completa en la web del Congreso</a>.</p></div></div>
+      <p>Lo que ha pasado con esta iniciativa en el periodo que cubre Escaño Abierto. <a href="${urlIniciativa(x)}" target="_blank" rel="noopener">Tramitación completa en la web del Congreso</a>.</p>
+      <p>${botonCompartir("iniciativa/"+slugExp(x), titulo)}</p></div></div>
     <ol class="timeline">${ev.map(e=>e.html).join("")}</ol>`;
 }
 function irIniciativa(x){ iniSel=x; rendered.votaciones=false; show("votaciones",false); try{ history.replaceState(null,"","#iniciativa-"+slugExp(x)); }catch(e){} window.scrollTo(0,0); }
@@ -1376,7 +1389,7 @@ function renderDias(){
       }).join("");
       return `<article class="session" id="s-${s.id}">
         <div class="session-head"><div><div class="organ">${esc(s.organo)}</div><h3>${esc(s.sesion)}</h3></div>
-          <div class="meta-links">${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
+          <div class="meta-links">${botonCompartir("sesion/"+slugPy(s.id), s.organo+", "+s.fecha)}${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
         ${s.resumen?`<p class="sum">${esc(s.resumen)}</p>`:""}${s.nota?`<p class="nota">${esc(s.nota)}</p>`:""}
         ${ivs.length?`<div style="display:grid;gap:6px"><div class="eyebrow">Tono de las intervenciones analizadas</div>${toneBar(ivs)}${toneLegend(ivs)}</div>`:""}
         ${s.reacciones && Object.keys(s.reacciones).length?`<p class="nota">En la Cámara: ${Object.entries(s.reacciones).map(([k,n])=>`${esc(k.replace(/_/g," "))} <b class="num">${n}</b>`).join(" · ")}</p>`:""}
@@ -1529,11 +1542,28 @@ function renderMetodo(){
   </div>`;
 }
 
+/* ---------- compartir ---------- */
+// Cada diputado, votación, sesión e iniciativa tiene su página estática con título e imagen para redes.
+const RAIZ = location.origin + location.pathname.replace(/[^/]*$/, "");
+const urlCompartir = ruta => RAIZ + ruta + "/";
+const slugPy = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const botonCompartir = (ruta, titulo) => `<button class="compartir" data-compartir="${esc(ruta)}" data-titulo="${esc(titulo)}" aria-label="Compartir">Compartir ↗</button>`;
+function aviso(texto){ let t=document.getElementById("aviso"); if(!t){ t=document.createElement("div"); t.id="aviso"; t.setAttribute("role","status"); document.body.appendChild(t); }
+  t.textContent=texto; t.classList.add("visible"); clearTimeout(aviso.t); aviso.t=setTimeout(()=>t.classList.remove("visible"), 2200); }
+async function compartir(ruta, titulo){
+  const url = urlCompartir(ruta);
+  if (navigator.share && matchMedia("(pointer:coarse)").matches){ try{ await navigator.share({title:titulo, url}); return; }catch(e){ if (e.name==="AbortError") return; } }
+  try{ await navigator.clipboard.writeText(url); aviso("Enlace copiado"); }catch(e){ aviso(url); }
+}
+
 /* ---------- navegación ---------- */
 const TABS = ["inicio","dias","votaciones","temas","diputados","grupos","oradores","metodo"];
 const rendered = {};
 const renderers = {inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 function show(id, push){
+  // Enlaces de las páginas para compartir: #votacion-<id> y #sesion-<id> llevan a su vista.
+  if (id && id.startsWith("votacion-") && VOTES[id.slice(9)]){ const a="v-"+id.slice(9); setTimeout(()=>ir("votaciones", a), 0); id="votaciones"; push=false; }
+  else if (id && id.startsWith("sesion-")){ const a="s-"+id.slice(7); setTimeout(()=>ir("dias", a), 0); id="dias"; push=false; }
   if (id && id.startsWith("diputado-")){ const sl=id.slice(9); if (DIP_SLUG[sl]){ if (dipSel!==sl){ dipSel=sl; rendered.diputados=false; } id="diputados"; push=false; } }
   else if (id==="diputados" && push && dipSel){ dipSel=null; rendered.diputados=false; }
   if (id && id.startsWith("iniciativa-")){ const x=id.slice(11).replace("-","/"); if (INICIATIVAS[x]){ if (iniSel!==x){ iniSel=x; rendered.votaciones=false; } id="votaciones"; push=false; } }
@@ -1555,6 +1585,8 @@ TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
+  const cp = e.target.closest("[data-compartir]");
+  if (cp){ compartir(cp.dataset.compartir, cp.dataset.titulo); return; }
   const hm = e.target.closest("[data-hm]");
   if (hm){ mapaHemi.metrica=hm.dataset.hm; if (mapaHemi.metrica==="turnos" && !EXTRA){ cargarExtra().then(pintarHemiDatos); } pintarHemiDatos(); return; }
   const rp = e.target.closest("[data-repro]");

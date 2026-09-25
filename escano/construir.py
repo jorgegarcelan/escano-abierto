@@ -316,6 +316,11 @@ def construir(con_ia: bool = True) -> dict:
         "intervenciones": ivs_web,
     }
     escribir_web(salida)
+    try:
+        from .paginas import generar
+        generar(salida, mod_hemiciclo.leer())
+    except ImportError:  # sin Pillow no hay tarjetas; la web funciona igual
+        print("  (Pillow no está instalado: no se generan las páginas para compartir)")
     return salida
 
 

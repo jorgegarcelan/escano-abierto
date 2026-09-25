@@ -43,6 +43,12 @@ python -m pytest                                 # tests (no necesitan red ni AP
 
 El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa solo en las sesiones que el pipeline aún no ha analizado con IA.
 
+## Enlaces para compartir
+
+`construir` genera una página estática por diputado, votación, sesión e iniciativa (`site/diputado/<nombre>/`, `site/votacion/<id>/`, `site/sesion/<id>/`, `site/iniciativa/<expediente>/`) con su título, descripción y una tarjeta de 1200×630 en `site/og/` (Pillow, tipografías Doto y Geist, licencia OFL, en `escano/fuentes/`). Al abrirlas, redirigen a la vista correspondiente de la web. También escribe `sitemap.xml` y `robots.txt`.
+
+Las redes sociales necesitan direcciones absolutas: al desplegar, define `ESCANO_URL_SITIO` (p. ej. `https://escanoabierto.es`) antes de `construir`.
+
 ## Marca
 
 La web usa la marca **Marcador** por defecto: el panel de votaciones del hemiciclo, oscuro, con las cifras en matriz de puntos. Cada marca es una hoja en `site/marcas/<nombre>.css` que se carga encima de la base de `site/index.html`. Se puede probar otra con `?marca=<nombre>` o con el selector del pie (`?marca=tinta` es la base sin hoja extra, la marca original).
