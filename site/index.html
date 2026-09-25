@@ -8,6 +8,17 @@
 <link rel="icon" href="marca/favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="Escaño Abierto" href="rss.xml">
 <script>
+// Vercel Web Analytics y Speed Insights: sin cookies ni identificadores persistentes. Solo existen en el
+// despliegue de Vercel; en local no se cargan.
+window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
+window.si = window.si || function(){ (window.siq = window.siq || []).push(arguments); };
+if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+  for (const src of ["/_vercel/insights/script.js", "/_vercel/speed-insights/script.js"]) {
+    const sc = document.createElement("script"); sc.defer = true; sc.src = src; document.head.appendChild(sc);
+  }
+}
+</script>
+<script>
 // Marca de la web: Marcador por defecto. ?marca=<nombre> (o el selector del pie) prueba otra;
 // ?marca=tinta vuelve a Tinta y papel, que es la base de index.html sin hoja extra.
 (function(){
@@ -1973,7 +1984,7 @@ function renderSobre(){
         <h3>Personas</h3>
         <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a> o a través de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com</a>, y se revisará lo antes posible.</p>
         <h3>Privacidad</h3>
-        <p>Esta web no usa cookies, no tiene analítica ni publicidad y no recoge datos personales. Solo guarda en tu propio navegador tus preferencias (periodo, provincia y estilo visual), que puedes borrar cuando quieras. Para mostrarse, carga tipografías de Google Fonts y las fotografías oficiales desde la web del Congreso, que pueden registrar tu dirección IP según sus propias políticas. Está alojada en Vercel.</p>
+        <p>Esta web no usa cookies ni publicidad y no recoge datos personales. Para saber cuánta gente la visita y si carga rápido usa Vercel Web Analytics y Speed Insights, que cuentan visitas y miden el rendimiento de forma anónima y agregada, sin cookies ni identificadores que te sigan de un día a otro. En tu propio navegador solo se guardan tus preferencias (periodo, provincia y estilo visual), que puedes borrar cuando quieras. Para mostrarse, carga tipografías de Google Fonts y las fotografías oficiales desde la web del Congreso, que pueden registrar tu dirección IP según sus propias políticas. Está alojada en Vercel.</p>
         <h3>Código</h3>
         <p>El <a href="${REPO}" target="_blank" rel="noopener">código de Escaño Abierto</a> es público en GitHub. Las tipografías de las tarjetas para compartir (Doto y Geist) se distribuyen con licencia SIL Open Font License.</p>
       </div></section>
@@ -2514,7 +2525,19 @@ const TABS = ["inicio","dias","votaciones","leyes","temas","diputados","grupos",
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
 const renderers = {sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+// Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
+// la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
+let ultimaVista = null;
+function contarVista(id, hash){
+  const clave = hash || id;
+  if (ultimaVista === null){ ultimaVista = clave; return; }
+  if (clave === ultimaVista) return;
+  ultimaVista = clave;
+  const ruta = "/#" + (hash && hash !== id ? hash.split("-")[0] : id);
+  window.va?.("pageview", {route: ruta, path: "/#" + clave});
+}
 function show(id, push){
+  const hashOriginal = id;
   // Enlaces de las páginas para compartir: #votacion-<id> y #sesion-<id> llevan a su vista.
   if (id && id.startsWith("votacion-") && VOTES[id.slice(9)]){ const a="v-"+id.slice(9); setTimeout(()=>ir("votaciones", a), 0); id="votaciones"; push=false; }
   else if (id && id.startsWith("sesion-")){ const a="s-"+id.slice(7); setTimeout(()=>ir("dias", a), 0); id="dias"; push=false; }
@@ -2529,6 +2552,7 @@ function show(id, push){
   if(!VISTAS.includes(id)) id="inicio";
   VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t)?.setAttribute("aria-selected", t===id); });
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
+  contarVista(id, hashOriginal);
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
 }
 function ir(tab, anchor){

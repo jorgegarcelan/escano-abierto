@@ -22,12 +22,13 @@ from datetime import date, timedelta
 
 import requests
 
-from .config import BASE, DATOS, USER_AGENT
+from .config import BASE, CRUDOS, DATOS, USER_AGENT
 
 URL = (BASE + "/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view"
        "&p_p_resource_id=filtrarListado&p_p_cacheability=cacheLevelPage")
 FICHERO = DATOS / "preguntas.json"
 INICIO = date(2023, 8, 17)  # constitución de la XV Legislatura
+AVANCE = CRUDOS / "preguntas-avance.json"
 RE_AUTOR = re.compile(r"^(.*?)\s*\(([^()]+)\)\s*$")
 GRUPOS = {"GP": "PP", "GS": "PSOE", "GVOX": "VOX", "GSUMAR": "SUMAR", "GR": "ERC", "GJxCAT": "JUNTS",
           "GEH Bildu": "BILDU", "GV (EAJ-PNV)": "PNV", "GMx": "MIXTO"}
@@ -66,7 +67,7 @@ def leer(fila: dict) -> dict:
 def pagina(sesion: requests.Session, n: int, filtros: dict) -> list[dict]:
     for intento in range(4):
         try:
-            r = sesion.post(URL, timeout=60, data={"_iniciativas_legislatura": "15",
+            r = sesion.post(URL, timeout=(10, 30), data={"_iniciativas_legislatura": "15",
                                                    "_iniciativas_competencias": "Preguntas escritas",
                                                    "_iniciativas_paginaActual": str(n), **filtros})
             r.raise_for_status()
@@ -103,34 +104,54 @@ def _meses(desde: date, hasta: date):
 
 
 def actualizar(completo: bool = False, pausa: float = 0.4, aviso=print, hoy: date | None = None) -> dict:
-    """Sin `completo`, repasa lo registrado en los dos últimos meses y lo cerrado en los últimos 45 días."""
+    """Sin `completo`, repasa lo registrado en los dos últimos meses y lo cerrado en los últimos 45 días.
+
+    Con `completo`, recorre toda la legislatura guardando el avance cada mes (data/raw/preguntas-avance.json):
+    si se interrumpe, la siguiente ejecución sigue donde lo dejó.
+    """
     hoy = hoy or date.today()
     datos = leer_todo()
     por_exp = {p["exp"]: p for p in datos["preguntas"]}
+    avance = json.loads(AVANCE.read_text()) if completo and AVANCE.exists() else {}
     sesion = requests.Session()
     sesion.headers["User-Agent"] = USER_AGENT
     sesion.get(BASE + "/es/busqueda-de-iniciativas", timeout=60)  # cookie de sesión del buscador
 
+    def guardar_avance(**k):
+        avance.update(k)
+        guardar({"preguntas": sorted(por_exp.values(), key=lambda p: p["exp"])})
+        if completo:
+            AVANCE.parent.mkdir(parents=True, exist_ok=True)
+            AVANCE.write_text(json.dumps(avance))
+
     inicio = INICIO if completo else hoy - timedelta(days=62)
+    if avance.get("registro"):
+        inicio = max(inicio, date.fromisoformat(avance["registro"]) + timedelta(days=1))
     for a, b in _meses(inicio, hoy):
         for p in recorrer(sesion, _rango(0, a, b), pausa):
             cerrada = por_exp.get(p["exp"], {}).get("cerrada")
             por_exp[p["exp"]] = {**p, **({"cerrada": cerrada} if cerrada and p["estado"] != "pendiente" else {})}
         aviso(f"  registradas en {a:%Y-%m}: {len(por_exp)} en total")
+        guardar_avance(registro=b.isoformat())
         time.sleep(pausa)
 
     # Fecha de cierre, día a día: cuándo se dio por contestada (o retirada) cada pregunta.
     dia = INICIO if completo else hoy - timedelta(days=45)
+    if avance.get("cierres"):
+        dia = max(dia, date.fromisoformat(avance["cierres"]) + timedelta(days=1))
     while dia <= hoy:
         for p in recorrer(sesion, _rango(2, dia, dia), pausa):
             por_exp.setdefault(p["exp"], p)["cerrada"] = dia.isoformat()
-        if dia.day == 1:
-            aviso(f"  cierres hasta {dia:%Y-%m}")
+        if dia.day == 1 or dia == hoy:
+            aviso(f"  cierres hasta {dia:%Y-%m-%d}")
+            guardar_avance(cierres=dia.isoformat())
         dia += timedelta(days=1)
         time.sleep(pausa)
 
     datos = {"preguntas": sorted(por_exp.values(), key=lambda p: p["exp"])}
     guardar(datos)
+    if completo and AVANCE.exists():
+        AVANCE.unlink()  # terminado: la próxima vez completa empieza de cero
     return datos
 
 
