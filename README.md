@@ -1,138 +1,126 @@
 # Escaño Abierto
 
-Plenos y comparecencias del Congreso de los Diputados, resumidos y analizados: qué se dijo, en qué tono, si el Gobierno contestó a lo que se le preguntó y cómo votó cada grupo y cada diputado.
+**Entender lo que se hace en el Congreso.** Qué se vota, quién lo decide y cómo, con los datos oficiales del Congreso de los Diputados contados para que cualquiera pueda entenderlos en unos minutos.
 
-La web es estática (`site/`) y lee los ficheros de `site/datos/` que genera el pipeline de Python a partir de los datos oficiales del Congreso: `indice.json` con lo común (grupos, diputados, meses disponibles) y un `AAAA-MM.json` por mes, para no cargar toda la legislatura de golpe.
+🌐 **[escano-abierto.vercel.app](https://escano-abierto.vercel.app)**
 
-## Qué hace
+El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabra del Diario de Sesiones, cada ley con sus fases y sus plazos. Pero está repartido en miles de PDF, buscadores y ficheros técnicos. Escaño Abierto lo junta, lo ordena y lo explica, y se actualiza solo cada mañana.
 
-| Paso | Fuente | Resultado |
-|---|---|---|
-| Votaciones | Datos abiertos del Congreso (un JSON por votación, con el voto de cada diputado) | `data/votaciones/AAAA-MM-DD.json` con recuentos por grupo, posición mayoritaria y diputados que votaron distinto a su grupo |
-| Diarios de Sesiones | PDF oficial del Pleno (`PL`) y de las comisiones (`CO`) | `data/sesiones/DSCD-15-PL-205.json` con cada turno de palabra, su orador, grupo, asunto, expediente y las reacciones que anota el Diario (aplausos, rumores, protestas) |
-| Análisis | API de Claude | Resumen, tono, intensidad (1-5), temas, una cita **verificada literalmente** y, en respuestas del Gobierno, si contesta a la pregunta. Todo queda en caché en `data/analisis/` |
-| Web | Todo lo anterior | `site/datos/indice.json` y `site/datos/AAAA-MM.json` |
+## Qué puedes hacer
 
-## Puesta en marcha
+**Entender**
+- Ver **qué significa cada votación** en una frase: aprobar una proposición no de ley no cambia ninguna ley.
+- Consultar el **glosario** con las palabras del Congreso y **cómo se hace una ley**, paso a paso, con las cifras reales de la legislatura.
 
-Requisitos: Python 3.11+ y `pdftotext` (paquete `poppler-utils` en Linux, `brew install poppler` en macOS).
+**Acercarte**
+- Encontrar a **tus diputados** por provincia: cómo votan, cuándo se apartan de su grupo, qué preguntan al Gobierno y en qué comisiones están.
+- **Seguir un tema** (vivienda, sanidad, pensiones…) por RSS, incluido lo que se votará en el próximo pleno.
+- Leer **la semana en el Congreso** y ver el **orden del día del próximo pleno**.
+
+**Pedir cuentas**
+- Ver el voto nominal de cada diputado en los **hemiciclos con la disposición real** de los escaños, y quién votó distinto a su grupo.
+- Seguir cada **ley desde que se presenta hasta que se publica**, y las que llevan meses en «el congelador».
+- Ver cuántas **preguntas al Gobierno** siguen sin respuesta y cuánto tarda en contestar.
+- Leer las **declaraciones de actividades e intereses** de cada diputado.
+
+Cada votación, sesión, ley, diputado, provincia, tema y semana tiene una página para compartir, con su tarjeta, y los más relevantes tienen RSS.
+
+## Principios
+
+- **Datos oficiales, siempre enlazados.** Todo sale de fuentes públicas del Congreso y cada dato lleva a su documento original.
+- **Las mismas reglas para todos.** Los títulos, explicaciones y resúmenes semanales se generan con reglas fijas, iguales para todos los grupos.
+- **IA con garantías.** Cuando interviene un modelo de lenguaje (resúmenes, tono), se indica, y las citas solo se publican si aparecen literalmente en el Diario de Sesiones.
+- **Independiente.** No está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.
+
+## Cómo funciona
+
+```
+Congreso de los Diputados                    escano/ (Python)                 site/ (web estática)
+─────────────────────────                    ────────────────                 ────────────────────
+Datos abiertos de votaciones   ─┐
+Diarios de Sesiones (PDF)      ─┤
+Tramitación de iniciativas     ─┼─▶  descarga ─▶ data/ ─▶ construir ─▶  datos por mes, páginas para
+Orden del día de los plenos    ─┤    y parser     (versionado)           compartir, RSS y tarjetas
+Preguntas escritas             ─┤
+Declaraciones de intereses     ─┘
+```
+
+- Cada mañana, un workflow de GitHub Actions descarga lo nuevo, actualiza `data/` y hace push.
+- Cada push despliega en Vercel, que construye la web y dibuja las tarjetas para compartir.
+- La web es una sola página estática, sin servidor, que carga los datos por meses.
+
+La metodología completa de cada cálculo está en la sección [Método](https://escano-abierto.vercel.app/#metodo) de la web.
+
+## Desarrollo
+
+Requisitos: Python 3.9 o superior y `pdftotext` (`brew install poppler` en macOS, `poppler-utils` en Linux).
 
 ```bash
-git clone https://github.com/<tu-usuario>/escano-abierto.git
+git clone https://github.com/jorgegarcelan/escano-abierto.git
 cd escano-abierto
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env            # y pon tu ANTHROPIC_API_KEY
-export $(cat .env | xargs)
 
-python -m escano actualizar     # últimos 10 días
-python -m http.server -d site   # abre http://localhost:8000
+python -m escano construir --sin-ia       # web a partir de los datos del repositorio
+python -m http.server 8000 -d site        # http://localhost:8000
 ```
 
-Otras órdenes:
+El repositorio ya incluye los datos de la legislatura, así que no hace falta descargar nada para empezar. Para traer lo nuevo del Congreso:
 
 ```bash
-python -m escano actualizar --desde 2026-09-01   # desde una fecha
-python -m escano actualizar --sin-ia             # solo descarga y estructura, sin llamar a la API
-python -m escano diario PL 205                   # procesa un Diario concreto
-python -m escano construir                       # regenera los datos de la web con lo ya descargado
-python -m escano reprocesar --sin-ia             # rehace sesiones y votaciones desde data/raw, sin red (tras cambiar el parser)
-python -m escano calidad                         # indicadores del parser por sesión
-python -m pytest                                 # tests (no necesitan red ni API)
+python -m escano actualizar --sin-ia      # últimos 10 días, agenda, leyes, preguntas y declaraciones
+python -m escano actualizar --desde 2023-08-17 --sin-ia   # toda la XV Legislatura
+python -m escano preguntas --completo     # todas las preguntas escritas (la primera vez)
+python -m escano reprocesar --sin-ia      # rehace sesiones y votaciones desde data/raw, sin red
+python -m escano calidad                  # indicadores de calidad del parser
+python -m pytest                          # tests, sin red ni API
 ```
 
-El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa solo en las sesiones que el pipeline aún no ha analizado con IA.
+Sin `--sin-ia`, el pipeline analiza las intervenciones con la API de Claude: copia `.env.example` a `.env` y añade tu `ANTHROPIC_API_KEY`. Los análisis quedan en caché en `data/analisis/`.
 
-## Enlaces para compartir
-
-`construir` genera una página estática por diputado, votación, sesión e iniciativa (`site/diputado/<nombre>/`, `site/votacion/<id>/`, `site/sesion/<id>/`, `site/iniciativa/<expediente>/`) con su título, descripción y una tarjeta de 1200×630 en `site/og/` (Pillow, tipografías Doto y Geist, licencia OFL, en `escano/fuentes/`). Al abrirlas, redirigen a la vista correspondiente de la web. También escribe `sitemap.xml` y `robots.txt`.
-
-Las redes sociales necesitan direcciones absolutas: al desplegar, define `ESCANO_URL_SITIO` (p. ej. `https://escanoabierto.es`) antes de `construir`.
-
-## Leyes, agenda y semanas
-
-- `python -m escano agenda` descarga la **tramitación** de todos los proyectos y proposiciones de ley de la legislatura (`data/leyes.json`, de los datos abiertos de iniciativas) y el **orden del día** de los plenos convocados esta semana y la siguiente (`data/agenda.json`, del PDF enlazado en la agenda del Congreso). `actualizar` lo hace también.
-- La pestaña **Leyes** muestra el embudo de la legislatura, quién propone y quién consigue, el «congelador» (iniciativas cuyo plazo de enmiendas se amplía semana tras semana) y cuánto tarda una ley; cada iniciativa tiene su línea de vida en `#iniciativa-<expediente>`.
-- **La semana en el Congreso** (`#semana-AAAA-Sww`) resume cada semana sin IA: la votación más ajustada, las leyes que se han movido, los decretos, las tomas en consideración y quién votó distinto a su grupo. Cada semana tiene página para compartir y entra en el RSS general.
-- La portada anuncia el **próximo pleno** con su orden del día.
-
-## Entender y vigilar
-
-- **Glosario** (`#glosario`) y **«¿Qué significa?»** en cada votación: una frase fija por tipo y resultado (una PNL aprobada no cambia ninguna ley). Los términos técnicos de la web enlazan al glosario.
-- **Cómo se hace una ley** (`#como-ley`): siete pasos con las cifras reales de la legislatura.
-- **Tus diputados** (`#provincia-<provincia>`): los diputados de cada circunscripción, su voto en las decisiones más ajustadas y sus preguntas. La portada recuerda la provincia elegida.
-- **Temas para seguir** (`#tema-<tema>` y `site/tema/<tema>/rss.xml`): votaciones, leyes y puntos del próximo pleno sobre vivienda, sanidad, pensiones…, clasificados por palabras clave (`escano/temas.py`).
-- **Preguntas escritas** (`#preguntas`): `python -m escano preguntas --completo` recorre el buscador de iniciativas por meses de registro y por días de cierre; `actualizar` repasa solo lo reciente. Se ven las pendientes, las que llevan más de 60 días sin respuesta y cuánto tarda el Gobierno en contestar.
-- **Declaraciones de intereses** en la ficha de cada diputado (`data/intereses.json`, de los datos abiertos).
-
-## Toda la legislatura
-
-Para descargar la XV Legislatura desde el principio (agosto de 2023):
-
-```bash
-python -m escano actualizar --desde 2023-08-17 --sin-ia
-```
-
-Las votaciones se guardan compactas (`data/votaciones/AAAA-MM-DD.json`: la lista de diputados del día una vez y una letra por diputado en cada votación) para que la legislatura entera quepa en el repositorio. Las tarjetas para compartir (`site/og/`) no se versionan: se dibujan al construir.
-
-## Búsqueda y RSS
-
-La lupa de la barra (o `/`, o Ctrl/⌘+K) busca a la vez en diputados, votaciones, iniciativas, sesiones, temas e intervenciones, sin servidor y tolerando una errata por palabra.
-
-`construir` escribe también canales RSS: `site/rss.xml` (votaciones y sesiones), `site/diputado/<nombre>/rss.xml` (solo lo destacable: votos distintos de los de su grupo e intervenciones analizadas) y `site/iniciativa/<expediente>/rss.xml` (debates y votaciones). La ficha y la vista de cada iniciativa enlazan el suyo con «Seguir».
-
-## Marca
-
-La web usa la marca **Marcador** por defecto: el panel de votaciones del hemiciclo, oscuro, con las cifras en matriz de puntos. Cada marca es una hoja en `site/marcas/<nombre>.css` que se carga encima de la base de `site/index.html`. Se puede probar otra con `?marca=<nombre>` o con el selector del pie (`?marca=tinta` es la base sin hoja extra, la marca original).
-
-## Publicación automática
-
-La web se publica en **Vercel** a partir del repositorio de GitHub:
-
-- **Cada mañana**, `.github/workflows/actualizar.yml` descarga lo nuevo del Congreso (votaciones, Diarios, agenda, leyes, preguntas, declaraciones), reconstruye los datos y hace push. Sin el secreto `ANTHROPIC_API_KEY` funciona sin IA; con él (y opcionalmente la variable `ESCANO_MODELO`), analiza las intervenciones nuevas.
-- **Cada push** despliega en Vercel. El build (`scripts/vercel-build.sh`, configurado en `vercel.json`) ejecuta `python -m escano construir --sin-ia` y dibuja las tarjetas Open Graph, que no se versionan. Las URL absolutas de tarjetas, RSS y sitemap salen del dominio de producción de Vercel, o de `ESCANO_URL_SITIO` si se define en el proyecto.
-
-Para que los push desplieguen, la app de Vercel en GitHub debe tener acceso al repositorio (Vercel → proyecto → *Settings → Git → Connect Git Repository*).
-
-## Estructura
+### Estructura
 
 ```
 escano/
-  config.py       rutas, URLs y grupos parlamentarios
-  red.py          descargas con caché y reintentos
-  votaciones.py   votaciones nominales desde los datos abiertos
-  diario.py       PDF del Diario → turnos de palabra
-  analisis.py     llamadas a Claude (salida estructurada + caché)
+  votaciones.py   votaciones nominales (formato compacto en data/votaciones/)
+  diario.py       Diario de Sesiones en PDF → turnos de palabra
+  leyes.py        tramitación de proyectos y proposiciones de ley
+  agenda.py       orden del día de los próximos plenos
+  preguntas.py    preguntas escritas al Gobierno
+  intereses.py    declaraciones de actividades e intereses
+  diputados.py    diputados de la legislatura (en activo y de baja)
+  hemiciclo.py    plano oficial del hemiciclo
+  organos.py      composición de las comisiones
+  temas.py        temas para seguir, por palabras clave
+  semanas.py      resumen semanal
+  analisis.py     análisis con IA (opcional, con caché)
   construir.py    une todo en site/datos/
-  diputados.py    diputados en activo (circunscripción, formación)
-  calidad.py      indicadores del parser
+  paginas.py      páginas para compartir, tarjetas Open Graph y RSS
   cli.py          python -m escano …
-site/             web estática
-data/             datos generados (se versionan, salvo data/raw)
-tests/            parser, votaciones y pipeline completo con un cliente simulado
-docs/             notas del MVP y hoja de ruta
+site/             web estática (index.html) y marcas visuales (site/marcas/)
+data/             datos procesados, versionados (data/raw, los originales, no)
+tests/            parser, votaciones, leyes, agenda, preguntas y pipeline completo
+scripts/          build de Vercel
 ```
 
-## Criterios
+### Despliegue
 
-- Las citas solo se publican si aparecen literalmente en el Diario de Sesiones.
-- El mismo prompt y los mismos criterios para todos los grupos. El tono y la intensidad son orientativos y cada sesión enlaza al texto oficial.
-- Un grupo aparece como «dividido» cuando ningún sentido de voto reúne al 80 % de sus diputados.
-- Las descargas esperan medio segundo entre peticiones para no cargar los servidores del Congreso.
+La web se publica en Vercel desde este repositorio (`vercel.json` y `scripts/vercel-build.sh`). Las URL absolutas de tarjetas, RSS y sitemap salen del dominio de producción de Vercel, o de la variable `ESCANO_URL_SITIO` si se define. La actualización diaria está en `.github/workflows/actualizar.yml`; si se añade el secreto `ANTHROPIC_API_KEY`, también analiza con IA las intervenciones nuevas.
 
-## Hoja de ruta
+## Contribuir
 
-Contexto del MVP e ideas en detalle: [docs/mvp-y-hoja-de-ruta.md](docs/mvp-y-hoja-de-ruta.md).
+¿Has visto un error o echas algo en falta? [Abre una incidencia](https://github.com/jorgegarcelan/escano-abierto/issues). Las correcciones de datos, del parser y las ideas son bienvenidas.
 
-- [ ] Ficha por diputado: intervenciones, votos, asistencia y tono medio
-- [ ] Quién decide: el grupo que inclina las votaciones ajustadas
-- [ ] Resumen semanal automático («El pleno en 5 minutos»)
-- [ ] Buscador conversacional con citas
-- [ ] Enlace de cada intervención al vídeo oficial en el minuto exacto
-- [ ] Seguimiento de cada ley desde la toma en consideración hasta el BOE
+Las descargas esperan entre peticiones para no cargar los servidores del Congreso; mantén ese criterio si añades fuentes nuevas.
 
-## Fuentes y licencia
+## Autor
 
-Datos: [Congreso de los Diputados](https://www.congreso.es) (Diario de Sesiones y datos abiertos de votaciones). Si reutilizas los datos, cita la fuente. Este proyecto no está vinculado al Congreso.
+Hecho por [Jorge Garcelán](https://jorgegarcelan.com).
 
-Código bajo licencia MIT.
+## Licencia y fuentes
+
+- Código bajo [licencia MIT](LICENSE).
+- Datos: [Congreso de los Diputados](https://www.congreso.es) (datos abiertos, Diario de Sesiones, Boletín Oficial de las Cortes Generales, buscador de iniciativas y agenda), reutilizados conforme a la Ley 37/2007. Si reutilizas los datos, cita la fuente.
+- Tipografías de las tarjetas (Doto y Geist): SIL Open Font License.
+
+Escaño Abierto es un proyecto independiente y no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.
