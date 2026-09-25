@@ -52,27 +52,23 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
 .num{font-variant-numeric:tabular-nums}
 .eyebrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 
-/* header */
-header.top{padding-block:28px 18px;display:grid;gap:14px}
-header.top h1{font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.01em}
-header.top h1{margin:0}
-.logo{display:block;height:clamp(34px,5.4vw,46px);aspect-ratio:439.2/55.3;max-width:100%;background:var(--ink);-webkit-mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain;mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain}
+/* barra superior */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.bar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:20px;min-height:56px}
+.brand{display:block;flex:none;color:var(--ink)}
+.brand .logo{display:block;height:26px;aspect-ratio:439.2/55.3;background:var(--ink);-webkit-mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain;mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.tagline{font-family:var(--serif);font-size:19px;font-weight:500;margin:0}
-.lede{max-width:64ch;color:var(--muted);margin:0}
-.kpis{display:flex;flex-wrap:wrap;gap:8px 28px;padding-top:6px;border-top:1px solid var(--line)}
-.kpi{display:flex;align-items:baseline;gap:8px;padding-top:10px}
-.kpi b{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
-.kpi span{color:var(--muted);font-size:13px}
-.kpi.alert b{color:var(--no)}
-
-/* tabs */
-nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto;align-self:stretch}
 nav.tabs::-webkit-scrollbar{display:none}
-nav.tabs button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:500 14px var(--sans);padding:12px 10px 10px;cursor:pointer;white-space:nowrap}
+nav.tabs button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:500 14px var(--sans);padding:0 10px;cursor:pointer;white-space:nowrap}
 nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
 nav.tabs button:hover{color:var(--ink)}
-main{padding-top:22px}
+.kpis{display:flex;flex-wrap:wrap;gap:8px 32px;padding-block:14px;border-block:1px solid var(--line)}
+.kpi{display:flex;align-items:baseline;gap:8px}
+.kpi b{font-family:var(--serif);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.kpi span{color:var(--muted);font-size:13px;max-width:14ch;line-height:1.25}
+.kpi.alert b{color:var(--no)}
+main{padding-top:28px}
 section.view{display:grid;gap:18px}
 section.view[hidden]{display:none}
 .view-intro{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
@@ -194,6 +190,112 @@ td .tonebar{min-width:140px}
 .method ul{margin:0;padding-left:20px;display:grid;gap:6px}
 footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 
+/* hemiciclo */
+.hemi{display:block;width:100%;height:auto;overflow:visible}
+.hemi circle{stroke-width:0}
+.hemi .S{fill:var(--si)} .hemi .N{fill:var(--no)} .hemi .A{fill:var(--abst)}
+.hemi .X{fill:none;stroke:var(--nv);stroke-width:1.2}
+.hemi .dis{stroke:var(--ink);stroke-width:1.6}
+.hemi .X.dis{stroke:var(--ink)}
+.hemi .band{fill:none;stroke-width:3}
+.hemi .glab{font:600 7.5px var(--sans);fill:var(--muted);letter-spacing:.04em}
+.hemi circle:hover{stroke:var(--ink);stroke-width:2}
+@media (prefers-reduced-motion:no-preference){
+  .hemi.anim circle{transform-box:fill-box;transform-origin:center;animation:asiento .45s cubic-bezier(.2,.7,.3,1) both;animation-delay:calc(var(--d) * 1.8ms)}
+  @keyframes asiento{from{opacity:0;transform:scale(.2)}}
+}
+.hemi-wrap{position:relative}
+.hemi-center{text-align:center;line-height:1;margin-top:10px}
+.hemi-center b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.4vw,38px);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.hemi-center span{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.hemi-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;font-size:12px;color:var(--muted)}
+.hemi-legend span{display:inline-flex;align-items:center;gap:5px}
+.hemi-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.hemi-legend i.hueco{border:1.2px solid var(--nv)} .hemi-legend i.anillo{border:1.6px solid var(--ink);background:var(--sunk)}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;line-height:1.35;padding:6px 9px;border-radius:6px;max-width:260px;transform:translate(-50%,calc(-100% - 10px))}
+#tip b{font-weight:600}
+.vote.con-hemi{grid-template-columns:150px 1fr;column-gap:18px;align-items:start}
+.vote.con-hemi>.hemi-col{grid-row:1/span 5;padding-top:4px}
+.vote.con-hemi>*:not(.hemi-col){grid-column:2}
+
+/* inicio */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:12px 36px}
+.hero-h{font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-.018em;margin-top:12px}
+.hero-lede{font-size:17px;line-height:1.55;margin:18px 0 0;max-width:58ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{appearance:none;font:500 14px var(--sans);border:1px solid var(--ink);background:none;color:var(--ink);border-radius:999px;padding:9px 16px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{text-decoration:none;box-shadow:0 0 0 1px var(--ink)}
+.hero-vote{margin:0;display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+.hero-vote .hv-t{margin:0;font-weight:500;text-align:center;max-width:46ch;justify-self:center;text-wrap:balance}
+.hero-vote .hv-sub{font-size:12.5px;color:var(--muted);text-align:center;margin-top:-6px}
+.sec{display:grid;gap:14px;padding-top:36px}
+.sec-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.sec-h h2{font-size:24px}
+.sec-h p{margin:0;color:var(--muted);font-size:14px;max-width:60ch}
+.linklike{appearance:none;background:none;border:0;padding:0;font:500 14px var(--sans);color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;cursor:pointer}
+.face{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.face>div{padding:20px 22px;display:grid;gap:10px;align-content:start}
+.face>div+div{border-left:1px solid var(--line)}
+.face .who{display:flex;align-items:center;gap:10px}
+.face .who b{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.15}
+.face .who .rol{font-size:12.5px;color:var(--muted);display:block}
+.face .avatar{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font:600 13px var(--sans);color:#fff}
+.face blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:19px;line-height:1.45}
+.face p{margin:0;font-size:14px}
+.face-foot{grid-column:1/-1;border-top:1px solid var(--line);padding:10px 22px;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px;background:var(--bg)}
+.vgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.vcard{appearance:none;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;align-content:start;cursor:pointer}
+.vcard:hover{border-color:var(--line-strong)}
+.vcard .vc-r{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.vcard .vc-n{font-family:var(--serif);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums}
+.vcard .vc-t{font-size:13.5px;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vcard .vc-s{font-size:12px;color:var(--muted)}
+@media (max-width:900px){
+  .vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* temas */
+.rank{display:grid;gap:2px}
+.rank-row{appearance:none;background:none;border:0;font:inherit;color:inherit;text-align:left;display:grid;grid-template-columns:minmax(90px,170px) 1fr;gap:12px;align-items:center;padding:5px 6px;border-radius:6px;cursor:pointer}
+.rank-row:hover,.rank-row[aria-pressed="true"]{background:var(--sunk)}
+.rank-row .lab{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-row .trk{display:flex;align-items:center;gap:8px;min-width:0}
+.rank-row .br{height:12px;border-radius:0 4px 4px 0;background:var(--ink);min-width:3px;transition:width .4s ease}
+.rank-row[aria-pressed="false"] .br{opacity:.28}
+.rank-row .n{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rank-row .gs{display:inline-flex;gap:2px;margin-left:4px}
+.rank-row .gs i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.temas-top{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px}
+.tema-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;align-content:start;min-width:0}
+.chart h3{font-size:18px}
+.chart .sub{font-size:13px;color:var(--muted);margin:-6px 0 0}
+.mx-wrap{overflow-x:auto}
+table.mx{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px}
+table.mx th,table.mx td{border:0;padding:0;text-align:center}
+table.mx thead th{font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--muted);padding:0 2px 8px;white-space:nowrap}
+table.mx thead th i{display:block;width:8px;height:8px;border-radius:50%;margin:0 auto 4px}
+table.mx tbody th{text-align:left;font-weight:500;font-size:13.5px;padding-right:12px;white-space:nowrap;text-transform:none;letter-spacing:0;color:var(--ink)}
+table.mx tbody tr{cursor:pointer}
+table.mx tbody tr:hover th,table.mx tbody tr.sel th{text-decoration:underline;text-underline-offset:3px}
+table.mx tbody tr.sel td{background:var(--sunk)}
+table.mx td{height:32px;min-width:30px;border-top:1px solid var(--line)}
+table.mx td span{display:inline-block;border-radius:50%;box-shadow:0 0 0 2px var(--surface);vertical-align:middle}
+table.mx td.tot{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;padding-left:10px}
+.dotplot svg{display:block;width:100%;height:auto;overflow:visible}
+.dotplot .ax{stroke:var(--line);stroke-width:1}
+.dotplot text{font:500 11.5px var(--sans);fill:var(--muted)}
+.dotplot text.g{font-weight:600;fill:var(--ink)}
+.dotplot circle{stroke:var(--surface);stroke-width:2}
+.dotplot .mean{fill:var(--ink)}
+.citas{display:grid;gap:14px}
+.citas figure{margin:0;display:grid;gap:4px}
+.citas blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:16px;line-height:1.5}
+.citas figcaption{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+@media (max-width:900px){ .temas-top{grid-template-columns:1fr} }
+@media (max-width:720px){ .tema-panel{grid-template-columns:1fr} .rank-row{grid-template-columns:110px 1fr} }
+
 @media (max-width:720px){
   .two{grid-template-columns:1fr}
   .day{grid-template-columns:1fr;gap:10px}
@@ -202,6 +304,17 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
   .date .m{margin-top:0}
   .session{padding:14px}
   .topic{grid-template-columns:100px 1fr 24px}
+  .bar-in{gap:12px;min-height:50px}
+  .brand .logo{height:24px;aspect-ratio:96/53.2;-webkit-mask-image:url(marca/simbolo-tinta.svg);mask-image:url(marca/simbolo-tinta.svg)}
+  nav.tabs button{padding:0 8px;font-size:13.5px}
+  .hero{grid-template-columns:1fr;gap:24px;padding-top:0}
+  .hero-vote{padding:16px 12px 14px}
+  .face{grid-template-columns:1fr}
+  .face>div+div{border-left:0;border-top:1px solid var(--line)}
+  .vote.con-hemi{grid-template-columns:1fr}
+  .vote.con-hemi>.hemi-col{grid-row:auto;max-width:220px;justify-self:center;width:100%}
+  .vote.con-hemi>*:not(.hemi-col){grid-column:1}
+  .kpis{gap:12px 24px}
 }
 @media (prefers-reduced-motion:no-preference){
   .stack i,.tonebar i,.topic .tb{transition:width .4s ease}
@@ -211,30 +324,32 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 <body>
 
 <div class="wrap">
-  <header class="top">
-    <div class="eyebrow">Congreso de los Diputados · XV Legislatura</div>
-    <h1><span class="logo" aria-hidden="true"></span><span class="sr">Escaño Abierto</span></h1>
-    <p class="tagline">Qué se dijo en el Congreso y cómo se votó.</p>
-    <p class="lede" id="lede"></p>
-    <div class="kpis" id="kpis"></div>
+  <header class="bar">
+    <div class="bar-in">
+      <a class="brand" href="#inicio" data-go="inicio"><span class="logo" aria-hidden="true"></span><span class="sr">Escaño Abierto · Inicio</span></a>
+      <nav class="tabs" role="tablist" aria-label="Vistas">
+        <button role="tab" id="tab-inicio" aria-controls="inicio" aria-selected="true">Inicio</button>
+        <button role="tab" id="tab-dias" aria-controls="dias" aria-selected="false">Por día</button>
+        <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
+        <button role="tab" id="tab-temas" aria-controls="temas" aria-selected="false">Temas</button>
+        <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Por grupo</button>
+        <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
+        <button role="tab" id="tab-metodo" aria-controls="metodo" aria-selected="false">Método</button>
+      </nav>
+    </div>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Vistas">
-    <button role="tab" id="tab-dias" aria-controls="dias" aria-selected="true">Por día</button>
-    <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Por grupo</button>
-    <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
-    <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
-    <button role="tab" id="tab-metodo" aria-controls="metodo" aria-selected="false">Método</button>
-  </nav>
-
   <main>
-    <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias"></section>
+    <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
+    <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
+    <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
     <section class="view" id="grupos" role="tabpanel" aria-labelledby="tab-grupos" hidden></section>
     <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
     <section class="view" id="votaciones" role="tabpanel" aria-labelledby="tab-votaciones" hidden></section>
     <section class="view" id="metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden></section>
   </main>
 
+  <div id="tip" hidden></div>
   <footer>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
 </div>
 
@@ -280,8 +395,9 @@ function voteRow(v, compact){
   const w = x => (x/tot*100).toFixed(2)+"%";
   const gp = PARL.map(g=>{ const x=v.grupos[g]||"?"; return `<span class="gp ${x==="?"?"q":x}" title="${G[g].nombre}: ${VLABEL[x]}">${gdot(g)}${g}<span class="v">${VLABEL[x]}</span></span>`; }).join("");
   const d = dt(v.fecha);
-  return `<article class="vote">
-    <div class="vote-h"><div class="t">${esc(v.titulo)}<div class="sub">${compact?"":`${d.d} ${d.m} · `}${esc(v.tipo)} · ${v.proponente==="GOB"?"Gobierno":esc(v.proponente)} · <span class="mono">${esc(v.exp)}</span></div></div>
+  const hemi = hemiciclo(v);
+  return `<article class="vote${hemi?" con-hemi":""}" id="v-${v.id}">${hemi?`<div class="hemi-col">${hemi}</div>`:""}
+    <div class="vote-h"><div class="t">${esc(v.titulo)}<div class="sub">${compact?"":`${d.d} ${d.m} · `}${esc(v.tipo)} · ${v.proponente==="GOB"?"Gobierno":esc(v.proponente)} · ${v.exp?`<span class="mono">${esc(v.exp)}</span>`:""}</div></div>
       <span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></div>
     <div class="stack" role="img" aria-label="Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}">
       <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
@@ -300,16 +416,227 @@ function ivCard(i){
   </div></div>`;
 }
 
-/* ---------- header ---------- */
-(function header(){
+/* ---------- hemiciclo ---------- */
+// Orden de izquierda a derecha según la convención habitual de estos gráficos; el Mixto, que reúne partidos
+// de ideologías distintas, va en el centro.
+const ORDEN_HEMI = ["SUMAR","BILDU","ERC","PSOE","MIXTO","PNV","JUNTS","PP","VOX"];
+const ORDEN_VOTO = {S:0,A:1,N:2,X:3};
+const DIPS = DATA.diputados || [];
+const _layouts = {};
+function asientos(N){
+  if (_layouts[N]) return _layouts[N];
+  const filas = N>200 ? 12 : Math.max(3, Math.round(Math.sqrt(N/1.8)));
+  const r0 = .4, radios = Array.from({length:filas},(_,i)=>r0+(1-r0)*i/(filas-1));
+  const suma = radios.reduce((a,b)=>a+b,0);
+  const n = radios.map(r=>Math.round(N*r/suma));
+  n[filas-1] += N - n.reduce((a,b)=>a+b,0);
+  const out = [];
+  radios.forEach((r,i)=>{ for(let j=0;j<n[i];j++){ const a=Math.PI*(1-j/Math.max(1,n[i]-1)); out.push({a, r, x:100*r*Math.cos(a), y:-100*r*Math.sin(a)}); } });
+  out.sort((p,q)=>q.a-p.a || p.r-q.r);
+  const paso = Math.min(...radios.map((r,i)=>Math.PI*r*100/Math.max(1,n[i]-1)), (1-r0)*100/(filas-1));
+  return _layouts[N] = {pts: out, rad: paso*.42};
+}
+function escanosDe(v){
+  // Lista de {n, g, x} por diputado: del voto nominal si lo hay; si no, del recuento por grupo.
+  let lista = [];
+  if (v.v && DIPS.length===v.v.length){
+    for (let i=0;i<v.v.length;i++){ const x=v.v[i]; if (x!=="-") lista.push({n:DIPS[i][0], g:DIPS[i][1], x}); }
+  } else if (v.conteo && Object.keys(v.conteo).length){
+    for (const [g,c] of Object.entries(v.conteo)) for (const [x,k] of Object.entries(c)) for (let i=0;i<k;i++) lista.push({n:"", g, x});
+  } else return null;
+  const pos = g => { const i=ORDEN_HEMI.indexOf(g); return i<0?99:i; };
+  lista.sort((a,b)=>pos(a.g)-pos(b.g) || (ORDEN_VOTO[a.x]??9)-(ORDEN_VOTO[b.x]??9) || a.n.localeCompare(b.n,"es"));
+  return lista;
+}
+function hemiciclo(v, {grande=false, anim=false}={}){
+  const lista = escanosDe(v);
+  if (!lista) return "";
+  const {pts, rad} = asientos(lista.length);
+  const discrepa = e => ["S","N","A"].includes(e.x) && ["S","N","A"].includes(v.grupos[e.g]) && e.x!==v.grupos[e.g];
+  const circ = lista.map((e,k)=>{ const p=pts[k]; e.a=p.a;
+    return `<circle class="${e.x}${discrepa(e)?" dis":""}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${(e.x==="X"?rad-.6:rad).toFixed(2)}"${anim?` style="--d:${k}"`:""} data-n="${esc(e.n)}" data-g="${e.g}" data-x="${e.x}"${discrepa(e)?' data-dis="1"':""}></circle>`; }).join("");
+  // Arco exterior con el color de cada grupo.
+  const bandas = ORDEN_HEMI.map(g=>{ const s=lista.filter(e=>e.g===g); if(!s.length) return "";
+    const a1=Math.max(...s.map(e=>e.a))+.012, a2=Math.min(...s.map(e=>e.a))-.012, R=108;
+    const P=a=>`${(R*Math.cos(a)).toFixed(1)} ${(-R*Math.sin(a)).toFixed(1)}`;
+    const lab = grande && s.length>=20 ? (()=>{const am=(a1+a2)/2, Rl=118; return `<text class="glab" x="${(Rl*Math.cos(am)).toFixed(1)}" y="${(-Rl*Math.sin(am)+2.5).toFixed(1)}" text-anchor="middle">${g}</text>`;})() : "";
+    return `<path class="band" d="M${P(a1)} A${R} ${R} 0 0 1 ${P(a2)}" stroke="${G[g]?.color||"#999"}"/>${lab}`; }).join("");
+  const top = grande ? -128 : -112;
+  const aria = `Hemiciclo: Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}`;
+  return `<svg class="hemi${anim?" anim":""}" viewBox="-124 ${top} 248 ${-top+8}" role="img" aria-label="${aria}">${bandas}${circ}</svg>`;
+}
+const hemiLeyenda = () => `<div class="hemi-legend"><span><i style="background:var(--si)"></i>Sí</span><span><i style="background:var(--no)"></i>No</span><span><i style="background:var(--abst)"></i>Abstención</span><span><i class="hueco"></i>No vota</span><span><i class="anillo"></i>Distinto a su grupo</span></div>`;
+
+// Tooltip de los escaños.
+const tip = $("#tip");
+document.addEventListener("pointerover", e=>{
+  const dt_ = e.target.closest?.("[data-tip]");
+  if (dt_){ tip.innerHTML = dt_.dataset.tip; const b=dt_.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false; return; }
+  const c = e.target.closest?.(".hemi circle"); if(!c){ tip.hidden=true; return; }
+  const g=c.dataset.g, x=c.dataset.x;
+  tip.innerHTML = `${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)} · ${{S:"Sí",N:"No",A:"Abstención",X:"No vota"}[x]}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
+  const b=c.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false;
+});
+window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true});
+
+$("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
+
+/* ---------- temas ---------- */
+const COLS_TEMA = [...ORDEN_HEMI, "GOB"];
+const TEMAS = (()=>{
+  const m = {};
+  IVS.filter(i=>i.g!=="COMP" && i.g!=="?").forEach(i=>new Set(i.temas.map(t=>t.toLowerCase())).forEach(k=>{
+    const e = m[k] ||= {k, formas:{}, n:0, porG:{}, ivs:[]};
+    const forma = i.temas.find(t=>t.toLowerCase()===k); e.formas[forma]=(e.formas[forma]||0)+1;
+    e.n++; e.porG[i.g]=(e.porG[i.g]||0)+1; e.ivs.push(i);
+  }));
+  return Object.values(m).map(e=>({...e, label:Object.entries(e.formas).sort((a,b)=>b[1]-a[1])[0][0]}))
+    .sort((a,b)=>b.n-a.n || a.label.localeCompare(b.label,"es"));
+})();
+let temaSel = TEMAS[0]?.k;
+const gLabel = g => g==="GOB"?"Gob.":g;
+function rankTemas(lista, {sel=null, max=null}={}){
+  const top = lista[0]?.n || 1;
+  return `<div class="rank" role="list">${lista.map(t=>{
+    const gs = COLS_TEMA.filter(g=>t.porG[g]);
+    return `<button class="rank-row" role="listitem" data-tema-sel="${esc(t.k)}" ${sel?`aria-pressed="${t.k===sel}"`:""}
+      data-tip="${esc(`<b>${esc(t.label)}</b><br>${t.n} intervenciones · ${gs.map(g=>`${gLabel(g)} ${t.porG[g]}`).join(" · ")}`)}">
+      <span class="lab">${esc(t.label)}</span>
+      <span class="trk"><span class="br" style="width:${(t.n/top*100*.78).toFixed(1)}%"></span><span class="n">${t.n}</span>
+        <span class="gs" aria-label="${gs.map(gLabel).join(", ")}">${gs.map(g=>`<i style="background:${G[g].color}"></i>`).join("")}</span></span>
+    </button>`; }).join("")}</div>`;
+}
+function matrizTemas(lista, sel=null){
+  const max = Math.max(...lista.flatMap(t=>COLS_TEMA.map(g=>t.porG[g]||0)), 1);
+  const cols = COLS_TEMA.filter(g=>lista.some(t=>t.porG[g]));
+  const R = 13;
+  return `<div class="mx-wrap"><table class="mx"><thead><tr><th></th>${cols.map(g=>`<th scope="col"><i style="background:${G[g].color}"></i>${gLabel(g)}</th>`).join("")}<th></th></tr></thead>
+    <tbody>${lista.map(t=>`<tr data-tema-sel="${esc(t.k)}" class="${t.k===sel?"sel":""}"><th scope="row">${esc(t.label)}</th>${cols.map(g=>{ const n=t.porG[g]||0; if(!n) return `<td></td>`;
+      const d = 2*Math.max(3.5, R*Math.sqrt(n/max));
+      return `<td data-tip="${esc(`<b>${G[g].nombre}</b> sobre ${esc(t.label)}: ${n} ${n===1?"intervención":"intervenciones"}`)}" aria-label="${G[g].nombre}: ${n}"><span style="width:${d.toFixed(1)}px;height:${d.toFixed(1)}px;background:${G[g].color}"></span></td>`; }).join("")}<td class="tot">${t.n}</td></tr>`).join("")}</tbody></table></div>`;
+}
+function intensidadTema(t){
+  // Una fila por grupo: un punto por nivel de intensidad (1-5), área = nº de intervenciones; la marca negra es la media.
+  const gs = COLS_TEMA.filter(g=>t.porG[g]);
+  const W=420, L=58, Rt=14, fila=30, H=gs.length*fila+26;
+  const x = v => L + (v-1)/4*(W-L-Rt);
+  const maxc = Math.max(...gs.flatMap(g=>[1,2,3,4,5].map(v=>t.ivs.filter(i=>i.g===g&&i.int===v).length)),1);
+  const filas = gs.map((g,r)=>{ const y=14+r*fila, iv=t.ivs.filter(i=>i.g===g), media=iv.reduce((a,i)=>a+i.int,0)/iv.length;
+    const pts=[1,2,3,4,5].map(v=>{ const c=iv.filter(i=>i.int===v).length; if(!c) return "";
+      return `<circle cx="${x(v)}" cy="${y}" r="${(4+6*Math.sqrt(c/maxc)).toFixed(1)}" fill="${G[g].color}" data-tip="${esc(`<b>${G[g].nombre}</b><br>${c} ${c===1?"intervención":"intervenciones"} de intensidad ${v}`)}"/>`; }).join("");
+    return `<line class="ax" x1="${L}" x2="${W-Rt}" y1="${y}" y2="${y}"/><text class="g" x="0" y="${y+4}">${gLabel(g)}</text>${pts}<rect class="mean" x="${(x(media)-1.5).toFixed(1)}" y="${y-9}" width="3" height="18" rx="1.5" data-tip="${esc(`${G[g].nombre}: intensidad media ${media.toFixed(1).replace(".",",")}`)}"/>`; }).join("");
+  const ejes = [1,2,3,4,5].map(v=>`<text x="${x(v)}" y="${H-2}" text-anchor="middle">${v}</text>`).join("");
+  return `<div class="dotplot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Intensidad de las intervenciones sobre ${esc(t.label)} por grupo">${filas}${ejes}</svg></div>
+    <div class="legend"><span>1 = sereno · 5 = confrontación directa</span><span><i class="dot" style="background:var(--ink);border-radius:1px;width:3px;height:12px"></i>media del grupo</span><span>tamaño = nº de intervenciones</span></div>`;
+}
+function detalleTema(t){
+  const citas = t.ivs.filter(i=>i.cita).sort((a,b)=>COLS_TEMA.indexOf(a.g)-COLS_TEMA.indexOf(b.g)).slice(0,5);
+  return `<div class="chart"><h3>Con qué intensidad</h3><p class="sub">${esc(t.label)}: ${t.n} intervenciones de ${Object.keys(t.porG).length} grupos.</p>${intensidadTema(t)}</div>
+    <div class="chart"><h3>Qué dijeron</h3><p class="sub">Citas literales del Diario de Sesiones, en orden de izquierda a derecha.</p>
+      <div class="citas">${citas.map(i=>`<figure><blockquote><mark>«${esc(i.cita)}»</mark></blockquote><figcaption>${gdot(i.g)}${esc(i.orador)} · ${esc(gname(i.g))}</figcaption></figure>`).join("") || '<p class="nota">No hay citas verificadas sobre este tema.</p>'}</div>
+      <button class="linklike" data-tema="${esc(t.label)}">Ver las ${t.n} intervenciones</button></div>`;
+}
+function renderTemas(){
+  const lista = TEMAS.slice(0,15);
+  if (!lista.length){ $("#temas").innerHTML = '<p class="nota">Todavía no hay intervenciones analizadas.</p>'; return; }
+  const t = TEMAS.find(x=>x.k===temaSel) || lista[0];
+  $("#temas").innerHTML = `
+    <div class="view-intro"><div><h2>Temas</h2><p>De qué se habló en ${esc(DATA.meta.periodo)}, quién lo sacó y con qué tono. Los temas los asigna la IA a cada intervención; una intervención puede tener varios. Pulsa un tema para ver el detalle.</p></div></div>
+    <div class="temas-top">
+      <div class="chart"><h3>Los más repetidos</h3><p class="sub">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(lista,{sel:t.k})}</div>
+      <div class="chart"><h3>Quién habla de qué</h3><p class="sub">Área del círculo = intervenciones del grupo sobre el tema.</p>${matrizTemas(lista, t.k)}</div>
+    </div>
+    <h2 style="font-size:24px;margin-top:10px">${esc(t.label[0].toUpperCase()+t.label.slice(1))}</h2>
+    <div class="tema-panel">${detalleTema(t)}</div>`;
+}
+
+/* ---------- inicio ---------- */
+const frases = t => (t||"").split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«])/);
+const fechaLarga = iso => { const [y,m,d]=iso.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long",year:"numeric"}); };
+const margen = v => Math.abs(v.si-v.no);
+const iniciales = n => n.split(/[\s-]+/).filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+function renderInicio(){
+  const plenos = DATA.sesiones.filter(s=>s.organo==="Pleno" && s.resumen).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  const ses = plenos[0] || DATA.sesiones[0];
+  const fr = frases(ses.resumen);
+  let titular = ses.titular, lede;
+  if (titular) lede = ses.resumen;
+  else {
+    // Sin titular generado: la primera frase del resumen; si es larga, hasta la primera coma.
+    titular = fr.shift() || ses.sesion;
+    const c = titular.indexOf(", ", 30);
+    if (titular.length > 90 && c > 0){
+      const resto = titular.slice(c+2);
+      fr.unshift(resto[0].toUpperCase()+resto.slice(1));
+      titular = titular.slice(0,c)+".";
+    }
+    lede = fr.join(" ");
+  }
+
+  const delDia = DATA.votaciones.filter(v=>v.fecha===ses.fecha);
+  const candidatas = (delDia.length?delDia:DATA.votaciones).slice().sort((a,b)=>margen(a)-margen(b) || b.fecha.localeCompare(a.fecha));
+  const dest = candidatas[0];
+
+  const heroVoto = dest ? `<figure class="hero-vote">
+      <div class="eyebrow" style="text-align:center">${delDia.length?"La votación más ajustada del día":"La votación más ajustada"}</div>
+      <div class="hemi-wrap">${hemiciclo(dest,{grande:true, anim:true})}
+        <div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${resLabel(dest)}</span></div></div>
+      ${hemiLeyenda()}
+      <p class="hv-t">${esc(dest.titulo)}</p>
+      <div class="hv-sub">${esc(dest.tipo)} · ${dest.proponente==="GOB"?"Gobierno":esc(dest.proponente)} · ${margen(dest)} ${margen(dest)===1?"voto":"votos"} de diferencia · <button class="linklike" data-go="votaciones" data-anchor="v-${dest.id}" style="font-size:12.5px">Ver votación</button></div>
+    </figure>` : "";
+
+  // Cifras del periodo.
   const oradores = new Set(IVS.map(i=>i.orador));
   const derrotas = DATA.votaciones.filter(v=>v.proponente==="GOB" && !passed(v)).length;
-  $("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
-  $("#lede").textContent = `Plenos y comparecencias del ${DATA.meta.periodo}: qué se dijo, en qué tono y cómo votó cada grupo. Filtra por día, grupo parlamentario u orador.`;
-  $("#kpis").innerHTML = [
-    [DATA.sesiones.length,"sesiones"],[IVS.length,"intervenciones analizadas"],[oradores.size,"oradores"],[DATA.votaciones.length,"votaciones"],[derrotas,derrotas===1?"decreto del Gobierno derogado":"decretos del Gobierno derogados",derrotas>0]
-  ].map(([n,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${n}</b><span>${l}</span></div>`).join("");
-})();
+  const ajustadas = DATA.votaciones.filter(v=>margen(v)<=10).length;
+  const kpis = [[DATA.sesiones.length,"sesiones"],[IVS.length,"intervenciones analizadas"],[oradores.size,"oradores"],[DATA.votaciones.length,"votaciones"],[ajustadas,"decididas por 10 votos o menos"],[derrotas,derrotas===1?"iniciativa del Gobierno rechazada":"iniciativas del Gobierno rechazadas",derrotas>0]]
+    .map(([n,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${n}</b><span>${l}</span></div>`).join("");
+
+  // Cara a cara: la primera respuesta del Gobierno de la sesión más reciente con análisis, y la pregunta previa.
+  let cara = "";
+  const conResp = IVS.map((i,k)=>[i,k]).filter(([i,k])=>i.g==="GOB" && IVS.slice(0,k).some(p=>p.s===i.s && p.item===i.item && p.g!=="GOB" && p.g!=="COMP"));
+  if (conResp.length){
+    const ult = conResp.reduce((m,x)=>{ const f=DATA.sesiones.find(s=>s.id===x[0].s)?.fecha||""; return f>m.f?{f,x}:m; },{f:"",x:null}).x;
+    const sesR = ult[0].s;
+    const [resp,k] = conResp.find(([i])=>i.s===sesR);
+    const preg = IVS.slice(0,k).reverse().find(i=>i.s===resp.s && i.item===resp.item && i.g!=="GOB" && i.g!=="COMP");
+    if (preg){
+      const sR = DATA.sesiones.find(s=>s.id===resp.s), d = dt(sR.fecha);
+      const lado = (i,extra) => `<div><div class="who"><span class="avatar" style="background:${G[i.g].color}">${esc(iniciales(i.orador))}</span><div><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span></div></div>
+        ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}<p>${esc(i.resumen)}</p>${extra||""}</div>`;
+      cara = `<section class="sec"><div class="sec-h"><h2>Cara a cara</h2><p>La primera pregunta al Gobierno de la última sesión analizada y su respuesta.</p></div>
+        <div class="face">${lado(preg)}${lado(resp, ["sí","parcial","no"].includes(resp.responde)?`<p class="nota"><span class="pill resp-${resp.responde==="sí"?"si":resp.responde}">¿Contesta? ${esc(resp.responde)}</span> ${esc(resp.responde_motivo||"")}</p>`:"")}
+        <div class="face-foot"><span>${d.d} ${d.m} · ${esc(sR.organo)} · ${esc(resp.item)}</span><button class="linklike" data-go="dias" data-anchor="s-${sR.id}" style="font-size:13px">Ver la sesión completa</button></div></div></section>`;
+    }
+  }
+
+  // Votaciones más ajustadas del periodo.
+  const top = DATA.votaciones.slice().sort((a,b)=>margen(a)-margen(b) || b.fecha.localeCompare(a.fecha)).filter(v=>v!==dest).slice(0,4);
+  const vcards = top.map(v=>{ const d=dt(v.fecha); return `<button class="vcard" data-go="votaciones" data-anchor="v-${v.id}">
+      ${hemiciclo(v)}
+      <div class="vc-r"><span class="vc-n">${v.si} – ${v.no}</span><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></div>
+      <div class="vc-t">${esc(v.titulo)}</div><div class="vc-s">${d.d} ${d.m} · ${esc(v.tipo)}</div></button>`; }).join("");
+
+  // Temas.
+
+  $("#inicio").innerHTML = `
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Último pleno · ${esc(fechaLarga(ses.fecha))}</div>
+        <h2 class="hero-h">${esc(titular)}</h2>
+        ${lede?`<p class="hero-lede">${esc(lede)}</p>`:""}
+        <div class="hero-cta"><button class="btn primary" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión</button><button class="btn" data-go="votaciones">Todas las votaciones</button></div>
+      </div>
+      ${heroVoto}
+    </div>
+    <div class="kpis" aria-label="${esc(DATA.meta.periodo)} en cifras">${kpis}</div>
+    ${cara}
+    ${vcards?`<section class="sec"><div class="sec-h"><h2>Las más ajustadas</h2><button class="linklike" data-go="votaciones">Ver las ${DATA.votaciones.length} votaciones</button></div><div class="vgrid">${vcards}</div></section>`:""}
+    ${TEMAS.length?`<section class="sec"><div class="sec-h"><h2>De qué se ha hablado</h2><button class="linklike" data-go="temas">Explorar los temas</button></div>
+      <div class="temas-top"><div class="chart"><p class="sub" style="margin:0">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(TEMAS.slice(0,8))}</div>
+      <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
+}
 
 /* ---------- días ---------- */
 function renderDias(){
@@ -454,6 +781,8 @@ function renderMetodo(){
       <li>Cada turno de palabra se resume en 2–3 frases y se clasifica en un tono: combativo, crítico, irónico, defensivo, técnico, conciliador o propositivo.</li>
       <li>La <b>intensidad</b> va de 1 (exposición serena) a 5 (confrontación directa, descalificaciones).</li>
       <li>La <b>afinidad de voto</b> compara la posición mayoritaria de cada grupo en las votaciones incluidas.</li>
+      <li>El <b>hemiciclo</b> dibuja a los 350 diputados con su voto nominal oficial. Los grupos van de izquierda a derecha según la convención habitual de estos gráficos, con el Grupo Mixto, que reúne partidos de distintas ideologías, en el centro. No es la disposición real de los escaños en la Cámara.</li>
+      <li>En la portada, la <b>votación destacada</b> es la de menor diferencia entre síes y noes del último pleno, y el <b>cara a cara</b> es la primera pregunta de control de la última sesión analizada. Se eligen con una regla fija, no a mano.</li>
     </ul>
     <h3>Garantías</h3>
     <ul>
@@ -466,18 +795,35 @@ function renderMetodo(){
   </div>`;
 }
 
-/* ---------- tabs ---------- */
-const TABS = ["dias","grupos","oradores","votaciones","metodo"];
+/* ---------- navegación ---------- */
+const TABS = ["inicio","dias","votaciones","temas","grupos","oradores","metodo"];
 const rendered = {};
-const renderers = {dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {inicio:renderInicio, temas:renderTemas, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 function show(id, push){
-  if(!TABS.includes(id)) id="dias";
+  if(!TABS.includes(id)) id="inicio";
   TABS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t).setAttribute("aria-selected", t===id); });
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
 }
-TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>show(t,true)));
+function ir(tab, anchor){
+  if (tab==="votaciones" && anchor){ vFilter.res="todas"; rendered.votaciones=false; }
+  show(tab,true);
+  const el = anchor && document.getElementById(anchor);
+  if (el){ el.scrollIntoView({block:"start"}); window.scrollBy(0,-72); el.animate?.([{outline:"2px solid var(--ink)"},{outline:"2px solid transparent"}],{duration:1600}); }
+  else window.scrollTo(0,0);
+}
+TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window.scrollTo(0,0); }));
+document.addEventListener("click", e=>{
+  const g = e.target.closest("[data-go]");
+  if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
+  const ts = e.target.closest("[data-tema-sel]");
+  if (ts){ temaSel = ts.dataset.temaSel; const y=window.scrollY; const enTemas=!$("#temas").hidden; renderTemas(); rendered.temas=true;
+    if (enTemas) window.scrollTo(0,y); else { show("temas",true); window.scrollTo(0,0); } return; }
+  const t = e.target.closest("[data-tema]");
+  if (t){ orFilter = {q:t.dataset.tema, g:"TODOS"}; rendered.oradores=false; ir("oradores"); }
+});
 show((location.hash||"").slice(1), false);
+window.addEventListener("hashchange", ()=>{ show(location.hash.slice(1), false); window.scrollTo(0,0); });
 }
 </script>
 
