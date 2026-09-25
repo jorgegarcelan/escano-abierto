@@ -9,7 +9,9 @@ from datetime import date
 
 from . import diputados as mod_diputados
 from .analisis import analizar, resumir_sesion
-from .config import INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
+from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
+
+MVP = DATOS / "mvp.json"  # análisis del prototipo; solo rellenan lo que el pipeline aún no ha analizado
 
 PARLAMENTARIOS = ["PSOE", "PP", "VOX", "SUMAR", "ERC", "JUNTS", "BILDU", "PNV", "MIXTO"]
 PROPONENTES = [
@@ -56,6 +58,38 @@ def tipo_votacion(v: dict) -> str:
     return v["tipo"] or "Votación"
 
 
+RE_RDL = re.compile(r"^Real Decreto-ley (\d+/\d{4}), de \d+ de \w+, (.*)$", re.I)
+RE_ASUNTO = re.compile(r",\s+(?:sobre|relativ[ao] a|para)\s+(.*)$", re.I)
+RE_PREFIJO = re.compile(r"^(?:Proposición no de Ley|Proposición de Ley|Proyecto de Ley|Moción[^,]*?)\s*"
+                        r"(?:del Grupo Parlamentario [^,]+,\s*)?(?:de\s+)?", re.I)
+
+
+def titulo_votacion(texto: str, subgrupo: str = "") -> str:
+    """Título corto a partir del texto oficial del expediente (sin IA).
+
+    «Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre la crisis
+    que atraviesa la Ciudad Autónoma de Ceuta.» -> «Crisis que atraviesa la Ciudad Autónoma de Ceuta».
+    """
+    t = (texto or "").strip().split("\n")[0].strip().rstrip(".")
+    if m := re.search(r"^Tramitación como Proyecto de Ley.*?Real Decreto-ley (\d+/\d{4})", t, re.I):
+        t = f"Tramitar el RDL {m.group(1)} como proyecto de ley"
+    elif m := RE_RDL.match(t):
+        t = f"RDL {m.group(1)} {m.group(2)}"
+    elif m := RE_ASUNTO.search(t):
+        t = m.group(1)
+    else:
+        t = RE_PREFIJO.sub("", t) or t
+        if re.match(r"(?:por (?:la|el) que|orgánica)\b", t, re.I):
+            t = "Ley " + t[:1].lower() + t[1:]
+    t = re.sub(r"^(?:el|la|los|las)\s+", "", t, flags=re.I).strip()
+    t = t[:1].upper() + t[1:]
+    if len(t) > 110:
+        t = t[:110].rsplit(" ", 1)[0].rstrip(",;") + "…"
+    if subgrupo and len(subgrupo) <= 60:
+        t += f" ({subgrupo[:1].lower() + subgrupo[1:]})"
+    return t or "Votación"
+
+
 def titulo_legible(item: str) -> str:
     t = re.sub(r"\(Número de expediente[^)]*\)\.?", "", item).strip(" —.")
     return t[:1].upper() + t[1:].lower() if t.isupper() else t
@@ -86,7 +120,8 @@ def votos_compactos(v: dict, indice: dict[str, int]) -> str:
 
 def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
     return {
-        "id": v["id"], "fecha": v["fecha"], "tipo": tipo_votacion(v), "titulo": v["titulo"],
+        "id": v["id"], "fecha": v["fecha"], "tipo": tipo_votacion(v),
+        "titulo": titulo_votacion(v["titulo"], v.get("subgrupo", "")), "texto": v["titulo"],
         "proponente": proponente(v["titulo"]) or "?", "exp": v.get("exp") or "",
         "si": v["si"], "no": v["no"], "abst": v["abst"], "novota": v["novota"],
         "grupos": {g: (x if x in "SNAD" else "?") for g, x in v["grupos"].items()},
@@ -95,6 +130,43 @@ def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
         "json": v.get("json", ""),
         "v": votos_compactos(v, indice) if indice and v.get("votos") else "",
     }
+
+
+def completar_con_mvp(sesiones: list[dict], ivs: list[dict], votos: list[dict]) -> None:
+    """Rellena con el análisis del MVP las sesiones que el pipeline aún no ha analizado.
+
+    El análisis del pipeline manda siempre: una sesión con intervenciones analizadas no se toca.
+    """
+    if not MVP.exists():
+        return
+    mvp = json.loads(MVP.read_text())
+    for v in votos:  # títulos revisados a mano en el MVP
+        if (m := mvp.get("votaciones", {}).get(v["id"])):
+            v.update(m)
+    ids_votos = {v["id"] for v in votos}
+    analizadas = {i["s"] for i in ivs}
+    for m in mvp.get("sesiones", []):
+        p = next((s for s in sesiones if m.get("dsNombre") and s.get("dsNombre") == m["dsNombre"]), None) \
+            or next((s for s in sesiones if not m.get("ds") and s["fecha"] == m["fecha"] and s["organo"] == m["organo"]), None)
+        m_ivs = [dict(i) for i in mvp.get("intervenciones", []) if i["s"] == m["id"]]
+        if p is None:
+            m = {**m, "puntos": [{**pt, "votos": [x for x in pt.get("votos", []) if x in ids_votos]} for pt in m["puntos"]],
+                 "fuente": "mvp"}
+            sesiones.append(m)
+            ivs.extend(m_ivs)
+            continue
+        if p["id"] in analizadas:
+            continue
+        p["resumen"] = p.get("resumen") or m.get("resumen", "")
+        if p["resumen"]:
+            p.pop("nota", None)
+        # Los puntos del MVP enlazan sus intervenciones; solo sirven si describen el mismo Diario (o ninguno).
+        if m.get("dsNombre") == p.get("dsNombre") or not p.get("ds"):
+            p["puntos"] = [{**pt, "votos": [x for x in pt.get("votos", []) if x in ids_votos]} for pt in m["puntos"]]
+            for i in m_ivs:
+                i["s"] = p["id"]
+            ivs.extend(m_ivs)
+        p["fuente"] = "mvp"
 
 
 def construir(con_ia: bool = True) -> dict:
@@ -143,7 +215,7 @@ def construir(con_ia: bool = True) -> dict:
             if (a := analisis.get(iv["orden"])):
                 lineas.append(f"- {iv['orador']} ({iv['grupo']}) sobre «{(iv['item'] or '')[:120]}»: {a['resumen']}")
         for v in votos_dia:
-            lineas.append(f"- Votación: {v['titulo'][:160]} → Sí {v['si']}, No {v['no']}, Abst. {v['abst']}")
+            lineas.append(f"- Votación: {v['texto'][:160]} → Sí {v['si']}, No {v['no']}, Abst. {v['abst']}")
 
         resumen, titular, titulos = "", "", []
         if con_ia and (lineas or asuntos):
@@ -154,7 +226,7 @@ def construir(con_ia: bool = True) -> dict:
         for i, asunto in enumerate(asuntos):
             seccion = next((iv["seccion"] for iv in ivs if (iv["item"] or iv["seccion"]) == asunto), None)
             hay_analisis = any(iv["orden"] in analisis for iv in ivs if (iv["item"] or iv["seccion"]) == asunto)
-            enlazados = [v["id"] for v in votos_dia if parecido(v["titulo"], asunto) >= 0.5]
+            enlazados = [v["id"] for v in votos_dia if parecido(v["texto"], asunto) >= 0.5]
             puntos.append({
                 "tipo": (seccion or "Asunto").capitalize(),
                 "titulo": titulos[i] if i < len(titulos) else titulo_legible(asunto),
@@ -202,10 +274,12 @@ def construir(con_ia: bool = True) -> dict:
         sesiones_web.append({
             "id": f"votos-{fecha}", "fecha": fecha, "organo": "Pleno",
             "sesion": f"Sesión nº {vs[0]['id'].split('-')[0]}", "ds": None,
-            "resumen": "El Diario de Sesiones de esta jornada aún no se ha publicado. Se muestran las votaciones.",
+            "resumen": "", "nota": "El Diario de Sesiones de esta jornada aún no se ha publicado. Se muestran las votaciones.",
             "puntos": [{"tipo": v["tipo"], "titulo": v["titulo"][:200], "estado": "sin-ds", "votos": [v["id"]]}
                        for v in vs],
         })
+
+    completar_con_mvp(sesiones_web, ivs_web, web_votos)
 
     fechas = sorted({s["fecha"] for s in sesiones_web})
     grupos = {g: {**INFO_GRUPOS[g], "codigo": g, "escanos": escanos.get(g, 0)} for g in INFO_GRUPOS}

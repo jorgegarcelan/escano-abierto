@@ -86,6 +86,7 @@ def leer_votacion(datos: dict, url: str = "") -> dict:
         "fecha": date(a, m, d).isoformat(),
         "tipo": (info.get("titulo") or "").rstrip("."),
         "titulo": texto,
+        "subgrupo": (info.get("textoSubGrupo") or "").strip().rstrip("."),
         "exp": exp.group(1) if exp else None,
         "asentimiento": tot.get("asentimiento") == "Sí",
         "si": si,

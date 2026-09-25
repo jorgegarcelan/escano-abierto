@@ -33,6 +33,7 @@ def test_construir(tmp_path, monkeypatch):
                              (mod_construir, "SITIO", "site"), (analisis, "ANALISIS", "analisis")]:
         (tmp_path / sub).mkdir(exist_ok=True)
         monkeypatch.setattr(mod, nombre, tmp_path / sub)
+    monkeypatch.setattr(mod_construir, "MVP", tmp_path / "sin-mvp.json")
     falso = ClienteFalso()
     monkeypatch.setattr(analisis, "_cliente", lambda: falso)
 

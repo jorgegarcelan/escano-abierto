@@ -74,7 +74,7 @@ def _sin_tildes(s: str) -> str:
 
 def _titulo(s: str) -> str:
     """'NÚÑEZ FEIJÓO' -> 'Núñez Feijóo' respetando partículas."""
-    menores = {"de", "del", "la", "las", "los", "y", "i"}
+    menores = {"de", "del", "la", "las", "los", "el", "y", "e", "i", "en", "para", "con"}
     palabras = s.strip().lower().split()
     return " ".join(p if (p in menores and i) else p[:1].upper() + p[1:] for i, p in enumerate(palabras))
 
@@ -116,7 +116,7 @@ def limpiar(texto: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", texto)
 
 
-def cabecera(texto: str) -> dict:
+def cabecera(texto: str, serie: str = "PL") -> dict:
     """Fecha y número de sesión a partir de la primera página."""
     inicio = texto[:4000]
     fecha = None
@@ -125,7 +125,13 @@ def cabecera(texto: str) -> dict:
         fecha = f"{m.group(4)}-{mes:02d}-{int(m.group(2)):02d}"
     ses = RE_SESION.search(inicio)
     organo = "Pleno"
-    if c := re.search(r"^(COMISIÓN [^\n]+)$", inicio, re.M):
+    if serie == "CO" and (c := re.search(r"Núm\.\s*\d+\s*\n+(.+?)\n+\s*PRESIDENCIA", inicio, re.S)):
+        # En las comisiones el nombre va en mayúsculas, a veces en varias líneas y sin «de»:
+        # «INTERIOR», «DE SEGUIMIENTO Y EVALUACIÓN / DE LOS ACUERDOS…»
+        nombre = _titulo(" ".join(c.group(1).split()))
+        nombre = re.sub(r"^De ", "de ", nombre)
+        organo = "Comisión " + (nombre if re.match(r"(de|del|para|sobre) ", nombre) else "de " + nombre)
+    elif c := re.search(r"^(COMISIÓN [^\n.(]+)", inicio, re.M):
         organo = _titulo(c.group(1))
     return {"fecha": fecha, "sesion": int(ses.group(1)) if ses else None, "organo": organo}
 
@@ -200,7 +206,7 @@ def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = 
 def procesar_diario(ruta: Path, serie: str, numero: int, mapa: dict[str, str]) -> dict:
     """Extrae y guarda las intervenciones de un Diario en data/sesiones/<id>.json."""
     texto = texto_pdf(ruta)
-    cab = cabecera(texto)
+    cab = cabecera(texto, serie)
     ivs = dividir(texto, mapa, es_comision=(serie == "CO"))
     ses = {
         "id": f"DSCD-{LEGISLATURA}-{serie}-{numero}",
