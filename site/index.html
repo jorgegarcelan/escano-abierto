@@ -487,6 +487,22 @@ svg.prov{width:100%;height:auto;max-width:460px}
   .como-ley li{padding-left:26px}
 }
 
+/* sobre el proyecto */
+.sobre .lede{font-size:clamp(17px,1.9vw,20px);line-height:1.5;max-width:62ch}
+.sobre-ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.sobre-ideas p{margin:0;line-height:1.55}
+.sobre-ideas .linklike,.sobre .prosa .linklike,.como-ley p .gl,.sobre .gl{font-size:inherit;text-align:left;display:inline;white-space:normal;padding:0;line-height:inherit;vertical-align:baseline}
+.sobre-lista{margin:0;padding-left:20px;display:grid;gap:10px;max-width:70ch;line-height:1.55}
+.autor-links{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 0}
+.autor .prosa+.prosa{margin-top:10px}
+.legal{display:grid;gap:4px;max-width:72ch}
+.legal h3{font-size:15px;margin:14px 0 2px}
+.legal h3:first-child{margin-top:0}
+.legal p{margin:0;line-height:1.55;color:var(--muted)}
+.legal p b{color:var(--ink);font-weight:600}
+.sobre-franja{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.sobre-franja p{margin:0;max-width:70ch;line-height:1.5}
+
 /* temas */
 .rank{display:grid;gap:2px}
 .rank-row{appearance:none;background:none;border:0;font:inherit;color:inherit;text-align:left;display:grid;grid-template-columns:minmax(90px,170px) 1fr;gap:12px;align-items:center;padding:5px 6px;border-radius:var(--r-ctl);cursor:pointer}
@@ -794,10 +810,11 @@ body.con-buscador{overflow:hidden}
     <section class="view" id="provincia" aria-label="Tus diputados" hidden></section>
     <section class="view" id="tema" aria-label="Seguir un tema" hidden></section>
     <section class="view" id="preguntas" aria-label="Preguntas escritas al Gobierno" hidden></section>
+    <section class="view" id="sobre" aria-label="Sobre el proyecto" hidden></section>
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
+  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
 </div>
 
 <script>
@@ -1919,6 +1936,59 @@ function interesesFicha(d){
   </section>`;
 }
 
+/* ---------- sobre el proyecto ---------- */
+const REPO = "https://github.com/jorgegarcelan/escano-abierto";
+function renderSobre(){
+  const nV = INDICE.meses.reduce((a,m)=>a+m.votaciones,0), nS = INDICE.meses.reduce((a,m)=>a+m.sesiones,0);
+  const cifras = [[fmt(nV),"votaciones, con el voto de cada diputado"],[fmt(nS),"sesiones del Pleno y de las comisiones"],[fmt(DIP.length),"diputados de la legislatura"],
+    [LEYES?fmt(LEYES.iniciativas.length):"–","leyes seguidas paso a paso"],[PREG?fmt(PREG.total):"–","preguntas escritas al Gobierno"]];
+  $("#sobre").innerHTML = `<div class="sobre">
+    <div class="view-intro"><div><div class="eyebrow">Sobre el proyecto</div>
+      <h2>Entender lo que se hace en el Congreso</h2>
+      <p class="lede">El Congreso publica casi todo lo que hace: cada voto de cada diputado, cada palabra dicha en el Pleno, cada ley con sus fases y sus plazos. Pero está repartido en miles de PDF, buscadores y ficheros pensados para especialistas. Escaño Abierto lo junta, lo ordena y lo cuenta para que cualquiera pueda entenderlo en unos minutos.</p></div></div>
+    <div class="kpis">${cifras.map(([n,l])=>`<div class="kpi"><b>${n}</b><span>${l}</span></div>`).join("")}</div>
+    <section class="sec"><div class="sec-h"><h2>La idea</h2></div>
+      <div class="sobre-ideas">
+        <div class="chart"><h3>Entender</h3><p>Qué significa cada votación, en una frase: aprobar una proposición no de ley no cambia ninguna ley. Un <a href="#glosario">glosario</a> con las palabras del Congreso y <a href="#como-ley">cómo se hace una ley</a>, paso a paso, con las cifras reales.</p></div>
+        <div class="chart"><h3>Acercar</h3><p>Quién te representa: los <a href="#diputados">diputados de tu provincia</a>, cómo votan y qué preguntan. Los temas que te importan, con su propio RSS; <a href="#semana">la semana en el Congreso</a> y lo que se votará en el próximo pleno.</p></div>
+        <div class="chart"><h3>Rendir cuentas</h3><p>Cuándo un diputado vota distinto a su grupo, qué leyes llevan meses <a href="#leyes">en el congelador</a>, cuántas <a href="#preguntas">preguntas al Gobierno</a> siguen sin respuesta y qué actividades e intereses declara cada diputado.</p></div>
+      </div></section>
+    <section class="sec"><div class="sec-h"><h2>Lo que no es</h2></div>
+      <ul class="sobre-lista">
+        <li><b>No es un medio de opinión.</b> No dice qué está bien o mal votado: muestra lo que pasó, con las mismas reglas para todos los grupos.</li>
+        <li><b>No está vinculado al Congreso ni a ningún partido.</b> Es un proyecto personal e independiente, sin financiación.</li>
+        <li><b>No se inventa nada.</b> Cada dato enlaza a su fuente oficial. Cuando interviene la IA (resúmenes, tono), se indica, y las citas solo se publican si aparecen literalmente en el Diario de Sesiones.</li>
+      </ul></section>
+    <section class="sec"><div class="sec-h"><h2>Cómo se hace</h2></div>
+      <p class="prosa">Cada mañana, un proceso automático descarga lo nuevo de la web del Congreso: votaciones, Diarios de Sesiones, orden del día, tramitación de leyes, preguntas escritas y declaraciones de intereses. Lo cruza, lo resume con reglas fijas y publica esta web. El <a href="${REPO}" target="_blank" rel="noopener">código es abierto</a>, y en <a href="#metodo">Método</a> se explica cada cálculo.</p>
+      <p class="prosa">Si ves un error o echas algo en falta, <a href="${REPO}/issues" target="_blank" rel="noopener">abre una incidencia en GitHub</a>. Las correcciones se agradecen.</p></section>
+    <section class="sec" id="aviso-legal"><div class="sec-h"><h2>Aviso legal</h2></div>
+      <div class="legal">
+        <h3>Independencia</h3>
+        <p>Escaño Abierto es un proyecto personal, independiente y sin ánimo de lucro. <b>No está asociado, patrocinado ni avalado por el Congreso de los Diputados, las Cortes Generales, el Senado, el Gobierno ni ningún otro organismo público, partido político o grupo parlamentario</b>, y no habla en nombre de ninguno de ellos. No usa sus logotipos ni su identidad visual.</p>
+        <h3>Origen de los datos</h3>
+        <p>La información procede de fuentes públicas del Congreso de los Diputados (datos abiertos, Diario de Sesiones, Boletín Oficial de las Cortes Generales, buscador de iniciativas y agenda) y se reutiliza de acuerdo con la normativa sobre reutilización de la información del sector público (Ley 37/2007), citando siempre la fuente y enlazando al documento original. Las fotografías de los diputados son las que publica el Congreso y se muestran directamente desde su web.</p>
+        <h3>Exactitud</h3>
+        <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los resúmenes, el tono y la intensidad generados con inteligencia artificial son orientativos y se indican como tales. Nada de lo publicado constituye asesoramiento jurídico.</p>
+        <h3>Personas</h3>
+        <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a> o a través de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com</a>, y se revisará lo antes posible.</p>
+        <h3>Privacidad</h3>
+        <p>Esta web no usa cookies, no tiene analítica ni publicidad y no recoge datos personales. Solo guarda en tu propio navegador tus preferencias (periodo, provincia y estilo visual), que puedes borrar cuando quieras. Para mostrarse, carga tipografías de Google Fonts y las fotografías oficiales desde la web del Congreso, que pueden registrar tu dirección IP según sus propias políticas. Está alojada en Vercel.</p>
+        <h3>Código</h3>
+        <p>El <a href="${REPO}" target="_blank" rel="noopener">código de Escaño Abierto</a> es público en GitHub. Las tipografías de las tarjetas para compartir (Doto y Geist) se distribuyen con licencia SIL Open Font License.</p>
+      </div></section>
+    <section class="sec"><div class="sec-h"><h2>Quién está detrás</h2></div>
+      <div class="chart autor">
+        <div class="autor-txt">
+          <p class="prosa">Soy <b>Jorge Garcelán</b>, investigador en inteligencia artificial e ingeniero de <i lang="en">machine learning</i>, de Madrid. Estudié Ciencia e Ingeniería de Datos y el máster en IA aplicada en la Universidad Carlos III de Madrid, pasé un año de intercambio en Georgia Tech y he trabajado como arquitecto de soluciones en AWS y Multiverse Computing. También soy cofundador de Uniwords.</p>
+          <p class="prosa">Mi investigación ha ido casi siempre hacia la IA con impacto social: cómo usarla para diseñar políticas públicas o para medir los sesgos de género en los medios. Escaño Abierto sale de ahí: de pensar que la tecnología puede servir para que entendamos mejor cómo se decide lo que nos afecta a todos.</p>
+          <p class="autor-links"><a class="btn" href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com ↗</a><a class="btn" href="https://github.com/jorgegarcelan" target="_blank" rel="noopener">GitHub ↗</a><a class="btn" href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+        </div>
+      </div></section>
+  </div>`;
+  if (!LEYES || !PREG) Promise.all([cargarLeyes(), cargarPreguntas()]).then(()=>{ if (!$("#sobre").hidden) renderSobre(); });
+}
+
 /* ---------- datos extra de los diputados (biografía, comisiones, turnos), bajo demanda ---------- */
 let EXTRA = null, extraPromesa = null;
 function cargarExtra(){
@@ -2134,6 +2204,7 @@ function renderInicio(){
     ${TEMAS.length?`<section class="sec"><div class="sec-h"><h2>De qué se ha hablado</h2><button class="linklike" data-go="temas">Explorar los temas</button></div>
       <div class="temas-top"><div class="chart"><p class="sub" style="margin:0">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(TEMAS.slice(0,8))}</div>
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
+  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec"><div class="chart sobre-franja"><p><b>Escaño Abierto</b> junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><button class="btn" data-go="sobre">Sobre el proyecto</button></div></section>`);
   if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
 
@@ -2283,6 +2354,7 @@ function renderVotaciones(){
 function renderMetodo(){
   $("#metodo").innerHTML = `<div class="method">
     <h2>Cómo se hace</h2>
+    <p>Qué es Escaño Abierto y quién lo hace: <a href="#sobre">sobre el proyecto</a>.</p>
     <h3>Fuentes</h3>
     <ul>
       <li><b>Diario de Sesiones</b> del Pleno y de las comisiones (PDF oficial), para lo que se dijo.</li>
@@ -2439,9 +2511,9 @@ async function compartir(ruta, titulo){
 
 /* ---------- navegación ---------- */
 const TABS = ["inicio","dias","votaciones","leyes","temas","diputados","grupos","oradores","metodo"];
-const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
+const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 function show(id, push){
   // Enlaces de las páginas para compartir: #votacion-<id> y #sesion-<id> llevan a su vista.
   if (id && id.startsWith("votacion-") && VOTES[id.slice(9)]){ const a="v-"+id.slice(9); setTimeout(()=>ir("votaciones", a), 0); id="votaciones"; push=false; }
@@ -2449,6 +2521,7 @@ function show(id, push){
   if (id && id.startsWith("diputado-")){ const sl=id.slice(9); if (DIP_SLUG[sl]){ if (dipSel!==sl){ dipSel=sl; rendered.diputados=false; } id="diputados"; push=false; } }
   else if (id==="diputados" && push && dipSel){ dipSel=null; rendered.diputados=false; }
   if (id && id.startsWith("iniciativa-")){ const x=id.slice(11).replace("-","/"); if (INICIATIVAS[x] || /^\d{3}\/\d{6}$/.test(x)){ INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]}; if (iniSel!==x){ iniSel=x; rendered.votaciones=false; } id="votaciones"; push=false; } }
+  if (id==="aviso-legal"){ setTimeout(()=>{ document.getElementById("aviso-legal")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); }, 0); id="sobre"; push=false; }
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }
   if (id && id.startsWith("tema-")){ if (temaFijo!==id.slice(5)){ temaFijo=id.slice(5); rendered.tema=false; } id="tema"; push=false; }
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }

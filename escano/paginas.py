@@ -549,6 +549,13 @@ def generar(salida: dict, plano: dict) -> dict:
         poner(f"semana/{sem['id']}", f"semana-{sem['id']}", sem["titular"], desc,
               lambda sem=sem, vs=vs: tarjeta_semana(sem, vs, votos_por_id, dips, plano), clave)
 
+    # ---- sobre el proyecto (con la tarjeta de la portada)
+    escritas["paginas"] += _escribir_si_cambia(SITIO / "sobre" / "index.html", _pagina(
+        "sobre", "sobre", "Sobre Escaño Abierto",
+        "Entender lo que se hace en el Congreso: qué se vota, quién lo decide y cómo, con datos oficiales. "
+        "Un proyecto independiente de Jorge Garcelán.", "og/portada.png"))
+    urls.append("sobre/")
+
     # ---- provincias: los diputados de cada circunscripción
     por_circ: dict[str, list[int]] = {}
     for i, d in enumerate(dips):
