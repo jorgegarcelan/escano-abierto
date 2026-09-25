@@ -5,32 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Plenos y comparecencias del Congreso de los Diputados resumidos: qué se dijo, en qué tono y cómo votó cada grupo.">
 <title>Escaño Abierto</title>
+<link rel="icon" href="marca/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Escaño Abierto">
+<meta property="og:description" content="Qué se dijo en el Congreso y cómo se votó.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --bg:#F7F5F2; --surface:#FFFFFF; --sunk:#EFECE8; --ink:#1D1A1E; --muted:#686270; --line:#E2DDD7;
-  --accent:#8E1B2E; --accent-soft:#F3E3E5;
+  --bg:#F7F7F4; --surface:#FFFFFF; --sunk:#EDEEEA; --ink:#16181D; --muted:#5C6069; --line:#DCDDD8; --line-strong:#82868E;
+  --sub:#FFE98A; --on-vote:#FFFFFF;
   --si:#2F8A5B; --no:#C23B2E; --abst:#C9962A; --nv:#A39DA3;
   --t-combativo:#B8412F; --t-critico:#DB8B3A; --t-ironico:#9E5BA3; --t-defensivo:#6C7A8C; --t-tecnico:#4B8DA6; --t-conciliador:#83AE6E; --t-propositivo:#2E9C8C;
   --serif:"Newsreader",Georgia,"Times New Roman",serif;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#141216; --surface:#1D1B20; --sunk:#26232A; --ink:#EDE9E6; --muted:#A39CA8; --line:#34303A;
-    --accent:#E27385; --accent-soft:#3A2228;
+    --bg:#121316; --surface:#1A1C21; --sunk:#24272D; --ink:#ECEDEF; --muted:#A3A7AF; --line:#30333A; --line-strong:#6B7079;
+    --sub:#574A12; --on-vote:#121316;
     --si:#4DB47F; --no:#E0655A; --abst:#DDAE4A; --nv:#6F6A72;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#141216; --surface:#1D1B20; --sunk:#26232A; --ink:#EDE9E6; --muted:#A39CA8; --line:#34303A;
-  --accent:#E27385; --accent-soft:#3A2228;
-  --si:#4DB47F; --no:#E0655A; --abst:#DDAE4A; --nv:#6F6A72;
+    --bg:#121316; --surface:#1A1C21; --sunk:#24272D; --ink:#ECEDEF; --muted:#A3A7AF; --line:#30333A; --line-strong:#6B7079;
+    --sub:#574A12; --on-vote:#121316;
+    --si:#4DB47F; --no:#E0655A; --abst:#DDAE4A; --nv:#6F6A72;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -38,8 +44,9 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 48px}
 .wrap{max-width:1040px;margin:0 auto}
-a{color:var(--accent)}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
 h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
 .mono{font-family:var(--mono);font-size:.82em;letter-spacing:.01em}
 .num{font-variant-numeric:tabular-nums}
@@ -48,7 +55,10 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
 /* header */
 header.top{padding-block:28px 18px;display:grid;gap:14px}
 header.top h1{font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.01em}
-header.top h1 span{color:var(--accent)}
+header.top h1{margin:0}
+.logo{display:block;height:clamp(34px,5.4vw,46px);aspect-ratio:439.2/55.3;max-width:100%;background:var(--ink);-webkit-mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain;mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tagline{font-family:var(--serif);font-size:19px;font-weight:500;margin:0}
 .lede{max-width:64ch;color:var(--muted);margin:0}
 .kpis{display:flex;flex-wrap:wrap;gap:8px 28px;padding-top:6px;border-top:1px solid var(--line)}
 .kpi{display:flex;align-items:baseline;gap:8px;padding-top:10px}
@@ -60,7 +70,7 @@ header.top h1 span{color:var(--accent)}
 nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
 nav.tabs::-webkit-scrollbar{display:none}
 nav.tabs button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:500 14px var(--sans);padding:12px 10px 10px;cursor:pointer;white-space:nowrap}
-nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
 nav.tabs button:hover{color:var(--ink)}
 main{padding-top:22px}
 section.view{display:grid;gap:18px}
@@ -71,9 +81,9 @@ section.view[hidden]{display:none}
 
 /* controls */
 .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.controls input,.controls select{font:14px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 10px;min-width:0}
+.controls input,.controls select{font:14px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;padding:7px 10px;min-width:0}
 .controls input{flex:1 1 180px}
-.chipbtn{appearance:none;font:500 12.5px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chipbtn{appearance:none;font:500 12.5px var(--sans);border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
 
@@ -88,7 +98,7 @@ section.view[hidden]{display:none}
 .session{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;min-width:0}
 .session-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between}
 .session-head h3{font-size:20px}
-.organ{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.organ{font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}
 .session .sum{margin:0;max-width:72ch}
 .meta-links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
 .tonebar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--sunk)}
@@ -105,7 +115,7 @@ section.view[hidden]{display:none}
 .st-analizado{color:var(--si)} .st-parcial{color:var(--abst)} .st-pendiente{color:var(--muted)} .st-sin-ds{color:var(--muted);border-style:dashed}
 .nota{font-size:13px;color:var(--muted);margin:0}
 .resp-si{color:var(--si)} .resp-parcial{color:var(--abst)} .resp-no{color:var(--no)}
-details.ivs>summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--accent);list-style:none}
+details.ivs>summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;list-style:none}
 details.ivs>summary::-webkit-details-marker{display:none}
 details.ivs>summary::before{content:"▸ ";}
 details.ivs[open]>summary::before{content:"▾ ";}
@@ -116,8 +126,10 @@ details.ivs[open]>summary::before{content:"▾ ";}
 .iv-h b{font-weight:600}
 .iv-h .rol{font-size:12.5px;color:var(--muted)}
 .iv p{margin:3px 0 0;font-size:14px;max-width:72ch}
-.iv blockquote{margin:6px 0 0;font-family:var(--serif);font-style:italic;font-size:15.5px;color:var(--ink);max-width:68ch}
-.tone{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 6px;color:#fff}
+.iv blockquote{margin:6px 0 0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:15.5px;line-height:1.5;color:var(--ink);max-width:68ch}
+blockquote mark{background:var(--sub);color:var(--ink);padding:0 .12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.tone{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 7px 1px 6px;background:var(--sunk);color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+.tone i{width:8px;height:8px;border-radius:2px;display:inline-block}
 .int{display:inline-flex;gap:2px;vertical-align:middle}
 .int i{width:5px;height:10px;border-radius:1px;background:var(--line)}
 .int i.on{background:var(--ink)}
@@ -133,7 +145,7 @@ details.ivs[open]>summary::before{content:"▾ ";}
 .vote-h{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between}
 .vote-h .t{font-weight:500;flex:1 1 280px}
 .vote-h .sub{font-size:12.5px;color:var(--muted)}
-.res{font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 7px;color:#fff;white-space:nowrap}
+.res{font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 7px;color:var(--on-vote);white-space:nowrap}
 .res.ok{background:var(--si)} .res.ko{background:var(--no)}
 .stack{position:relative;display:flex;height:14px;border-radius:3px;overflow:hidden;background:var(--sunk)}
 .stack i{display:block;height:100%}
@@ -157,7 +169,7 @@ td .tonebar{min-width:140px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0}
 .card h3{font-size:18px}
 .card .sub{font-size:12.5px;color:var(--muted)}
-.card blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:15px}
+.card blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:15px;line-height:1.5}
 .stats{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
 .stats b{color:var(--ink);font-variant-numeric:tabular-nums}
 .heat-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
@@ -172,7 +184,7 @@ td .tonebar{min-width:140px}
 .panel p{margin:0;color:var(--muted);font-size:13.5px}
 .topics{display:grid;gap:6px}
 .topic{display:grid;grid-template-columns:130px 1fr 28px;gap:8px;align-items:center;font-size:13px}
-.topic .tb{height:10px;border-radius:2px;background:var(--accent)}
+.topic .tb{height:10px;border-radius:2px;background:var(--ink)}
 .topic .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* method */
@@ -201,7 +213,8 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 <div class="wrap">
   <header class="top">
     <div class="eyebrow">Congreso de los Diputados · XV Legislatura</div>
-    <h1>Escaño <span>Abierto</span></h1>
+    <h1><span class="logo" aria-hidden="true"></span><span class="sr">Escaño Abierto</span></h1>
+    <p class="tagline">Qué se dijo en el Congreso y cómo se votó.</p>
     <p class="lede" id="lede"></p>
     <div class="kpis" id="kpis"></div>
   </header>
@@ -222,7 +235,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
     <section class="view" id="metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden></section>
   </main>
 
-  <footer>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas deben contrastarse con el Diario de Sesiones enlazado. <span id="gen"></span></footer>
+  <footer>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
 </div>
 
 <script>
@@ -243,7 +256,7 @@ const fmt = n => n.toLocaleString("es-ES");
 const dt = iso => { const [y,m,d]=iso.split("-").map(Number); const x=new Date(y,m-1,d); return {d, m:MESES[m-1], w:DIAS[x.getDay()]}; };
 const gdot = g => `<span class="dot" style="background:${G[g].color}"></span>`;
 const gname = g => g==="GOB"?"Gobierno":g==="COMP"?"Compareciente":g;
-const toneChip = t => `<span class="tone" style="background:var(${TONEVAR[t]})">${esc(t)}</span>`;
+const toneChip = t => `<span class="tone"><i style="background:var(${TONEVAR[t]})"></i>${esc(t)}</span>`;
 const intMeter = n => `<span class="int" title="Intensidad ${n} de 5" aria-label="Intensidad ${n} de 5">${[1,2,3,4,5].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</span>`;
 const VOTES = Object.fromEntries(DATA.votaciones.map(v=>[v.id,v]));
 const passed = v => v.si > v.no;
@@ -281,7 +294,7 @@ function ivCard(i){
   return `<div class="iv"><span class="bar" style="background:${G[i.g].color}"></span><div>
     <div class="iv-h"><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span>${toneChip(i.tono)}${intMeter(i.int)}${i.pos?`<span class="rol">· ${esc(i.pos)}</span>`:""}</div>
     <p>${esc(i.resumen)}</p>
-    ${i.cita?`<blockquote>«${esc(i.cita)}»</blockquote>`:""}
+    ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}
     ${i.responde && i.responde!=="no aplica"?`<p class="nota"><span class="pill resp-${i.responde==="sí"?"si":i.responde}">¿Contesta? ${esc(i.responde)}</span> ${esc(i.responde_motivo||"")}</p>`:""}
     <div class="tags">${i.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
   </div></div>`;
@@ -349,11 +362,11 @@ function renderGrupos(){
 
   // affinity
   const aff = (a,b)=>{ let same=0,n=0; DATA.votaciones.forEach(v=>{const x=v.grupos[a],y=v.grupos[b]; if(["S","N","A"].includes(x)&&["S","N","A"].includes(y)){n++; if(x===y) same++;}}); return n? same/n : null; };
-  const heat = `<table class="heat"><thead><tr><th></th>${PARL.map(g=>`<th>${g}</th>`).join("")}</tr></thead><tbody>${PARL.map(a=>`<tr><th class="rowh">${gdot(a)} ${a}</th>${PARL.map(b=>{ if(a===b) return `<td style="background:var(--sunk);color:var(--muted)">·</td>`; const r=aff(a,b); const pct=Math.round(r*100); return `<td style="background:color-mix(in srgb, var(--accent) ${Math.round(r*85)}%, var(--sunk));color:${r>.55?"#fff":"var(--ink)"}" title="${a}–${b}: coinciden en ${pct}% de las votaciones">${pct}</td>`;}).join("")}</tr>`).join("")}</tbody></table>`;
+  const heat = `<table class="heat"><thead><tr><th></th>${PARL.map(g=>`<th>${g}</th>`).join("")}</tr></thead><tbody>${PARL.map(a=>`<tr><th class="rowh">${gdot(a)} ${a}</th>${PARL.map(b=>{ if(a===b) return `<td style="background:var(--sunk);color:var(--muted)">·</td>`; const r=aff(a,b); const pct=Math.round(r*100); return `<td style="background:color-mix(in srgb, var(--ink) ${Math.round(r*85)}%, var(--sunk));color:${r>.55?"var(--bg)":"var(--ink)"}" title="${a}–${b}: coinciden en ${pct}% de las votaciones">${pct}</td>`;}).join("")}</tr>`).join("")}</tbody></table>`;
 
   const tc = {}; IVS.filter(i=>i.g!=="COMP").forEach(i=>i.temas.forEach(t=>tc[t]=(tc[t]||0)+1));
   const topics = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const max = topics[0][1];
+  const max = topics.length ? topics[0][1] : 1;
 
   $("#grupos").innerHTML = `
     <div class="view-intro"><div><h2>Grupos parlamentarios</h2><p>Cuánto intervino cada grupo, con qué tono y con qué intensidad (1 = sereno, 5 = muy confrontacional), y cuántas votaciones ganó.</p></div></div>
@@ -396,7 +409,7 @@ function renderOradores(){
       <h3>${esc(o.nombre)}</h3>
       <div class="stats"><span><b>${o.ivs.length}</b> interv.</span><span>intensidad <b>${avg.toFixed(1)}</b> ${intMeter(Math.round(avg))}</span><span>tono dominante ${toneChip(dom)}</span></div>
       ${toneBar(o.ivs)}
-      ${cita?`<blockquote>«${esc(cita)}»</blockquote>`:""}
+      ${cita?`<blockquote><mark>«${esc(cita)}»</mark></blockquote>`:""}
       <div class="tags">${topics.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
       <div class="sub">${sesiones.join(" · ")}</div>
     </article>`;
