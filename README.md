@@ -1,0 +1,91 @@
+# Escaño Abierto
+
+Plenos y comparecencias del Congreso de los Diputados, resumidos y analizados: qué se dijo, en qué tono, si el Gobierno contestó a lo que se le preguntó y cómo votó cada grupo y cada diputado.
+
+La web es estática (`site/`) y lee un único fichero, `site/data.json`, que genera el pipeline de Python a partir de los datos oficiales del Congreso.
+
+## Qué hace
+
+| Paso | Fuente | Resultado |
+|---|---|---|
+| Votaciones | Datos abiertos del Congreso (un JSON por votación, con el voto de cada diputado) | `data/votaciones/AAAA-MM-DD.json` con recuentos por grupo, posición mayoritaria y diputados que votaron distinto a su grupo |
+| Diarios de Sesiones | PDF oficial del Pleno (`PL`) y de las comisiones (`CO`) | `data/sesiones/DSCD-15-PL-205.json` con cada turno de palabra, su orador, grupo, asunto, expediente y las reacciones que anota el Diario (aplausos, rumores, protestas) |
+| Análisis | API de Claude | Resumen, tono, intensidad (1-5), temas, una cita **verificada literalmente** y, en respuestas del Gobierno, si contesta a la pregunta. Todo queda en caché en `data/analisis/` |
+| Web | Todo lo anterior | `site/data.json` con vistas por día, grupo, orador y votación |
+
+## Puesta en marcha
+
+Requisitos: Python 3.11+ y `pdftotext` (paquete `poppler-utils` en Linux, `brew install poppler` en macOS).
+
+```bash
+git clone https://github.com/<tu-usuario>/escano-abierto.git
+cd escano-abierto
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env            # y pon tu ANTHROPIC_API_KEY
+export $(cat .env | xargs)
+
+python -m escano actualizar     # últimos 10 días
+python -m http.server -d site   # abre http://localhost:8000
+```
+
+Otras órdenes:
+
+```bash
+python -m escano actualizar --desde 2026-09-01   # desde una fecha
+python -m escano actualizar --sin-ia             # solo descarga y estructura, sin llamar a la API
+python -m escano diario PL 205                   # procesa un Diario concreto
+python -m escano construir                       # regenera site/data.json con lo ya descargado
+python -m pytest                                 # tests (no necesitan red ni API)
+```
+
+El repositorio trae en `site/data.json` los datos del MVP (15–23 de septiembre de 2026) para que la web funcione desde el primer momento. La primera ejecución de `actualizar` los sustituye.
+
+## Publicación automática
+
+`.github/workflows/actualizar.yml` se ejecuta de martes a sábado por la mañana: descarga lo nuevo, analiza solo lo que no está en caché, guarda los datos en el repo y publica la web en GitHub Pages.
+
+1. Crea el secreto `ANTHROPIC_API_KEY` en *Settings → Secrets and variables → Actions*.
+2. (Opcional) Crea la variable `ESCANO_MODELO` para elegir modelo.
+3. En *Settings → Pages*, elige **GitHub Actions** como origen.
+
+## Estructura
+
+```
+escano/
+  config.py       rutas, URLs y grupos parlamentarios
+  red.py          descargas con caché y reintentos
+  votaciones.py   votaciones nominales desde los datos abiertos
+  diario.py       PDF del Diario → turnos de palabra
+  analisis.py     llamadas a Claude (salida estructurada + caché)
+  construir.py    une todo en site/data.json
+  cli.py          python -m escano …
+site/             web estática
+data/             datos generados (se versionan, salvo data/raw)
+tests/            parser, votaciones y pipeline completo con un cliente simulado
+docs/             notas del MVP y hoja de ruta
+```
+
+## Criterios
+
+- Las citas solo se publican si aparecen literalmente en el Diario de Sesiones.
+- El mismo prompt y los mismos criterios para todos los grupos. El tono y la intensidad son orientativos y cada sesión enlaza al texto oficial.
+- Un grupo aparece como «dividido» cuando ningún sentido de voto reúne al 80 % de sus diputados.
+- Las descargas esperan medio segundo entre peticiones para no cargar los servidores del Congreso.
+
+## Hoja de ruta
+
+Contexto del MVP e ideas en detalle: [docs/mvp-y-hoja-de-ruta.md](docs/mvp-y-hoja-de-ruta.md).
+
+- [ ] Ficha por diputado: intervenciones, votos, asistencia y tono medio
+- [ ] Quién decide: el grupo que inclina las votaciones ajustadas
+- [ ] Resumen semanal automático («El pleno en 5 minutos»)
+- [ ] Buscador conversacional con citas
+- [ ] Enlace de cada intervención al vídeo oficial en el minuto exacto
+- [ ] Seguimiento de cada ley desde la toma en consideración hasta el BOE
+
+## Fuentes y licencia
+
+Datos: [Congreso de los Diputados](https://www.congreso.es) (Diario de Sesiones y datos abiertos de votaciones). Si reutilizas los datos, cita la fuente. Este proyecto no está vinculado al Congreso.
+
+Código bajo licencia MIT.

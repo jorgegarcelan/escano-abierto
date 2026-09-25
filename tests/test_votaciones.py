@@ -1,0 +1,36 @@
+from escano.votaciones import leer_votacion, normaliza_voto, posicion_grupo
+
+
+def _fila(nombre, grupo, voto):
+    return {"asiento": "1", "diputado": nombre, "grupo": grupo, "voto": voto}
+
+
+DATOS = {
+    "informacion": {"sesion": 200, "numeroVotacion": 5, "fecha": "23/9/2026",
+                    "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+                    "textoExpediente": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre la nefasta política educativa de su Gobierno."},
+    "totales": {"asentimiento": "No", "presentes": 6, "afavor": 3, "enContra": 2, "abstenciones": 0, "noVotan": 1},
+    "votaciones": [
+        _fila("Uno, A", "GP", "Sí"), _fila("Dos, B", "GP", "Sí"), _fila("Tres, C", "GJxCAT", "Sí"),
+        _fila("Cuatro, D", "GS", "No"), _fila("Cinco, E", "GV (EAJ-PNV)", "No"), _fila("Seis, F", "GS", "No vota"),
+    ],
+}
+
+
+def test_normaliza_voto():
+    assert [normaliza_voto(v) for v in ["Sí", "No", "Abstención", "No vota"]] == ["S", "N", "A", "X"]
+
+
+def test_posicion_grupo():
+    assert posicion_grupo({"S": 9, "N": 1}) == "S"
+    assert posicion_grupo({"S": 5, "N": 5}) == "D"
+    assert posicion_grupo({"X": 3}) == "X"
+
+
+def test_leer_votacion():
+    v = leer_votacion(DATOS)
+    assert v["id"] == "200-5" and v["fecha"] == "2026-09-23"
+    assert (v["si"], v["no"], v["novota"]) == (3, 2, 1) and v["aprobada"]
+    assert v["grupos"] == {"PP": "S", "JUNTS": "S", "PSOE": "N", "PNV": "N"}
+    assert v["conteo"]["PSOE"] == {"N": 1, "X": 1}
+    assert v["discrepantes"] == []

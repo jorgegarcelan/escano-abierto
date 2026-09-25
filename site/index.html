@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Plenos y comparecencias del Congreso de los Diputados resumidos: qué se dijo, en qué tono y cómo votó cada grupo.">
+<title>Escaño Abierto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F7F5F2; --surface:#FFFFFF; --sunk:#EFECE8; --ink:#1D1A1E; --muted:#686270; --line:#E2DDD7;
+  --accent:#8E1B2E; --accent-soft:#F3E3E5;
+  --si:#2F8A5B; --no:#C23B2E; --abst:#C9962A; --nv:#A39DA3;
+  --t-combativo:#B8412F; --t-critico:#DB8B3A; --t-ironico:#9E5BA3; --t-defensivo:#6C7A8C; --t-tecnico:#4B8DA6; --t-conciliador:#83AE6E; --t-propositivo:#2E9C8C;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#141216; --surface:#1D1B20; --sunk:#26232A; --ink:#EDE9E6; --muted:#A39CA8; --line:#34303A;
+    --accent:#E27385; --accent-soft:#3A2228;
+    --si:#4DB47F; --no:#E0655A; --abst:#DDAE4A; --nv:#6F6A72;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141216; --surface:#1D1B20; --sunk:#26232A; --ink:#EDE9E6; --muted:#A39CA8; --line:#34303A;
+  --accent:#E27385; --accent-soft:#3A2228;
+  --si:#4DB47F; --no:#E0655A; --abst:#DDAE4A; --nv:#6F6A72;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1040px;margin:0 auto}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
+.mono{font-family:var(--mono);font-size:.82em;letter-spacing:.01em}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* header */
+header.top{padding-block:28px 18px;display:grid;gap:14px}
+header.top h1{font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.01em}
+header.top h1 span{color:var(--accent)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
+.kpis{display:flex;flex-wrap:wrap;gap:8px 28px;padding-top:6px;border-top:1px solid var(--line)}
+.kpi{display:flex;align-items:baseline;gap:8px;padding-top:10px}
+.kpi b{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:13px}
+.kpi.alert b{color:var(--no)}
+
+/* tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{appearance:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:500 14px var(--sans);padding:12px 10px 10px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button:hover{color:var(--ink)}
+main{padding-top:22px}
+section.view{display:grid;gap:18px}
+section.view[hidden]{display:none}
+.view-intro{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
+.view-intro h2{font-size:24px}
+.view-intro p{margin:4px 0 0;color:var(--muted);max-width:62ch}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.controls input,.controls select{font:14px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 10px;min-width:0}
+.controls input{flex:1 1 180px}
+.chipbtn{appearance:none;font:500 12.5px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+
+/* sessions */
+.day{display:grid;grid-template-columns:92px 1fr;gap:18px;padding-block:6px 22px;border-bottom:1px solid var(--line)}
+.day:last-child{border-bottom:0}
+.date{font-family:var(--serif);line-height:1}
+.date .d{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums}
+.date .m{font-size:13px;color:var(--muted);font-family:var(--sans);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.date .w{font-size:13px;color:var(--muted);font-family:var(--sans)}
+.sessions{display:grid;gap:16px;min-width:0}
+.session{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.session-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between}
+.session-head h3{font-size:20px}
+.organ{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.session .sum{margin:0;max-width:72ch}
+.meta-links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
+.tonebar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--sunk)}
+.tonebar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.puntos{display:grid;gap:0;border-top:1px solid var(--line)}
+.punto{padding-block:10px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.punto:last-child{border-bottom:0}
+.punto-h{display:flex;gap:8px 10px;align-items:baseline;flex-wrap:wrap}
+.punto-h .tipo{font-size:12px;color:var(--muted);min-width:0}
+.punto-h .t{font-weight:500;flex:1 1 260px}
+.pill{font-size:11px;font-weight:600;letter-spacing:.03em;border-radius:999px;padding:2px 8px;white-space:nowrap;border:1px solid currentColor}
+.st-analizado{color:var(--si)} .st-parcial{color:var(--abst)} .st-pendiente{color:var(--muted)} .st-sin-ds{color:var(--muted);border-style:dashed}
+.nota{font-size:13px;color:var(--muted);margin:0}
+.resp-si{color:var(--si)} .resp-parcial{color:var(--abst)} .resp-no{color:var(--no)}
+details.ivs>summary{cursor:pointer;font-size:13px;font-weight:500;color:var(--accent);list-style:none}
+details.ivs>summary::-webkit-details-marker{display:none}
+details.ivs>summary::before{content:"▸ ";}
+details.ivs[open]>summary::before{content:"▾ ";}
+.iv-list{display:grid;gap:10px;margin-top:10px}
+.iv{display:grid;grid-template-columns:4px 1fr;gap:12px}
+.iv .bar{border-radius:2px}
+.iv-h{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.iv-h b{font-weight:600}
+.iv-h .rol{font-size:12.5px;color:var(--muted)}
+.iv p{margin:3px 0 0;font-size:14px;max-width:72ch}
+.iv blockquote{margin:6px 0 0;font-family:var(--serif);font-style:italic;font-size:15.5px;color:var(--ink);max-width:68ch}
+.tone{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 6px;color:#fff}
+.int{display:inline-flex;gap:2px;vertical-align:middle}
+.int i{width:5px;height:10px;border-radius:1px;background:var(--line)}
+.int i.on{background:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:11.5px;background:var(--sunk);color:var(--muted);border-radius:4px;padding:1px 6px}
+.qlist{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:14px}
+.qlist li{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:baseline}
+
+/* vote rows */
+.votes{display:grid;gap:10px}
+.vote{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px;min-width:0}
+.punto .vote{background:var(--bg);padding:10px 12px}
+.vote-h{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between}
+.vote-h .t{font-weight:500;flex:1 1 280px}
+.vote-h .sub{font-size:12.5px;color:var(--muted)}
+.res{font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:2px 7px;color:#fff;white-space:nowrap}
+.res.ok{background:var(--si)} .res.ko{background:var(--no)}
+.stack{position:relative;display:flex;height:14px;border-radius:3px;overflow:hidden;background:var(--sunk)}
+.stack i{display:block;height:100%}
+.stack .half{position:absolute;left:50%;top:-3px;bottom:-3px;width:0;border-left:1.5px dashed var(--ink);opacity:.45}
+.counts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
+.counts span{display:inline-flex;align-items:center;gap:5px}
+.gpos{display:flex;flex-wrap:wrap;gap:5px}
+.gp{font-size:11.5px;font-weight:600;border-radius:4px;padding:2px 7px;display:inline-flex;gap:5px;align-items:center;background:var(--sunk)}
+.gp .v{font-family:var(--mono);font-weight:500}
+.gp.S .v{color:var(--si)} .gp.N .v{color:var(--no)} .gp.A .v{color:var(--abst)} .gp.D .v,.gp.q .v{color:var(--muted)}
+
+/* groups */
+.gtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.gname{white-space:nowrap;font-weight:600}
+td .tonebar{min-width:140px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0}
+.card h3{font-size:18px}
+.card .sub{font-size:12.5px;color:var(--muted)}
+.card blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:15px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+.heat-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.heat{border-collapse:separate;border-spacing:3px;width:auto;font-size:12px}
+.heat th,.heat td{border:0;padding:0;text-align:center}
+.heat th{font-size:11px;padding:4px;letter-spacing:.03em}
+.heat th.rowh{text-align:right;padding-right:8px}
+.heat td{width:44px;height:34px;border-radius:4px;font-variant-numeric:tabular-nums;font-weight:500}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{display:grid;gap:10px;align-content:start;min-width:0}
+.panel h3{font-size:18px}
+.panel p{margin:0;color:var(--muted);font-size:13.5px}
+.topics{display:grid;gap:6px}
+.topic{display:grid;grid-template-columns:130px 1fr 28px;gap:8px;align-items:center;font-size:13px}
+.topic .tb{height:10px;border-radius:2px;background:var(--accent)}
+.topic .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* method */
+.method{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:12px;max-width:760px}
+.method h3{font-size:18px;margin-top:6px}
+.method p,.method li{max-width:68ch}
+.method ul{margin:0;padding-left:20px;display:grid;gap:6px}
+footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+@media (max-width:720px){
+  .two{grid-template-columns:1fr}
+  .day{grid-template-columns:1fr;gap:10px}
+  .date{display:flex;align-items:baseline;gap:10px}
+  .date .d{font-size:30px}
+  .date .m{margin-top:0}
+  .session{padding:14px}
+  .topic{grid-template-columns:100px 1fr 24px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .stack i,.tonebar i,.topic .tb{transition:width .4s ease}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Congreso de los Diputados · XV Legislatura</div>
+    <h1>Escaño <span>Abierto</span></h1>
+    <p class="lede" id="lede"></p>
+    <div class="kpis" id="kpis"></div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Vistas">
+    <button role="tab" id="tab-dias" aria-controls="dias" aria-selected="true">Por día</button>
+    <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Por grupo</button>
+    <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
+    <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
+    <button role="tab" id="tab-metodo" aria-controls="metodo" aria-selected="false">Método</button>
+  </nav>
+
+  <main>
+    <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias"></section>
+    <section class="view" id="grupos" role="tabpanel" aria-labelledby="tab-grupos" hidden></section>
+    <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
+    <section class="view" id="votaciones" role="tabpanel" aria-labelledby="tab-votaciones" hidden></section>
+    <section class="view" id="metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden></section>
+  </main>
+
+  <footer>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas deben contrastarse con el Diario de Sesiones enlazado. <span id="gen"></span></footer>
+</div>
+
+<script>
+fetch("data.json", {cache: "no-store"}).then(r => r.json()).then(j => iniciar(j.datos, j.intervenciones))
+  .catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudo cargar data.json. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
+
+function iniciar(DATA, IVS){
+const G = DATA.grupos;
+const PARL = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","MIXTO"];
+const TONES = ["combativo","crítico","irónico","defensivo","técnico","conciliador","propositivo"];
+const TONEVAR = {"combativo":"--t-combativo","crítico":"--t-critico","irónico":"--t-ironico","defensivo":"--t-defensivo","técnico":"--t-tecnico","conciliador":"--t-conciliador","propositivo":"--t-propositivo"};
+const VLABEL = {S:"Sí",N:"No",A:"Abst.",D:"Dividido","?":"s/d"};
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n.toLocaleString("es-ES");
+const dt = iso => { const [y,m,d]=iso.split("-").map(Number); const x=new Date(y,m-1,d); return {d, m:MESES[m-1], w:DIAS[x.getDay()]}; };
+const gdot = g => `<span class="dot" style="background:${G[g].color}"></span>`;
+const gname = g => g==="GOB"?"Gobierno":g==="COMP"?"Compareciente":g;
+const toneChip = t => `<span class="tone" style="background:var(${TONEVAR[t]})">${esc(t)}</span>`;
+const intMeter = n => `<span class="int" title="Intensidad ${n} de 5" aria-label="Intensidad ${n} de 5">${[1,2,3,4,5].map(i=>`<i class="${i<=n?"on":""}"></i>`).join("")}</span>`;
+const VOTES = Object.fromEntries(DATA.votaciones.map(v=>[v.id,v]));
+const passed = v => v.si > v.no;
+const resLabel = v => {
+  if (v.tipo==="Convalidación RDL") return passed(v)?"Convalidado":"Derogado";
+  if (v.tipo==="Toma en consideración") return passed(v)?"Tomada en consideración":"Rechazada";
+  return passed(v)?"Aprobada":"Rechazada";
+};
+
+function toneBar(list){
+  const c = {}; list.forEach(i=>c[i.tono]=(c[i.tono]||0)+1);
+  const n = list.length||1;
+  return `<div class="tonebar" role="img" aria-label="${TONES.filter(t=>c[t]).map(t=>`${t}: ${c[t]}`).join(", ")}">${TONES.filter(t=>c[t]).map(t=>`<i style="width:${c[t]/n*100}%;background:var(${TONEVAR[t]})" title="${t}: ${c[t]}"></i>`).join("")}</div>`;
+}
+function toneLegend(list){
+  const c = {}; list.forEach(i=>c[i.tono]=(c[i.tono]||0)+1);
+  return `<div class="legend">${TONES.filter(t=>c[t]).map(t=>`<span><i class="dot" style="background:var(${TONEVAR[t]})"></i>${t} <span class="num">${c[t]}</span></span>`).join("")}</div>`;
+}
+function voteRow(v, compact){
+  const tot = v.si+v.no+v.abst+v.novota;
+  const w = x => (x/tot*100).toFixed(2)+"%";
+  const gp = PARL.map(g=>{ const x=v.grupos[g]||"?"; return `<span class="gp ${x==="?"?"q":x}" title="${G[g].nombre}: ${VLABEL[x]}">${gdot(g)}${g}<span class="v">${VLABEL[x]}</span></span>`; }).join("");
+  const d = dt(v.fecha);
+  return `<article class="vote">
+    <div class="vote-h"><div class="t">${esc(v.titulo)}<div class="sub">${compact?"":`${d.d} ${d.m} · `}${esc(v.tipo)} · ${v.proponente==="GOB"?"Gobierno":esc(v.proponente)} · <span class="mono">${esc(v.exp)}</span></div></div>
+      <span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></div>
+    <div class="stack" role="img" aria-label="Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}">
+      <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
+    <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">JSON oficial</a></div>
+    <div class="gpos">${gp}</div>
+    ${(v.discrepantes||[]).length?`<p class="nota">Votaron distinto a su grupo: ${esc(v.discrepantes.slice(0,12).join(", "))}${v.discrepantes.length>12?` y ${v.discrepantes.length-12} más`:""}</p>`:""}
+  </article>`;
+}
+function ivCard(i){
+  return `<div class="iv"><span class="bar" style="background:${G[i.g].color}"></span><div>
+    <div class="iv-h"><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span>${toneChip(i.tono)}${intMeter(i.int)}${i.pos?`<span class="rol">· ${esc(i.pos)}</span>`:""}</div>
+    <p>${esc(i.resumen)}</p>
+    ${i.cita?`<blockquote>«${esc(i.cita)}»</blockquote>`:""}
+    ${i.responde && i.responde!=="no aplica"?`<p class="nota"><span class="pill resp-${i.responde==="sí"?"si":i.responde}">¿Contesta? ${esc(i.responde)}</span> ${esc(i.responde_motivo||"")}</p>`:""}
+    <div class="tags">${i.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+  </div></div>`;
+}
+
+/* ---------- header ---------- */
+(function header(){
+  const oradores = new Set(IVS.map(i=>i.orador));
+  const derrotas = DATA.votaciones.filter(v=>v.proponente==="GOB" && !passed(v)).length;
+  $("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
+  $("#lede").textContent = `Plenos y comparecencias del ${DATA.meta.periodo}: qué se dijo, en qué tono y cómo votó cada grupo. Filtra por día, grupo parlamentario u orador.`;
+  $("#kpis").innerHTML = [
+    [DATA.sesiones.length,"sesiones"],[IVS.length,"intervenciones analizadas"],[oradores.size,"oradores"],[DATA.votaciones.length,"votaciones"],[derrotas,derrotas===1?"decreto del Gobierno derogado":"decretos del Gobierno derogados",derrotas>0]
+  ].map(([n,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${n}</b><span>${l}</span></div>`).join("");
+})();
+
+/* ---------- días ---------- */
+function renderDias(){
+  const byDate = {};
+  DATA.sesiones.forEach(s=>(byDate[s.fecha]=byDate[s.fecha]||[]).push(s));
+  const dates = Object.keys(byDate).sort().reverse();
+  const html = dates.map(f=>{
+    const d = dt(f);
+    const sess = byDate[f].map(s=>{
+      const ivs = IVS.filter(i=>i.s===s.id);
+      const puntos = s.puntos.map(p=>{
+        const pivs = ivs.filter(i=>matchItem(i,p));
+        const stLabel = {analizado:"Analizado",parcial:"Parcial",pendiente:"Sin analizar","sin-ds":"Diario pendiente"}[p.estado];
+        return `<div class="punto">
+          <div class="punto-h"><span class="tipo">${esc(p.tipo)}</span><span class="t">${esc(p.titulo)}${p.exp?` <span class="mono" style="color:var(--muted)">${esc(p.exp)}</span>`:""}</span><span class="pill st-${p.estado}">${stLabel}</span></div>
+          ${p.nota?`<p class="nota">${esc(p.nota)}</p>`:""}
+          ${p.preguntas?`<ul class="qlist">${p.preguntas.map(q=>`<li><span class="gp">${gdot(q[1])}${esc(q[0])}</span><span>${esc(q[2])}</span></li>`).join("")}</ul>`:""}
+          ${pivs.length?`<details class="ivs"${pivs.length<=4?" open":""}><summary>${pivs.length} intervenciones</summary><div class="iv-list">${pivs.map(ivCard).join("")}</div></details>`:""}
+          ${(p.votos||[]).filter(id=>VOTES[id]).map(id=>voteRow(VOTES[id],VOTES[id].fecha===s.fecha)).join("")}
+        </div>`;
+      }).join("");
+      return `<article class="session" id="s-${s.id}">
+        <div class="session-head"><div><div class="organ">${esc(s.organo)}</div><h3>${esc(s.sesion)}</h3></div>
+          <div class="meta-links">${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
+        <p class="sum">${esc(s.resumen)}</p>
+        ${ivs.length?`<div style="display:grid;gap:6px"><div class="eyebrow">Tono de las intervenciones analizadas</div>${toneBar(ivs)}${toneLegend(ivs)}</div>`:""}
+        ${s.reacciones && Object.keys(s.reacciones).length?`<p class="nota">En la Cámara: ${Object.entries(s.reacciones).map(([k,n])=>`${esc(k.replace(/_/g," "))} <b class="num">${n}</b>`).join(" · ")}</p>`:""}
+        <div class="puntos">${puntos}</div>
+      </article>`;
+    }).join("");
+    return `<div class="day"><div class="date"><div class="d">${d.d}</div><div class="m">${d.m} 2026</div><div class="w">${d.w}</div></div><div class="sessions">${sess}</div></div>`;
+  }).join("");
+  $("#dias").innerHTML = `<div class="view-intro"><div><h2>Sesión a sesión</h2><p>Resumen de cada jornada, orden del día, intervenciones analizadas y resultado de las votaciones. Cada votación aparece junto al asunto debatido; si se votó otro día, se indica la fecha.</p></div></div><div>${html}</div>`;
+}
+function matchItem(i,p){ if (p.itemId) return i.item===p.itemId; return !!p.match && new RegExp(p.match).test(i.item); }
+
+/* ---------- grupos ---------- */
+function renderGrupos(){
+  const keys = [...PARL,"GOB"];
+  const rows = keys.map(g=>{
+    const ivs = IVS.filter(i=>i.g===g);
+    const avg = ivs.length? (ivs.reduce((a,i)=>a+i.int,0)/ivs.length).toFixed(1) : "–";
+    const votes = DATA.votaciones.filter(v=>v.grupos[g]);
+    const win = votes.filter(v=>{const x=v.grupos[g]; return (x==="S"&&passed(v))||(x==="N"&&!passed(v));}).length;
+    const decided = votes.filter(v=>["S","N"].includes(v.grupos[g])).length;
+    const tc = {}; ivs.forEach(i=>i.temas.forEach(t=>tc[t]=(tc[t]||0)+1));
+    const top = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]).join(", ");
+    return `<tr><td class="gname">${gdot(g)} ${gname(g)}</td><td class="num">${ivs.length}</td><td class="num">${avg}</td><td>${ivs.length?toneBar(ivs):'<span style="color:var(--muted)">–</span>'}</td><td>${esc(top)||"–"}</td><td class="num">${g==="GOB"?"–":decided?`${win}/${decided}`:"–"}</td></tr>`;
+  }).join("");
+
+  // affinity
+  const aff = (a,b)=>{ let same=0,n=0; DATA.votaciones.forEach(v=>{const x=v.grupos[a],y=v.grupos[b]; if(["S","N","A"].includes(x)&&["S","N","A"].includes(y)){n++; if(x===y) same++;}}); return n? same/n : null; };
+  const heat = `<table class="heat"><thead><tr><th></th>${PARL.map(g=>`<th>${g}</th>`).join("")}</tr></thead><tbody>${PARL.map(a=>`<tr><th class="rowh">${gdot(a)} ${a}</th>${PARL.map(b=>{ if(a===b) return `<td style="background:var(--sunk);color:var(--muted)">·</td>`; const r=aff(a,b); const pct=Math.round(r*100); return `<td style="background:color-mix(in srgb, var(--accent) ${Math.round(r*85)}%, var(--sunk));color:${r>.55?"#fff":"var(--ink)"}" title="${a}–${b}: coinciden en ${pct}% de las votaciones">${pct}</td>`;}).join("")}</tr>`).join("")}</tbody></table>`;
+
+  const tc = {}; IVS.filter(i=>i.g!=="COMP").forEach(i=>i.temas.forEach(t=>tc[t]=(tc[t]||0)+1));
+  const topics = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const max = topics[0][1];
+
+  $("#grupos").innerHTML = `
+    <div class="view-intro"><div><h2>Grupos parlamentarios</h2><p>Cuánto intervino cada grupo, con qué tono y con qué intensidad (1 = sereno, 5 = muy confrontacional), y cuántas votaciones ganó.</p></div></div>
+    <div class="gtable-wrap"><table><thead><tr><th>Grupo</th><th>Interv.</th><th>Intensidad</th><th>Tono</th><th>Temas principales</th><th>Votaciones ganadas</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${toneLegend(IVS)}
+    <div class="two">
+      <div class="panel"><h3>Afinidad de voto</h3><p>Porcentaje de las ${DATA.votaciones.length} votaciones en que dos grupos votaron lo mismo (posición mayoritaria de cada grupo).</p><div class="heat-wrap">${heat}</div></div>
+      ${respPanel()}
+      <div class="panel"><h3>De qué se habló</h3><p>Temas más repetidos en las intervenciones de diputados y Gobierno.</p><div class="topics">${topics.map(([t,n])=>`<div class="topic"><span>${esc(t)}</span><span class="tb" style="width:${n/max*100}%"></span><span class="n">${n}</span></div>`).join("")}</div></div>
+    </div>`;
+}
+
+function respPanel(){
+  const r = {}; IVS.filter(i=>i.g==="GOB" && i.responde && i.responde!=="no aplica").forEach(i=>{ const o=(r[i.orador]=r[i.orador]||{sí:0,parcial:0,no:0}); o[i.responde]++; });
+  const filas = Object.entries(r).sort((a,b)=>(b[1].no+b[1].parcial)-(a[1].no+a[1].parcial));
+  if(!filas.length) return "";
+  return `<div class="panel"><h3>¿Contesta el Gobierno?</h3><p>Respuestas a preguntas e interpelaciones: si el ministro contesta a lo que se le pregunta, en parte o nada.</p><div class="topics">${filas.map(([o,c])=>{const n=c.sí+c.parcial+c.no; return `<div class="topic"><span>${esc(o)}</span><span class="stack" style="height:10px"><i style="width:${c.sí/n*100}%;background:var(--si)"></i><i style="width:${c.parcial/n*100}%;background:var(--abst)"></i><i style="width:${c.no/n*100}%;background:var(--no)"></i></span><span class="n">${n}</span></div>`;}).join("")}</div></div>`;
+}
+
+/* ---------- oradores ---------- */
+let orFilter = {q:"", g:"TODOS"};
+function renderOradores(){
+  const by = {};
+  IVS.forEach(i=>{ (by[i.orador]=by[i.orador]||{nombre:i.orador,g:i.g,rol:i.rol.split(" · ")[0],ivs:[]}).ivs.push(i); });
+  let list = Object.values(by);
+  const q = orFilter.q.trim().toLowerCase();
+  list = list.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || o.nombre.toLowerCase().includes(q) || o.ivs.some(i=>i.temas.join(" ").toLowerCase().includes(q)||i.resumen.toLowerCase().includes(q))));
+  list.sort((a,b)=>b.ivs.length-a.ivs.length || (b.ivs.reduce((s,i)=>s+i.int,0)/b.ivs.length)-(a.ivs.reduce((s,i)=>s+i.int,0)/a.ivs.length));
+  const present = [...new Set(IVS.map(i=>i.g))];
+  const order = [...PARL,"GOB","COMP"].filter(g=>present.includes(g));
+  const chips = ["TODOS",...order].map(g=>`<button class="chipbtn" data-g="${g}" aria-pressed="${orFilter.g===g}">${g==="TODOS"?"Todos":gdot(g)+gname(g)}</button>`).join("");
+  const cards = list.map(o=>{
+    const avg = o.ivs.reduce((s,i)=>s+i.int,0)/o.ivs.length;
+    const tc={}; o.ivs.forEach(i=>tc[i.tono]=(tc[i.tono]||0)+1);
+    const dom = Object.entries(tc).sort((a,b)=>b[1]-a[1])[0][0];
+    const topics = [...new Set(o.ivs.flatMap(i=>i.temas))].slice(0,5);
+    const cita = o.ivs.map(i=>i.cita).filter(Boolean).sort((a,b)=>a.length-b.length)[0];
+    const sesiones = [...new Set(o.ivs.map(i=>i.s))].map(id=>DATA.sesiones.find(s=>s.id===id)).map(s=>{const d=dt(s.fecha);return `${d.d} ${d.m} · ${s.organo}`;});
+    return `<article class="card"><div style="display:flex;gap:8px;align-items:center">${gdot(o.g)}<span class="sub">${esc(gname(o.g))} · ${esc(o.rol)}</span></div>
+      <h3>${esc(o.nombre)}</h3>
+      <div class="stats"><span><b>${o.ivs.length}</b> interv.</span><span>intensidad <b>${avg.toFixed(1)}</b> ${intMeter(Math.round(avg))}</span><span>tono dominante ${toneChip(dom)}</span></div>
+      ${toneBar(o.ivs)}
+      ${cita?`<blockquote>«${esc(cita)}»</blockquote>`:""}
+      <div class="tags">${topics.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+      <div class="sub">${sesiones.join(" · ")}</div>
+    </article>`;
+  }).join("");
+  $("#oradores").innerHTML = `
+    <div class="view-intro"><div><h2>Oradores</h2><p>${list.length} de ${Object.keys(by).length} oradores. Busca por nombre o por tema (por ejemplo «Ceuta» o «vivienda»).</p></div></div>
+    <div class="controls"><input id="or-q" type="search" placeholder="Buscar orador o tema…" value="${esc(orFilter.q)}" aria-label="Buscar orador o tema"></div>
+    <div class="controls" id="or-g">${chips}</div>
+    <div class="cards">${cards || '<p class="nota">Ningún orador coincide con la búsqueda.</p>'}</div>`;
+  const inp = $("#or-q");
+  inp.addEventListener("input", e=>{ orFilter.q=e.target.value; const pos=e.target.selectionStart; renderOradores(); const n=$("#or-q"); n.focus(); n.setSelectionRange(pos,pos); });
+  $("#or-g").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; orFilter.g=b.dataset.g; renderOradores(); });
+}
+
+/* ---------- votaciones ---------- */
+let vFilter = {res:"todas", g:"PSOE"};
+function renderVotaciones(){
+  let list = DATA.votaciones.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  if (vFilter.res==="ok") list=list.filter(passed);
+  if (vFilter.res==="ko") list=list.filter(v=>!passed(v));
+  if (vFilter.res==="ajustadas") list=list.filter(v=>Math.abs(v.si-v.no)<=10);
+  const opts = [["todas","Todas"],["ok","Aprobadas"],["ko","Rechazadas"],["ajustadas","Ajustadas (≤10 votos)"]];
+  $("#votaciones").innerHTML = `
+    <div class="view-intro"><div><h2>Votaciones</h2><p>Resultados oficiales y posición mayoritaria de cada grupo. La línea discontinua marca la mitad de los votos emitidos.</p></div></div>
+    <div class="controls" id="v-f">${opts.map(([k,l])=>`<button class="chipbtn" data-k="${k}" aria-pressed="${vFilter.res===k}">${l}</button>`).join("")}</div>
+    <div class="votes">${list.map(v=>voteRow(v,false)).join("")}</div>`;
+  $("#v-f").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; vFilter.res=b.dataset.k; renderVotaciones(); });
+}
+
+/* ---------- método ---------- */
+function renderMetodo(){
+  $("#metodo").innerHTML = `<div class="method">
+    <h2>Cómo se hace</h2>
+    <h3>Fuentes</h3>
+    <ul>
+      <li><b>Diario de Sesiones</b> del Pleno y de las comisiones (PDF oficial), para lo que se dijo.</li>
+      <li><b>Datos abiertos de votaciones</b> (un JSON por votación con el voto de cada diputado), para cómo se votó.</li>
+      <li><b>Órdenes del día</b>, para los asuntos y las preguntas aún sin Diario publicado.</li>
+    </ul>
+    <h3>Análisis</h3>
+    <ul>
+      <li>Cada turno de palabra se resume en 2–3 frases y se clasifica en un tono: combativo, crítico, irónico, defensivo, técnico, conciliador o propositivo.</li>
+      <li>La <b>intensidad</b> va de 1 (exposición serena) a 5 (confrontación directa, descalificaciones).</li>
+      <li>La <b>afinidad de voto</b> compara la posición mayoritaria de cada grupo en las votaciones incluidas.</li>
+    </ul>
+    <h3>Garantías</h3>
+    <ul>
+      <li>Las citas solo se publican si aparecen literalmente en el Diario de Sesiones; si el modelo parafrasea, se descartan.</li>
+      <li>Los recuentos de votos salen del voto nominal de cada diputado. «Dividido» indica un grupo donde ningún sentido llega al 80 %.</li>
+      <li>Aplausos, rumores y protestas son las anotaciones que hace el propio Diario.</li>
+      <li>Tono, intensidad, resúmenes y «¿contesta?» los genera un modelo de lenguaje con los mismos criterios para todos los grupos. Son orientativos: cada sesión enlaza al texto oficial.</li>
+      <li>El Congreso tarda varios días en publicar cada Diario; mientras tanto se muestran solo las votaciones.</li>
+    </ul>
+  </div>`;
+}
+
+/* ---------- tabs ---------- */
+const TABS = ["dias","grupos","oradores","votaciones","metodo"];
+const rendered = {};
+const renderers = {dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+function show(id, push){
+  if(!TABS.includes(id)) id="dias";
+  TABS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t).setAttribute("aria-selected", t===id); });
+  if(!rendered[id]){ renderers[id](); rendered[id]=true; }
+  if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
+}
+TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>show(t,true)));
+show((location.hash||"").slice(1), false);
+}
+</script>
+
+</body>
+</html>
