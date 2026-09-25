@@ -278,6 +278,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 .face .who{display:flex;align-items:center;gap:10px}
 .face .who b{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.15}
 .face .who .rol{font-size:12.5px;color:var(--muted);display:block}
+.avatar{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font:600 13px var(--sans);color:#fff}
 .face .avatar{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font:600 13px var(--sans);color:#fff}
 .face blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:19px;line-height:1.45}
 .face p{margin:0;font-size:14px}
@@ -440,9 +441,10 @@ svg.dur .med{stroke:var(--no);stroke-width:2}
 .prov-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:center}
 svg.prov{width:100%;height:auto;max-width:460px}
 .tus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px}
-.tus-dip{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:12px 14px}
+.tus-dip{appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:12px 14px}
+.td-body{display:flex;flex-direction:column;gap:6px;min-width:0}
 .tus-dip:hover{border-color:var(--line-strong)}
-.tus-dip .avatar{grid-row:span 3;width:46px;height:46px}
+.tus-dip .avatar{width:48px;height:48px}
 .td-n b{display:block}
 .td-n small,.td-c{font-size:12.5px;color:var(--muted)}
 .td-k{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:12.5px;color:var(--muted)}
@@ -643,9 +645,11 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .mult text{font:500 7px var(--sans);fill:var(--muted)} .mult text.fin{font-weight:600;fill:var(--ink);font-size:8.5px}
 /* fotos oficiales */
 .ficha-id{display:flex;gap:22px;align-items:center}
-.foto-dip{width:104px;aspect-ratio:3/4;object-fit:cover;object-position:50% 20%;flex:none;border-radius:var(--r-card);background:var(--sunk);box-shadow:0 0 0 3px var(--grupo),0 0 0 4px var(--bg)}
+.foto-dip{width:104px;aspect-ratio:1;object-fit:cover;object-position:50% 18%;flex:none;border-radius:50%;background:var(--sunk);box-shadow:0 0 0 3px var(--grupo),0 0 0 4px var(--bg)}
 .mini-foto{width:28px;height:28px;border-radius:50%;object-fit:cover;object-position:50% 18%;flex:none;background:var(--sunk);box-shadow:0 0 0 2px var(--grupo)}
 .avatar.foto{object-fit:cover;object-position:50% 18%;background:var(--sunk);box-shadow:0 0 0 2px var(--grupo)}
+/* Las fotos oficiales son siempre redondas, sea cual sea la marca (las marcas solo dan forma a las iniciales). */
+.avatar.foto,.foto-dip,.mini-foto{border-radius:50% !important}
 .tip-foto{float:left;width:38px;height:48px;object-fit:cover;object-position:50% 18%;border-radius:4px;margin:0 8px 0 -2px}
 #tip{overflow:hidden}
 
@@ -1159,6 +1163,7 @@ function renderDiputados(){
   const th = (k,l,cls="") => `<th class="${cls}"><button data-dord="${k}" aria-pressed="${ord===k}">${l}${ord===k?" ↓":""}</button></th>`;
   $("#diputados").innerHTML = `
     <div class="view-intro"><div><h2>Diputados</h2><p>Los 350 diputados con su voto en las ${VOTOS_NOM.length} votaciones incluidas: cuánto participan, cuántas veces se apartan de su grupo y cuántas intervenciones tienen analizadas. Pulsa uno para ver su ficha, o un escaño en cualquier hemiciclo.</p></div></div>
+    ${bloqueTusDiputados()}
     ${CON_PLANO?`<div class="chart"><h3>El hemiciclo</h3><p class="sub">Cada punto es un diputado en su escaño real. Elige qué mostrar o resalta a quien busques; pulsa un escaño para abrir su ficha.</p><div id="hemi-datos">${hemiDatos()}</div></div>`:""}
     <div class="chart"><h3>Por circunscripción</h3>${mapaCirc()}</div>
     <div class="controls" id="dip-tabla"><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></div>
@@ -1786,9 +1791,9 @@ async function renderProvincia(){
   const S = statsDip;
   const tarjetas = ds.map(d=>{ const s=S[d.i], pq=P?.diputados?.[d.i], com=(EXTRA?.[d.n]?.comisiones||[]).map(c=>c[0].replace(/^Comisión (de |del |sobre |para )?/,"")).slice(0,3);
     return `<button class="tus-dip" data-dip="${d.slug}">${imgFoto(d,"avatar foto",` style="--grupo:${G[d.g]?.color}"`) || `<span class="avatar" style="background:${G[d.g]?.color}">${esc(iniciales(legible(d.n)))}</span>`}
-      <span class="td-n"><b>${esc(legible(d.n))}</b><small>${gdot(d.g)}${esc(G[d.g]?.nombre||d.g)}</small></span>
+      <span class="td-body"><span class="td-n"><b>${esc(legible(d.n))}</b><small>${gdot(d.g)}${esc(G[d.g]?.nombre||d.g)}</small></span>
       <span class="td-k"><span><b>${pct(s.part)}</b> participación</span><span><b>${s.dis}</b> ${s.dis===1?"vez":"veces"} distinto a su grupo</span>${pq?`<span><b>${fmt(pq[0])}</b> preguntas escritas</span>`:""}</span>
-      ${com.length?`<span class="td-c">${com.map(esc).join(" · ")}</span>`:""}</button>`; }).join("");
+      ${com.length?`<span class="td-c">${com.map(esc).join(" · ")}</span>`:""}</span></button>`; }).join("");
   // Las decisiones más ajustadas del periodo, con el voto de cada uno.
   const aj = DATA.votaciones.filter(v=>v.v && v.v.length===DIPS.length).sort((a,b)=>margen(a)-margen(b) || b.fecha.localeCompare(a.fecha)).slice(0,8);
   const filasAj = aj.map(v=>`<div class="pv-row"><button class="linklike pv-t" data-irv="${v.id}" data-f="${v.fecha}">${esc(v.titulo)}</button><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)} ${v.si}–${v.no}</span>
