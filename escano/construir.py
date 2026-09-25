@@ -11,7 +11,7 @@ import unicodedata
 from collections import Counter, defaultdict
 from datetime import date
 
-from . import diputados as mod_diputados
+from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo
 from .analisis import analizar, resumir_sesion
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
 
@@ -102,7 +102,7 @@ def titulo_legible(item: str) -> str:
 
 
 def diputados(votaciones: list[dict]) -> list[list[str]]:
-    """[nombre, grupo, circunscripción, formación, alta] de cada diputado que aparece en las votaciones, en orden estable.
+    """[nombre, grupo, circunscripción, formación, alta, x, y, código] de cada diputado (x, y: su escaño en el plano) que aparece en las votaciones, en orden estable.
 
     El grupo es el del voto más reciente. La web usa este orden para leer la cadena `v` de cada votación.
     """
@@ -110,9 +110,12 @@ def diputados(votaciones: list[dict]) -> list[list[str]]:
     for v in sorted(votaciones, key=lambda v: (v["fecha"], v.get("numero") or 0)):
         for d in v.get("votos", []):
             grupo[d["diputado"]] = d["grupo"]
-    ficha = mod_diputados.leer()
-    return sorted(([n, g, ficha.get(n, {}).get("circunscripcion", ""), ficha.get(n, {}).get("formacion", ""),
-                    ficha.get(n, {}).get("alta", "")] for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
+    ficha, plano = mod_diputados.leer(), mod_hemiciclo.leer()["escanos"]
+    def fila(n, g):
+        f, e = ficha.get(n, {}), plano.get(n, {})
+        return [n, g, f.get("circunscripcion", ""), f.get("formacion", ""), f.get("alta", ""),
+                e.get("x"), e.get("y"), e.get("codigo")]
+    return sorted((fila(n, g) for n, g in grupo.items()), key=lambda x: (x[1], x[0]))
 
 
 def votos_compactos(v: dict, indice: dict[str, int]) -> str:
@@ -337,6 +340,7 @@ def escribir_web(salida: dict) -> None:
         (carpeta / f"{mes}.json").write_text(json.dumps(contenido, ensure_ascii=False))
     indice = {
         "meta": d["meta"], "grupos": d["grupos"], "diputados": d["diputados"],
+        "hemiciclo": {k: v for k, v in mod_hemiciclo.leer().items() if k != "escanos"},
         "meses": [{"mes": m, "sesiones": len(c["sesiones"]), "votaciones": len(c["votaciones"]),
                    "intervenciones": len(c["intervenciones"])} for m, c in sorted(meses.items())],
     }

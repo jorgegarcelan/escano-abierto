@@ -14,7 +14,7 @@ from datetime import date, timedelta
 
 import json
 
-from . import calidad, diario, diputados, votaciones
+from . import calidad, diario, diputados, hemiciclo, votaciones
 from .config import CRUDOS, VOTACIONES
 from .construir import construir
 
@@ -35,6 +35,7 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
             print(f"  {d}: {n} votaciones")
 
     print(f"· Diputados en activo: {len(diputados.actualizar())}")
+    print(f"· Plano del hemiciclo: {len(hemiciclo.actualizar()['escanos'])} escaños")
 
     mapa = votaciones.mapa_diputados()
     estado = diario.leer_estado()

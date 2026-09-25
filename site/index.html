@@ -236,7 +236,8 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
   @keyframes asiento{from{opacity:0;transform:scale(.2)}}
 }
 .hemi-wrap{position:relative}
-.hemi-lazy{width:100%;aspect-ratio:248/120;border-radius:50% 50% 0 0/100% 100% 0 0;background:var(--sunk);opacity:.5}
+.hemi-lazy{width:100%;aspect-ratio:548/399;border-radius:50% 50% 8px 8px/70% 70% 8px 8px;background:var(--sunk);opacity:.5}
+.hemi .gob{fill:none;stroke:var(--line-strong);stroke-width:1;opacity:.55}
 .hemi-center{text-align:center;line-height:1;margin-top:10px}
 .hemi-center b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,38px);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .hemi-center span{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
@@ -641,7 +642,7 @@ function escanosDe(v){
   // Lista de {n, g, x} por diputado: del voto nominal si lo hay; si no, del recuento por grupo.
   let lista = [];
   if (v.v && DIPS.length===v.v.length){
-    for (let i=0;i<v.v.length;i++){ const x=v.v[i]; if (x!=="-") lista.push({n:DIPS[i][0], g:DIPS[i][1], x}); }
+    for (let i=0;i<v.v.length;i++){ const x=v.v[i]; if (x!=="-") lista.push({n:DIPS[i][0], g:DIPS[i][1], x, i}); }
   } else if (v.conteo && Object.keys(v.conteo).length){
     for (const [g,c] of Object.entries(v.conteo)) for (const [x,k] of Object.entries(c)) for (let i=0;i<k;i++) lista.push({n:"", g, x});
   } else return null;
@@ -649,9 +650,31 @@ function escanosDe(v){
   lista.sort((a,b)=>pos(a.g)-pos(b.g) || (ORDEN_VOTO[a.x]??9)-(ORDEN_VOTO[b.x]??9) || a.n.localeCompare(b.n,"es"));
   return lista;
 }
+// Plano real del hemiciclo (coordenadas de cada escaño en la página oficial del Congreso).
+const PLANO = DATA.hemiciclo || null;
+const CON_PLANO = !!PLANO && DIPS.filter(d=>d[5]!=null).length >= DIPS.length*.9;
+const ESC_R = 5.3;
+function gobiernoSinEscano(){
+  // Ministros que no son diputados: se sientan en el banco azul, pero no votan.
+  return (PLANO?.gobierno||[]).map(m=>`<circle class="gob" cx="${m.x}" cy="${m.y}" r="${ESC_R-.8}" data-n="${esc(m.nombre)}" data-g="GOB" data-x="-" data-tip="${esc(`<b>${esc(m.nombre.split(", ").reverse().join(" "))}</b><br>${esc(m.cargo||"Gobierno")}<br>No es diputado: no vota`)}"></circle>`).join("");
+}
+function hemicicloReal(v, lista, {anim=false}={}){
+  const conPlano = lista.filter(e=>e.i!=null && DIPS[e.i][5]!=null);
+  const cx = PLANO.ancho/2, cy = PLANO.alto;
+  conPlano.sort((a,b)=>Math.hypot(DIPS[a.i][5]-cx,DIPS[a.i][6]-cy)-Math.hypot(DIPS[b.i][5]-cx,DIPS[b.i][6]-cy));
+  const discrepa = e => ["S","N","A"].includes(e.x) && ["S","N","A"].includes(v.grupos[e.g]) && e.x!==v.grupos[e.g];
+  const cuadrado = FORMA_ASIENTO==="cuadrado", escala = FORMA_ASIENTO==="punto" ? .7 : 1;
+  const seats = conPlano.map((e,k)=>{ const x=DIPS[e.i][5], y=DIPS[e.i][6], r=(e.x==="X"?ESC_R-.7:ESC_R)*escala;
+    const attrs = `class="${e.x}${discrepa(e)?" dis":""}"${anim?` style="--d:${k}"`:""} data-n="${esc(e.n)}" data-g="${e.g}" data-x="${e.x}"${discrepa(e)?' data-dis="1"':""}`;
+    return cuadrado ? `<rect x="${(x-r*.85).toFixed(1)}" y="${(y-r*.85).toFixed(1)}" width="${(r*1.7).toFixed(1)}" height="${(r*1.7).toFixed(1)}" rx="1" ${attrs}></rect>`
+      : `<circle cx="${x}" cy="${y}" r="${r.toFixed(2)}" ${attrs}></circle>`; }).join("");
+  const aria = `Hemiciclo con la disposición real de los escaños: Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}`;
+  return `<svg class="hemi real${anim?" anim":""}" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="${aria}">${gobiernoSinEscano()}${seats}</svg>`;
+}
 function hemiciclo(v, {grande=false, anim=false}={}){
   const lista = escanosDe(v);
   if (!lista) return "";
+  if (CON_PLANO && lista.some(e=>e.i!=null)) return hemicicloReal(v, lista, {anim});
   const {pts, rad} = asientos(lista.length);
   const discrepa = e => ["S","N","A"].includes(e.x) && ["S","N","A"].includes(v.grupos[e.g]) && e.x!==v.grupos[e.g];
   const cuadrado = FORMA_ASIENTO==="cuadrado";
@@ -814,6 +837,11 @@ const pctBar = x => x==null ? "–" : `<span class="pct">${pct(x)}<i><b style="w
 let dipFiltro = {q:"", g:"TODOS", orden:"dis", circ:null};
 let dipSel = null;
 function hemiDiputado(d){
+  if (CON_PLANO && DIPS[d.i][5]!=null){
+    const seats = DIP.filter(e=>DIPS[e.i][5]!=null).map(e=>{ const yo=e===d, x=DIPS[e.i][5], y=DIPS[e.i][6];
+      return `<circle class="${yo?"yo":"otro"}" cx="${x}" cy="${y}" r="${yo?ESC_R*1.7:ESC_R}" ${yo?"":`fill="${G[e.g]?.color}"`} data-n="${esc(e.n)}" data-g="${e.g}" data-x="-"></circle>`; }).join("");
+    return `<svg class="hemi real" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Su escaño en el hemiciclo">${gobiernoSinEscano()}${seats}</svg>`;
+  }
   // Todos los escaños por grupo; el del diputado, en tinta.
   const lista = DIP.slice().sort((a,b)=>ORDEN_HEMI.indexOf(a.g)-ORDEN_HEMI.indexOf(b.g) || a.n.localeCompare(b.n,"es"));
   const {pts, rad} = asientos(lista.length);
@@ -1301,7 +1329,7 @@ function renderMetodo(){
       <li>Las <b>mayorías</b> agrupan las votaciones por los grupos que estaban en bloque en el lado ganador. Un grupo dividido o abstenido no cuenta en ninguna.</li>
       <li>El <b>termómetro</b> cuenta las anotaciones del Diario (aplausos, risas, rumores, protestas, llamadas al orden) y las asigna al turno de palabra en el que aparecen.</li>
       <li>Sin análisis de IA, el título de cada votación es un <b>resumen automático del texto oficial</b> y conserva las palabras del grupo que presenta la iniciativa; se marca como «título oficial».</li>
-      <li>El <b>hemiciclo</b> dibuja a los 350 diputados con su voto nominal oficial. Los grupos van de izquierda a derecha según la convención habitual de estos gráficos, con el Grupo Mixto, que reúne partidos de distintas ideologías, en el centro. No es la disposición real de los escaños en la Cámara.</li>
+      <li>El <b>hemiciclo</b> dibuja a los 350 diputados en su escaño real, según el plano oficial del Congreso, con su voto nominal. Abajo está la Mesa; en la primera fila, el banco azul del Gobierno (los ministros que no son diputados aparecen como huecos: no votan).</li>
       <li>En la portada, la <b>votación destacada</b> es la de menor diferencia entre síes y noes del último pleno, y el <b>cara a cara</b> es la primera pregunta de control de la última sesión analizada. Se eligen con una regla fija, no a mano.</li>
     </ul>
     <h3>Garantías</h3>

@@ -1,0 +1,1872 @@
+{
+ "escanos": {
+  "Armengol Socias, Francina": {
+   "x": 270,
+   "y": 382,
+   "codigo": 185
+  },
+  "Rodríguez Gómez de Celis, Alfonso": {
+   "x": 294,
+   "y": 382,
+   "codigo": 140
+  },
+  "Bermúdez de Castro Fernández, José Antonio": {
+   "x": 246,
+   "y": 382,
+   "codigo": 118
+  },
+  "Gil de Reboleño Lastortres, Esther": {
+   "x": 317,
+   "y": 382,
+   "codigo": 86
+  },
+  "González Vázquez, Marta": {
+   "x": 222,
+   "y": 382,
+   "codigo": 200
+  },
+  "Pisarello Prados, Gerardo": {
+   "x": 323,
+   "y": 360,
+   "codigo": 328
+  },
+  "Leal Fernández, Isaura": {
+   "x": 217,
+   "y": 361,
+   "codigo": 191
+  },
+  "Mariscal Anaya, Guillermo": {
+   "x": 343,
+   "y": 360,
+   "codigo": 255
+  },
+  "Navarro Lacoba, Carmen": {
+   "x": 197,
+   "y": 360,
+   "codigo": 215
+  },
+  "Sánchez Pérez-Castejón, Pedro": {
+   "x": 190,
+   "y": 303,
+   "codigo": 189
+  },
+  "Díaz Pérez, Yolanda": {
+   "x": 190,
+   "y": 278,
+   "codigo": 342
+  },
+  "Bolaños García, Félix": {
+   "x": 189,
+   "y": 241,
+   "codigo": 253
+  },
+  "Puente Santiago, Óscar": {
+   "x": 238,
+   "y": 198,
+   "codigo": 90
+  },
+  "López Álvarez, Patxi": {
+   "x": 162,
+   "y": 302,
+   "codigo": 120
+  },
+  "Mínguez García, Montse": {
+   "x": 162,
+   "y": 289,
+   "codigo": 80
+  },
+  "Nasarre Oliva, Begoña": {
+   "x": 162,
+   "y": 278,
+   "codigo": 178
+  },
+  "Alfonso Cendón, Javier": {
+   "x": 162,
+   "y": 266,
+   "codigo": 252
+  },
+  "Blanquer Alcaraz, Patricia": {
+   "x": 162,
+   "y": 253,
+   "codigo": 170
+  },
+  "García López, Maribel": {
+   "x": 162,
+   "y": 240,
+   "codigo": 49
+  },
+  "Narbona Ruiz, Cristina": {
+   "x": 164,
+   "y": 226,
+   "codigo": 271
+  },
+  "Soler Mur, Alejandro": {
+   "x": 168,
+   "y": 213,
+   "codigo": 296
+  },
+  "Zaragoza Alonso, José": {
+   "x": 177,
+   "y": 202,
+   "codigo": 35
+  },
+  "Simancas Simancas, Rafael": {
+   "x": 187,
+   "y": 192,
+   "codigo": 229
+  },
+  "Garrido Jiménez, Elisa": {
+   "x": 136,
+   "y": 302,
+   "codigo": 116
+  },
+  "Serrano Martínez, Juan Francisco": {
+   "x": 136,
+   "y": 290,
+   "codigo": 40
+  },
+  "Peña Camarero, Esther": {
+   "x": 136,
+   "y": 278,
+   "codigo": 95
+  },
+  "Gutiérrez Santiago, Víctor": {
+   "x": 136,
+   "y": 266,
+   "codigo": 357
+  },
+  "Martínez Salmerón, Joaquín": {
+   "x": 136,
+   "y": 253,
+   "codigo": 182
+  },
+  "Castilla Álvarez, María Carmen": {
+   "x": 136,
+   "y": 239,
+   "codigo": 15
+  },
+  "Guinart Moreno, Lídia": {
+   "x": 138,
+   "y": 225,
+   "codigo": 272
+  },
+  "Ros Martínez, Susana": {
+   "x": 141,
+   "y": 213,
+   "codigo": 58
+  },
+  "Perea i Conillas, María Mercè": {
+   "x": 147,
+   "y": 200,
+   "codigo": 19
+  },
+  "Hita Téllez, Guillermo": {
+   "x": 155,
+   "y": 189,
+   "codigo": 381
+  },
+  "Ruiz Boix, Juan Carlos": {
+   "x": 164,
+   "y": 181,
+   "codigo": 68
+  },
+  "Crespín Rubio, Rafaela": {
+   "x": 174,
+   "y": 171,
+   "codigo": 154
+  },
+  "Camino Miñana, Víctor": {
+   "x": 111,
+   "y": 302,
+   "codigo": 364
+  },
+  "Diouf Dioh, Luc Andre": {
+   "x": 111,
+   "y": 290,
+   "codigo": 142
+  },
+  "Rodríguez Salas, José Antonio": {
+   "x": 111,
+   "y": 278,
+   "codigo": 128
+  },
+  "Rodríguez Palacios, Javier": {
+   "x": 110,
+   "y": 265,
+   "codigo": 355
+  },
+  "Maldonado López, Adriana": {
+   "x": 111,
+   "y": 254,
+   "codigo": 105
+  },
+  "Otero Rodríguez, Patricia": {
+   "x": 111,
+   "y": 241,
+   "codigo": 377
+  },
+  "Romero Pozo, Rafaela": {
+   "x": 112,
+   "y": 229,
+   "codigo": 112
+  },
+  "Sahuquillo García, Luis Carlos": {
+   "x": 114,
+   "y": 217,
+   "codigo": 10
+  },
+  "Herrera García, Milena": {
+   "x": 118,
+   "y": 205,
+   "codigo": 186
+  },
+  "Corujo Berriel, María Dolores": {
+   "x": 123,
+   "y": 194,
+   "codigo": 187
+  },
+  "García Morís, Roberto": {
+   "x": 128,
+   "y": 184,
+   "codigo": 195
+  },
+  "Antuñano Colina, Pablo": {
+   "x": 134,
+   "y": 173,
+   "codigo": 403
+  },
+  "Rallo Lombarte, Artemi": {
+   "x": 141,
+   "y": 164,
+   "codigo": 54
+  },
+  "Ramírez Moreno, María de las Nieves": {
+   "x": 150,
+   "y": 155,
+   "codigo": 5
+  },
+  "Martínez Seijo, María Luz": {
+   "x": 159,
+   "y": 149,
+   "codigo": 63
+  },
+  "Fagúndez Campo, Antidio": {
+   "x": 83,
+   "y": 302,
+   "codigo": 29
+  },
+  "Aranda Vargas, Francisco": {
+   "x": 83,
+   "y": 290,
+   "codigo": 21
+  },
+  "Lamuà Estañol, Marc": {
+   "x": 83,
+   "y": 277,
+   "codigo": 110
+  },
+  "Arribas Maroto, Manuel": {
+   "x": 83,
+   "y": 265,
+   "codigo": 96
+  },
+  "Aceves Galindo, José Luis": {
+   "x": 83,
+   "y": 253,
+   "codigo": 64
+  },
+  "Serrada Pariente, David": {
+   "x": 83,
+   "y": 242,
+   "codigo": 24
+  },
+  "Faneca López, María Luisa": {
+   "x": 84,
+   "y": 230,
+   "codigo": 167
+  },
+  "López Cano, Ignacio": {
+   "x": 85,
+   "y": 218,
+   "codigo": 264
+  },
+  "Ramos Esteban, César Joaquín": {
+   "x": 87,
+   "y": 206,
+   "codigo": 100
+  },
+  "González Gracia, Juan Antonio": {
+   "x": 92,
+   "y": 194,
+   "codigo": 228
+  },
+  "Sánchez Díaz, María Carmen": {
+   "x": 97,
+   "y": 182,
+   "codigo": 72
+  },
+  "Martínez Ramírez, Carmen": {
+   "x": 103,
+   "y": 170,
+   "codigo": 218
+  },
+  "Cobo Pérez, Noelia": {
+   "x": 109,
+   "y": 159,
+   "codigo": 321
+  },
+  "Gavin i Valls, Isidre": {
+   "x": 117,
+   "y": 149,
+   "codigo": 239
+  },
+  "Madrenas i Mir, Marta": {
+   "x": 125,
+   "y": 140,
+   "codigo": 245
+  },
+  "Cruset Domènech, Josep Maria": {
+   "x": 135,
+   "y": 131,
+   "codigo": 244
+  },
+  "Nogueras i Camero, Míriam": {
+   "x": 144,
+   "y": 123,
+   "codigo": 241
+  },
+  "Sáez Cruz, Emilio": {
+   "x": 56,
+   "y": 290,
+   "codigo": 138
+  },
+  "Mellado Sierra, Valle": {
+   "x": 56,
+   "y": 277,
+   "codigo": 171
+  },
+  "Ramírez Carner, Arnau": {
+   "x": 56,
+   "y": 265,
+   "codigo": 94
+  },
+  "Adrio Taracido, María": {
+   "x": 56,
+   "y": 253,
+   "codigo": 139
+  },
+  "Cobo Carmona, Ana": {
+   "x": 57,
+   "y": 232,
+   "codigo": 75
+  },
+  "Gutiérrez Prieto, Sergio": {
+   "x": 59,
+   "y": 219,
+   "codigo": 232
+  },
+  "Fernández Benéitez, Andrea": {
+   "x": 60,
+   "y": 208,
+   "codigo": 31
+  },
+  "Mercadal Baquero, Pepe": {
+   "x": 63,
+   "y": 196,
+   "codigo": 190
+  },
+  "Azorín Salar, Lázaro": {
+   "x": 69,
+   "y": 176,
+   "codigo": 273
+  },
+  "Senderos Oraá, Daniel": {
+   "x": 74,
+   "y": 165,
+   "codigo": 17
+  },
+  "Sancho Íñiguez, Herminio Rufino": {
+   "x": 79,
+   "y": 154,
+   "codigo": 130
+  },
+  "Lorenzo Cazorla, Juan Antonio": {
+   "x": 85,
+   "y": 144,
+   "codigo": 354
+  },
+  "Mayoral de Lamo, Alberto": {
+   "x": 97,
+   "y": 127,
+   "codigo": 363
+  },
+  "Pagès i Massó, Josep": {
+   "x": 106,
+   "y": 119,
+   "codigo": 389
+  },
+  "Cervera Pinart, Josep Maria": {
+   "x": 114,
+   "y": 110,
+   "codigo": 242
+  },
+  "Calvo Gómez, Pilar": {
+   "x": 124,
+   "y": 101,
+   "codigo": 243
+  },
+  "Rojo Blas, Alberto": {
+   "x": 30,
+   "y": 290,
+   "codigo": 176
+  },
+  "Andrés Añón, Carmen": {
+   "x": 29,
+   "y": 279,
+   "codigo": 106
+  },
+  "Marqués Atés, Amador": {
+   "x": 29,
+   "y": 266,
+   "codigo": 79
+  },
+  "Verdejo Vicente, Ferran": {
+   "x": 30,
+   "y": 253,
+   "codigo": 23
+  },
+  "Plaza García, Inés": {
+   "x": 30,
+   "y": 227,
+   "codigo": 81
+  },
+  "Álvarez González, Alicia": {
+   "x": 32,
+   "y": 215,
+   "codigo": 134
+  },
+  "Martín Rodríguez, Margarita": {
+   "x": 33,
+   "y": 204,
+   "codigo": 146
+  },
+  "García Chavarría, María Montserrat": {
+   "x": 37,
+   "y": 192,
+   "codigo": 380
+  },
+  "García Gurrutxaga, María Luisa": {
+   "x": 45,
+   "y": 165,
+   "codigo": 113
+  },
+  "Sarrià Morell, Vicent Manuel": {
+   "x": 50,
+   "y": 154,
+   "codigo": 219
+  },
+  "Cruz Santana, Gabriel": {
+   "x": 55,
+   "y": 143,
+   "codigo": 168
+  },
+  "Argota Castro, Trinidad Carmen": {
+   "x": 61,
+   "y": 133,
+   "codigo": 103
+  },
+  "Sanz Martínez, Luisa": {
+   "x": 79,
+   "y": 108,
+   "codigo": 91
+  },
+  "Rey de las Heras, Luis Alfonso": {
+   "x": 88,
+   "y": 99,
+   "codigo": 11
+  },
+  "Catalán Higueras, Alberto": {
+   "x": 96,
+   "y": 90,
+   "codigo": 149
+  },
+  "Valido García, Cristina": {
+   "x": 107,
+   "y": 83,
+   "codigo": 38
+  },
+  "Pose Mesura, Modesto": {
+   "x": 7,
+   "y": 302,
+   "codigo": 129
+  },
+  "Díaz Marín, Raúl": {
+   "x": 7,
+   "y": 290,
+   "codigo": 50
+  },
+  "Canelo Matito, Andrea": {
+   "x": 7,
+   "y": 278,
+   "codigo": 388
+  },
+  "Almirón Ruiz, Oriol": {
+   "x": 6,
+   "y": 265,
+   "codigo": 387
+  },
+  "Trenzano Rubio, Marta": {
+   "x": 7,
+   "y": 252,
+   "codigo": 220
+  },
+  "González Herdaro, Ana": {
+   "x": 6,
+   "y": 238,
+   "codigo": 407
+  },
+  "Quintero Hernández, Jonay": {
+   "x": 6,
+   "y": 224,
+   "codigo": 394
+  },
+  "Cacho Isla, Iván": {
+   "x": 7,
+   "y": 209,
+   "codigo": 401
+  },
+  "Morales Álvarez, Álvaro": {
+   "x": 9,
+   "y": 195,
+   "codigo": 93
+  },
+  "Gómez Piña, Luis Antonio": {
+   "x": 12,
+   "y": 181,
+   "codigo": 396
+  },
+  "Pachón Martín, Brígida": {
+   "x": 17,
+   "y": 167,
+   "codigo": 410
+  },
+  "Otero García, Mercedes": {
+   "x": 22,
+   "y": 153,
+   "codigo": 386
+  },
+  "Poblador Pacheco, María Araceli": {
+   "x": 28,
+   "y": 138,
+   "codigo": 39
+  },
+  "De la Rosa Baena, Olvido": {
+   "x": 37,
+   "y": 124,
+   "codigo": 376
+  },
+  "Sainz Martín, María": {
+   "x": 46,
+   "y": 111,
+   "codigo": 384
+  },
+  "Moreno Fernández, Mª Isabel": {
+   "x": 55,
+   "y": 98,
+   "codigo": 361
+  },
+  "Pérez Ortiz, Isabel María": {
+   "x": 65,
+   "y": 87,
+   "codigo": 8
+  },
+  "Losada Fernández, José": {
+   "x": 76,
+   "y": 76,
+   "codigo": 353
+  },
+  "Montávez Aguillaume, Vicente": {
+   "x": 86,
+   "y": 66,
+   "codigo": 390
+  },
+  "Blanco Arrúe, Gabriel": {
+   "x": 98,
+   "y": 58,
+   "codigo": 400
+  },
+  "Martínez Barbero, Verónica": {
+   "x": 227,
+   "y": 176,
+   "codigo": 310
+  },
+  "Vidal Sáez, Aina": {
+   "x": 243,
+   "y": 172,
+   "codigo": 327
+  },
+  "Ibáñez Mezquita, Alberto": {
+   "x": 260,
+   "y": 170,
+   "codigo": 165
+  },
+  "Santiago Romero, Enrique Fernando": {
+   "x": 274,
+   "y": 170,
+   "codigo": 125
+  },
+  "Sagastizabal Unzetabarrenetxea, Idoia": {
+   "x": 289,
+   "y": 170,
+   "codigo": 309
+  },
+  "Legarda Uriarte, Mikel": {
+   "x": 304,
+   "y": 173,
+   "codigo": 306
+  },
+  "Vaquero Montero, Maribel": {
+   "x": 318,
+   "y": 176,
+   "codigo": 303
+  },
+  "Santos Maraver, Agustín": {
+   "x": 210,
+   "y": 152,
+   "codigo": 311
+  },
+  "Boada Danés, Júlia": {
+   "x": 226,
+   "y": 147,
+   "codigo": 332
+  },
+  "Andala Ubbi, Teslem": {
+   "x": 239,
+   "y": 144,
+   "codigo": 338
+  },
+  "Valero Morales, Juan Antonio": {
+   "x": 253,
+   "y": 142,
+   "codigo": 78
+  },
+  "Vidal Matas, Vicenç": {
+   "x": 266,
+   "y": 140,
+   "codigo": 192
+  },
+  "Martín Urriza, Carlos": {
+   "x": 280,
+   "y": 140,
+   "codigo": 225
+  },
+  "Lago Peñas, Manuel": {
+   "x": 293,
+   "y": 142,
+   "codigo": 375
+  },
+  "Vergara Román, Laura": {
+   "x": 307,
+   "y": 144,
+   "codigo": 408
+  },
+  "Renteria Lasanta, Nerea": {
+   "x": 322,
+   "y": 147,
+   "codigo": 399
+  },
+  "Agirretxea Urresti, Joseba Andoni": {
+   "x": 336,
+   "y": 152,
+   "codigo": 305
+  },
+  "Guijarro García, Txema": {
+   "x": 197,
+   "y": 131,
+   "codigo": 92
+  },
+  "Martínez Hierro, Lander": {
+   "x": 210,
+   "y": 125,
+   "codigo": 87
+  },
+  "López Tagliafico, Candela": {
+   "x": 225,
+   "y": 120,
+   "codigo": 372
+  },
+  "Badia Casas, Eloi": {
+   "x": 238,
+   "y": 117,
+   "codigo": 329
+  },
+  "Alonso Cantorné, Fèlix": {
+   "x": 253,
+   "y": 115,
+   "codigo": 269
+  },
+  "Rivera Arias, Engracia": {
+   "x": 266,
+   "y": 114,
+   "codigo": 157
+  },
+  "González López, Nahuel": {
+   "x": 279,
+   "y": 114,
+   "codigo": 166
+  },
+  "Recas Martín, Alda": {
+   "x": 292,
+   "y": 115,
+   "codigo": 393
+  },
+  "Estrems Fayos, Etna": {
+   "x": 308,
+   "y": 117,
+   "codigo": 392
+  },
+  "Salvador i Duch, Jordi": {
+   "x": 320,
+   "y": 120,
+   "codigo": 77
+  },
+  "Jordà i Roura, Teresa": {
+   "x": 336,
+   "y": 125,
+   "codigo": 224
+  },
+  "Rufián Romero, Gabriel": {
+   "x": 349,
+   "y": 131,
+   "codigo": 312
+  },
+  "Aizpurua Arzallus, Mertxe": {
+   "x": 178,
+   "y": 107,
+   "codigo": 300
+  },
+  "Matute García de Jalón, Oskar": {
+   "x": 190,
+   "y": 100,
+   "codigo": 287
+  },
+  "Pozueta Fernández, Isabel": {
+   "x": 202,
+   "y": 94,
+   "codigo": 288
+  },
+  "Cofiño Fernández, Rafael": {
+   "x": 226,
+   "y": 87,
+   "codigo": 122
+  },
+  "Sierra Caballero, Francisco": {
+   "x": 240,
+   "y": 85,
+   "codigo": 268
+  },
+  "Ogou i Corbi, Viviane": {
+   "x": 253,
+   "y": 83,
+   "codigo": 397
+  },
+  "Micó Micó, Àgueda": {
+   "x": 266,
+   "y": 82,
+   "codigo": 164
+  },
+  "Sánchez Serna, Javier": {
+   "x": 279,
+   "y": 83,
+   "codigo": 292
+  },
+  "Belarra Urteaga, Ione": {
+   "x": 293,
+   "y": 84,
+   "codigo": 262
+  },
+  "Santana Perera, Noemí": {
+   "x": 307,
+   "y": 85,
+   "codigo": 33
+  },
+  "Velarde Gómez, Martina": {
+   "x": 319,
+   "y": 87,
+   "codigo": 169
+  },
+  "Rego Candamil, Néstor": {
+   "x": 332,
+   "y": 90,
+   "codigo": 238
+  },
+  "Vallugera Balañà, Pilar": {
+   "x": 344,
+   "y": 94,
+   "codigo": 223
+  },
+  "Álvaro Vidal, Francesc-Marc": {
+   "x": 356,
+   "y": 101,
+   "codigo": 222
+  },
+  "Granollers Cunillera, Inés": {
+   "x": 367,
+   "y": 107,
+   "codigo": 221
+  },
+  "Otero Gabirondo, Mikel": {
+   "x": 165,
+   "y": 81,
+   "codigo": 398
+  },
+  "Fullaondo la Cruz, Marije": {
+   "x": 178,
+   "y": 74,
+   "codigo": 291
+  },
+  "Iñarritu García, Jon": {
+   "x": 195,
+   "y": 68,
+   "codigo": 290
+  },
+  "González-Robatto Perote, Jacobo": {
+   "x": 208,
+   "y": 63,
+   "codigo": 121
+  },
+  "Campos Asensi, Jorge": {
+   "x": 220,
+   "y": 61,
+   "codigo": 207
+  },
+  "Rueda Perelló, Patricia": {
+   "x": 234,
+   "y": 58,
+   "codigo": 293
+  },
+  "Sánchez García, José María": {
+   "x": 251,
+   "y": 57,
+   "codigo": 53
+  },
+  "Robles López, Joaquín": {
+   "x": 265,
+   "y": 56,
+   "codigo": 318
+  },
+  "Ramírez del Río, José": {
+   "x": 278,
+   "y": 56,
+   "codigo": 70
+  },
+  "Méndez Monasterio, Lourdes": {
+   "x": 291,
+   "y": 58,
+   "codigo": 203
+  },
+  "Alcaraz Martos, Francisco José": {
+   "x": 309,
+   "y": 58,
+   "codigo": 4
+  },
+  "Hoces Íñiguez, Ignacio": {
+   "x": 322,
+   "y": 61,
+   "codigo": 194
+  },
+  "Aizcorbe Torra, Juan José": {
+   "x": 334,
+   "y": 63,
+   "codigo": 52
+  },
+  "Gil Lázaro, Ignacio": {
+   "x": 346,
+   "y": 68,
+   "codigo": 117
+  },
+  "Rodríguez Almeida, Andrés Alberto": {
+   "x": 364,
+   "y": 74,
+   "codigo": 256
+  },
+  "Del Valle Rodríguez, Emilio Jesús": {
+   "x": 377,
+   "y": 81,
+   "codigo": 124
+  },
+  "Ortega Smith-Molina, Francisco Javier": {
+   "x": 149,
+   "y": 57,
+   "codigo": 325
+  },
+  "Mejías Sánchez, Carina": {
+   "x": 190,
+   "y": 42,
+   "codigo": 331
+  },
+  "Flores Juberías, Carlos": {
+   "x": 203,
+   "y": 37,
+   "codigo": 159
+  },
+  "Armario González, Blanca": {
+   "x": 216,
+   "y": 34,
+   "codigo": 249
+  },
+  "Fernández Ríos, Tomás": {
+   "x": 230,
+   "y": 31,
+   "codigo": 214
+  },
+  "Aguirre Gil de Biedma, Rocío": {
+   "x": 251,
+   "y": 29,
+   "codigo": 371
+  },
+  "Mesquida Mayans, Joan": {
+   "x": 265,
+   "y": 29,
+   "codigo": 132
+  },
+  "Vázquez Jiménez, María del Mar": {
+   "x": 278,
+   "y": 29,
+   "codigo": 76
+  },
+  "Carballedo Berlanga, María Eugenia": {
+   "x": 291,
+   "y": 29,
+   "codigo": 341
+  },
+  "Alía Aguado, María Pilar": {
+   "x": 313,
+   "y": 31,
+   "codigo": 183
+  },
+  "Nacarino-Brabo Jiménez, Aurora": {
+   "x": 326,
+   "y": 34,
+   "codigo": 348
+  },
+  "Tomás Olivares, Violante": {
+   "x": 340,
+   "y": 37,
+   "codigo": 119
+  },
+  "Paniagua Núñez, Miguel Ángel": {
+   "x": 353,
+   "y": 41,
+   "codigo": 323
+  },
+  "De Luna Tobarra, Llanos": {
+   "x": 373,
+   "y": 50,
+   "codigo": 174
+  },
+  "Abades Martínez, Cristina": {
+   "x": 393,
+   "y": 59,
+   "codigo": 160
+  },
+  "Chamorro Delmo, Ricardo": {
+   "x": 151,
+   "y": 30,
+   "codigo": 294
+  },
+  "Asarta Cuevas, Alberto": {
+   "x": 164,
+   "y": 25,
+   "codigo": 316
+  },
+  "Fernández Hernández, Pedro": {
+   "x": 191,
+   "y": 17,
+   "codigo": 14
+  },
+  "García Gomis, David": {
+   "x": 204,
+   "y": 13,
+   "codigo": 104
+  },
+  "Cuevas Larrosa, Raúl": {
+   "x": 217,
+   "y": 11,
+   "codigo": 395
+  },
+  "Parra Gallego, Agustín": {
+   "x": 231,
+   "y": 8,
+   "codigo": 172
+  },
+  "Delgado-Taramona Hernández, Jimena": {
+   "x": 246,
+   "y": 8,
+   "codigo": 235
+  },
+  "Parra Aparicio, Julia": {
+   "x": 260,
+   "y": 6,
+   "codigo": 210
+  },
+  "Llamazares Domingo, Esther": {
+   "x": 273,
+   "y": 6,
+   "codigo": 340
+  },
+  "Ramírez Martín, María Lourdes": {
+   "x": 286,
+   "y": 6,
+   "codigo": 60
+  },
+  "Macías Gata, Alfonso Carlos": {
+   "x": 301,
+   "y": 7,
+   "codigo": 298
+  },
+  "Madrid Olmo, Bartolomé": {
+   "x": 314,
+   "y": 8,
+   "codigo": 260
+  },
+  "Celaya Brey, Javier": {
+   "x": 327,
+   "y": 11,
+   "codigo": 162
+  },
+  "Pérez Osma, Daniel": {
+   "x": 341,
+   "y": 14,
+   "codigo": 16
+  },
+  "Vedrina Conesa, María Elisa": {
+   "x": 354,
+   "y": 17,
+   "codigo": 383
+  },
+  "Bayón Rolo, Juan Andrés": {
+   "x": 367,
+   "y": 22,
+   "codigo": 382
+  },
+  "Noriega Gómez, Javier": {
+   "x": 381,
+   "y": 26,
+   "codigo": 141
+  },
+  "Torres Tejada, María": {
+   "x": 394,
+   "y": 31,
+   "codigo": 368
+  },
+  "Pascual Rocamora, Sandra": {
+   "x": 406,
+   "y": 38,
+   "codigo": 212
+  },
+  "Abascal Conde, Santiago": {
+   "x": 349,
+   "y": 192,
+   "codigo": 317
+  },
+  "Rodríguez de Millán Parro, María José": {
+   "x": 359,
+   "y": 201,
+   "codigo": 344
+  },
+  "Figaredo Álvarez-Sala, José María": {
+   "x": 368,
+   "y": 212,
+   "codigo": 193
+  },
+  "Olano Vela, Jaime Eduardo de": {
+   "x": 372,
+   "y": 226,
+   "codigo": 161
+  },
+  "Pérez López, Álvaro": {
+   "x": 374,
+   "y": 240,
+   "codigo": 27
+  },
+  "Ibáñez Hernando, Ángel": {
+   "x": 374,
+   "y": 253,
+   "codigo": 180
+  },
+  "Montesinos de Miguel, Macarena": {
+   "x": 375,
+   "y": 266,
+   "codigo": 216
+  },
+  "Tellado Filgueira, Miguel": {
+   "x": 375,
+   "y": 278,
+   "codigo": 26
+  },
+  "Muñoz de la Iglesia, Ester": {
+   "x": 374,
+   "y": 290,
+   "codigo": 28
+  },
+  "Núñez Feijóo, Alberto": {
+   "x": 374,
+   "y": 302,
+   "codigo": 346
+  },
+  "Ruiz Solás, María de la Cabeza": {
+   "x": 362,
+   "y": 171,
+   "codigo": 283
+  },
+  "Hernández Quero, Carlos": {
+   "x": 372,
+   "y": 180,
+   "codigo": 345
+  },
+  "Romero Vilches, María de los Reyes": {
+   "x": 381,
+   "y": 188,
+   "codigo": 307
+  },
+  "Sayas López, Sergio": {
+   "x": 389,
+   "y": 200,
+   "codigo": 148
+  },
+  "Hernando Fraile, Rafael Antonio": {
+   "x": 396,
+   "y": 212,
+   "codigo": 202
+  },
+  "Álvarez Fanjul, Beatriz": {
+   "x": 398,
+   "y": 225,
+   "codigo": 143
+  },
+  "De los Santos González, Jaime Miguel": {
+   "x": 400,
+   "y": 239,
+   "codigo": 270
+  },
+  "Sémper Pascual, Borja": {
+   "x": 400,
+   "y": 253,
+   "codigo": 258
+  },
+  "Bravo Baena, Juan": {
+   "x": 400,
+   "y": 265,
+   "codigo": 9
+  },
+  "Fúnez de Gregorio, Carmen": {
+   "x": 400,
+   "y": 278,
+   "codigo": 65
+  },
+  "Bendodo Benasayag, Elías": {
+   "x": 400,
+   "y": 290,
+   "codigo": 209
+  },
+  "Gamarra Ruiz-Clavijo, Concepción": {
+   "x": 400,
+   "y": 303,
+   "codigo": 314
+  },
+  "De Meer Méndez, Rocío": {
+   "x": 377,
+   "y": 149,
+   "codigo": 284
+  },
+  "Sáez Alonso-Muñumer, Pablo": {
+   "x": 387,
+   "y": 156,
+   "codigo": 61
+  },
+  "Uriarte Bengoechea, Edurne": {
+   "x": 395,
+   "y": 164,
+   "codigo": 374
+  },
+  "Borrego Cortés, Isabel María": {
+   "x": 403,
+   "y": 174,
+   "codigo": 145
+  },
+  "Conde López, Francisco José": {
+   "x": 409,
+   "y": 184,
+   "codigo": 349
+  },
+  "Puy Fraga, Pedro": {
+   "x": 414,
+   "y": 194,
+   "codigo": 199
+  },
+  "Fabra Part, Alberto": {
+   "x": 419,
+   "y": 206,
+   "codigo": 108
+  },
+  "Muñoz Abrines, Pedro": {
+   "x": 422,
+   "y": 218,
+   "codigo": 236
+  },
+  "Guardiola Salmerón, Mirian": {
+   "x": 425,
+   "y": 230,
+   "codigo": 351
+  },
+  "Alós López, Ana Isabel": {
+   "x": 425,
+   "y": 242,
+   "codigo": 334
+  },
+  "Marí Bosó, José Vicente": {
+   "x": 426,
+   "y": 254,
+   "codigo": 188
+  },
+  "Acedo Reyes, Sofía": {
+   "x": 426,
+   "y": 266,
+   "codigo": 69
+  },
+  "Álvarez de Toledo Peralta-Ramos, Cayetana": {
+   "x": 426,
+   "y": 278,
+   "codigo": 315
+  },
+  "Sánchez Sierra, María del Mar": {
+   "x": 426,
+   "y": 290,
+   "codigo": 281
+  },
+  "Varela Pazos, Marta": {
+   "x": 426,
+   "y": 302,
+   "codigo": 347
+  },
+  "Mariscal Zabala, Manuel": {
+   "x": 392,
+   "y": 124,
+   "codigo": 263
+  },
+  "López Maraver, Ángel": {
+   "x": 401,
+   "y": 131,
+   "codigo": 73
+  },
+  "Teniente Sánchez, Cristina": {
+   "x": 411,
+   "y": 139,
+   "codigo": 47
+  },
+  "Clavell López, Óscar": {
+   "x": 418,
+   "y": 149,
+   "codigo": 109
+  },
+  "Cruz-Guzmán García, María Soledad": {
+   "x": 427,
+   "y": 159,
+   "codigo": 319
+  },
+  "Requena Ruiz, Juan Diego": {
+   "x": 434,
+   "y": 171,
+   "codigo": 131
+  },
+  "Garrido Valenzuela, Irene": {
+   "x": 439,
+   "y": 182,
+   "codigo": 42
+  },
+  "Sánchez Torregrosa, Maribel": {
+   "x": 444,
+   "y": 195,
+   "codigo": 177
+  },
+  "Román Jasanada, Antonio": {
+   "x": 450,
+   "y": 206,
+   "codigo": 59
+  },
+  "Rojas García, Carlos": {
+   "x": 451,
+   "y": 218,
+   "codigo": 12
+  },
+  "Moro Almaraz, María Jesús": {
+   "x": 452,
+   "y": 231,
+   "codigo": 151
+  },
+  "Núñez Guijarro, José Enrique": {
+   "x": 454,
+   "y": 243,
+   "codigo": 373
+  },
+  "Hispán Iglesias de Ussel, Pablo": {
+   "x": 453,
+   "y": 253,
+   "codigo": 350
+  },
+  "Beamonte Mesa, Luis María": {
+   "x": 453,
+   "y": 266,
+   "codigo": 297
+  },
+  "Fernández González, María Mercedes": {
+   "x": 453,
+   "y": 278,
+   "codigo": 82
+  },
+  "Cobo Vega, Manuel": {
+   "x": 453,
+   "y": 290,
+   "codigo": 324
+  },
+  "Moneo Díez, María Sandra": {
+   "x": 453,
+   "y": 302,
+   "codigo": 204
+  },
+  "Merino Martínez, Javier": {
+   "x": 411,
+   "y": 102,
+   "codigo": 99
+  },
+  "Herrero Bono, José Alberto": {
+   "x": 422,
+   "y": 111,
+   "codigo": 277
+  },
+  "Palencia Rubio, Héctor": {
+   "x": 430,
+   "y": 119,
+   "codigo": 1
+  },
+  "Hoyo Juliá, Belén": {
+   "x": 440,
+   "y": 128,
+   "codigo": 67
+  },
+  "Floriano Corrales, Carlos Javier": {
+   "x": 451,
+   "y": 144,
+   "codigo": 55
+  },
+  "Conde Bajén, Agustín": {
+   "x": 458,
+   "y": 154,
+   "codigo": 7
+  },
+  "Rodríguez Herrer, María Elvira": {
+   "x": 462,
+   "y": 165,
+   "codigo": 404
+  },
+  "Vázquez Blanco, Ana Belén": {
+   "x": 467,
+   "y": 177,
+   "codigo": 196
+  },
+  "Verano Domínguez, Bella": {
+   "x": 473,
+   "y": 197,
+   "codigo": 43
+  },
+  "Rodríguez Calleja, Patricia": {
+   "x": 476,
+   "y": 209,
+   "codigo": 51
+  },
+  "De las Cuevas Cortés, Félix": {
+   "x": 478,
+   "y": 220,
+   "codigo": 107
+  },
+  "Cabezón Casas, Tomás": {
+   "x": 479,
+   "y": 233,
+   "codigo": 2
+  },
+  "Pérez Coronado, Pablo": {
+   "x": 480,
+   "y": 254,
+   "codigo": 45
+  },
+  "Argüelles García, Silverio": {
+   "x": 480,
+   "y": 266,
+   "codigo": 163
+  },
+  "Carazo Hermoso, Eduardo": {
+   "x": 480,
+   "y": 278,
+   "codigo": 282
+  },
+  "Aragonés Mendiguchía, Carlos": {
+   "x": 480,
+   "y": 289,
+   "codigo": 259
+  },
+  "Sastre Uyá, Miguel Ángel": {
+   "x": 429,
+   "y": 82,
+   "codigo": 206
+  },
+  "Reynal Reillo, Esperanza": {
+   "x": 440,
+   "y": 89,
+   "codigo": 246
+  },
+  "Bondía Pinós, María Elena": {
+   "x": 449,
+   "y": 98,
+   "codigo": 411
+  },
+  "Velasco Morillo, Elvira": {
+   "x": 457,
+   "y": 109,
+   "codigo": 34
+  },
+  "Cortés Carballo, Mario": {
+   "x": 475,
+   "y": 133,
+   "codigo": 85
+  },
+  "Pedreño Molina, Juan Luis": {
+   "x": 481,
+   "y": 142,
+   "codigo": 339
+  },
+  "Moraleja Gómez, Tristana María": {
+   "x": 486,
+   "y": 153,
+   "codigo": 198
+  },
+  "Agüera Gago, Cristina": {
+   "x": 491,
+   "y": 165,
+   "codigo": 136
+  },
+  "Clemente Muñoz, Raquel": {
+   "x": 499,
+   "y": 191,
+   "codigo": 276
+  },
+  "Sánchez Pérez, César": {
+   "x": 503,
+   "y": 203,
+   "codigo": 217
+  },
+  "Melgarejo Moreno, Joaquín": {
+   "x": 504,
+   "y": 215,
+   "codigo": 211
+  },
+  "Folch Blanc, Javier José": {
+   "x": 505,
+   "y": 227,
+   "codigo": 115
+  },
+  "Gallardo Barrena, Pedro Ignacio": {
+   "x": 507,
+   "y": 253,
+   "codigo": 74
+  },
+  "Belda Pérez-Pedrero, Enrique": {
+   "x": 507,
+   "y": 264,
+   "codigo": 208
+  },
+  "Alfonso Silvestre, Alma": {
+   "x": 507,
+   "y": 277,
+   "codigo": 254
+  },
+  "Prieto Serrano, María Isabel": {
+   "x": 507,
+   "y": 290,
+   "codigo": 71
+  },
+  "Lima García, Laura María": {
+   "x": 439,
+   "y": 59,
+   "codigo": 155
+  },
+  "Cuesta Rodríguez, María": {
+   "x": 450,
+   "y": 67,
+   "codigo": 44
+  },
+  "Molina León, Ainhoa": {
+   "x": 461,
+   "y": 76,
+   "codigo": 391
+  },
+  "Martínez Gómez, Antonio": {
+   "x": 472,
+   "y": 87,
+   "codigo": 102
+  },
+  "Martín García, Pedro Samuel": {
+   "x": 481,
+   "y": 99,
+   "codigo": 150
+  },
+  "Moreno Borrás, Cristina": {
+   "x": 490,
+   "y": 111,
+   "codigo": 385
+  },
+  "Pérez Recuerda, Isabel Gema": {
+   "x": 500,
+   "y": 124,
+   "codigo": 88
+  },
+  "Garre Murcia, Cristóbal": {
+   "x": 507,
+   "y": 139,
+   "codigo": 84
+  },
+  "Belmonte Gómez, Rafael Benigno": {
+   "x": 514,
+   "y": 154,
+   "codigo": 175
+  },
+  "Ramajo Prada, Óscar": {
+   "x": 519,
+   "y": 166,
+   "codigo": 46
+  },
+  "Martínez Labella, Ana": {
+   "x": 524,
+   "y": 181,
+   "codigo": 213
+  },
+  "Aznar Teruel, Evarist": {
+   "x": 527,
+   "y": 195,
+   "codigo": 406
+  },
+  "Lorente Anaya, Macarena": {
+   "x": 529,
+   "y": 210,
+   "codigo": 48
+  },
+  "García Félix, Manuel": {
+   "x": 529,
+   "y": 240,
+   "codigo": 25
+  },
+  "Velasco Retamosa, José Manuel": {
+   "x": 529,
+   "y": 252,
+   "codigo": 184
+  },
+  "Simarro Vicens, Carlos": {
+   "x": 530,
+   "y": 265,
+   "codigo": 402
+  },
+  "Rojas Manrique, Juan Antonio": {
+   "x": 530,
+   "y": 278,
+   "codigo": 156
+  },
+  "Sánchez Ojeda, Carlos Alberto": {
+   "x": 530,
+   "y": 290,
+   "codigo": 152
+  },
+  "Rodríguez Serra, Santi": {
+   "x": 529,
+   "y": 302,
+   "codigo": 101
+  },
+  "Almodóvar Sánchez, Emilia": {
+   "x": 59,
+   "y": 385,
+   "codigo": 367
+  },
+  "Taibo Monelos, Diego": {
+   "x": 59,
+   "y": 375,
+   "codigo": 412
+  },
+  "Gracia Blanco, Marta": {
+   "x": 59,
+   "y": 363,
+   "codigo": 370
+  },
+  "Ruiz de Diego, Víctor Javier": {
+   "x": 59,
+   "y": 350,
+   "codigo": 362
+  },
+  "Soldevilla Novials, Alba": {
+   "x": 59,
+   "y": 338,
+   "codigo": 358
+  },
+  "Jerez Antequera, Juan Carlos": {
+   "x": 59,
+   "y": 325,
+   "codigo": 18
+  },
+  "Rodríguez Suárez, Esther": {
+   "x": 33,
+   "y": 385,
+   "codigo": 359
+  },
+  "Santana Aguilera, Ada": {
+   "x": 33,
+   "y": 373,
+   "codigo": 133
+  },
+  "Paré Aregall, Josep": {
+   "x": 33,
+   "y": 361,
+   "codigo": 369
+  },
+  "Cercas Mena, Blanca": {
+   "x": 33,
+   "y": 349,
+   "codigo": 111
+  },
+  "Martín Martínez, Andreu": {
+   "x": 33,
+   "y": 337,
+   "codigo": 62
+  },
+  "Conesa Coma, Ignasi": {
+   "x": 32,
+   "y": 325,
+   "codigo": 352
+  },
+  "Mayoral Pérez, Jesús": {
+   "x": 7,
+   "y": 375,
+   "codigo": 366
+  },
+  "Redondo Cárdenas, Gonzalo": {
+   "x": 7,
+   "y": 365,
+   "codigo": 98
+  },
+  "Iniesta Egido, Isabel": {
+   "x": 7,
+   "y": 356,
+   "codigo": 137
+  },
+  "López Zamora, Cristina": {
+   "x": 7,
+   "y": 346,
+   "codigo": 365
+  },
+  "Jódar Pérez, Irene": {
+   "x": 6,
+   "y": 336,
+   "codigo": 405
+  },
+  "Rives Arcayna, Caridad": {
+   "x": 6,
+   "y": 325,
+   "codigo": 231
+  },
+  "Quintana Carballo, Rosa": {
+   "x": 478,
+   "y": 325,
+   "codigo": 197
+  },
+  "Marcos Ortega, Milagros": {
+   "x": 478,
+   "y": 337,
+   "codigo": 320
+  },
+  "De Rosa Torner, Fernando": {
+   "x": 478,
+   "y": 349,
+   "codigo": 248
+  },
+  "García Adanero, Carlos": {
+   "x": 478,
+   "y": 362,
+   "codigo": 266
+  },
+  "Delgado Arce, Celso Luis": {
+   "x": 477,
+   "y": 374,
+   "codigo": 32
+  },
+  "Martín Blanco, Nacho": {
+   "x": 478,
+   "y": 385,
+   "codigo": 173
+  },
+  "Franco González, Silvia": {
+   "x": 505,
+   "y": 325,
+   "codigo": 30
+  },
+  "Cantalapiedra Álvarez, María de las Mercedes": {
+   "x": 505,
+   "y": 338,
+   "codigo": 234
+  },
+  "Quintanilla Navarro, Miguel Ángel": {
+   "x": 504,
+   "y": 350,
+   "codigo": 181
+  },
+  "Cavacasillas Rodríguez, Antonio": {
+   "x": 504,
+   "y": 362,
+   "codigo": 299
+  },
+  "Jiménez Linuesa, Beatriz": {
+   "x": 505,
+   "y": 374,
+   "codigo": 41
+  },
+  "Barrio Baroja, Carmelo": {
+   "x": 505,
+   "y": 385,
+   "codigo": 378
+  },
+  "Tarno Blanco, Ricardo": {
+   "x": 530,
+   "y": 325,
+   "codigo": 89
+  },
+  "Marín Aparicio, Inmaculada": {
+   "x": 530,
+   "y": 336,
+   "codigo": 409
+  }
+ },
+ "gobierno": [
+  {
+   "nombre": "Cuerpo Caballero, Carlos",
+   "cargo": "Vicepresidente Primero del Gobierno y Ministro de Economía, Comercio y Empresa",
+   "x": 190,
+   "y": 290
+  },
+  {
+   "nombre": "Albares Bueno, José Manuel",
+   "cargo": "Ministro de Asuntos Exteriores, Unión Europea y Cooperación",
+   "x": 189,
+   "y": 254
+  },
+  {
+   "nombre": "Robles Fernández, Margarita",
+   "cargo": "Ministra de Defensa",
+   "x": 191,
+   "y": 230
+  },
+  {
+   "nombre": "España García, Arcadi",
+   "cargo": "Ministro del Hacienda",
+   "x": 195,
+   "y": 219
+  },
+  {
+   "nombre": "Grande-Marlaska Gómez, Fernando",
+   "cargo": "Ministro del Interior",
+   "x": 202,
+   "y": 208
+  },
+  {
+   "nombre": "Aagesen Muñoz, Sara",
+   "cargo": "Vicepresidenta Tercera del Gobierno y Ministra para la Transición Ecológica y el Reto Demográfico",
+   "x": 190,
+   "y": 266
+  },
+  {
+   "nombre": "Tolón Jaime, Milagros",
+   "cargo": "Ministra de Educación, Formación Profesional y Deportes",
+   "x": 252,
+   "y": 194
+  },
+  {
+   "nombre": "Planas Puchades, Luis",
+   "cargo": "Ministro de Agricultura, Pesca y Alimentación",
+   "x": 287,
+   "y": 193
+  },
+  {
+   "nombre": "Torres Pérez, Ángel Víctor",
+   "cargo": "Ministro de Política Territorial y Memoria Democrática",
+   "x": 302,
+   "y": 196
+  },
+  {
+   "nombre": "Hereu Boher, Jordi",
+   "cargo": "Ministro de Industria y Turismo",
+   "x": 271,
+   "y": 193
+  },
+  {
+   "nombre": "Rodríguez García, Isabel",
+   "cargo": "Ministra de Vivienda y Agenda Urbana",
+   "x": 334,
+   "y": 208
+  },
+  {
+   "nombre": "Urtasun Domènech, Ernest",
+   "cargo": "Ministro de Cultura",
+   "x": 340,
+   "y": 217
+  },
+  {
+   "nombre": "García Gómez, Mónica",
+   "cargo": "Ministra de Sanidad",
+   "x": 345,
+   "y": 228
+  },
+  {
+   "nombre": "Bustinduy Amador, Pablo",
+   "cargo": "Ministro de Derechos Sociales, Consumo y Agenda 2030",
+   "x": 346,
+   "y": 242
+  },
+  {
+   "nombre": "Morant Ripoll, Diana",
+   "cargo": "Ministra de Ciencia, Innovación y Universidades",
+   "x": 346,
+   "y": 254
+  },
+  {
+   "nombre": "Redondo García, Ana María del Carmen",
+   "cargo": "Ministra de Igualdad",
+   "x": 346,
+   "y": 266
+  },
+  {
+   "nombre": "López Águeda, Óscar",
+   "cargo": "Ministro para la Transformación Digital y de la Función Pública",
+   "x": 346,
+   "y": 290
+  },
+  {
+   "nombre": "Rego, Sira Abed",
+   "cargo": "Ministra de Juventud e Infancia",
+   "x": 346,
+   "y": 302
+  },
+  {
+   "nombre": "Saiz Delgado, Elma",
+   "cargo": "Ministra de Inclusión, Seguridad Social y Migraciones",
+   "x": 346,
+   "y": 278
+  }
+ ],
+ "ancho": 540,
+ "alto": 395
+}

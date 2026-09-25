@@ -52,6 +52,10 @@ def test_construir(tmp_path, monkeypatch):
 
     from escano import diputados as mod_dip
     monkeypatch.setattr(mod_dip, "FICHERO", tmp_path / "diputados.json")
+    from escano import hemiciclo as mod_hemi
+    monkeypatch.setattr(mod_hemi, "FICHERO", tmp_path / "hemiciclo.json")
+    (tmp_path / "hemiciclo.json").write_text(json.dumps({"escanos": {"Uno, A": {"x": 10, "y": 20, "codigo": 7}},
+                                                         "gobierno": [], "ancho": 540, "alto": 395}))
     (tmp_path / "diputados.json").write_text(json.dumps(mod_dip.leer_activos([
         {"NOMBRE": "Uno, A", "CIRCUNSCRIPCION": "Bizkaia", "FORMACIONELECTORAL": "EAJ-PNV", "FECHAALTA": "17/08/2023"}])))
     salida = mod_construir.construir(con_ia=True)
@@ -61,7 +65,8 @@ def test_construir(tmp_path, monkeypatch):
     assert sin_ds["ds"] is None and sin_ds["puntos"][0]["votos"] == ["200-1"]
     assert datos["votaciones"][0]["proponente"] == "PNV"
     assert datos["votaciones"][0]["tipo"] == "Proposición no de ley"
-    assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17"], ["Dos, B", "PSOE", "", "", ""]]
+    assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17", 10, 20, 7],
+                                  ["Dos, B", "PSOE", "", "", "", None, None, None]]
     assert datos["votaciones"][0]["v"] == "SX"                              # una letra por diputado
     assert next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")["titular"].startswith("Ceuta")
     s205 = next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")
@@ -76,6 +81,7 @@ def test_construir(tmp_path, monkeypatch):
     assert feijoo["responde"] == "no aplica"
     indice = json.loads((tmp_path / "site" / "datos" / "indice.json").read_text())
     assert [m["mes"] for m in indice["meses"]] == ["2026-09"] and indice["diputados"]
+    assert indice["hemiciclo"]["ancho"] == 540
     mes = json.loads((tmp_path / "site" / "datos" / "2026-09.json").read_text())
     assert len(mes["sesiones"]) == 2 and mes["votaciones"][0]["id"] == "200-1" and mes["intervenciones"]
 
