@@ -1,0 +1,130 @@
+/* Marca en prueba: Viñeta (Pop Art, en tinta).
+   La sesión contada como una tira de prensa: viñetas con contorno grueso separadas por la calle blanca,
+   trama Ben-Day, cartelas de narrador y citas en bocadillos. Blanco y negro; el amarillo de la cartela
+   es el único color de la marca. */
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,700&family=Archivo:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+html:root[data-marca="vineta"]{
+  --bg:#FFFFFF; --surface:#FFFFFF; --sunk:#F1F1F1; --ink:#111111; --muted:#4A4A4A; --line:#111111; --line-strong:#111111;
+  --sub:#FFE45C; --on-vote:#FFFFFF; --cartela:#FFE45C;
+  --si:#1D8F57; --no:#D33A2E; --abst:#9A9A9A; --nv:#FFFFFF;
+  --display:"Bangers",Impact,sans-serif; --serif:"Comic Neue",system-ui,sans-serif;
+  --sans:"Archivo",system-ui,sans-serif; --mono:"Space Mono",ui-monospace,monospace;
+  --r-card:4px; --r-card-lg:4px; --r-pill:999px; --r-ctl:4px; --r-chip:4px; --borde:3px;
+  --ancho:1180px;
+  --trama:radial-gradient(rgba(17,17,17,.16) 1.2px, transparent 1.5px);
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="vineta"]:not([data-theme="light"]){
+    --bg:#0E0E0E; --surface:#161616; --sunk:#222222; --ink:#F5F5F0; --muted:#BDBDB5; --line:#F5F5F0; --line-strong:#F5F5F0;
+    --sub:#E6C93A; --on-vote:#0E0E0E; --si:#3BBF7A; --no:#FF6B5C; --abst:#8A8A8A; --nv:#161616;
+    --trama:radial-gradient(rgba(245,245,240,.14) 1.2px, transparent 1.5px);
+  }
+}
+html:root[data-marca="vineta"][data-theme="dark"]{
+  --bg:#0E0E0E; --surface:#161616; --sunk:#222222; --ink:#F5F5F0; --muted:#BDBDB5; --line:#F5F5F0; --line-strong:#F5F5F0;
+  --sub:#E6C93A; --on-vote:#0E0E0E; --si:#3BBF7A; --no:#FF6B5C; --abst:#8A8A8A; --nv:#161616;
+  --trama:radial-gradient(rgba(245,245,240,.14) 1.2px, transparent 1.5px);
+}
+html[data-marca="vineta"] body{font-size:15.5px;line-height:1.55;background-image:linear-gradient(180deg,transparent 0,var(--bg) 520px),var(--trama);background-size:auto,7px 7px}
+html[data-marca="vineta"] ::selection{background:var(--cartela);color:#111}
+
+/* ---------- rotulación ---------- */
+html[data-marca="vineta"] :is(h1,h2,h3){font-weight:400;letter-spacing:.02em;text-transform:uppercase;line-height:.95}
+html[data-marca="vineta"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:24px;letter-spacing:.03em}
+/* Cartela de narrador. */
+html[data-marca="vineta"] .eyebrow{display:inline-block;background:var(--cartela);color:#111;border:2.5px solid #111;padding:4px 10px 3px;font-family:var(--serif);font-weight:700;font-size:12px;letter-spacing:.04em;box-shadow:3px 3px 0 #111}
+html[data-marca="vineta"] :is(th,.organ){font-family:var(--mono);letter-spacing:.02em;color:var(--ink)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="vineta"] .topbar{background:var(--bg);border-bottom:3px solid var(--line)}
+html[data-marca="vineta"] .topbar-in{min-height:70px}
+html[data-marca="vineta"] .brand .logo{-webkit-mask:none;mask:none;background:url(vineta.svg) center/contain no-repeat;height:40px;aspect-ratio:100/68}
+@media (prefers-color-scheme: dark){ html[data-marca="vineta"]:not([data-theme="light"]) .brand .logo{filter:invert(1)} }
+html[data-marca="vineta"][data-theme="dark"] .brand .logo{filter:invert(1)}
+html[data-marca="vineta"] .brand .nombre{display:inline;font-family:var(--display);font-size:28px;letter-spacing:.03em;text-transform:uppercase;font-weight:400}
+html[data-marca="vineta"] nav.tabs button{font-family:var(--display);font-size:19px;letter-spacing:.05em;text-transform:uppercase;font-weight:400;border-bottom-width:4px;padding:0 10px}
+html[data-marca="vineta"] nav.tabs button[aria-selected="true"]{border-bottom-color:var(--cartela);color:var(--ink)}
+html[data-marca="vineta"] .periodo-bar{padding-top:22px}
+html[data-marca="vineta"] .periodo-bar label{font-family:var(--serif);font-weight:700;letter-spacing:.04em}
+html[data-marca="vineta"] .periodo-bar select{border:2.5px solid var(--line);font-weight:700}
+
+/* ---------- viñetas ---------- */
+html[data-marca="vineta"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){border-color:var(--line);box-shadow:none}
+html[data-marca="vineta"] :is(.chart,.session,.vote,.card){padding:22px 24px}
+html[data-marca="vineta"] :is(.two,.temas-top,.tema-panel,.vgrid,.cards){gap:14px}
+html[data-marca="vineta"] .punto .vote{border-width:2px;background:var(--surface)}
+html[data-marca="vineta"] :is(.view-intro h2,.sec-h h2){font-size:clamp(46px,5vw,68px);letter-spacing:.03em;text-shadow:3px 3px 0 var(--cartela)}
+html[data-marca="vineta"] .sec{padding-top:56px}
+
+/* ---------- portada ---------- */
+html[data-marca="vineta"] .hero{padding-block:30px 56px;gap:40px}
+html[data-marca="vineta"] .hero-h{font-size:clamp(54px,6.4vw,100px);line-height:.9;letter-spacing:.02em;margin-top:16px;text-shadow:4px 4px 0 var(--cartela)}
+html[data-marca="vineta"] .hero-lede{font-size:17.5px;line-height:1.6}
+html[data-marca="vineta"] .hero-vote{padding:26px 24px 22px;background:var(--trama) 0 0/6px 6px,var(--surface);position:relative}
+html[data-marca="vineta"] .hero-vote>*{position:relative}
+html[data-marca="vineta"] .hero-vote .hemi-wrap{background:var(--surface);border:2.5px solid var(--line);padding:10px 8px 6px}
+html[data-marca="vineta"] .hemi :is(.S,.N,.A){stroke:var(--line);stroke-width:.6}
+html[data-marca="vineta"] .hemi .X{stroke:var(--line);stroke-width:.6}
+html[data-marca="vineta"] .hemi .band{stroke-width:4}
+html[data-marca="vineta"] .hemi .glab{font-family:var(--display);font-weight:400;font-size:9px;letter-spacing:.04em;fill:var(--ink)}
+html[data-marca="vineta"] .hemi-center b{font-family:var(--display);font-weight:400;letter-spacing:.03em;font-size:clamp(56px,5.6vw,80px);text-shadow:3px 3px 0 var(--cartela)}
+html[data-marca="vineta"] .hemi-center span{font-family:var(--serif);font-weight:700;letter-spacing:.06em}
+html[data-marca="vineta"] .btn{border:3px solid var(--line);border-radius:4px;padding:11px 20px;font-family:var(--display);font-size:19px;letter-spacing:.06em;text-transform:uppercase;font-weight:400;box-shadow:4px 4px 0 var(--line)}
+html[data-marca="vineta"] .btn.primary{background:var(--cartela);color:#111;border-color:#111;box-shadow:4px 4px 0 #111}
+html[data-marca="vineta"] .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}
+
+/* Cifras en viñetas pequeñas. */
+html[data-marca="vineta"] .kpis{border:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;padding-block:6px 16px}
+html[data-marca="vineta"] .kpi{flex-direction:column;align-items:flex-start;gap:6px;border:3px solid var(--line);padding:14px 14px 12px;background:var(--surface)}
+html[data-marca="vineta"] .kpi:nth-child(odd){background:var(--trama) 0 0/6px 6px,var(--surface)}
+html[data-marca="vineta"] .kpi b{font-family:var(--display);font-weight:400;font-size:54px;letter-spacing:.03em;line-height:.85}
+html[data-marca="vineta"] .kpi span{font-family:var(--serif);font-weight:700;font-size:13px;color:var(--ink);max-width:none}
+html[data-marca="vineta"] .kpi.alert b{color:var(--no);text-shadow:2px 2px 0 var(--ink)}
+
+/* Citas en bocadillos. */
+html[data-marca="vineta"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){position:relative;font-family:var(--serif);font-style:normal;font-weight:700;font-size:1.12em;line-height:1.35;background:var(--surface);color:var(--ink);border:2.5px solid var(--line);border-radius:28px;padding:14px 20px;margin:6px 0 18px}
+html[data-marca="vineta"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote)::after{content:"";position:absolute;left:34px;bottom:-15px;width:22px;height:15px;background:var(--surface);border-left:2.5px solid var(--line);border-bottom:2.5px solid var(--line);transform:skewX(-30deg);border-bottom-left-radius:2px}
+html[data-marca="vineta"] blockquote mark{background:none;color:inherit;padding:0}
+html[data-marca="vineta"] .face{gap:14px;border:0;background:none;overflow:visible}
+html[data-marca="vineta"] .face>div{border:3px solid var(--line);background:var(--surface)}
+html[data-marca="vineta"] .face>div+div{border-left:3px solid var(--line)}
+html[data-marca="vineta"] .face>div:nth-child(2){background:var(--trama) 0 0/6px 6px,var(--surface)}
+html[data-marca="vineta"] .face .avatar{border:2.5px solid var(--line);font-family:var(--display);font-size:18px;letter-spacing:.04em}
+html[data-marca="vineta"] .face .who b{font-family:var(--display);font-weight:400;font-size:28px;letter-spacing:.03em;text-transform:uppercase}
+html[data-marca="vineta"] .face>.face-foot{border:3px solid var(--line);background:var(--cartela);color:#111;font-family:var(--serif);font-weight:700}
+html[data-marca="vineta"] .face-foot .linklike{color:#111}
+html[data-marca="vineta"] .vcard{transition:transform .12s}
+html[data-marca="vineta"] .vcard:hover{transform:rotate(-.6deg) scale(1.02)}
+html[data-marca="vineta"] .vcard .vc-n{font-family:var(--display);font-weight:400;letter-spacing:.03em;font-size:36px}
+
+/* ---------- datos ---------- */
+html[data-marca="vineta"] .res{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.06em;border:2px solid #111;color:#fff;border-radius:3px}
+html[data-marca="vineta"] .res.mix{background:var(--cartela);color:#111}
+html[data-marca="vineta"] .gp{background:var(--surface);border:2px solid var(--line);border-radius:3px}
+html[data-marca="vineta"] :is(.tag,.tone,.pill){border:1.5px solid var(--line);border-radius:3px;background:var(--surface)}
+html[data-marca="vineta"] .stack{height:14px;border:2.5px solid var(--line);border-radius:2px}
+html[data-marca="vineta"] .stack .half{border-left:2.5px solid var(--ink);opacity:1}
+html[data-marca="vineta"] .chipbtn{border:2.5px solid var(--line);border-radius:4px;font-weight:700}
+html[data-marca="vineta"] .chipbtn[aria-pressed="true"]{background:var(--cartela);color:#111;border-color:#111}
+html[data-marca="vineta"] .controls input{border:3px solid var(--line);border-radius:4px;padding:11px 14px;font-family:var(--serif);font-weight:700}
+html[data-marca="vineta"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--trama) 0 0/4px 4px,var(--ink);background:var(--ink);outline:2px solid var(--line);border-radius:2px}
+html[data-marca="vineta"] .decide-row .trk i.abs{background:radial-gradient(var(--ink) 1.2px,transparent 1.5px) 0 0/4px 4px;outline:2px solid var(--line)}
+html[data-marca="vineta"] .coh-row .trk{background:var(--surface);outline:2px solid var(--line)}
+html[data-marca="vineta"] :is(.gtable-wrap,.dtable-wrap) thead th{background:var(--cartela);color:#111;border-bottom:3px solid var(--line)}
+html[data-marca="vineta"] :is(.gtable-wrap,.dtable-wrap) thead th button{color:#111}
+html[data-marca="vineta"] table.dt tbody tr:hover{background:var(--trama) 0 0/6px 6px,var(--surface)}
+html[data-marca="vineta"] .tile{border:2.5px solid var(--line);border-radius:3px}
+html[data-marca="vineta"] .tile .ab{font-family:var(--display);font-weight:400;font-size:13px;letter-spacing:.04em}
+html[data-marca="vineta"] .date .d{font-family:var(--display);font-weight:400;font-size:66px;letter-spacing:.02em;text-shadow:3px 3px 0 var(--cartela)}
+html[data-marca="vineta"] .date .m{font-family:var(--serif);font-weight:700}
+html[data-marca="vineta"] .day{border-bottom:3px solid var(--line)}
+html[data-marca="vineta"] .timeline{border-left:3px solid var(--line)}
+html[data-marca="vineta"] .timeline li::before{border-width:3px;background:var(--cartela)}
+html[data-marca="vineta"] #tip{background:var(--surface);color:var(--ink);border:2.5px solid var(--line);border-radius:18px;font-family:var(--serif);font-weight:700}
+html[data-marca="vineta"] footer{border-top:3px solid var(--line)}
+@media (max-width:720px){
+  html[data-marca="vineta"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="vineta"] .brand .nombre{display:none}
+  html[data-marca="vineta"] nav.tabs button{font-size:16px}
+}

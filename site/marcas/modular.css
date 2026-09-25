@@ -1,0 +1,134 @@
+/* Marca en prueba: Modular (Modular Typography + estilo tipográfico internacional).
+   La tipografía como estructura: retícula de columnas a la vista, composición asimétrica alineada a la
+   izquierda, filetes en lugar de cajas y un único módulo de color, el naranja internacional, que no
+   pertenece a ningún grupo parlamentario. */
+@import url("https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Azeret+Mono:wght@400;500;600&display=swap");
+
+html:root[data-marca="modular"]{
+  --bg:#F5F5F3; --surface:#F5F5F3; --sunk:#E9E9E6; --ink:#111111; --muted:#5C5C5A; --line:#111111; --line-strong:#111111;
+  --sub:#FFD9C7; --on-vote:#FFFFFF; --modulo:#FF4F00;
+  --si:#17804E; --no:#C8352A; --abst:#9A9A96; --nv:#D2D2CE;
+  --display:"Schibsted Grotesk",system-ui,sans-serif; --serif:"Schibsted Grotesk",system-ui,sans-serif;
+  --sans:"Schibsted Grotesk",system-ui,sans-serif; --mono:"Azeret Mono",ui-monospace,monospace;
+  --r-card:0; --r-card-lg:0; --r-pill:0; --r-ctl:0; --r-chip:0; --borde:0px;
+  --ancho:1240px;
+  --asiento:cuadrado;
+  --reticula:repeating-linear-gradient(90deg, rgba(17,17,17,.045) 0 1px, transparent 1px calc((100% - 11 * 24px) / 12 + 24px));
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="modular"]:not([data-theme="light"]){
+    --bg:#101010; --surface:#101010; --sunk:#1C1C1C; --ink:#F2F2EF; --muted:#A3A3A0; --line:#F2F2EF; --line-strong:#F2F2EF;
+    --sub:#5A2A12; --on-vote:#101010; --modulo:#FF5A12; --si:#3DB477; --no:#F0675A; --abst:#8F8F8B; --nv:#383838;
+    --reticula:repeating-linear-gradient(90deg, rgba(242,242,239,.05) 0 1px, transparent 1px calc((100% - 11 * 24px) / 12 + 24px));
+  }
+}
+html:root[data-marca="modular"][data-theme="dark"]{
+  --bg:#101010; --surface:#101010; --sunk:#1C1C1C; --ink:#F2F2EF; --muted:#A3A3A0; --line:#F2F2EF; --line-strong:#F2F2EF;
+  --sub:#5A2A12; --on-vote:#101010; --modulo:#FF5A12; --si:#3DB477; --no:#F0675A; --abst:#8F8F8B; --nv:#383838;
+  --reticula:repeating-linear-gradient(90deg, rgba(242,242,239,.05) 0 1px, transparent 1px calc((100% - 11 * 24px) / 12 + 24px));
+}
+html[data-marca="modular"] body{font-size:15.5px;line-height:1.5;letter-spacing:-.005em}
+html[data-marca="modular"] .wrap{background:var(--reticula)}
+html[data-marca="modular"] ::selection{background:var(--modulo);color:#fff}
+html[data-marca="modular"] a{text-decoration-thickness:1.5px;text-underline-offset:3px}
+html[data-marca="modular"] a:hover,html[data-marca="modular"] .linklike:hover{color:var(--modulo)}
+
+/* ---------- tipografía ---------- */
+html[data-marca="modular"] :is(h1,h2,h3){font-weight:800;letter-spacing:-.045em;line-height:.95}
+html[data-marca="modular"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:22px;letter-spacing:-.035em}
+html[data-marca="modular"] .eyebrow{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.06em;color:var(--ink);display:flex;align-items:center;gap:8px}
+html[data-marca="modular"] .eyebrow::before{content:"";width:9px;height:9px;background:var(--modulo);flex:none}
+html[data-marca="modular"] :is(th,.organ){font-family:var(--mono);font-weight:500;letter-spacing:.04em;font-size:10.5px;color:var(--ink)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="modular"] .topbar{background:var(--bg);border-bottom:2px solid var(--line)}
+html[data-marca="modular"] .topbar-in{min-height:64px}
+html[data-marca="modular"] .brand .logo{-webkit-mask:none;mask:none;background:url(modular.svg) center/contain no-repeat;height:30px;aspect-ratio:92/54}
+@media (prefers-color-scheme: dark){ html[data-marca="modular"]:not([data-theme="light"]) .brand .logo{filter:invert(1) hue-rotate(180deg)} }
+html[data-marca="modular"][data-theme="dark"] .brand .logo{filter:invert(1) hue-rotate(180deg)}
+html[data-marca="modular"] .brand .nombre{display:inline;font-weight:900;font-size:20px;letter-spacing:-.05em}
+html[data-marca="modular"] nav.tabs button{border:0;font-weight:600;font-size:14px;padding:0 10px;display:inline-flex;align-items:center;gap:7px}
+html[data-marca="modular"] nav.tabs button[aria-selected="true"]::before{content:"";width:8px;height:8px;background:var(--modulo)}
+html[data-marca="modular"] .periodo-bar{padding-top:18px;font-family:var(--mono);font-size:11.5px}
+html[data-marca="modular"] .periodo-bar label{font-weight:600}
+html[data-marca="modular"] .periodo-bar select{border:1.5px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:12px}
+
+/* ---------- sin cajas: filete superior y aire ---------- */
+html[data-marca="modular"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){border:0;border-top:2px solid var(--line);background:transparent;box-shadow:none}
+html[data-marca="modular"] :is(.chart,.session,.vote,.card){padding:16px 0 20px}
+html[data-marca="modular"] .punto .vote{background:var(--sunk);border-top-width:1px;padding:12px 14px}
+html[data-marca="modular"] :is(.two,.temas-top,.tema-panel,.vgrid,.cards){gap:24px}
+html[data-marca="modular"] :is(.view-intro h2,.sec-h h2){font-size:clamp(46px,5vw,76px);letter-spacing:-.06em}
+html[data-marca="modular"] :is(.view-intro,.sec-h){align-items:end}
+html[data-marca="modular"] :is(.view-intro p,.sec-h p){font-size:14px;max-width:44ch}
+html[data-marca="modular"] .sec{padding-top:64px}
+html[data-marca="modular"] .sec-h{border-bottom:0}
+
+/* ---------- portada ---------- */
+html[data-marca="modular"] .hero{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px;padding-block:36px 56px}
+html[data-marca="modular"] .hero-h{font-size:clamp(52px,6.6vw,108px);line-height:.88;letter-spacing:-.065em;margin-top:22px}
+html[data-marca="modular"] .hero-lede{font-size:17px;line-height:1.5;max-width:46ch;margin-left:calc((100% - 11*24px)/12*3 + 72px)}
+html[data-marca="modular"] .hero-cta{margin-left:calc((100% - 11*24px)/12*3 + 72px)}
+html[data-marca="modular"] .hero-vote{padding:16px 0 0;align-self:end}
+html[data-marca="modular"] .hero-vote>.eyebrow{text-align:left!important;justify-content:flex-start}
+html[data-marca="modular"] .hemi-center b{font-weight:900;letter-spacing:-.07em;font-size:clamp(56px,5.6vw,84px);line-height:.85}
+html[data-marca="modular"] .hemi-center span{font-family:var(--mono);letter-spacing:.06em;font-weight:500}
+html[data-marca="modular"] .hemi .band{stroke-width:2.4}
+html[data-marca="modular"] .hemi .glab{font-family:var(--mono);font-weight:500;font-size:6px;fill:var(--ink)}
+html[data-marca="modular"] .btn{border:1.5px solid var(--line);padding:12px 18px;font-weight:700}
+html[data-marca="modular"] .btn.primary{background:var(--ink);color:var(--bg)}
+html[data-marca="modular"] .btn:hover{background:var(--modulo);border-color:var(--modulo);color:#fff;box-shadow:none}
+
+/* Cifras enormes sobre la retícula. */
+html[data-marca="modular"] .kpis{border:0;border-top:2px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px;padding:14px 0 0}
+html[data-marca="modular"] .kpi{flex-direction:column-reverse;align-items:flex-start;gap:4px}
+html[data-marca="modular"] .kpi b{font-weight:900;font-size:clamp(46px,5vw,76px);letter-spacing:-.07em;line-height:.85}
+html[data-marca="modular"] .kpi span{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink);max-width:none}
+html[data-marca="modular"] .kpi.alert b{color:var(--modulo)}
+
+html[data-marca="modular"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-style:normal;font-weight:700;letter-spacing:-.035em;font-size:1.3em;line-height:1.15}
+html[data-marca="modular"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.3em 0 color-mix(in srgb,var(--modulo) 35%,transparent);padding:0}
+html[data-marca="modular"] .face{gap:24px;border-top:2px solid var(--line)}
+html[data-marca="modular"] .face>div{padding:16px 0}
+html[data-marca="modular"] .face>div+div{border-left:0}
+html[data-marca="modular"] .face .avatar{border-radius:0;font-family:var(--mono);font-weight:600}
+html[data-marca="modular"] .face .who b{font-weight:800;letter-spacing:-.04em;font-size:24px}
+html[data-marca="modular"] .face-foot{background:none;border-top:1px solid var(--line);padding:12px 0}
+html[data-marca="modular"] .vcard{padding:14px 0 0}
+html[data-marca="modular"] .vcard:hover .vc-t{color:var(--modulo)}
+html[data-marca="modular"] .vcard .vc-n{font-weight:900;letter-spacing:-.06em;font-size:34px}
+
+/* ---------- datos ---------- */
+html[data-marca="modular"] .res{font-family:var(--mono);font-weight:500;letter-spacing:.04em;border-radius:0}
+html[data-marca="modular"] .res.mix{background:none;border:1.5px solid var(--line);color:var(--ink)}
+html[data-marca="modular"] .gp{background:none;border:1px solid var(--line);border-radius:0}
+html[data-marca="modular"] :is(.tag,.tone,.pill){border-radius:0}
+html[data-marca="modular"] .stack{height:12px;border-radius:0}
+html[data-marca="modular"] .stack .half{border-left:2px solid var(--ink);opacity:1}
+html[data-marca="modular"] .chipbtn{border:1.5px solid var(--line);border-radius:0;font-weight:600;background:transparent}
+html[data-marca="modular"] .chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+html[data-marca="modular"] .controls input{border:0;border-bottom:2px solid var(--line);border-radius:0;background:transparent;font-size:18px;padding:10px 0}
+html[data-marca="modular"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--ink);border-radius:0}
+html[data-marca="modular"] .rank-row[aria-pressed="true"] .br{background:var(--modulo)}
+html[data-marca="modular"] .decide-row .trk i.abs{background:var(--abst)}
+html[data-marca="modular"] .coh-row .trk{border-radius:0}
+html[data-marca="modular"] :is(.gtable-wrap,.dtable-wrap) thead th{border-bottom:2px solid var(--line)}
+html[data-marca="modular"] table.dt tbody tr:hover{background:var(--sunk)}
+html[data-marca="modular"] .tile{border-radius:0;border:1.5px solid var(--line);background:var(--bg)}
+html[data-marca="modular"] .tile[aria-pressed="true"]{outline-color:var(--modulo)}
+html[data-marca="modular"] .date .d{font-weight:900;letter-spacing:-.07em;font-size:72px;line-height:.85}
+html[data-marca="modular"] .date .m{font-family:var(--mono);letter-spacing:.04em}
+html[data-marca="modular"] .day{border-bottom:0;border-top:2px solid var(--line);padding-top:16px}
+html[data-marca="modular"] .timeline{border-left:2px solid var(--line)}
+html[data-marca="modular"] .timeline li::before{border-radius:0}
+html[data-marca="modular"] .timeline li.voto::before{background:var(--modulo);border-color:var(--modulo)}
+html[data-marca="modular"] #tip{background:var(--ink);color:var(--bg);border-radius:0;font-family:var(--mono);font-size:11.5px}
+html[data-marca="modular"] footer{border-top:2px solid var(--line);font-family:var(--mono);font-size:11px}
+@media (max-width:900px){
+  html[data-marca="modular"] :is(.hero-lede,.hero-cta){margin-left:0}
+  html[data-marca="modular"] .hero{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  html[data-marca="modular"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="modular"] .brand .nombre{display:none}
+}

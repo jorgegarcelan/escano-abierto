@@ -1,0 +1,126 @@
+/* Marca en prueba: Tenebrismo (Tenebrism).
+   Claroscuro: la Cámara a oscuras y una luz de vela que cae solo sobre lo importante. Viñeta en los
+   márgenes, un foco sobre el titular, filos de luz cálida en las tarjetas y una Bodoni de alto
+   contraste. Oscuro siempre: sin sombra no hay tenebrismo. */
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..700&family=Work+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap");
+
+html:root[data-marca="tenebrismo"]{
+  color-scheme:dark;
+  --bg:#070605; --surface:#0F0D0B; --sunk:#16130F; --ink:#EDE3D1; --muted:#9A8F7E; --line:#241F19; --line-strong:#5C4A33;
+  --sub:#3E3018; --on-vote:#070605; --vela:#E8C28A; --vela-suave:rgba(232,194,138,.14);
+  --si:#6FB48C; --no:#D9705F; --abst:#C9A15E; --nv:#2E2921;
+  --r-aplausos:#7DA7C9; --r-risas:#D9A860; --r-rumores:#A792C6; --r-protestas:#D9705F;
+  --display:"Bodoni Moda",Didot,"Bodoni 72",serif; --serif:"Bodoni Moda",Didot,serif;
+  --sans:"Work Sans",system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
+  --r-card:4px; --r-card-lg:6px; --r-pill:999px; --r-ctl:4px; --r-chip:3px; --borde:1px;
+  --ancho:1140px;
+  --sombra:inset 0 1px 0 rgba(232,194,138,.10), 0 30px 60px -30px rgba(0,0,0,.95);
+}
+
+/* ---------- la sala a oscuras ---------- */
+html[data-marca="tenebrismo"] body{
+  font-size:15.5px;line-height:1.65;
+  background:
+    radial-gradient(900px 600px at 28% 12%, rgba(232,194,138,.10), transparent 70%),
+    radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.75) 100%),
+    var(--bg);
+  background-attachment:fixed;
+}
+html[data-marca="tenebrismo"] ::selection{background:var(--vela);color:#070605}
+html[data-marca="tenebrismo"] a{color:var(--ink);text-decoration-color:color-mix(in srgb,var(--vela) 60%,transparent)}
+html[data-marca="tenebrismo"] a:hover{color:var(--vela)}
+html[data-marca="tenebrismo"] :focus-visible{outline-color:var(--vela)}
+
+/* ---------- tipografía ---------- */
+html[data-marca="tenebrismo"] :is(h1,h2,h3,.hero-h,.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-weight:500;letter-spacing:-.01em}
+html[data-marca="tenebrismo"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:22px;font-weight:500}
+html[data-marca="tenebrismo"] .eyebrow{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.16em;color:var(--vela)}
+html[data-marca="tenebrismo"] :is(th,.organ){font-family:var(--mono);font-weight:400;letter-spacing:.14em;color:var(--muted)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="tenebrismo"] .topbar{background:linear-gradient(180deg,rgba(7,6,5,.95),rgba(7,6,5,.75));backdrop-filter:blur(10px);border-bottom:1px solid rgba(232,194,138,.08)}
+html[data-marca="tenebrismo"] .topbar-in{min-height:70px}
+html[data-marca="tenebrismo"] .brand .logo{-webkit-mask:none;mask:none;background:url(tenebrismo.svg) center/contain no-repeat;height:32px;aspect-ratio:100/56}
+html[data-marca="tenebrismo"] .brand .nombre{display:inline;font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;letter-spacing:-.01em}
+html[data-marca="tenebrismo"] nav.tabs button{border-bottom:1px solid transparent;font-weight:500;font-size:13.5px;color:var(--muted)}
+html[data-marca="tenebrismo"] nav.tabs button:hover{color:var(--ink)}
+html[data-marca="tenebrismo"] nav.tabs button[aria-selected="true"]{color:var(--vela);border-bottom-color:var(--vela);text-shadow:0 0 18px rgba(232,194,138,.45)}
+html[data-marca="tenebrismo"] .periodo-bar{padding-top:22px;font-family:var(--mono);font-size:12px}
+html[data-marca="tenebrismo"] .periodo-bar label{color:var(--vela);letter-spacing:.16em}
+html[data-marca="tenebrismo"] .periodo-bar select{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}
+
+/* ---------- tarjetas: filo de luz cálida ---------- */
+html[data-marca="tenebrismo"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){
+  background:radial-gradient(120% 90% at 20% 0%, rgba(232,194,138,.055), transparent 60%), var(--surface);
+  border-color:rgba(232,194,138,.09);
+}
+html[data-marca="tenebrismo"] :is(.chart,.session,.vote,.card){padding:24px 26px}
+html[data-marca="tenebrismo"] .punto .vote{background:var(--sunk);box-shadow:none}
+html[data-marca="tenebrismo"] :is(.view-intro h2,.sec-h h2){font-size:46px;line-height:1.02;font-weight:500}
+html[data-marca="tenebrismo"] :is(.view-intro h2,.sec-h h2) {background:linear-gradient(180deg,#F6EAD2 20%,#8C7556 115%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- portada: el foco ---------- */
+html[data-marca="tenebrismo"] .hero{padding-block:44px 72px;gap:64px;position:relative}
+html[data-marca="tenebrismo"] .hero::before{content:"";position:absolute;left:-10%;top:-30%;width:70%;height:120%;background:radial-gradient(closest-side, rgba(232,194,138,.13), transparent);pointer-events:none;z-index:-1}
+html[data-marca="tenebrismo"] .hero-h{font-size:clamp(46px,5.6vw,84px);line-height:.98;letter-spacing:-.025em;margin-top:18px;background:linear-gradient(170deg,#FFF4DE 10%,#E8C28A 55%,#6B5638 120%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+html[data-marca="tenebrismo"] .hero-lede{font-size:17.5px;line-height:1.7;color:#BFB4A1}
+html[data-marca="tenebrismo"] .hero-vote{padding:30px 28px 24px}
+html[data-marca="tenebrismo"] .hero-vote .hemi{-webkit-mask:radial-gradient(ellipse 70% 90% at 50% 20%,#000 55%,rgba(0,0,0,.38) 100%);mask:radial-gradient(ellipse 70% 90% at 50% 20%,#000 55%,rgba(0,0,0,.38) 100%)}
+html[data-marca="tenebrismo"] .hemi .X{stroke:#3A3228}
+html[data-marca="tenebrismo"] .hemi .band{stroke-width:1.6;opacity:.75}
+html[data-marca="tenebrismo"] .hemi .glab{font-family:var(--mono);font-weight:400;letter-spacing:.1em;fill:var(--muted)}
+html[data-marca="tenebrismo"] .hemi-center b{font-size:clamp(50px,5.2vw,74px);color:#F6EAD2;text-shadow:0 0 40px rgba(232,194,138,.25)}
+html[data-marca="tenebrismo"] .hemi-center span{font-family:var(--mono);letter-spacing:.2em;color:var(--vela)}
+html[data-marca="tenebrismo"] .btn{border:1px solid rgba(232,194,138,.35);border-radius:999px;padding:12px 22px;font-weight:500;color:var(--ink);background:transparent}
+html[data-marca="tenebrismo"] .btn.primary{background:var(--vela);color:#070605;border-color:var(--vela);box-shadow:0 0 30px rgba(232,194,138,.28)}
+html[data-marca="tenebrismo"] .btn:hover{box-shadow:0 0 24px rgba(232,194,138,.25)}
+
+/* Cifras entre sombras. */
+html[data-marca="tenebrismo"] .kpis{border:0;border-top:1px solid rgba(232,194,138,.12);border-bottom:1px solid rgba(232,194,138,.12);padding:0;gap:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+html[data-marca="tenebrismo"] .kpi{flex-direction:column;align-items:flex-start;gap:6px;padding:24px 18px}
+html[data-marca="tenebrismo"] .kpi+.kpi{border-left:1px solid rgba(232,194,138,.08)}
+html[data-marca="tenebrismo"] .kpi b{font-size:52px;line-height:.9;color:#F6EAD2}
+html[data-marca="tenebrismo"] .kpi span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;max-width:none}
+html[data-marca="tenebrismo"] .kpi.alert b{color:var(--no)}
+
+html[data-marca="tenebrismo"] .sec{padding-top:72px}
+html[data-marca="tenebrismo"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-family:var(--display);font-style:italic;font-weight:400;font-size:1.3em;line-height:1.35;color:#F3E6CE}
+html[data-marca="tenebrismo"] blockquote mark{background:none;color:inherit;text-shadow:0 0 22px rgba(232,194,138,.5);box-shadow:inset 0 -1px 0 rgba(232,194,138,.5);padding:0}
+html[data-marca="tenebrismo"] .face .avatar{font-family:var(--mono);box-shadow:0 0 0 1px rgba(232,194,138,.25)}
+html[data-marca="tenebrismo"] .face .who b{font-family:var(--display);font-weight:500;font-size:24px}
+html[data-marca="tenebrismo"] .face-foot{background:rgba(0,0,0,.35);border-top-color:var(--line)}
+html[data-marca="tenebrismo"] .face>div+div{border-left-color:var(--line)}
+html[data-marca="tenebrismo"] .vcard{transition:border-color .25s,box-shadow .25s}
+html[data-marca="tenebrismo"] .vcard:hover{border-color:rgba(232,194,138,.3);box-shadow:inset 0 1px 0 rgba(232,194,138,.2),0 0 40px -10px rgba(232,194,138,.25)}
+html[data-marca="tenebrismo"] .vcard .vc-n{font-size:30px}
+
+/* ---------- datos ---------- */
+html[data-marca="tenebrismo"] .res{font-family:var(--mono);font-weight:500;letter-spacing:.1em;color:#070605;border-radius:3px}
+html[data-marca="tenebrismo"] .res.mix{background:var(--sunk);color:var(--ink)}
+html[data-marca="tenebrismo"] .gp{background:rgba(232,194,138,.05);border:1px solid rgba(232,194,138,.08)}
+html[data-marca="tenebrismo"] :is(.tag,.tone){background:rgba(232,194,138,.06)}
+html[data-marca="tenebrismo"] .stack{height:6px;background:#1B1712}
+html[data-marca="tenebrismo"] .stack .half{border-left-color:var(--vela);opacity:.5}
+html[data-marca="tenebrismo"] .chipbtn{background:transparent;border-color:rgba(232,194,138,.25);border-radius:999px}
+html[data-marca="tenebrismo"] .chipbtn[aria-pressed="true"]{background:var(--vela);color:#070605;border-color:var(--vela)}
+html[data-marca="tenebrismo"] .controls input{background:var(--surface);border-color:rgba(232,194,138,.2);border-radius:999px;padding:10px 16px}
+html[data-marca="tenebrismo"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:linear-gradient(90deg,#6B5638,var(--vela));box-shadow:0 0 14px rgba(232,194,138,.2)}
+html[data-marca="tenebrismo"] .decide-row .trk i.abs{background:rgba(232,194,138,.2)}
+html[data-marca="tenebrismo"] .coh-row .trk{background:#1B1712}
+html[data-marca="tenebrismo"] table.dt tbody tr:hover{background:rgba(232,194,138,.05)}
+html[data-marca="tenebrismo"] .tile{background:var(--surface);border-color:rgba(232,194,138,.1)}
+html[data-marca="tenebrismo"] .tile .ab{font-family:var(--mono);font-weight:500}
+html[data-marca="tenebrismo"] .date .d{font-size:58px;color:#F6EAD2}
+html[data-marca="tenebrismo"] .date .m{font-family:var(--mono);color:var(--vela);letter-spacing:.16em}
+html[data-marca="tenebrismo"] .day{border-bottom-color:var(--line)}
+html[data-marca="tenebrismo"] .timeline{border-left-color:rgba(232,194,138,.25)}
+html[data-marca="tenebrismo"] .timeline li::before{border-color:var(--vela);background:var(--bg);box-shadow:0 0 12px rgba(232,194,138,.5)}
+html[data-marca="tenebrismo"] .timeline li.voto::before{background:var(--vela)}
+html[data-marca="tenebrismo"] #tip{background:#F3E6CE;color:#070605;border-radius:4px;box-shadow:0 0 30px rgba(232,194,138,.25)}
+html[data-marca="tenebrismo"] footer{border-top-color:var(--line);font-size:12px}
+@media (max-width:720px){
+  html[data-marca="tenebrismo"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="tenebrismo"] .kpi+.kpi{border-left:0}
+  html[data-marca="tenebrismo"] .brand .nombre{display:none}
+  html[data-marca="tenebrismo"] :is(.view-intro h2,.sec-h h2){font-size:34px}
+}

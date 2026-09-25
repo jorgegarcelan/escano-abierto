@@ -9,7 +9,7 @@
 <script>
 // Marcas en prueba: ?marca=marcador o ?marca=senaletica carga site/marcas/<marca>.css encima de la marca actual.
 (function(){
-  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico"], m = null;
+  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico","neobrutal","bento","tenebrismo","modular","vineta"], m = null;
   try { m = new URLSearchParams(location.search).get("marca"); if (m !== null) localStorage.setItem("marca", m); else m = localStorage.getItem("marca"); } catch(e) {}
   if (MARCAS.indexOf(m) < 0) return;
   document.documentElement.dataset.marca = m;
@@ -503,7 +503,7 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca en prueba: <select id="marca-sel"><option value="">Tinta y papel (actual)</option><option value="marcador">Marcador</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
+  <footer><label class="marca-sel">Marca en prueba: <select id="marca-sel"><option value="">Tinta y papel (actual)</option><option value="marcador">Marcador</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
 </div>
 
 <script>

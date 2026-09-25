@@ -1,0 +1,122 @@
+/* Marca en prueba: Neobrutal (Neo-Brutalism).
+   Bordes negros de 3 px, sombras duras desplazadas, tipografía ancha y un solo acento: el amarillo
+   del subrayado. Honesta y con carácter; alto contraste por construcción. */
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fragment+Mono&display=swap");
+
+html:root[data-marca="neobrutal"]{
+  --bg:#F3F3EF; --surface:#FFFFFF; --sunk:#EAEAE4; --ink:#0A0A0A; --muted:#3F3F3F; --line:#0A0A0A; --line-strong:#0A0A0A;
+  --sub:#FFE34D; --on-vote:#FFFFFF; --acento:#FFE34D; --sombra-dura:#0A0A0A;
+  --si:#1F9D55; --no:#E5483B; --abst:#9B9B9B; --nv:#D6D6D0;
+  --display:"Unbounded",system-ui,sans-serif; --serif:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --sans:"Atkinson Hyperlegible",system-ui,sans-serif; --mono:"Fragment Mono",ui-monospace,monospace;
+  --r-card:14px; --r-card-lg:18px; --r-pill:12px; --r-ctl:10px; --r-chip:8px; --borde:3px;
+  --ancho:1160px;
+  --sombra:6px 6px 0 var(--sombra-dura);
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="neobrutal"]:not([data-theme="light"]){
+    --bg:#0F0F0F; --surface:#1A1A1A; --sunk:#242424; --ink:#F5F5F0; --muted:#BDBDB5; --line:#F5F5F0; --line-strong:#F5F5F0;
+    --sub:#E0C22E; --on-vote:#0F0F0F; --acento:#FFE34D; --sombra-dura:#FFE34D;
+    --si:#38C27A; --no:#FF6A5C; --abst:#A6A6A6; --nv:#3A3A3A;
+  }
+}
+html:root[data-marca="neobrutal"][data-theme="dark"]{
+  --bg:#0F0F0F; --surface:#1A1A1A; --sunk:#242424; --ink:#F5F5F0; --muted:#BDBDB5; --line:#F5F5F0; --line-strong:#F5F5F0;
+  --sub:#E0C22E; --on-vote:#0F0F0F; --acento:#FFE34D; --sombra-dura:#FFE34D;
+  --si:#38C27A; --no:#FF6A5C; --abst:#A6A6A6; --nv:#3A3A3A;
+}
+html[data-marca="neobrutal"] body{font-size:16px;line-height:1.55}
+html[data-marca="neobrutal"] ::selection{background:var(--acento);color:#0A0A0A}
+html[data-marca="neobrutal"] a{text-decoration-thickness:2px;text-underline-offset:3px}
+
+/* ---------- tipografía ---------- */
+html[data-marca="neobrutal"] :is(h1,h2,h3){font-weight:800;letter-spacing:-.03em}
+html[data-marca="neobrutal"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:18px;letter-spacing:-.02em}
+html[data-marca="neobrutal"] .eyebrow{display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:#0A0A0A;background:var(--acento);border:2px solid #0A0A0A;border-radius:8px;padding:3px 9px;box-shadow:2px 2px 0 #0A0A0A}
+html[data-marca="neobrutal"] :is(th,.organ){font-family:var(--mono);letter-spacing:.02em;font-weight:400;color:var(--ink)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="neobrutal"]{overflow-x:clip}
+html[data-marca="neobrutal"] .topbar{background:var(--bg);border-bottom:3px solid var(--line);box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax -3px)}
+html[data-marca="neobrutal"] .topbar-in{min-height:70px}
+html[data-marca="neobrutal"] .brand .logo{-webkit-mask:none;mask:none;background:url(neobrutal.svg) center/contain no-repeat;height:34px;aspect-ratio:100/60}
+html[data-marca="neobrutal"] .brand .nombre{display:inline;font-weight:900;font-size:19px;letter-spacing:-.03em}
+html[data-marca="neobrutal"] nav.tabs{gap:6px;align-self:center;padding:4px}
+html[data-marca="neobrutal"] nav.tabs button{border:2.5px solid transparent;border-radius:10px;padding:6px 11px;font-weight:700;color:var(--ink);font-size:14px}
+html[data-marca="neobrutal"] nav.tabs button:hover{border-color:var(--line)}
+html[data-marca="neobrutal"] nav.tabs button[aria-selected="true"]{background:var(--acento);color:#0A0A0A;border-color:#0A0A0A;box-shadow:3px 3px 0 #0A0A0A}
+html[data-marca="neobrutal"] .periodo-bar{padding-top:22px}
+html[data-marca="neobrutal"] .periodo-bar label{font-family:var(--mono);letter-spacing:0}
+html[data-marca="neobrutal"] .periodo-bar select{border:2.5px solid var(--line);border-radius:10px;font-weight:700;box-shadow:3px 3px 0 var(--sombra-dura);padding:5px 10px}
+
+/* ---------- tarjetas ---------- */
+html[data-marca="neobrutal"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){border-color:var(--line);box-shadow:var(--sombra)}
+html[data-marca="neobrutal"] :is(.chart,.session,.vote,.card){padding:22px 24px}
+html[data-marca="neobrutal"] .punto .vote{border-width:2px;box-shadow:3px 3px 0 var(--sombra-dura);background:var(--surface)}
+html[data-marca="neobrutal"] :is(.view-intro h2,.sec-h h2){font-size:42px;letter-spacing:-.04em}
+html[data-marca="neobrutal"] :is(.view-intro h2,.sec-h h2)::after{content:"";display:block;width:64px;height:10px;margin-top:10px;background:var(--acento);border:2.5px solid var(--line);border-radius:4px}
+
+/* ---------- portada ---------- */
+html[data-marca="neobrutal"] .hero{padding-block:30px 56px;gap:56px}
+html[data-marca="neobrutal"] .hero-h{font-size:clamp(40px,4.8vw,66px);line-height:1.02;letter-spacing:-.045em;margin-top:18px}
+html[data-marca="neobrutal"] .hero-lede{font-size:18px;line-height:1.6}
+html[data-marca="neobrutal"] .hero-vote{padding:0 0 22px;overflow:hidden;border-radius:var(--r-card-lg)}
+html[data-marca="neobrutal"] .hero-vote>.eyebrow{display:block;border:0;border-bottom:3px solid #0A0A0A;border-radius:0;box-shadow:none;padding:11px 18px;text-align:left!important}
+html[data-marca="neobrutal"] .hero-vote>*:not(.eyebrow){margin-inline:22px}
+html[data-marca="neobrutal"] .hemi .band{stroke-width:3.5}
+html[data-marca="neobrutal"] .hemi .glab{font-family:var(--display);font-weight:800;font-size:7px;fill:var(--ink)}
+html[data-marca="neobrutal"] .hemi :is(.S,.N,.A){stroke:var(--line);stroke-width:.55}
+html[data-marca="neobrutal"] .hemi-center b{font-weight:900;letter-spacing:-.05em;font-size:clamp(44px,4.6vw,62px)}
+html[data-marca="neobrutal"] .hemi-center span{font-family:var(--mono);letter-spacing:.02em}
+html[data-marca="neobrutal"] .btn{border:3px solid #0A0A0A;border-radius:12px;padding:11px 20px;font-weight:700;background:var(--surface);color:var(--ink);box-shadow:4px 4px 0 var(--sombra-dura);transition:transform .08s,box-shadow .08s}
+html[data-marca="neobrutal"] .btn.primary{background:var(--acento);color:#0A0A0A}
+html[data-marca="neobrutal"] .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] .btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--sombra-dura)}
+
+/* Cifras como pegatinas. */
+html[data-marca="neobrutal"] .kpis{border:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;padding-block:8px 18px}
+html[data-marca="neobrutal"] .kpi{flex-direction:column;align-items:flex-start;gap:8px;background:var(--surface);border:3px solid var(--line);border-radius:14px;padding:14px 14px 12px;box-shadow:4px 4px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] .kpi:nth-child(3n+1){background:var(--acento);color:#0A0A0A}
+html[data-marca="neobrutal"] .kpi:nth-child(3n+1) span{color:#0A0A0A}
+html[data-marca="neobrutal"] .kpi b{font-family:var(--display);font-weight:900;font-size:38px;line-height:.9;letter-spacing:-.05em}
+html[data-marca="neobrutal"] .kpi span{font-size:12.5px;font-weight:700;color:var(--ink);max-width:none}
+
+html[data-marca="neobrutal"] .sec{padding-top:56px}
+html[data-marca="neobrutal"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-family:var(--display);font-style:normal;font-weight:700;font-size:1.08em;line-height:1.35;letter-spacing:-.02em}
+html[data-marca="neobrutal"] blockquote mark{background:var(--acento);color:#0A0A0A;padding:0 .2em;border-radius:4px}
+html[data-marca="neobrutal"] .face .avatar{border:2.5px solid var(--line);border-radius:10px;font-family:var(--display);font-weight:800}
+html[data-marca="neobrutal"] .face-foot{background:var(--sunk);border-top:3px solid var(--line)}
+html[data-marca="neobrutal"] .face>div+div{border-left:3px solid var(--line)}
+html[data-marca="neobrutal"] .vcard{transition:transform .08s,box-shadow .08s}
+html[data-marca="neobrutal"] .vcard:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] .vcard .vc-n{font-family:var(--display);font-weight:900;letter-spacing:-.05em;font-size:26px}
+
+/* ---------- datos ---------- */
+html[data-marca="neobrutal"] .res{border:2px solid #0A0A0A;border-radius:8px;font-weight:800;color:#0A0A0A;letter-spacing:.02em}
+html[data-marca="neobrutal"] .res.ok{background:#7FE0A8} html[data-marca="neobrutal"] .res.ko{background:#FF9F95}
+html[data-marca="neobrutal"] .res.mix{background:var(--surface);color:var(--ink);border-color:var(--line)}
+html[data-marca="neobrutal"] .gp{background:var(--surface);border:2px solid var(--line);border-radius:8px}
+html[data-marca="neobrutal"] :is(.tag,.tone,.pill){border:2px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+html[data-marca="neobrutal"] .stack{height:14px;border:2.5px solid var(--line);border-radius:6px}
+html[data-marca="neobrutal"] .stack .half{border-left:2.5px solid var(--ink);opacity:1}
+html[data-marca="neobrutal"] .chipbtn{border:2.5px solid var(--line);border-radius:10px;font-weight:700;box-shadow:2px 2px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] .chipbtn[aria-pressed="true"]{background:var(--acento);color:#0A0A0A;border-color:#0A0A0A}
+html[data-marca="neobrutal"] .controls input{border:3px solid var(--line);border-radius:12px;padding:11px 14px;box-shadow:4px 4px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--acento);outline:2px solid var(--line);border-radius:4px}
+html[data-marca="neobrutal"] .decide-row .trk i.abs{background:var(--surface);outline:2px dashed var(--line)}
+html[data-marca="neobrutal"] .coh-row .trk{background:var(--surface);outline:2px solid var(--line);border-radius:4px}
+html[data-marca="neobrutal"] :is(.gtable-wrap,.dtable-wrap) thead th{background:var(--acento);color:#0A0A0A;border-bottom:3px solid var(--line)}
+html[data-marca="neobrutal"] :is(.gtable-wrap,.dtable-wrap) thead th button{color:#0A0A0A}
+html[data-marca="neobrutal"] table.dt tbody tr:hover{background:color-mix(in srgb,var(--acento) 35%,transparent)}
+html[data-marca="neobrutal"] .tile{border:2.5px solid var(--line);border-radius:10px;box-shadow:2px 2px 0 var(--sombra-dura)}
+html[data-marca="neobrutal"] .date .d{font-family:var(--display);font-weight:900;letter-spacing:-.05em;font-size:48px}
+html[data-marca="neobrutal"] .day{border-bottom:3px solid var(--line)}
+html[data-marca="neobrutal"] .timeline{border-left:3px solid var(--line)}
+html[data-marca="neobrutal"] .timeline li::before{border-width:3px;border-radius:4px;background:var(--acento)}
+html[data-marca="neobrutal"] #tip{background:#0A0A0A;color:#fff;border:2px solid var(--acento);border-radius:10px}
+html[data-marca="neobrutal"] footer{border-top:3px solid var(--line)}
+@media (max-width:720px){
+  html[data-marca="neobrutal"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="neobrutal"] .brand .nombre{display:none}
+  html[data-marca="neobrutal"] :is(.view-intro h2,.sec-h h2){font-size:30px}
+}
