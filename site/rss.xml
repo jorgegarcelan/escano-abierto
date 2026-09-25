@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>Escaño Abierto</title><link>/</link><description>Votaciones y sesiones del Congreso de los Diputados.</description><language>es-ES</language><atom:link href="/rss.xml" rel="self" type="application/rss+xml"/>
+<item><title>Aprobada: Y vasca</title><link>/votacion/200-1/</link><guid isPermaLink="false">escano-abierto:votacion-200-1</guid><pubDate>Wed, 23 Sep 2026 12:00:00 +0200</pubDate><description>Proposición no de ley. Sí 1 · No 0 · Abstenciones 0 · No votan 0.</description></item>
+<item><title>Pleno, miércoles, 16 de septiembre de 2026</title><link>/sesion/dscd-15-pl-205/</link><guid isPermaLink="false">escano-abierto:sesion-DSCD-15-PL-205</guid><pubDate>Wed, 16 Sep 2026 12:00:00 +0200</pubDate><description>Ceuta centra el control al Gobierno</description></item>
+</channel></rss>

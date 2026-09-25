@@ -62,6 +62,9 @@ def tipo_votacion(v: dict) -> str:
     return v["tipo"] or "Votación"
 
 
+# «Del diputado don X, del Grupo Parlamentario Y, que formula al señor ministro de Z: ¿…?» -> «X: ¿…?»
+RE_PREGUNTA = re.compile(r"^De(?:l| la) diputad[oa] (?:don|doña) (?P<n>[^,]+?)(?:, en sustitución[^,]*)?, "
+                         r"del Grupo Parlamentario [^,]+, que formula [^:]+:\s*(?P<p>.+)$", re.I)
 RE_RDL = re.compile(r"^Real Decreto-ley (\d+/\d{4}), de \d+ de \w+, (.*)$", re.I)
 RE_ASUNTO = re.compile(r",\s+(?:sobre|relativ[ao] a|para)\s+(.*)$", re.I)
 RE_PREFIJO = re.compile(r"^(?:(?:Proposición no de Ley|Proposición de Ley|Proyecto de Ley|Moción[^,]*?)\s*)?"
@@ -77,7 +80,9 @@ def titulo_votacion(texto: str, subgrupo: str = "") -> str:
     t = (texto or "").strip().split("\n")[0].strip()
     t = re.sub(r"\.?\s*«BOCG[^»]*».*$", "", t)            # referencia al boletín
     t = re.sub(r"\s*\(BOE[^)]*\)\.?", "", t).strip().rstrip(".")
-    if m := re.search(r"^Tramitación como Proyecto de Ley.*?Real Decreto-ley (\d+/\d{4})", t, re.I):
+    if m := RE_PREGUNTA.match(t):
+        t = f"{m.group('n').strip()}: {m.group('p').strip()}"
+    elif m := re.search(r"^Tramitación como Proyecto de Ley.*?Real Decreto-ley (\d+/\d{4})", t, re.I):
         t = f"Tramitar el RDL {m.group(1)} como proyecto de ley"
     elif m := RE_RDL.match(t):
         t = f"RDL {m.group(1)} {m.group(2)}"

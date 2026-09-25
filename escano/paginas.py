@@ -59,7 +59,7 @@ def aprobada(v: dict) -> bool:
 
 
 def resultado(v: dict) -> str:
-    if v["tipo"] == "Convalidación RDL":
+    if v["tipo"] == "Convalidación RDL" and not v.get("titulo", "").startswith("Tramitar"):
         return "Convalidado" if aprobada(v) else "Derogado"
     if v["tipo"] == "Toma en consideración":
         return "Tomada en consideración" if aprobada(v) else "Rechazada"
@@ -262,7 +262,7 @@ def tarjeta_portada(plano: dict, dips: list) -> bytes:
 
 # ---------------------------------------------------------------- páginas
 
-def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str) -> bytes:
+def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: bool = False) -> bytes:
     raiz = "../../"
     url = f"{URL_SITIO}/{ruta}/" if URL_SITIO else f"/{ruta}/"
     img = f"{URL_SITIO}/{imagen}" if URL_SITIO else f"/{imagen}"
@@ -275,6 +275,7 @@ def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str) -> byt
 <title>{e(titulo)} · Escaño Abierto</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{e(url)}">
+<link rel="alternate" type="application/rss+xml" title="{e(titulo)} · Escaño Abierto" href="{e(_abs(ruta + '/rss.xml') if feed else _abs('rss.xml'))}">
 <meta property="og:site_name" content="Escaño Abierto">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="es_ES">
@@ -300,16 +301,75 @@ def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str) -> byt
 """.encode()
 
 
+# ---------------------------------------------------------------- RSS
+
+def _abs(ruta: str) -> str:
+    return f"{URL_SITIO}/{ruta}" if URL_SITIO else f"/{ruta}"
+
+
+def _fecha_rss(iso: str) -> str:
+    """RFC 822, a mediodía en Madrid (el Congreso no publica la hora de cada cosa)."""
+    from datetime import datetime
+    from email.utils import format_datetime
+    from zoneinfo import ZoneInfo
+    return format_datetime(datetime.fromisoformat(iso + "T12:00").replace(tzinfo=ZoneInfo("Europe/Madrid")))
+
+
+def rss(ruta: str, titulo: str, desc: str, enlace: str, entradas: list[dict], maximo: int = 60) -> bytes:
+    """Un canal RSS 2.0. entradas: [{id, fecha, titulo, desc, enlace}]; las más recientes primero.
+
+    No lleva lastBuildDate: el mismo contenido da el mismo fichero y el repositorio no cambia en balde.
+    """
+    entradas = sorted(entradas, key=lambda e: (e["fecha"], e["id"]), reverse=True)[:maximo]
+    items = "".join(
+        f"<item><title>{esc_xml(e['titulo'])}</title><link>{esc_xml(_abs(e['enlace']))}</link>"
+        f"<guid isPermaLink=\"false\">escano-abierto:{esc_xml(e['id'])}</guid>"
+        f"<pubDate>{_fecha_rss(e['fecha'])}</pubDate><description>{esc_xml(e['desc'])}</description></item>\n"
+        for e in entradas)
+    return (f'<?xml version="1.0" encoding="UTF-8"?>\n'
+            f'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
+            f"<title>{esc_xml(titulo)}</title><link>{esc_xml(_abs(enlace))}</link>"
+            f"<description>{esc_xml(desc)}</description><language>es-ES</language>"
+            f'<atom:link href="{esc_xml(_abs(ruta))}" rel="self" type="application/rss+xml"/>\n'
+            f"{items}</channel></rss>\n").encode()
+
+
+def _entrada_voto(v: dict) -> dict:
+    return {"id": f"votacion-{v['id']}", "fecha": v["fecha"], "enlace": f"votacion/{v['id']}/",
+            "titulo": f"{resultado(v)}: {v['titulo']}",
+            "desc": f"{v['tipo']}. Sí {v['si']} · No {v['no']} · Abstenciones {v['abst']} · No votan {v['novota']}."}
+
+
+def _entradas_diputado(i: int, d: list, votaciones: list, ivs: list, fecha_ses: dict) -> list[dict]:
+    """Solo lo que merece aviso: votos distintos de los de su grupo e intervenciones analizadas."""
+    out, voto = [], {"S": "sí", "N": "no", "A": "abstención"}
+    for v in votaciones:
+        x, gp = (v.get("v") or "-" * (i + 1))[i:i + 1], v.get("grupos", {}).get(d[1])
+        if x in voto and gp in voto and x != gp:
+            out.append({"id": f"dis-{v['id']}-{slug(d[0])}", "fecha": v["fecha"], "enlace": f"votacion/{v['id']}/",
+                        "titulo": f"Vota {voto[x]}, su grupo {voto[gp]}: {v['titulo']}",
+                        "desc": f"{resultado(v)} por {v['si']} a {v['no']}. Votó distinto de la mayoría de su grupo."})
+    for n, iv in ivs:
+        f = fecha_ses.get(iv["s"])
+        if f:
+            out.append({"id": f"iv-{iv['s']}-{n}", "fecha": f, "enlace": f"sesion/{slug(iv['s'])}/",
+                        "titulo": "Interviene: " + re.sub(r"^P\d+ · ", "", iv["item"]),
+                        "desc": iv["resumen"] + (f" «{iv['cita']}»" if iv.get("cita") else "")})
+    return out
+
+
 def generar(salida: dict, plano: dict) -> dict:
-    """Escribe las páginas, las tarjetas, sitemap.xml y robots.txt. Devuelve cuántas se han escrito."""
+    """Escribe las páginas, las tarjetas, los canales RSS, sitemap.xml y robots.txt. Devuelve cuántos ha escrito."""
     datos = salida["datos"]
     dips, grupos = datos["diputados"], datos["grupos"]
-    escritas = {"paginas": 0, "tarjetas": 0}
+    escritas = {"paginas": 0, "tarjetas": 0, "rss": 0}
     urls = [""]
 
     def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta) -> None:
         imagen = f"og/{ruta}.png"
-        escritas["paginas"] += _escribir_si_cambia(SITIO / ruta / "index.html", _pagina(ruta, hashweb, titulo, desc, imagen))
+        feed = ruta.startswith(("diputado/", "iniciativa/"))
+        escritas["paginas"] += _escribir_si_cambia(SITIO / ruta / "index.html",
+                                                   _pagina(ruta, hashweb, titulo, desc, imagen, feed))
         destino = SITIO / imagen
         # Una tarjeta ya dibujada no se vuelve a dibujar: su contenido no cambia.
         if not destino.exists():
@@ -346,6 +406,53 @@ def generar(salida: dict, plano: dict) -> dict:
         desc = f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}. {resultado(ult)} por {ult['si']} a {ult['no']} el {fecha_larga(ult['fecha'])}."
         poner(f"iniciativa/{exp.replace('/', '-')}", f"iniciativa-{exp.replace('/', '-')}", ini["titulo"], desc,
               lambda exp=exp, ini=ini: tarjeta_iniciativa(exp, ini["titulo"], ini["votos"], dips, plano))
+
+    # ---- RSS: general, por diputado (solo lo destacable) y por iniciativa
+    from .construir import _clave_apellidos
+    fecha_ses = {x["id"]: x["fecha"] for x in datos["sesiones"]}
+    # Identificador estable de cada intervención: sesión, orador y su número de turno en esa sesión.
+    turno: dict[tuple, int] = {}
+    ivs = []
+    for iv in salida.get("intervenciones", []):
+        k = (iv["s"], iv["orador"])
+        turno[k] = turno.get(k, 0) + 1
+        ivs.append((f"{slug(iv['orador'])}-{turno[k]}", iv))
+    general = [_entrada_voto(v) for v in datos["votaciones"]]
+    for x in datos["sesiones"]:
+        if x.get("titular") or x.get("resumen"):
+            general.append({"id": f"sesion-{x['id']}", "fecha": x["fecha"], "enlace": f"sesion/{slug(x['id'])}/",
+                            "titulo": f"{x['organo']}, {fecha_larga(x['fecha'])}",
+                            "desc": x.get("titular") or x["resumen"][:400]})
+    escritas["rss"] = _escribir_si_cambia(SITIO / "rss.xml", rss(
+        "rss.xml", "Escaño Abierto", "Votaciones y sesiones del Congreso de los Diputados.", "", general))
+
+    por_apellidos: dict[str, list[int]] = {}
+    for i, d in enumerate(dips):
+        por_apellidos.setdefault(_clave_apellidos(d[0].split(",")[0]), []).append(i)
+    ivs_dip: dict[int, list] = {}
+    for n, iv in ivs:
+        c = por_apellidos.get(_clave_apellidos(iv["orador"]), [])
+        if len(c) == 1:
+            ivs_dip.setdefault(c[0], []).append((n, iv))
+    for i, d in enumerate(dips):
+        ruta = f"diputado/{slug(d[0])}"
+        escritas["rss"] += _escribir_si_cambia(SITIO / ruta / "rss.xml", rss(
+            f"{ruta}/rss.xml", f"{legible(d[0])} · Escaño Abierto",
+            f"Cuándo vota distinto de su grupo y qué dice en sus intervenciones.", ruta + "/",
+            _entradas_diputado(i, d, datos["votaciones"], ivs_dip.get(i, []), fecha_ses)))
+
+    for exp, ini in iniciativas.items():
+        ruta = f"iniciativa/{exp.replace('/', '-')}"
+        ents = [_entrada_voto(v) for v in ini["votos"]]
+        for x in datos["sesiones"]:
+            for k, p in enumerate(x.get("puntos", [])):
+                if p.get("exp") == exp and p.get("estado") != "sin-ds":
+                    ents.append({"id": f"debate-{x['id']}-{k}", "fecha": x["fecha"], "enlace": f"sesion/{slug(x['id'])}/",
+                                 "titulo": f"Debate en {x['organo']}: {p['titulo']}",
+                                 "desc": f"{p.get('tipo', '')}. {fecha_larga(x['fecha'])}.".lstrip(". ")})
+        escritas["rss"] += _escribir_si_cambia(SITIO / ruta / "rss.xml", rss(
+            f"{ruta}/rss.xml", f"{ini['titulo']} · Escaño Abierto", f"{TIPO_EXP.get(exp[:3], 'Iniciativa')} {exp}: debates y votaciones.",
+            ruta + "/", ents))
 
     portada = SITIO / "og" / "portada.png"
     if not portada.exists():

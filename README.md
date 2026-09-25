@@ -49,6 +49,12 @@ El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa so
 
 Las redes sociales necesitan direcciones absolutas: al desplegar, define `ESCANO_URL_SITIO` (p. ej. `https://escanoabierto.es`) antes de `construir`.
 
+## Búsqueda y RSS
+
+La lupa de la barra (o `/`, o Ctrl/⌘+K) busca a la vez en diputados, votaciones, iniciativas, sesiones, temas e intervenciones, sin servidor y tolerando una errata por palabra.
+
+`construir` escribe también canales RSS: `site/rss.xml` (votaciones y sesiones), `site/diputado/<nombre>/rss.xml` (solo lo destacable: votos distintos de los de su grupo e intervenciones analizadas) y `site/iniciativa/<expediente>/rss.xml` (debates y votaciones). La ficha y la vista de cada iniciativa enlazan el suyo con «Seguir».
+
 ## Marca
 
 La web usa la marca **Marcador** por defecto: el panel de votaciones del hemiciclo, oscuro, con las cifras en matriz de puntos. Cada marca es una hoja en `site/marcas/<nombre>.css` que se carga encima de la base de `site/index.html`. Se puede probar otra con `?marca=<nombre>` o con el selector del pie (`?marca=tinta` es la base sin hoja extra, la marca original).
