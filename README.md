@@ -43,6 +43,10 @@ python -m pytest                                 # tests (no necesitan red ni AP
 
 El análisis del prototipo (MVP) está en `data/mvp.json`: `construir` lo usa solo en las sesiones que el pipeline aún no ha analizado con IA.
 
+## Marca
+
+La web usa la marca **Marcador** por defecto: el panel de votaciones del hemiciclo, oscuro, con las cifras en matriz de puntos. Cada marca es una hoja en `site/marcas/<nombre>.css` que se carga encima de la base de `site/index.html`. Se puede probar otra con `?marca=<nombre>` o con el selector del pie (`?marca=tinta` es la base sin hoja extra, la marca original).
+
 ## Publicación automática
 
 `.github/workflows/actualizar.yml` se ejecuta de martes a sábado por la mañana: descarga lo nuevo, analiza solo lo que no está en caché, guarda los datos en el repo y publica la web en GitHub Pages.

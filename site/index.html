@@ -7,13 +7,20 @@
 <title>Escaño Abierto</title>
 <link rel="icon" href="marca/favicon.svg" type="image/svg+xml">
 <script>
-// Marcas en prueba: ?marca=marcador o ?marca=senaletica carga site/marcas/<marca>.css encima de la marca actual.
+// Marca de la web: Marcador por defecto. ?marca=<nombre> (o el selector del pie) prueba otra;
+// ?marca=tinta vuelve a Tinta y papel, que es la base de index.html sin hoja extra.
 (function(){
-  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico","neobrutal","bento","tenebrismo","modular","vineta"], m = null;
-  try { m = new URLSearchParams(location.search).get("marca"); if (m !== null) localStorage.setItem("marca", m); else m = localStorage.getItem("marca"); } catch(e) {}
-  if (MARCAS.indexOf(m) < 0) return;
+  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico","neobrutal","bento","tenebrismo","modular","vineta","tinta"];
+  var POR_DEFECTO = "marcador", m = null;
+  try { m = new URLSearchParams(location.search).get("marca"); if (m) localStorage.setItem("marca", m); else m = localStorage.getItem("marca"); } catch(e) {}
+  if (MARCAS.indexOf(m) < 0) m = POR_DEFECTO;
   document.documentElement.dataset.marca = m;
+  if (m === "tinta") return;
   document.write('<link rel="stylesheet" href="marcas/' + m + '.css">');
+  if (m === "marcador") {
+    document.querySelector('link[rel="icon"]').href = "marcas/marcador-favicon.svg";
+    document.write('<meta name="theme-color" content="#08090B">');
+  }
 })();
 </script>
 <meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)">
@@ -503,7 +510,7 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca en prueba: <select id="marca-sel"><option value="">Tinta y papel (actual)</option><option value="marcador">Marcador</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
+  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Este proyecto no está vinculado al Congreso de los Diputados. <span id="gen"></span></footer>
 </div>
 
 <script>
@@ -537,7 +544,7 @@ async function arrancar(clave){
   document.getElementById("periodo-info").textContent = `${DATA.meta.periodo} · ${sesiones.length} sesiones · ${votaciones.length} votaciones`;
   iniciar(DATA, ivs);
 }
-(function(){ const sel=document.getElementById("marca-sel"); sel.value=document.documentElement.dataset.marca||"";
+(function(){ const sel=document.getElementById("marca-sel"); sel.value=document.documentElement.dataset.marca||"marcador";
   sel.addEventListener("change", ()=>{ const u=new URL(location.href); u.searchParams.set("marca", sel.value); location.href=u.toString(); }); })();
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
   INDICE = j;
