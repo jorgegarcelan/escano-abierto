@@ -23,7 +23,7 @@ URL_VOTACIONES_DIA = (
 URL_DS = BASE + "/public_oficiales/L{leg}/CONG/DS/{serie}/DSCD-{leg}-{serie}-{num}.PDF"
 
 MODELO = os.environ.get("ESCANO_MODELO", "claude-sonnet-4-5")
-USER_AGENT = "escano-abierto/0.1 (+https://github.com/; datos abiertos del Congreso)"
+USER_AGENT = "escano-abierto/0.1"  # el cortafuegos del Congreso rechaza agentes con URL
 
 # Código del grupo en los JSON oficiales -> clave corta usada en la web.
 GRUPOS = {

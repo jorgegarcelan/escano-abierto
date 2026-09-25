@@ -27,7 +27,7 @@ RE_TURNO = re.compile(
     rf"(?:\s*\((?P<paren>[^)]*)\))?:[ \t]*",
     re.M,
 )
-RE_ITEM = re.compile(r"^—\s*(?P<txt>.+?\(Número de expediente[^)]*\)\.?)", re.M | re.S)
+RE_ITEM = re.compile(r"^—\s*(?P<txt>[^—]{1,800}?\(Número\s+de\s+expediente[^)]*\)\.?)", re.M)
 RE_EXP = re.compile(r"(\d{3}/\d{6})")
 RE_SECCION = re.compile(rf"^(?P<t>[{MAYUS}][{MAYUS} ,.\-]{{6,90}})$", re.M)
 RE_FECHA = re.compile(
