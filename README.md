@@ -2,7 +2,7 @@
 
 **Entender lo que se hace en el Congreso.** Qué se vota, quién lo decide y cómo, con los datos oficiales del Congreso de los Diputados contados para que cualquiera pueda entenderlos en unos minutos.
 
-🌐 **[escano-abierto.vercel.app](https://escano-abierto.vercel.app)**
+🌐 **[escañoabierto.com](https://www.escañoabierto.com)**
 
 El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabra del Diario de Sesiones, cada ley con sus fases y sus plazos. Pero está repartido en miles de PDF, buscadores y ficheros técnicos. Escaño Abierto lo junta, lo ordena y lo explica, y se actualiza solo cada mañana.
 
@@ -49,7 +49,7 @@ Declaraciones de intereses     ─┘
 - Cada push despliega en Vercel, que construye la web y dibuja las tarjetas para compartir.
 - La web es una sola página estática, sin servidor, que carga los datos por meses.
 
-La metodología completa de cada cálculo está en la sección [Método](https://escano-abierto.vercel.app/#metodo) de la web.
+La metodología completa de cada cálculo está en la sección [Método](https://www.escañoabierto.com/#metodo) de la web.
 
 ## Desarrollo
 
