@@ -53,8 +53,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;margin:0}
 .eyebrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 
 /* barra superior */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
-.bar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:20px;min-height:56px}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.topbar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:20px;min-height:56px}
 .brand{display:block;flex:none;color:var(--ink)}
 .brand .logo{display:block;height:26px;aspect-ratio:439.2/55.3;background:var(--ink);-webkit-mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain;mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -294,6 +294,49 @@ table.mx td.tot{font-variant-numeric:tabular-nums;color:var(--muted);text-align:
 .citas blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:16px;line-height:1.5}
 .citas figcaption{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
 @media (max-width:900px){ .temas-top{grid-template-columns:1fr} }
+/* quién decide */
+.decide-rank{display:grid;gap:6px;max-width:640px}
+.decide-row{display:grid;grid-template-columns:78px 1fr 48px;gap:10px;align-items:center;font-size:13px}
+.decide-row .g{font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.decide-row .trk{display:flex;height:12px;gap:2px}
+.decide-row .trk i{display:block;height:100%}
+.decide-row .trk i.voto{background:var(--ink);border-radius:0 0 0 0}
+.decide-row .trk i.abs{background:color-mix(in srgb,var(--ink) 35%,var(--surface))}
+.decide-row .trk i:last-child{border-radius:0 4px 4px 0}
+.decide-row .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.decide-note{font-size:13px;margin:0;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.decide-note b{font-weight:600}
+.key{display:inline-flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.key span{display:inline-flex;align-items:center;gap:5px}
+.key i{width:12px;height:9px;display:inline-block;border-radius:2px}
+
+/* diputados */
+.dtable-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.dt td,table.dt th{padding:8px 12px}
+table.dt tbody tr{cursor:pointer}
+table.dt tbody tr:hover{background:var(--sunk)}
+table.dt th button{appearance:none;background:none;border:0;padding:0;font:inherit;color:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+table.dt th button[aria-pressed="true"]{color:var(--ink)}
+table.dt td.num,table.dt th.num{text-align:right}
+table.dt .nm{font-weight:500;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.pct{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end}
+.pct i{display:inline-block;width:44px;height:6px;border-radius:3px;background:var(--sunk);position:relative;overflow:hidden}
+.pct i b{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:3px}
+.ficha-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:center}
+.ficha-top h2{font-size:clamp(30px,4.2vw,46px);line-height:1.05;letter-spacing:-.015em;margin-top:8px}
+.ficha-top .meta{color:var(--muted);margin:10px 0 0;font-size:14px}
+.back{justify-self:start;appearance:none;background:none;border:0;padding:0;font:500 13px var(--sans);color:var(--muted);cursor:pointer}
+.back:hover{color:var(--ink)}
+.mivoto{font-size:11.5px;font-weight:600;border-radius:4px;padding:2px 7px;white-space:nowrap;background:var(--sunk)}
+.mivoto.S{color:var(--si)} .mivoto.N{color:var(--no)} .mivoto.A{color:var(--abst)} .mivoto.X{color:var(--muted)}
+table.vt td{vertical-align:top}
+table.vt td.t{min-width:260px}
+table.vt tr.dis td{background:color-mix(in srgb,var(--sub) 45%,transparent)}
+.hemi .yo{fill:var(--ink);stroke:var(--bg);stroke-width:1.5}
+.hemi .otro{opacity:.28}
+.hemi circle[data-n]{cursor:pointer}
+@media (max-width:720px){ .ficha-top{grid-template-columns:1fr} .decide-row{grid-template-columns:64px 1fr 40px} }
+
 @media (max-width:720px){ .tema-panel{grid-template-columns:1fr} .rank-row{grid-template-columns:110px 1fr} }
 
 @media (max-width:720px){
@@ -304,7 +347,7 @@ table.mx td.tot{font-variant-numeric:tabular-nums;color:var(--muted);text-align:
   .date .m{margin-top:0}
   .session{padding:14px}
   .topic{grid-template-columns:100px 1fr 24px}
-  .bar-in{gap:12px;min-height:50px}
+  .topbar-in{gap:12px;min-height:50px}
   .brand .logo{height:24px;aspect-ratio:96/53.2;-webkit-mask-image:url(marca/simbolo-tinta.svg);mask-image:url(marca/simbolo-tinta.svg)}
   nav.tabs button{padding:0 8px;font-size:13.5px}
   .hero{grid-template-columns:1fr;gap:24px;padding-top:0}
@@ -324,14 +367,15 @@ table.mx td.tot{font-variant-numeric:tabular-nums;color:var(--muted);text-align:
 <body>
 
 <div class="wrap">
-  <header class="bar">
-    <div class="bar-in">
+  <header class="topbar">
+    <div class="topbar-in">
       <a class="brand" href="#inicio" data-go="inicio"><span class="logo" aria-hidden="true"></span><span class="sr">Escaño Abierto · Inicio</span></a>
       <nav class="tabs" role="tablist" aria-label="Vistas">
         <button role="tab" id="tab-inicio" aria-controls="inicio" aria-selected="true">Inicio</button>
         <button role="tab" id="tab-dias" aria-controls="dias" aria-selected="false">Por día</button>
         <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
         <button role="tab" id="tab-temas" aria-controls="temas" aria-selected="false">Temas</button>
+        <button role="tab" id="tab-diputados" aria-controls="diputados" aria-selected="false">Diputados</button>
         <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Por grupo</button>
         <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
         <button role="tab" id="tab-metodo" aria-controls="metodo" aria-selected="false">Método</button>
@@ -343,6 +387,7 @@ table.mx td.tot{font-variant-numeric:tabular-nums;color:var(--muted);text-align:
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
     <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
+    <section class="view" id="diputados" role="tabpanel" aria-labelledby="tab-diputados" hidden></section>
     <section class="view" id="grupos" role="tabpanel" aria-labelledby="tab-grupos" hidden></section>
     <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
     <section class="view" id="votaciones" role="tabpanel" aria-labelledby="tab-votaciones" hidden></section>
@@ -403,6 +448,7 @@ function voteRow(v, compact){
       <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
     <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">JSON oficial</a></div>
     <div class="gpos">${gp}</div>
+    ${decideNota(v)}
     ${(v.discrepantes||[]).length?`<p class="nota">Votaron distinto a su grupo: ${esc(v.discrepantes.slice(0,12).join(", "))}${v.discrepantes.length>12?` y ${v.discrepantes.length-12} más`:""}</p>`:""}
   </article>`;
 }
@@ -474,7 +520,7 @@ document.addEventListener("pointerover", e=>{
   if (dt_){ tip.innerHTML = dt_.dataset.tip; const b=dt_.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false; return; }
   const c = e.target.closest?.(".hemi circle"); if(!c){ tip.hidden=true; return; }
   const g=c.dataset.g, x=c.dataset.x;
-  tip.innerHTML = `${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)} · ${{S:"Sí",N:"No",A:"Abstención",X:"No vota"}[x]}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
+  tip.innerHTML = `${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
   const b=c.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false;
 });
 window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true});
@@ -549,6 +595,115 @@ function renderTemas(){
     <h2 style="font-size:24px;margin-top:10px">${esc(t.label[0].toUpperCase()+t.label.slice(1))}</h2>
     <div class="tema-panel">${detalleTema(t)}</div>`;
 }
+
+/* ---------- quién decide ---------- */
+function conteoDe(v){
+  if (v.conteo && Object.keys(v.conteo).length) return v.conteo;
+  const c = {}; (escanosDe(v)||[]).forEach(e=>{ (c[e.g] ||= {})[e.x]=(c[e.g][e.x]||0)+1; }); return c;
+}
+function decide(v){
+  // Un grupo decide «con su voto» si, de haberse abstenido en bloque, el resultado habría sido otro;
+  // decide «con su abstención» si, de haber votado en bloque con el bando perdedor, el resultado habría sido otro.
+  const aprobada = passed(v), out = [];
+  for (const [g,c] of Object.entries(conteoDe(v))){
+    const s=c.S||0, n=c.N||0, a=c.A||0;
+    if (aprobada){ if (s && v.si-s <= v.no) out.push({g,tipo:"voto",n:s}); else if (a && v.si <= v.no+a) out.push({g,tipo:"abs",n:a}); }
+    else { if (n && v.si > v.no-n) out.push({g,tipo:"voto",n}); else if (a && v.si+a > v.no) out.push({g,tipo:"abs",n:a}); }
+  }
+  out.sort((x,y)=>ORDEN_HEMI.indexOf(x.g)-ORDEN_HEMI.indexOf(y.g));
+  const bastan = aprobada ? Math.ceil((v.si-v.no)/2) : Math.floor((v.no-v.si)/2)+1;
+  return {grupos:out, bastan};
+}
+function decideNota(v){
+  const d = decide(v);
+  if (!d.grupos.length && margen(v)>10) return "";
+  return `<p class="decide-note"><span class="eyebrow" style="letter-spacing:.06em">Quién decide</span>${d.grupos.map(x=>`<span class="gp" data-tip="${esc(`${G[x.g].nombre}: ${x.tipo==="voto"?`si sus ${x.n} diputados se hubieran abstenido`:`si sus ${x.n} abstenciones hubieran sido votos ${passed(v)?"en contra":"a favor"}`}, el resultado habría sido otro`)}">${gdot(x.g)}${x.g}<span class="v" style="color:var(--muted)">${x.tipo==="voto"?"con su voto":"absteniéndose"}</span></span>`).join("")}
+    <span style="color:var(--muted)">· Bastaban ${d.bastan} ${d.bastan===1?"diputado":"diputados"} cambiando su voto para darle la vuelta</span></p>`;
+}
+function rankingDecide(){
+  const cuenta = {}; DATA.votaciones.forEach(v=>decide(v).grupos.forEach(x=>{ const c=(cuenta[x.g] ||= {voto:0,abs:0}); c[x.tipo]++; }));
+  const filas = ORDEN_HEMI.filter(g=>cuenta[g]).sort((a,b)=>(cuenta[b].voto+cuenta[b].abs)-(cuenta[a].voto+cuenta[a].abs));
+  if (!filas.length) return "";
+  const max = Math.max(...filas.map(g=>cuenta[g].voto+cuenta[g].abs));
+  return `<div class="decide-rank">${filas.map(g=>{ const c=cuenta[g], t=c.voto+c.abs;
+    return `<div class="decide-row" data-tip="${esc(`<b>${G[g].nombre}</b> (${G[g].escanos||"?"} escaños)<br>Decidió ${t} de ${DATA.votaciones.length} votaciones: ${c.voto} con su voto, ${c.abs} con su abstención`)}"><span class="g">${gdot(g)}${g}</span>
+      <span class="trk">${c.voto?`<i class="voto" style="width:${c.voto/max*100}%"></i>`:""}${c.abs?`<i class="abs" style="width:${c.abs/max*100}%"></i>`:""}</span><span class="n">${t}</span></div>`; }).join("")}</div>
+    <div class="key"><span><i style="background:var(--ink)"></i>con su voto</span><span><i style="background:color-mix(in srgb,var(--ink) 35%,var(--surface))"></i>con su abstención</span></div>`;
+}
+const decideIntro = `Un grupo decide una votación si, de haber actuado de otra forma en bloque, el resultado habría cambiado: absteniéndose en vez de votar, o votando con el bando perdedor en vez de abstenerse. Cuantos más escaños, más fácil es decidir; lo llamativo es cuando lo hace un grupo pequeño.`;
+
+/* ---------- diputados ---------- */
+const sinTildes = t => t.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const slug = n => sinTildes(n).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const legible = n => n.includes(", ") ? n.split(", ").reverse().join(" ") : n;
+const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", alta:d[4]||"", slug:slug(d[0])}));
+const DIP_SLUG = Object.fromEntries(DIP.map(d=>[d.slug,d]));
+const porApellidos = {};
+DIP.forEach(d=>{ const k=sinTildes(d.n.split(",")[0]).trim(); (porApellidos[k] ||= []).push(d); });
+const dipDeOrador = orador => { const c=porApellidos[sinTildes(orador).trim()]; return c && c.length===1 ? c[0] : null; };
+const VOTOS_NOM = DATA.votaciones.filter(v=>v.v && v.v.length===DIPS.length).sort((a,b)=>b.fecha.localeCompare(a.fecha) || b.id.localeCompare(a.id, undefined, {numeric:true}));
+const MIVOTO = {S:"Sí",N:"No",A:"Abstención",X:"No vota"};
+const statsDip = (() => {
+  const st = DIP.map(()=>({vot:0, aus:0, dis:0, con:0}));
+  VOTOS_NOM.forEach(v=>DIP.forEach(d=>{ const x=v.v[d.i]; if(x==="-") return; const s=st[d.i];
+    if (x==="X") { s.aus++; return; } s.vot++; const gp=v.grupos[d.g]; if (["S","N","A"].includes(gp)) { if (x===gp) s.con++; else s.dis++; } }));
+  const ivsPor = {}; IVS.forEach(i=>{ const d=dipDeOrador(i.orador); if (d) (ivsPor[d.i] ||= []).push(i); });
+  return st.map((s,i)=>({...s, part: s.vot+s.aus ? s.vot/(s.vot+s.aus) : null, lealtad: s.con+s.dis ? s.con/(s.con+s.dis) : null, ivs: ivsPor[i]||[]}));
+})();
+const pct = x => x==null ? "–" : `${Math.round(x*100)} %`;
+const pctBar = x => x==null ? "–" : `<span class="pct">${pct(x)}<i><b style="width:${x*100}%"></b></i></span>`;
+let dipFiltro = {q:"", g:"TODOS", orden:"dis"};
+let dipSel = null;
+function hemiDiputado(d){
+  // Todos los escaños por grupo; el del diputado, en tinta.
+  const lista = DIP.slice().sort((a,b)=>ORDEN_HEMI.indexOf(a.g)-ORDEN_HEMI.indexOf(b.g) || a.n.localeCompare(b.n,"es"));
+  const {pts, rad} = asientos(lista.length);
+  return `<svg class="hemi" viewBox="-124 -112 248 120" role="img" aria-label="Posición en el hemiciclo por grupo">${lista.map((e,k)=>{ const p=pts[k], yo=e===d;
+    return `<circle class="${yo?"yo":"otro"}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${(yo?rad*1.9:rad).toFixed(2)}" ${yo?"":`fill="${G[e.g]?.color}"`} data-n="${esc(e.n)}" data-g="${e.g}" data-x="-"></circle>`; }).join("")}</svg>`;
+}
+function renderDiputados(){
+  if (dipSel && DIP_SLUG[dipSel]) return renderFicha(DIP_SLUG[dipSel]);
+  const q = sinTildes(dipFiltro.q.trim());
+  let lista = DIP.filter(d=>(dipFiltro.g==="TODOS"||d.g===dipFiltro.g) && (!q || sinTildes(d.n+" "+legible(d.n)+" "+d.circ).includes(q)));
+  const S = statsDip, ord = dipFiltro.orden;
+  lista.sort((a,b)=> ord==="dis" ? S[b.i].dis-S[a.i].dis || a.n.localeCompare(b.n,"es")
+    : ord==="part" ? (S[a.i].part??2)-(S[b.i].part??2) || a.n.localeCompare(b.n,"es")
+    : ord==="ivs" ? S[b.i].ivs.length-S[a.i].ivs.length || a.n.localeCompare(b.n,"es")
+    : a.n.localeCompare(b.n,"es"));
+  const chips = ["TODOS",...ORDEN_HEMI].map(g=>`<button class="chipbtn" data-dg="${g}" aria-pressed="${dipFiltro.g===g}">${g==="TODOS"?"Todos":gdot(g)+g}</button>`).join("");
+  const th = (k,l,cls="") => `<th class="${cls}"><button data-dord="${k}" aria-pressed="${ord===k}">${l}${ord===k?" ↓":""}</button></th>`;
+  $("#diputados").innerHTML = `
+    <div class="view-intro"><div><h2>Diputados</h2><p>Los 350 diputados con su voto en las ${VOTOS_NOM.length} votaciones incluidas: cuánto participan, cuántas veces se apartan de su grupo y cuántas intervenciones tienen analizadas. Pulsa uno para ver su ficha, o un escaño en cualquier hemiciclo.</p></div></div>
+    <div class="controls"><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></div>
+    <div class="controls" id="dip-g">${chips}</div>
+    <div class="dtable-wrap"><table class="dt"><thead><tr>${th("nom","Diputado")}<th>Circunscripción</th>${th("part","Participación","num")}${th("dis","Distinto a su grupo","num")}${th("ivs","Interv.","num")}</tr></thead>
+      <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>
+    <p class="nota">Participación: votaciones en las que votó (sí, no o abstención) sobre las que le correspondían. Una ausencia puede tener causas justificadas.</p>`;
+  const inp=$("#dip-q");
+  inp.addEventListener("input", e=>{ dipFiltro.q=e.target.value; const pos=e.target.selectionStart; renderDiputados(); const n=$("#dip-q"); n.focus(); n.setSelectionRange(pos,pos); });
+}
+function renderFicha(d){
+  const s = statsDip[d.i], grupo = G[d.g];
+  const alta = d.alta ? (()=>{ const [y,m,dd]=d.alta.split("-").map(Number); return `${dd} ${MESES[m-1]} ${y}`; })() : "";
+  const filas = VOTOS_NOM.map(v=>{ const x=v.v[d.i]; if (x==="-") return ""; const gp=v.grupos[d.g]||"?"; const dis=["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp; const dd=dt(v.fecha);
+    return `<tr class="${dis?"dis":""}"><td class="num" style="white-space:nowrap">${dd.d} ${dd.m}</td><td class="t"><button class="linklike" style="text-decoration:none;text-align:left;font-weight:400" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button></td>
+      <td><span class="mivoto ${x}">${MIVOTO[x]}</span></td><td><span class="gp ${gp==="?"?"q":gp}">${d.g}<span class="v">${VLABEL[gp]}</span></span></td><td><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></td></tr>`; }).join("");
+  const kpis = [[pct(s.part),"participación",`${s.vot} de ${s.vot+s.aus} votaciones`],[pct(s.lealtad),"con su grupo",""],[s.dis,s.dis===1?"vez distinto a su grupo":"veces distinto a su grupo","",s.dis>0],[s.ivs.length,s.ivs.length===1?"intervención analizada":"intervenciones analizadas",""]]
+    .map(([n,l,t,a])=>`<div class="kpi ${a?"alert":""}"${t?` title="${t}"`:""}><b>${n}</b><span>${l}</span></div>`).join("");
+  $("#diputados").innerHTML = `
+    <button class="back" data-dip-volver>← Todos los diputados</button>
+    <div class="ficha-top">
+      <div><div class="eyebrow">${esc(d.circ||"Circunscripción sin dato")} · ${esc(grupo?.nombre||d.g)}</div>
+        <h2>${esc(legible(d.n))}</h2>
+        <p class="meta">${d.form?`Elegido en la lista de ${esc(d.form)}`:""}${d.form&&alta?" · ":""}${alta?`En el Congreso desde el ${alta}`:""}</p></div>
+      <div>${hemiDiputado(d)}</div>
+    </div>
+    <div class="kpis">${kpis}</div>
+    ${s.ivs.length?`<section class="sec"><div class="sec-h"><h2>Sus intervenciones</h2></div><div class="iv-list">${s.ivs.map(ivCard).join("")}</div></section>`:""}
+    <section class="sec"><div class="sec-h"><h2>Cómo votó</h2><p>${s.dis?`Las filas marcadas son las votaciones en las que se apartó de la mayoría de su grupo.`:`Votó siempre como la mayoría de su grupo.`}</p></div>
+      <div class="dtable-wrap"><table class="dt vt"><thead><tr><th>Fecha</th><th>Votación</th><th>Su voto</th><th>Su grupo</th><th>Resultado</th></tr></thead><tbody>${filas}</tbody></table></div></section>`;
+}
+function irDiputado(sl){ dipSel = sl; rendered.diputados=false; show("diputados", false); try{ history.replaceState(null,"","#diputado-"+sl); }catch(e){} window.scrollTo(0,0); }
 
 /* ---------- inicio ---------- */
 const frases = t => (t||"").split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«])/);
@@ -633,6 +788,8 @@ function renderInicio(){
     <div class="kpis" aria-label="${esc(DATA.meta.periodo)} en cifras">${kpis}</div>
     ${cara}
     ${vcards?`<section class="sec"><div class="sec-h"><h2>Las más ajustadas</h2><button class="linklike" data-go="votaciones">Ver las ${DATA.votaciones.length} votaciones</button></div><div class="vgrid">${vcards}</div></section>`:""}
+    ${rankingDecide()?`<section class="sec"><div class="sec-h"><h2>Quién decide</h2><p>Veces que cada grupo inclinó el resultado de una votación.</p></div>
+      <div class="temas-top"><div class="chart">${rankingDecide()}</div><div class="chart" style="align-content:center"><p class="sub" style="margin:0">${decideIntro}</p>${dest?`<h3 style="font-size:17px;margin-top:6px">En la votación más ajustada del día (${dest.si} – ${dest.no})</h3>${decideNota(dest)}`:""}</div></div></section>`:""}
     ${TEMAS.length?`<section class="sec"><div class="sec-h"><h2>De qué se ha hablado</h2><button class="linklike" data-go="temas">Explorar los temas</button></div>
       <div class="temas-top"><div class="chart"><p class="sub" style="margin:0">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(TEMAS.slice(0,8))}</div>
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
@@ -760,7 +917,8 @@ function renderVotaciones(){
   if (vFilter.res==="ajustadas") list=list.filter(v=>Math.abs(v.si-v.no)<=10);
   const opts = [["todas","Todas"],["ok","Aprobadas"],["ko","Rechazadas"],["ajustadas","Ajustadas (≤10 votos)"]];
   $("#votaciones").innerHTML = `
-    <div class="view-intro"><div><h2>Votaciones</h2><p>Resultados oficiales y posición mayoritaria de cada grupo. La línea discontinua marca la mitad de los votos emitidos.</p></div></div>
+    <div class="view-intro"><div><h2>Votaciones</h2><p>Resultados oficiales, voto de cada diputado y posición mayoritaria de cada grupo. Pasa el ratón por un escaño para ver quién es; púlsalo para abrir su ficha.</p></div></div>
+    <div class="chart"><h3>Quién decide</h3><p class="sub">${decideIntro}</p>${rankingDecide()}</div>
     <div class="controls" id="v-f">${opts.map(([k,l])=>`<button class="chipbtn" data-k="${k}" aria-pressed="${vFilter.res===k}">${l}</button>`).join("")}</div>
     <div class="votes">${list.map(v=>voteRow(v,false)).join("")}</div>`;
   $("#v-f").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; vFilter.res=b.dataset.k; renderVotaciones(); });
@@ -796,10 +954,12 @@ function renderMetodo(){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","temas","grupos","oradores","metodo"];
+const TABS = ["inicio","dias","votaciones","temas","diputados","grupos","oradores","metodo"];
 const rendered = {};
-const renderers = {inicio:renderInicio, temas:renderTemas, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 function show(id, push){
+  if (id && id.startsWith("diputado-")){ const sl=id.slice(9); if (DIP_SLUG[sl]){ if (dipSel!==sl){ dipSel=sl; rendered.diputados=false; } id="diputados"; push=false; } }
+  else if (id==="diputados" && push && dipSel){ dipSel=null; rendered.diputados=false; }
   if(!TABS.includes(id)) id="inicio";
   TABS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t).setAttribute("aria-selected", t===id); });
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
@@ -816,6 +976,15 @@ TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
+  const dp = e.target.closest("[data-dip]");
+  if (dp){ irDiputado(dp.dataset.dip); return; }
+  if (e.target.closest("[data-dip-volver]")){ dipSel=null; rendered.diputados=false; show("diputados",true); window.scrollTo(0,0); return; }
+  const dg = e.target.closest("[data-dg]");
+  if (dg){ dipFiltro.g=dg.dataset.dg; renderDiputados(); return; }
+  const dor = e.target.closest("[data-dord]");
+  if (dor){ dipFiltro.orden=dor.dataset.dord; renderDiputados(); return; }
+  const seat = e.target.closest(".hemi circle[data-n]");
+  if (seat && seat.dataset.n){ const d=DIP.find(x=>x.n===seat.dataset.n); if (d){ tip.hidden=true; irDiputado(d.slug); return; } }
   const ts = e.target.closest("[data-tema-sel]");
   if (ts){ temaSel = ts.dataset.temaSel; const y=window.scrollY; const enTemas=!$("#temas").hidden; renderTemas(); rendered.temas=true;
     if (enTemas) window.scrollTo(0,y); else { show("temas",true); window.scrollTo(0,0); } return; }
