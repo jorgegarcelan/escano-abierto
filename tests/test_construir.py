@@ -4,7 +4,7 @@ from dataclasses import asdict
 from pathlib import Path
 from types import SimpleNamespace
 
-from escano import agenda, analisis, construir as mod_construir, leyes, paginas, votaciones
+from escano import agenda, analisis, construir as mod_construir, intereses, leyes, paginas, preguntas, votaciones
 from escano.diario import dividir
 
 TEXTO = (Path(__file__).parent / "fixtures" / "diario_muestra.txt").read_text()
@@ -33,7 +33,7 @@ def test_construir(tmp_path, monkeypatch):
                              (mod_construir, "SITIO", "site"), (paginas, "SITIO", "site"), (analisis, "ANALISIS", "analisis")]:
         (tmp_path / sub).mkdir(exist_ok=True)
         monkeypatch.setattr(mod, nombre, tmp_path / sub)
-    for mod in (leyes, agenda):  # sin tramitación ni agenda descargadas
+    for mod in (leyes, agenda, preguntas, intereses):  # sin nada de eso descargado
         monkeypatch.setattr(mod, "FICHERO", tmp_path / f"{mod.__name__}.json")
     monkeypatch.setattr(mod_construir, "MVP", tmp_path / "sin-mvp.json")
     falso = ClienteFalso()

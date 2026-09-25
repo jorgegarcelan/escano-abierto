@@ -12,7 +12,8 @@ from collections import Counter, defaultdict
 from datetime import date
 
 from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as mod_organos
-from . import agenda as mod_agenda, leyes as mod_leyes, semanas as mod_semanas, votaciones as mod_votaciones
+from . import agenda as mod_agenda, intereses as mod_intereses, leyes as mod_leyes, preguntas as mod_preguntas
+from . import semanas as mod_semanas, temas as mod_temas, votaciones as mod_votaciones
 from .analisis import analizar, resumir_sesion
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
 
@@ -343,10 +344,18 @@ def construir(con_ia: bool = True) -> dict:
         },
         "intervenciones": ivs_web,
     }
+    for v in web_votos:
+        v["tm"] = mod_temas.temas_de(v["titulo"], v["texto"])
     leyes = mod_leyes.leer()
+    for ley in leyes["iniciativas"]:
+        ley["tm"] = mod_temas.temas_de(ley["titulo"])
     salida["leyes"] = leyes
     salida["semanas"] = mod_semanas.calcular(web_votos, sesiones_web, ivs_web, leyes["iniciativas"], lista_diputados)
     salida["agenda"] = mod_agenda.leer()
+    for p in salida["agenda"].get("plenos", []):
+        for x in p["puntos"]:
+            x["tm"] = mod_temas.temas_de(x["titulo"], x["texto"])
+    salida["preguntas"] = mod_preguntas.leer_todo()["preguntas"]
     escribir_web(salida)
     try:
         from .paginas import generar
@@ -354,6 +363,12 @@ def construir(con_ia: bool = True) -> dict:
     except ImportError:  # sin Pillow no hay tarjetas; la web funciona igual
         print("  (Pillow no está instalado: no se generan las páginas para compartir)")
     return salida
+
+
+def slug_web(texto: str) -> str:
+    """El mismo slug que usa la web para cada diputado."""
+    t = "".join(c for c in unicodedata.normalize("NFD", texto) if unicodedata.category(c) != "Mn").lower()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
 
 
 def _clave_apellidos(s: str) -> str:
@@ -367,8 +382,11 @@ def extras_diputados(nombres: list[str]) -> dict:
     Los turnos salen de los Diarios procesados (data/sesiones): el Diario nombra al orador por sus apellidos,
     que se casan con los del diputado cuando no hay ambigüedad.
     """
-    ficha = mod_diputados.leer()
+    ficha, intereses = mod_diputados.leer(), mod_intereses.leer()
     salida = {n: {"bio": ficha.get(n, {}).get("biografia", ""), "comisiones": [], "turnos": {}} for n in nombres}
+    for n in nombres:
+        if (i := intereses.get(n)) and any(i[k] for k in ("actividades", "aportaciones", "regalos", "observaciones")):
+            salida[n]["intereses"] = i
     for comision, miembros in mod_organos.leer().items():
         for m in miembros:
             if m["nombre"] in salida and m.get("codigo") and not m.get("baja"):
@@ -385,7 +403,65 @@ def extras_diputados(nombres: list[str]) -> dict:
             if len(candidatos) == 1:
                 t = salida[candidatos[0]]["turnos"]
                 t[ses["organo"]] = t.get(ses["organo"], 0) + 1
-    return {n: e for n, e in salida.items() if e["bio"] or e["comisiones"] or e["turnos"]}
+    return {n: e for n, e in salida.items() if e["bio"] or e["comisiones"] or e["turnos"] or e.get("intereses")}
+
+
+def resumen_preguntas(preguntas: list[dict], diputados: list[list], hoy: date | None = None) -> tuple[dict, dict]:
+    """Lo que la web muestra de las preguntas escritas: cifras por grupo, diputado, mes y tema, cuánto tarda
+    el Gobierno en contestar, las pendientes más antiguas y, aparte, la lista de cada diputado (las 60 más
+    recientes)."""
+    hoy = hoy or date.today()
+    limite = date.fromordinal(hoy.toordinal() - DIAS_SIN_RESPUESTA).isoformat()
+    indice = {d[0]: i for i, d in enumerate(diputados)}
+    por_grupo: dict[str, list[int]] = defaultdict(lambda: [0, 0, 0])
+    por_dip: dict[int, list[int]] = defaultdict(lambda: [0, 0, 0])
+    por_mes: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    por_tema: Counter = Counter()
+    demora_grupo: dict[str, list[int]] = defaultdict(list)
+    demoras: list[int] = []
+    listas: dict[int, list] = defaultdict(list)
+    antiguas = []
+    for p in sorted(preguntas, key=lambda p: (p["presentada"], p["exp"]), reverse=True):
+        pend = p["estado"] == "pendiente"
+        vieja = pend and p["calificada"] and p["calificada"] < limite
+        grupo = p["autores"][0][1] if p["autores"] else "?"
+        demora = None
+        if p["estado"] == "contestada" and p.get("cerrada") and p["calificada"]:
+            demora = max(0, (date.fromisoformat(p["cerrada"]) - date.fromisoformat(p["calificada"])).days)
+            demoras.append(demora)
+            demora_grupo[grupo].append(demora)
+        for k, x in enumerate((1, pend, vieja)):
+            por_grupo[grupo][k] += x
+        por_mes[p["presentada"][:7]][0] += 1
+        por_mes[p["presentada"][:7]][1] += pend
+        por_tema.update(mod_temas.temas_de(p["titulo"]))
+        ids = [indice[n] for n, _ in p["autores"] if n in indice]
+        for i in ids:
+            for k, x in enumerate((1, pend, vieja)):
+                por_dip[i][k] += x
+            if len(listas[i]) < 60:
+                listas[i].append([p["exp"], p["presentada"], p["estado"], p["titulo"], demora])
+        if vieja:
+            antiguas.append([p["exp"], p["calificada"], p["titulo"], ids, grupo])
+    antiguas.sort(key=lambda a: a[1])
+    mediana = lambda xs: sorted(xs)[len(xs) // 2] if xs else None
+    tramos = [(0, 20), (21, 40), (41, 60), (61, 120), (121, 365), (366, 100_000)]
+    resumen = {
+        "generado": hoy.isoformat(), "dias": DIAS_SIN_RESPUESTA, "total": len(preguntas),
+        "estados": dict(Counter(p["estado"] for p in preguntas)),
+        "grupos": dict(por_grupo), "diputados": {str(i): v for i, v in por_dip.items()},
+        "meses": dict(sorted(por_mes.items())), "temas": dict(por_tema.most_common()),
+        "antiguas": antiguas[:40], "n_antiguas": len(antiguas),
+        # Tiempo de respuesta, en días desde la calificación hasta el cierre (solo las contestadas con fecha).
+        "demora": {"n": len(demoras), "mediana": mediana(demoras),
+                   "fuera": sum(x > DIAS_SIN_RESPUESTA for x in demoras),
+                   "tramos": [[a, b, sum(a <= x <= b for x in demoras)] for a, b in tramos],
+                   "grupos": {g: [mediana(xs), len(xs)] for g, xs in demora_grupo.items() if len(xs) >= 20}},
+    }
+    return resumen, listas
+
+
+DIAS_SIN_RESPUESTA = 60  # 20 días de plazo + 20 de prórroga desde la publicación, y margen hasta que se publica
 
 
 def escribir_web(salida: dict) -> None:
@@ -417,6 +493,27 @@ def escribir_web(salida: dict) -> None:
     indice["agenda"] = {"plenos": agenda.get("plenos", []), "comisiones": agenda.get("comisiones", [])}
     indice["semanas"] = [s["id"] for s in salida.get("semanas", [])]
     (carpeta / "indice.json").write_text(json.dumps(indice, ensure_ascii=False))
+    # Índice por tema para toda la legislatura: la vista de un tema no necesita cargar todos los meses.
+    temas = {slug: {"nombre": nombre, "votos": [], "leyes": [], "preguntas": 0} for slug, nombre, _ in mod_temas.TEMAS}
+    for v in sorted(d["votaciones"], key=lambda v: (v["fecha"], v["id"]), reverse=True):
+        for t in v.get("tm", []):
+            temas[t]["votos"].append([v["id"], v["fecha"], v["titulo"], v["tipo"], v["si"], v["no"], v["abst"]])
+    for ley in (salida.get("leyes") or {}).get("iniciativas", []):
+        for t in ley.get("tm", []):
+            temas[t]["leyes"].append(ley["exp"])
+    for p in salida.get("preguntas") or []:
+        for t in mod_temas.temas_de(p["titulo"]):
+            temas[t]["preguntas"] += 1
+    (carpeta / "temas.json").write_text(json.dumps(temas, ensure_ascii=False))
+    if salida.get("preguntas"):
+        resumen, listas = resumen_preguntas(salida["preguntas"], d["diputados"])
+        (carpeta / "preguntas.json").write_text(json.dumps(resumen, ensure_ascii=False))
+        sub = carpeta / "preguntas"
+        sub.mkdir(exist_ok=True)
+        for viejo in sub.glob("*.json"):
+            viejo.unlink()
+        for i, lista in listas.items():
+            (sub / f"{slug_web(d['diputados'][i][0])}.json").write_text(json.dumps(lista, ensure_ascii=False))
     (carpeta / "semanas.json").write_text(json.dumps(salida.get("semanas", []), ensure_ascii=False))
     leyes = salida.get("leyes") or {"iniciativas": [], "aprobadas": []}
     (carpeta / "leyes.json").write_text(json.dumps({

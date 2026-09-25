@@ -56,6 +56,15 @@ Las redes sociales necesitan direcciones absolutas: al desplegar, define `ESCANO
 - **La semana en el Congreso** (`#semana-AAAA-Sww`) resume cada semana sin IA: la votación más ajustada, las leyes que se han movido, los decretos, las tomas en consideración y quién votó distinto a su grupo. Cada semana tiene página para compartir y entra en el RSS general.
 - La portada anuncia el **próximo pleno** con su orden del día.
 
+## Entender y vigilar
+
+- **Glosario** (`#glosario`) y **«¿Qué significa?»** en cada votación: una frase fija por tipo y resultado (una PNL aprobada no cambia ninguna ley). Los términos técnicos de la web enlazan al glosario.
+- **Cómo se hace una ley** (`#como-ley`): siete pasos con las cifras reales de la legislatura.
+- **Tus diputados** (`#provincia-<provincia>`): los diputados de cada circunscripción, su voto en las decisiones más ajustadas y sus preguntas. La portada recuerda la provincia elegida.
+- **Temas para seguir** (`#tema-<tema>` y `site/tema/<tema>/rss.xml`): votaciones, leyes y puntos del próximo pleno sobre vivienda, sanidad, pensiones…, clasificados por palabras clave (`escano/temas.py`).
+- **Preguntas escritas** (`#preguntas`): `python -m escano preguntas --completo` recorre el buscador de iniciativas por meses de registro y por días de cierre; `actualizar` repasa solo lo reciente. Se ven las pendientes, las que llevan más de 60 días sin respuesta y cuánto tarda el Gobierno en contestar.
+- **Declaraciones de intereses** en la ficha de cada diputado (`data/intereses.json`, de los datos abiertos).
+
 ## Toda la legislatura
 
 Para descargar la XV Legislatura desde el principio (agosto de 2023):

@@ -7,6 +7,7 @@
     python -m escano reprocesar                 # rehace sesiones y votaciones desde los ficheros descargados, sin red
     python -m escano calidad                    # indicadores del parser por sesión
     python -m escano agenda                     # solo el orden del día de los próximos plenos
+    python -m escano preguntas [--completo]     # preguntas escritas al Gobierno (la primera vez, --completo)
 """
 from __future__ import annotations
 
@@ -16,7 +17,7 @@ from datetime import date, timedelta
 
 import json
 
-from . import agenda, calidad, diario, diputados, hemiciclo, leyes, organos, votaciones
+from . import agenda, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
 from .config import CRUDOS, VOTACIONES
 from .construir import construir
 
@@ -40,6 +41,9 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
     print(f"· Plano del hemiciclo: {len(hemiciclo.actualizar()['escanos'])} escaños")
     print(f"· Comisiones: {len(organos.actualizar())}")
     print(f"· Iniciativas legislativas: {len(leyes.actualizar()['iniciativas'])}")
+    print(f"· Declaraciones de intereses: {len(intereses.actualizar())} diputados")
+    pr = preguntas.actualizar()["preguntas"]
+    print(f"· Preguntas escritas: {len(pr)}, {sum(p['estado'] == 'pendiente' for p in pr)} sin contestar")
     ag = agenda.actualizar()
     print(f"· Agenda: {len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión")
 
@@ -124,6 +128,8 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("--sin-ia", action="store_true")
 
     sub.add_parser("calidad", help="indicadores del parser por sesión")
+    pq = sub.add_parser("preguntas", help="descarga las preguntas escritas al Gobierno")
+    pq.add_argument("--completo", action="store_true", help="recorre toda la legislatura, no solo lo nuevo")
     sub.add_parser("agenda", help="descarga el orden del día de los próximos plenos y la tramitación de leyes")
 
     args = p.parse_args(argv)
@@ -141,6 +147,9 @@ def main(argv: list[str] | None = None) -> None:
         construir(con_ia=not args.sin_ia)
     elif args.orden == "reprocesar":
         reprocesar(con_ia=not args.sin_ia)
+    elif args.orden == "preguntas":
+        pr = preguntas.actualizar(completo=args.completo)["preguntas"]
+        print(f"{len(pr)} preguntas, {sum(p['estado'] == 'pendiente' for p in pr)} sin contestar")
     elif args.orden == "agenda":
         ag = agenda.actualizar()
         print(f"{len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión, "

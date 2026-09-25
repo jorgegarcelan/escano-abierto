@@ -16,11 +16,13 @@ import html
 import os
 import re
 import unicodedata
+from collections import Counter
 from datetime import date
 from pathlib import Path
 from xml.sax.saxutils import escape as esc_xml
 
 from .config import SITIO
+from .temas import NOMBRE as NOMBRE_TEMA, TEMAS
 
 # Dirección pública de la web (p. ej. https://escanoabierto.es). Las redes necesitan URLs absolutas para
 # las imágenes; sin ella, las páginas llevan rutas relativas a la raíz del sitio.
@@ -303,6 +305,38 @@ def tarjeta_semana(sem: dict, vs: list, votos_por_id: dict, dips: list, plano: d
     return t.png()
 
 
+def tarjeta_provincia(circ: str, ids: list[int], dips: list, grupos: dict, plano: dict) -> bytes:
+    t = Tarjeta()
+    t.d.text((64, 150), "TUS DIPUTADOS", font=t.geist(21, 600), fill=APAGADO)
+    y = t.texto((64, 190), circ, t.geist(66, 700), TINTA, 560, 2, 1.05)
+    reparto = Counter(dips[i][1] for i in ids)
+    t.texto((64, y + 14), f"{len(ids)} {'diputado' if len(ids) == 1 else 'diputados'}: " +
+            ", ".join(f"{g} {n}" for g, n in reparto.most_common()), t.geist(28, 500), APAGADO, 560, 3)
+    if plano.get("ancho"):
+        esc = []
+        for j, d in enumerate(dips):
+            if d[5] is None or _baja(d):
+                continue
+            base = _hex(grupos.get(d[1], {}).get("color", "#8A8F98"))
+            esc.append((d[5], d[6], base if j in ids else _mezcla(FONDO, (94, 100, 109), .55), 3 if j in ids else 0))
+        esc.sort(key=lambda e: e[3])
+        t.hemiciclo(plano, esc, (660, 130, 1150, 520))
+    return t.png()
+
+
+def tarjeta_tema(nombre: str, votos: list, leyes: list, dips: list, plano: dict) -> bytes:
+    t = Tarjeta()
+    t.d.text((64, 150), "SEGUIR UN TEMA EN EL CONGRESO", font=t.geist(21, 600), fill=APAGADO)
+    y = t.texto((64, 190), nombre, t.geist(62, 700), TINTA, 560, 3, 1.05)
+    vivas = sum(l["estado"] == "en trámite" for l in leyes)
+    t.texto((64, y + 16), f"{len(votos)} votaciones · {len(leyes)} leyes, {vivas} en trámite", t.geist(28, 500), APAGADO, 560, 2)
+    if votos and plano.get("ancho"):
+        ult = max(votos, key=lambda v: (v["fecha"], v["id"]))
+        t.hemiciclo(plano, _escanos_voto(ult, dips, plano), (660, 130, 1150, 520))
+        t.d.text((905, 548), f"La última: {corto(ult['titulo'], 38)}", font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+    return t.png()
+
+
 def tarjeta_portada(plano: dict, dips: list) -> bytes:
     t = Tarjeta()
     t.d.text((64, 250), "ESCAÑO", font=t.doto(120), fill=TINTA)
@@ -446,7 +480,7 @@ def generar(salida: dict, plano: dict) -> dict:
         curso). Va en el nombre del fichero, así que un cambio da una tarjeta nueva y las redes no se quedan
         con la vieja en caché."""
         imagen = f"og/{ruta}-{hashlib.sha1(clave.encode()).hexdigest()[:8]}.png" if clave else f"og/{ruta}.png"
-        feed = ruta.startswith(("diputado/", "iniciativa/"))
+        feed = ruta.startswith(("diputado/", "iniciativa/", "tema/"))
         escritas["paginas"] += _escribir_si_cambia(SITIO / ruta / "index.html",
                                                    _pagina(ruta, hashweb, titulo, desc, imagen, feed))
         destino = SITIO / imagen
@@ -508,6 +542,42 @@ def generar(salida: dict, plano: dict) -> dict:
         clave = f"{sem['titular']}|{len(vs)}|{sem['aprobadas']}|{sem['ajustadas'][:1]}"
         poner(f"semana/{sem['id']}", f"semana-{sem['id']}", sem["titular"], desc,
               lambda sem=sem, vs=vs: tarjeta_semana(sem, vs, votos_por_id, dips, plano), clave)
+
+    # ---- provincias: los diputados de cada circunscripción
+    por_circ: dict[str, list[int]] = {}
+    for i, d in enumerate(dips):
+        if d[2] and not _baja(d):
+            por_circ.setdefault(d[2], []).append(i)
+    for circ, ids in por_circ.items():
+        reparto = Counter(dips[i][1] for i in ids)
+        desc = (f"{len(ids)} {'diputado' if len(ids) == 1 else 'diputados'} ({', '.join(f'{g} {n}' for g, n in reparto.most_common())}). "
+                "Cómo votan, cuándo se apartan de su grupo, qué preguntan al Gobierno y en qué comisiones están.")
+        poner(f"provincia/{slug(circ)}", f"provincia-{slug(circ)}", f"Los diputados de {circ}", desc,
+              lambda circ=circ, ids=ids: tarjeta_provincia(circ, ids, dips, grupos, plano),
+              "|".join(dips[i][0] for i in ids))
+
+    # ---- temas: página, tarjeta y RSS de cada uno
+    agenda = salida.get("agenda") or {}
+    for tema, nombre, _ in TEMAS:
+        vs = [v for v in datos["votaciones"] if tema in v.get("tm", [])]
+        ls = [l for l in leyes.values() if tema in l.get("tm", [])]
+        ruta = f"tema/{tema}"
+        desc = (f"Todo lo que pasa en el Congreso sobre {nombre.lower()}: {len(vs)} votaciones y {len(ls)} leyes "
+                f"en la legislatura, y lo que viene en el próximo pleno. Síguelo por RSS.")
+        ult = max(vs, key=lambda v: (v["fecha"], v["id"]))["id"] if vs else ""
+        poner(ruta, f"tema-{tema}", f"{nombre} en el Congreso", desc,
+              lambda nombre=nombre, vs=vs, ls=ls: tarjeta_tema(nombre, vs, ls, dips, plano), f"{len(vs)}|{len(ls)}|{ult}")
+        ents = [_entrada_voto(v) for v in vs]
+        for l in ls:
+            ents += _entradas_tramitacion(l, f"iniciativa/{l['exp'].replace('/', '-')}")
+        for pl in agenda.get("plenos", []):
+            for x in pl["puntos"]:
+                if tema in x.get("tm", []):
+                    ents.append({"id": f"od-{pl['sesion']}-{x['n']}", "fecha": agenda.get("generado") or x["fecha"],
+                                 "enlace": "", "titulo": f"En el pleno del {fecha_larga(x['fecha'])}: {corto(x['titulo'], 150)}",
+                                 "desc": f"{x['seccion']}. " + (f"{x['autor']} pregunta a {x['a']}." if x.get("autor") else "")})
+        escritas["rss"] += _escribir_si_cambia(SITIO / ruta / "rss.xml", rss(
+            f"{ruta}/rss.xml", f"{nombre} · Escaño Abierto", desc, ruta + "/", ents))
 
     # ---- RSS: general, por diputado (solo lo destacable) y por iniciativa
     from .construir import _clave_apellidos
