@@ -60,7 +60,7 @@ def tipo_votacion(v: dict) -> str:
 
 RE_RDL = re.compile(r"^Real Decreto-ley (\d+/\d{4}), de \d+ de \w+, (.*)$", re.I)
 RE_ASUNTO = re.compile(r",\s+(?:sobre|relativ[ao] a|para)\s+(.*)$", re.I)
-RE_PREFIJO = re.compile(r"^(?:Proposición no de Ley|Proposición de Ley|Proyecto de Ley|Moción[^,]*?)\s*"
+RE_PREFIJO = re.compile(r"^(?:(?:Proposición no de Ley|Proposición de Ley|Proyecto de Ley|Moción[^,]*?)\s*)?"
                         r"(?:del Grupo Parlamentario [^,]+,\s*)?(?:de\s+)?", re.I)
 
 
@@ -70,7 +70,9 @@ def titulo_votacion(texto: str, subgrupo: str = "") -> str:
     «Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre la crisis
     que atraviesa la Ciudad Autónoma de Ceuta.» -> «Crisis que atraviesa la Ciudad Autónoma de Ceuta».
     """
-    t = (texto or "").strip().split("\n")[0].strip().rstrip(".")
+    t = (texto or "").strip().split("\n")[0].strip()
+    t = re.sub(r"\.?\s*«BOCG[^»]*».*$", "", t)            # referencia al boletín
+    t = re.sub(r"\s*\(BOE[^)]*\)\.?", "", t).strip().rstrip(".")
     if m := re.search(r"^Tramitación como Proyecto de Ley.*?Real Decreto-ley (\d+/\d{4})", t, re.I):
         t = f"Tramitar el RDL {m.group(1)} como proyecto de ley"
     elif m := RE_RDL.match(t):
@@ -121,7 +123,7 @@ def votos_compactos(v: dict, indice: dict[str, int]) -> str:
 def _votacion_web(v: dict, indice: dict[str, int] | None = None) -> dict:
     return {
         "id": v["id"], "fecha": v["fecha"], "tipo": tipo_votacion(v),
-        "titulo": titulo_votacion(v["titulo"], v.get("subgrupo", "")), "texto": v["titulo"],
+        "titulo": titulo_votacion(v["titulo"], v.get("subgrupo", "")), "titulo_fuente": "oficial", "texto": v["titulo"],
         "proponente": proponente(v["titulo"]) or "?", "exp": v.get("exp") or "",
         "si": v["si"], "no": v["no"], "abst": v["abst"], "novota": v["novota"],
         "grupos": {g: (x if x in "SNAD" else "?") for g, x in v["grupos"].items()},
@@ -143,6 +145,7 @@ def completar_con_mvp(sesiones: list[dict], ivs: list[dict], votos: list[dict]) 
     for v in votos:  # títulos revisados a mano en el MVP
         if (m := mvp.get("votaciones", {}).get(v["id"])):
             v.update(m)
+            v["titulo_fuente"] = "revisado"
     ids_votos = {v["id"] for v in votos}
     analizadas = {i["s"] for i in ivs}
     for m in mvp.get("sesiones", []):
@@ -229,12 +232,18 @@ def construir(con_ia: bool = True) -> dict:
             enlazados = [v["id"] for v in votos_dia if parecido(v["texto"], asunto) >= 0.5]
             puntos.append({
                 "tipo": (seccion or "Asunto").capitalize(),
-                "titulo": titulos[i] if i < len(titulos) else titulo_legible(asunto),
+                "titulo": titulos[i] if i < len(titulos) else titulo_votacion(titulo_legible(asunto)),
                 "exp": next((iv["exp"] for iv in ivs if iv["item"] == asunto and iv["exp"]), None),
                 "estado": "analizado" if hay_analisis else "pendiente",
                 "itemId": asunto,
                 "votos": enlazados,
             })
+        # El número de expediente de la votación, cuando no viene en los datos abiertos, sale del asunto enlazado.
+        por_id = {v["id"]: v for v in votos_dia}
+        for p in puntos:
+            for vid in p["votos"]:
+                if p["exp"] and not por_id[vid]["exp"]:
+                    por_id[vid]["exp"] = p["exp"]
         # Votaciones del día que no casan con ningún asunto debatido en este Diario.
         usados = {vid for p in puntos for vid in p["votos"]}
         sueltas = [v["id"] for v in votos_dia if v["id"] not in usados]
@@ -243,13 +252,18 @@ def construir(con_ia: bool = True) -> dict:
                            "estado": "analizado", "votos": sueltas})
 
         reacciones = Counter()
+        termometro: dict[str, Counter] = defaultdict(Counter)   # reacciones durante los turnos de cada grupo
         for iv in ivs:
             reacciones.update(iv.get("reacciones", {}))
+            if iv["grupo"] not in ("MESA", "?"):
+                termometro[iv["grupo"]]["turnos"] += 1
+                termometro[iv["grupo"]].update(iv.get("reacciones", {}))
         sesiones_web.append({
             "id": ses["id"], "fecha": ses["fecha"], "organo": ses["organo"],
             "sesion": f"Sesión nº {ses['sesion']}" if ses.get("sesion") else ses["organo"],
             "ds": ses["ds"], "dsNombre": ses["id"], "titular": titular, "resumen": resumen, "puntos": puntos,
-            "reacciones": dict(reacciones),
+            "reacciones": dict(reacciones), "turnos": sum(1 for iv in ivs if iv["grupo"] != "MESA"),
+            "termometro": {g: dict(c) for g, c in termometro.items()},
         })
         if ses["serie"] == "PL":
             fechas_con_ds.add(ses["fecha"])

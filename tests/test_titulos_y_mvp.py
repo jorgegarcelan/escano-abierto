@@ -21,6 +21,8 @@ def test_titulo_votacion():
     assert titulo_votacion("Tramitación como Proyecto de Ley por el procedimiento de urgencia del Real Decreto-ley "
                            "23/2026, de 8 de septiembre, por el que se adoptan medidas.") \
         == "Tramitar el RDL 23/2026 como proyecto de ley"
+    assert titulo_votacion("Sobre la necesidad de transparencia. «BOCG. Congreso de los Diputados», serie D, "
+                           "número 573, de 27 de julio de 2026") == "Sobre la necesidad de transparencia"
 
 
 def test_cabecera_comision():

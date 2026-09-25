@@ -23,13 +23,13 @@ from .red import descargar
 
 MAYUS = "A-ZÁÉÍÓÚÜÑÀÈÌÒÙÏÇ"
 RE_TURNO = re.compile(
-    rf"^(?P<art>El|La) señora? (?P<nombre>[{MAYUS}][{MAYUS}'’ .,\-\n]*?)"
+    rf"^(?P<art>El|La) señora? (?P<nombre>[{MAYUS}][{MAYUS}'’ .,\-\u2010\u2011\n]*?)"
     rf"(?:\s*\((?P<paren>[^)]*)\))?:[ \t]*",
     re.M,
 )
 RE_ITEM = re.compile(r"^—\s*(?P<txt>[^—]{1,800}?\(Número\s+de\s+expediente[^)]*\)\.?)", re.M)
 RE_EXP = re.compile(r"(\d{3}/\d{6})")
-RE_SECCION = re.compile(rf"^(?P<t>[{MAYUS}][{MAYUS} ,.\-]{{6,90}})$", re.M)
+RE_SECCION = re.compile(rf"^(?P<t>[{MAYUS}][{MAYUS} ,.\-()]{{6,90}}):?$", re.M)
 RE_FECHA = re.compile(
     r"(lunes|martes|miércoles|jueves|viernes|sábado|domingo),?\s+(\d{1,2}) de ([a-z]+) de (\d{4})", re.I
 )
@@ -49,6 +49,7 @@ RUIDO = [
     r"^Núm\. \d+\s*$",
     r"^\d{1,2} de [a-z]+ de \d{4}\s*$",
     r"^Pág\. \d+\s*$",
+    r"^Núm\. \d+ \d{1,2} de [a-z]+ de \d{4} Pág\. \d+\s*$",
     r"^cve: DSCD-.*$",
 ]
 OFICIOS_MESA = {"PRESIDENTE", "PRESIDENTA", "VICEPRESIDENTE", "VICEPRESIDENTA",
@@ -76,7 +77,8 @@ def _titulo(s: str) -> str:
     """'NÚÑEZ FEIJÓO' -> 'Núñez Feijóo' respetando partículas."""
     menores = {"de", "del", "la", "las", "los", "el", "y", "e", "i", "en", "para", "con"}
     palabras = s.strip().lower().split()
-    return " ".join(p if (p in menores and i) else p[:1].upper() + p[1:] for i, p in enumerate(palabras))
+    return " ".join(p if (p in menores and i) else "-".join(x[:1].upper() + x[1:] for x in p.split("-"))
+                    for i, p in enumerate(palabras))
 
 
 # ---------------------------------------------------------------- descarga
@@ -85,9 +87,16 @@ def url_diario(serie: str, numero: int) -> str:
     return URL_DS.format(leg=LEGISLATURA, serie=serie, num=numero)
 
 
-def texto_pdf(ruta: Path) -> str:
-    """Convierte el PDF a texto con pdftotext (poppler-utils)."""
-    salida = subprocess.run(["pdftotext", "-enc", "UTF-8", str(ruta), "-"], capture_output=True, check=True)
+def texto_pdf(ruta: Path, portada: bool = False, normal: bool = False) -> str:
+    """Convierte el PDF a texto con pdftotext (poppler-utils).
+
+    `-raw` respeta el orden del PDF; sin él, en los saltos de página el texto de un orador acaba
+    dentro del turno siguiente.
+    La portada (`portada=True`) y los encabezados de los asuntos (`normal=True`) se leen en modo normal:
+    `-raw` pega las palabras de los títulos en mayúsculas justificados.
+    """
+    opciones = ["-l", "1"] if portada else [] if normal else ["-raw"]
+    salida = subprocess.run(["pdftotext", *opciones, "-enc", "UTF-8", str(ruta), "-"], capture_output=True, check=True)
     return salida.stdout.decode("utf-8", "replace")
 
 
@@ -144,7 +153,7 @@ def cuerpo(texto: str) -> str:
 
 def clasificar(nombre: str, paren: str | None, mapa: dict[str, str], es_comision: bool) -> tuple[str, str | None, str]:
     """Devuelve (orador, cargo, grupo)."""
-    nombre = " ".join(nombre.split())
+    nombre = " ".join(nombre.replace("\u2011", "-").replace("\u2010", "-").split())
     if paren:  # «PRESIDENTE DEL GOBIERNO (Sánchez Pérez-Castejón)» o «VICEPRESIDENTA (Navarro Garzón)»
         cargo, orador = _titulo(nombre), " ".join(paren.split())
         if nombre in OFICIOS_MESA:
@@ -162,20 +171,33 @@ def clasificar(nombre: str, paren: str | None, mapa: dict[str, str], es_comision
     return _titulo(nombre), None, grupo
 
 
-def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = False) -> list[Intervencion]:
-    mapa = mapa or {}
+def encabezados(texto: str) -> dict[str, str]:
+    """Número de expediente -> encabezado del asunto, tal como lo da el texto en modo normal."""
+    salida = {}
+    for m in RE_ITEM.finditer(cuerpo(limpiar(texto))):
+        t = " ".join(m.group("txt").split())
+        if (e := RE_EXP.search(t)) and e.group(1) not in salida:
+            salida[e.group(1)] = t
+    return salida
+
+
+def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = False,
+            titulos: dict[str, str] | None = None) -> list[Intervencion]:
+    mapa, titulos = mapa or {}, titulos or {}
     cuerpo_txt = cuerpo(limpiar(texto))
 
     # Asuntos y secciones con su posición en el texto.
     marcas: list[tuple[int, str, str]] = []
     tramos = []
     for m in RE_ITEM.finditer(cuerpo_txt):
-        marcas.append((m.start(), "item", " ".join(m.group("txt").split())))
+        t = " ".join(m.group("txt").split())
+        e = RE_EXP.search(t)
+        marcas.append((m.start(), "item", titulos.get(e.group(1), t) if e else t))
         tramos.append((m.start(), m.end()))
     for m in RE_SECCION.finditer(cuerpo_txt):
         dentro_de_item = any(a <= m.start() < b for a, b in tramos)
         if not dentro_de_item:
-            marcas.append((m.start(), "seccion", m.group("t").strip()))
+            marcas.append((m.start(), "seccion", m.group("t").strip(" .")))
     marcas.sort()
 
     turnos = list(RE_TURNO.finditer(cuerpo_txt))
@@ -206,8 +228,8 @@ def dividir(texto: str, mapa: dict[str, str] | None = None, es_comision: bool = 
 def procesar_diario(ruta: Path, serie: str, numero: int, mapa: dict[str, str]) -> dict:
     """Extrae y guarda las intervenciones de un Diario en data/sesiones/<id>.json."""
     texto = texto_pdf(ruta)
-    cab = cabecera(texto, serie)
-    ivs = dividir(texto, mapa, es_comision=(serie == "CO"))
+    cab = cabecera(texto_pdf(ruta, portada=True), serie)
+    ivs = dividir(texto, mapa, es_comision=(serie == "CO"), titulos=encabezados(texto_pdf(ruta, normal=True)))
     ses = {
         "id": f"DSCD-{LEGISLATURA}-{serie}-{numero}",
         "serie": serie,

@@ -64,6 +64,9 @@ def test_construir(tmp_path, monkeypatch):
     assert datos["diputados"] == [["Uno, A", "PNV", "Bizkaia", "EAJ-PNV", "2023-08-17"], ["Dos, B", "PSOE", "", "", ""]]
     assert datos["votaciones"][0]["v"] == "SX"                              # una letra por diputado
     assert next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")["titular"].startswith("Ceuta")
+    s205 = next(s for s in datos["sesiones"] if s["fecha"] == "2026-09-16")
+    assert s205["termometro"]["PP"]["turnos"] >= 1 and "MESA" not in s205["termometro"]
+    assert datos["votaciones"][0]["titulo_fuente"] == "oficial"
     assert all(i["g"] != "MESA" for i in interv)
     sanchez = next(i for i in interv if i["orador"] == "Sánchez Pérez-Castejón")
     assert sanchez["cita"] == "hay que temer a quien se lo quiere quitar"   # cita verificada
