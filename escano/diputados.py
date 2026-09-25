@@ -24,6 +24,7 @@ def leer_activos(datos: list[dict]) -> dict[str, dict]:
             "circunscripcion": (d.get("CIRCUNSCRIPCION") or "").strip(),
             "formacion": (d.get("FORMACIONELECTORAL") or "").strip(),
             "alta": f"{anio}-{mes}-{dia}" if anio else "",
+            "biografia": " ".join((d.get("BIOGRAFIA") or "").split()),
         }
     return salida
 

@@ -454,6 +454,42 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .tip-foto{float:left;width:38px;height:48px;object-fit:cover;object-position:50% 18%;border-radius:4px;margin:0 8px 0 -2px}
 #tip{overflow:hidden}
 
+/* hemiciclo de datos y reproductor */
+.hemi-datos{max-width:760px;margin:6px auto 0}
+.hemi-datos circle{transition:opacity .2s,r .2s}
+.hemi-datos .hit{stroke:var(--ink);stroke-width:1.6}
+.key .rampa{display:inline-block;width:120px;height:9px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--ink) 12%,var(--sunk)),var(--ink))}
+.repro-cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
+.repro-dia{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.repro-dia select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:4px 8px}
+.repro-cuerpo{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:center;margin-top:10px}
+.hemi.anima circle{transition:fill .5s ease,stroke .5s ease}
+.repro-info{display:grid;gap:12px;align-content:center}
+.repro-t{font-family:var(--display);font-size:22px;line-height:1.2;font-weight:600;text-wrap:balance;min-height:2.4em}
+.repro-res{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.repro-res b{font-family:var(--display);font-size:30px;font-variant-numeric:tabular-nums}
+.repro-ctl{display:flex;gap:8px}
+.repro-barra{display:flex;flex-wrap:wrap;gap:4px}
+.repro-barra button{appearance:none;border:0;width:16px;height:10px;border-radius:2px;cursor:pointer;opacity:.45;padding:0}
+.repro-barra button.on{opacity:1;outline:2px solid var(--ink);outline-offset:1px}
+/* ficha: perfil y comparación */
+.perfil{align-items:start}
+.perfil .bio summary{list-style:none;cursor:pointer}
+.perfil .bio summary::-webkit-details-marker{display:none}
+.perfil .bio p{margin:0;font-size:14.5px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.perfil .bio[open] p{-webkit-line-clamp:unset;display:block}
+.perfil .bio:not([open]) summary::after{content:"Leer más";display:block;margin-top:6px;font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.comisiones{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.comisiones li{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.comisiones .cargo{font-size:12px;color:var(--muted);white-space:nowrap}
+.comisiones .cargo.destacado{color:var(--ink);font-weight:600}
+.comp{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;padding:14px 0}
+.comp-cara{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.comp-foto{width:64px!important;height:64px!important}
+.comp-centro{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:220px}
+.comp-pct{font-family:var(--display);font-size:44px;font-variant-numeric:tabular-nums;line-height:1}
+@media (max-width:720px){ .repro-cuerpo{grid-template-columns:1fr} .comp{grid-template-columns:1fr} }
+
 @media (max-width:720px){ .multiples{grid-template-columns:repeat(2,minmax(0,1fr))} }
 
 @media (max-width:720px){ .mapa-wrap{grid-template-columns:1fr} .th-row{grid-template-columns:96px 1fr 36px} .tile .es{display:none} }
@@ -711,7 +747,7 @@ document.addEventListener("pointerover", e=>{
   const c = e.target.closest?.(".hemi [data-x]"); if(!c){ tip.hidden=true; return; }
   const g=c.dataset.g, x=c.dataset.x;
   const dFoto = fotoDip(DIP_NOMBRE[c.dataset.n]);
-  tip.innerHTML = `${dFoto?`<img class="tip-foto" src="${dFoto}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}`;
+  tip.innerHTML = `${dFoto?`<img class="tip-foto" src="${dFoto}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:""}${c.dataset.n?`<b>${esc(c.dataset.n.split(", ").reverse().join(" "))}</b><br>`:""}${esc(G[g]?.nombre||g)}${x in MIVOTO?` · ${MIVOTO[x]}`:""}${c.dataset.dis?"<br>Votó distinto a su grupo":""}${c.dataset.extra?`<br>${esc(c.dataset.extra)}`:""}`;
   const b=c.getBoundingClientRect(); tip.style.left=(b.left+b.width/2)+"px"; tip.style.top=b.top+"px"; tip.hidden=false;
 }, SIG);
 window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true, signal:ctl.signal});
@@ -876,12 +912,15 @@ function renderDiputados(){
   const th = (k,l,cls="") => `<th class="${cls}"><button data-dord="${k}" aria-pressed="${ord===k}">${l}${ord===k?" ↓":""}</button></th>`;
   $("#diputados").innerHTML = `
     <div class="view-intro"><div><h2>Diputados</h2><p>Los 350 diputados con su voto en las ${VOTOS_NOM.length} votaciones incluidas: cuánto participan, cuántas veces se apartan de su grupo y cuántas intervenciones tienen analizadas. Pulsa uno para ver su ficha, o un escaño en cualquier hemiciclo.</p></div></div>
+    ${CON_PLANO?`<div class="chart"><h3>El hemiciclo</h3><p class="sub">Cada punto es un diputado en su escaño real. Elige qué mostrar o resalta a quien busques; pulsa un escaño para abrir su ficha.</p><div id="hemi-datos">${hemiDatos()}</div></div>`:""}
     <div class="chart"><h3>Por circunscripción</h3>${mapaCirc()}</div>
     <div class="controls" id="dip-tabla"><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></div>
     <div class="controls" id="dip-g">${chips}${dipFiltro.circ?`<button class="chipbtn" aria-pressed="true" data-circ="${esc(dipFiltro.circ)}">${esc(nombreCirc(dipFiltro.circ))} ✕</button>`:""}</div>
     <div class="dtable-wrap"><table class="dt"><thead><tr>${th("nom","Diputado")}<th>Circunscripción</th>${th("part","Participación","num")}${th("dis","Distinto a su grupo","num")}${th("ivs","Interv.","num")}</tr></thead>
       <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${imgFoto(d, "mini-foto", ` style="--grupo:${G[d.g]?.color}"`, true) || gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>
     <p class="nota">Participación: votaciones en las que votó (sí, no o abstención) sobre las que le correspondían. Una ausencia puede tener causas justificadas.</p>`;
+  pintarHemiDatos();
+  if (!EXTRA) cargarExtra().then(()=>{ if (mapaHemi.metrica==="turnos") pintarHemiDatos(); });
   const inp=$("#dip-q");
   inp.addEventListener("input", e=>{ dipFiltro.q=e.target.value; const pos=e.target.selectionStart; renderDiputados(); const n=$("#dip-q"); n.focus(); n.setSelectionRange(pos,pos); });
 }
@@ -903,9 +942,17 @@ function renderFicha(d){
       <div>${hemiDiputado(d)}</div>
     </div>
     <div class="kpis">${kpis}</div>
+    <section class="sec"><div class="sec-h"><h2>Perfil</h2></div><div id="perfil">${perfilFicha(d)}</div></section>
+    ${comparacion(d)}
     ${s.ivs.length?`<section class="sec"><div class="sec-h"><h2>Sus intervenciones</h2></div><div class="iv-list">${s.ivs.map(ivCard).join("")}</div></section>`:""}
     <section class="sec"><div class="sec-h"><h2>Cómo votó</h2><p>${s.dis?`Las filas marcadas son las votaciones en las que se apartó de la mayoría de su grupo.`:`Votó siempre como la mayoría de su grupo.`}</p></div>
       <div class="dtable-wrap"><table class="dt vt"><thead><tr><th>Fecha</th><th>Votación</th><th>Su voto</th><th>Su grupo</th><th>Resultado</th></tr></thead><tbody>${filas}</tbody></table></div></section>`;
+  iniciarFicha(d);
+}
+function iniciarFicha(d){
+  if (!EXTRA) cargarExtra().then(()=>{ const p=document.getElementById("perfil"); if (p && dipSel===d.slug) p.innerHTML=perfilFicha(d); });
+  document.getElementById("comp-q")?.addEventListener("change", e=>{ const q=sinTildes(e.target.value.trim()); const o=DIP.find(x=>sinTildes(legible(x.n))===q) || DIP.find(x=>q && sinTildes(legible(x.n)).includes(q));
+    if (o){ dipComp=o.slug; const y=window.scrollY; renderFicha(d); window.scrollTo(0,y); } });
 }
 function irDiputado(sl){ dipSel = sl; rendered.diputados=false; show("diputados", false); try{ history.replaceState(null,"","#diputado-"+sl); }catch(e){} window.scrollTo(0,0); }
 
@@ -1092,6 +1139,126 @@ function renderIniciativa(x){
     <ol class="timeline">${ev.map(e=>e.html).join("")}</ol>`;
 }
 function irIniciativa(x){ iniSel=x; rendered.votaciones=false; show("votaciones",false); try{ history.replaceState(null,"","#iniciativa-"+slugExp(x)); }catch(e){} window.scrollTo(0,0); }
+
+/* ---------- datos extra de los diputados (biografía, comisiones, turnos), bajo demanda ---------- */
+let EXTRA = null, extraPromesa = null;
+function cargarExtra(){
+  if (EXTRA) return Promise.resolve(EXTRA);
+  return extraPromesa ||= fetch("datos/diputados-extra.json", {cache:"no-store"}).then(r=>r.ok?r.json():{}).catch(()=>({})).then(j=>EXTRA=j);
+}
+const turnosDe = d => Object.values(EXTRA?.[d.n]?.turnos||{}).reduce((a,b)=>a+b,0);
+
+/* ---------- el hemiciclo como mapa de datos, con buscador ---------- */
+let mapaHemi = {metrica:"grupo", q:""};
+const METRICAS = [["grupo","Grupo"],["part","Participación"],["dis","Votos distintos a su grupo"],["turnos","Turnos de palabra"]];
+function valorMetrica(d){
+  const s = statsDip[d.i];
+  if (mapaHemi.metrica==="part") return s.part;
+  if (mapaHemi.metrica==="dis") return s.dis;
+  if (mapaHemi.metrica==="turnos") return EXTRA ? turnosDe(d) : null;
+  return null;
+}
+function hemiDatos(){
+  if (!CON_PLANO) return "";
+  const m = mapaHemi.metrica, q = sinTildes(mapaHemi.q.trim());
+  const ds = DIP.filter(d=>DIPS[d.i][5]!=null);
+  const vals = ds.map(valorMetrica).filter(v=>v!=null);
+  // Escala: más intenso = más ausencias (participación), más votos distintos o más turnos.
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const t = v => v==null ? 0 : m==="part" ? (hi>lo ? (hi-v)/(hi-lo) : 0) : (hi>lo ? (v-lo)/(hi-lo) : 0);
+  const coincide = d => !q || sinTildes(`${d.n} ${legible(d.n)} ${d.circ} ${d.g} ${G[d.g]?.nombre||""}`).includes(q);
+  const texto = (d,v) => m==="part" ? `Participación: ${pct(v)}` : m==="dis" ? `Votos distintos a su grupo: ${v}` : m==="turnos" ? `Turnos de palabra: ${v??"–"}` : `${G[d.g]?.nombre||d.g} · ${d.circ}`;
+  const seats = ds.map(d=>{ const x=DIPS[d.i][5], y=DIPS[d.i][6], v=valorMetrica(d), on=coincide(d);
+    const fill = m==="grupo" ? G[d.g]?.color : `color-mix(in srgb, var(--ink) ${Math.round(12+t(v)*88)}%, var(--sunk))`;
+    return `<circle cx="${x}" cy="${y}" r="${on&&q?ESC_R*1.25:ESC_R}" style="fill:${fill}${on?"":";opacity:.12"}" class="${on&&q?"hit":""}" data-n="${esc(d.n)}" data-g="${d.g}" data-x="-" data-extra="${esc(texto(d,v))}"></circle>`; }).join("");
+  const n = q ? ds.filter(coincide).length : ds.length;
+  const leyenda = m==="grupo" ? `<div class="key">${ORDEN_HEMI.map(g=>`<span><i style="background:${G[g].color};border-radius:50%"></i>${g}</span>`).join("")}</div>`
+    : `<div class="key"><span>${m==="part"?`${pct(hi)}`:lo}</span><span class="rampa"></span><span>${m==="part"?`${pct(lo)} · más ausencias`:`${hi} · ${m==="dis"?"más votos distintos":"más turnos"}`}</span></div>`;
+  return `<div class="controls" id="hd-m">${METRICAS.map(([k,l])=>`<button class="chipbtn" data-hm="${k}" aria-pressed="${m===k}">${l}</button>`).join("")}</div>
+    <div class="controls"><input id="hd-q" type="search" placeholder="Resalta un nombre, provincia o grupo…" value="${esc(mapaHemi.q)}" aria-label="Resaltar diputados en el hemiciclo">${q?`<span class="nota">${n} ${n===1?"escaño":"escaños"}</span>`:""}</div>
+    <svg class="hemi real hemi-datos" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Hemiciclo: ${esc(METRICAS.find(x=>x[0]===m)[1])}">${gobiernoSinEscano()}${seats}</svg>
+    ${leyenda}${m==="turnos"?`<p class="nota">Turnos contados en los Diarios de Sesiones del periodo, en el Pleno y en comisiones.</p>`:""}`;
+}
+function pintarHemiDatos(){ const c=document.getElementById("hemi-datos"); if(!c) return; c.innerHTML = hemiDatos();
+  const inp=document.getElementById("hd-q"); inp?.addEventListener("input", e=>{ mapaHemi.q=e.target.value; const pos=e.target.selectionStart; pintarHemiDatos(); const n=document.getElementById("hd-q"); n.focus(); n.setSelectionRange(pos,pos); }); }
+
+/* ---------- la sesión, votación a votación ---------- */
+let repro = {fecha:null, k:0, play:false, timer:null};
+function diasConVotos(){ return [...new Set(DATA.votaciones.map(v=>v.fecha))].sort().reverse(); }
+function votosDelDia(f){ return DATA.votaciones.filter(v=>v.fecha===f && v.v).sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true})); }
+function reproductor(){
+  if (!CON_PLANO) return "";
+  const dias = diasConVotos(); if (!dias.length) return "";
+  repro.fecha ||= dias[0];
+  const vs = votosDelDia(repro.fecha); if (!vs.length) return "";
+  const seats = DIP.filter(d=>DIPS[d.i][5]!=null).map(d=>`<circle cx="${DIPS[d.i][5]}" cy="${DIPS[d.i][6]}" r="${ESC_R}" data-i="${d.i}" data-n="${esc(d.n)}" data-g="${d.g}" data-x="-"></circle>`).join("");
+  return `<div class="repro">
+    <div class="repro-cab"><div><h3>La sesión, votación a votación</h3><p class="sub">Cada escaño cambia de color con el voto de su diputado.</p></div>
+      <label class="repro-dia">Día <select id="repro-dia">${dias.map(f=>{const d=dt(f);return `<option value="${f}"${f===repro.fecha?" selected":""}>${d.d} ${d.m} · ${votosDelDia(f).length} votaciones</option>`;}).join("")}</select></label></div>
+    <div class="repro-cuerpo"><svg class="hemi real anima" id="repro-hemi" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Hemiciclo de la votación en curso">${gobiernoSinEscano()}${seats}</svg>
+      <div class="repro-info" aria-live="polite"><div class="eyebrow" id="repro-n"></div><div class="repro-t" id="repro-t"></div><div class="repro-res" id="repro-res"></div>
+        <div class="repro-ctl"><button class="btn" data-repro="prev" aria-label="Votación anterior">◀</button><button class="btn primary" data-repro="play" id="repro-play">▶ Reproducir</button><button class="btn" data-repro="next" aria-label="Votación siguiente">▶▶</button></div>
+        <div class="repro-barra" id="repro-barra">${vs.map((v,k)=>`<button data-repro-k="${k}" style="background:var(${passed(v)?"--si":"--no"})" aria-label="Votación ${k+1}" data-tip="${esc(`${esc(v.titulo)}<br>${v.si} a ${v.no}`)}"></button>`).join("")}</div></div></div></div>`;
+}
+function reproPintar(){
+  const vs = votosDelDia(repro.fecha); if (!vs.length) return;
+  repro.k = Math.max(0, Math.min(repro.k, vs.length-1));
+  const v = vs[repro.k], svg = document.getElementById("repro-hemi"); if (!svg) return;
+  svg.querySelectorAll("circle[data-i]").forEach(c=>{ const x=v.v[+c.dataset.i]; const gp=v.grupos[c.dataset.g];
+    const dis = ["S","N","A"].includes(x) && ["S","N","A"].includes(gp) && x!==gp;
+    c.setAttribute("class", (x==="-"?"X":x)+(dis?" dis":"")); c.dataset.x = x==="-"?"X":x; if (dis) c.dataset.dis="1"; else delete c.dataset.dis; });
+  document.getElementById("repro-n").textContent = `Votación ${repro.k+1} de ${vs.length}`;
+  document.getElementById("repro-t").textContent = v.titulo;
+  document.getElementById("repro-res").innerHTML = `<b>${v.si} – ${v.no}</b> <span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span> <span class="nota">Abst. ${v.abst} · No votan ${v.novota}</span>`;
+  document.querySelectorAll("#repro-barra button").forEach((b,k)=>b.classList.toggle("on", k===repro.k));
+  document.getElementById("repro-play").textContent = repro.play ? "❚❚ Pausa" : "▶ Reproducir";
+}
+function reproParar(){ repro.play=false; clearInterval(repro.timer); repro.timer=null; }
+function reproPlay(){
+  if (repro.play){ reproParar(); reproPintar(); return; }
+  const vs = votosDelDia(repro.fecha); if (repro.k >= vs.length-1) repro.k = -1;
+  repro.play = true; repro.k++; reproPintar();
+  repro.timer = setInterval(()=>{ if ($("#votaciones").hidden){ reproParar(); return; }
+    const n = votosDelDia(repro.fecha).length; if (repro.k >= n-1){ reproParar(); reproPintar(); return; } repro.k++; reproPintar(); }, 2200);
+}
+function iniciarReproductor(){ if (!document.getElementById("repro-hemi")) return; reproPintar();
+  document.getElementById("repro-dia").addEventListener("change", e=>{ reproParar(); repro.fecha=e.target.value; repro.k=0; const c=document.getElementById("repro-caja"); c.innerHTML=reproductor(); iniciarReproductor(); }); }
+ctl.signal.addEventListener("abort", reproParar);
+
+/* ---------- ficha: perfil (biografía, comisiones, turnos) y comparación ---------- */
+const ORDEN_CARGO = ["Presidente","Presidenta","Vicepresidente Primero","Vicepresidenta Primera","Vicepresidente Segundo","Vicepresidenta Segunda","Secretario Primero","Secretaria Primera","Secretario Segundo","Secretaria Segunda","Portavoces","Portavoces adjuntos","Vocales","Ponentes","Vocales Suplentes","Ponentes Suplentes","Adscritos"];
+const cargoLegible = c => ({Portavoces:"Portavoz","Portavoces adjuntos":"Portavoz adjunto",Vocales:"Vocal",Ponentes:"Ponente","Vocales Suplentes":"Vocal suplente","Ponentes Suplentes":"Ponente suplente",Adscritos:"Adscrito"}[c]||c);
+function perfilFicha(d){
+  if (!EXTRA) return `<p class="nota">Cargando el perfil…</p>`;
+  const e = EXTRA[d.n] || {bio:"", comisiones:[], turnos:{}};
+  const com = e.comisiones.slice().sort((a,b)=>{ const i=x=>{const k=ORDEN_CARGO.indexOf(x);return k<0?99:k;}; return i(a[1])-i(b[1]) || a[0].localeCompare(b[0],"es"); });
+  const tur = Object.entries(e.turnos).sort((a,b)=>b[1]-a[1]); const maxT = tur[0]?.[1]||1;
+  return `<div class="two perfil">
+    <div class="chart"><h3>Biografía</h3>${!e.bio?`<p class="nota">El Congreso no publica biografía de este diputado.</p>`:e.bio.length>420?`<details class="bio"><summary><p>${esc(e.bio)}</p></summary></details>`:`<div class="bio"><p>${esc(e.bio)}</p></div>`}
+      <p class="nota">Texto de la ficha oficial del Congreso.</p></div>
+    <div class="chart"><h3>Comisiones</h3>${com.length?`<ul class="comisiones">${com.map(([c,cargo])=>`<li><span>${esc(c.replace(/^Comisión (de |del |para |sobre )?/,m=>m.charAt(0).toUpperCase()+m.slice(1)))}</span><span class="cargo${/President|Vicepresident|Secretari|Portavoz|Portavoces/.test(cargo)?" destacado":""}">${esc(cargoLegible(cargo))}</span></li>`).join("")}</ul>`:`<p class="nota">No forma parte de ninguna comisión.</p>`}
+      ${tur.length?`<h3 style="margin-top:10px">Turnos de palabra</h3><div class="coh">${tur.map(([o,n])=>`<div class="coh-row"><span style="font-size:12.5px">${esc(o.replace(/^Comisión (de |del )?/,""))}</span><span class="trk"><b style="width:${n/maxT*100}%"></b></span><span class="n">${n}</span></div>`).join("")}</div><p class="nota">En los Diarios de Sesiones del periodo.</p>`:""}</div>
+  </div>`;
+}
+let dipComp = null;
+function comparacion(d){
+  const opciones = DIP.filter(x=>x!==d).map(x=>`<option value="${esc(legible(x.n))}"></option>`).join("");
+  let cuerpo = "";
+  const o = dipComp && DIP_SLUG[dipComp];
+  if (o && o!==d){
+    let comun=0, igual=0; const dif=[];
+    VOTOS_NOM.forEach(v=>{ const a=v.v[d.i], b=v.v[o.i]; if(!["S","N","A"].includes(a)||!["S","N","A"].includes(b)) return; comun++; if(a===b) igual++; else dif.push([v,a,b]); });
+    const p = comun ? igual/comun : null;
+    cuerpo = `<div class="comp">
+      <div class="comp-cara">${imgFoto(d,"mini-foto comp-foto",` style="--grupo:${G[d.g]?.color}"`)}<b>${esc(legible(d.n))}</b><span class="nota">${esc(G[d.g]?.nombre||d.g)}</span></div>
+      <div class="comp-centro"><b class="comp-pct">${pct(p)}</b><span class="nota">de coincidencia en ${comun} votaciones en las que votaron los dos</span></div>
+      <div class="comp-cara">${imgFoto(o,"mini-foto comp-foto",` style="--grupo:${G[o.g]?.color}"`)}<b><button class="linklike" data-dip="${o.slug}">${esc(legible(o.n))}</button></b><span class="nota">${esc(G[o.g]?.nombre||o.g)}</span></div>
+    </div>
+    ${dif.length?`<div class="dtable-wrap"><table class="dt vt"><thead><tr><th>Fecha</th><th>Votación en la que se separaron</th><th>${esc(d.n.split(",")[0])}</th><th>${esc(o.n.split(",")[0])}</th></tr></thead><tbody>${dif.slice(0,20).map(([v,a,b])=>{const dd=dt(v.fecha);return `<tr><td class="num" style="white-space:nowrap">${dd.d} ${dd.m}</td><td class="t"><button class="linklike" style="text-decoration:none;text-align:left;font-weight:400" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button></td><td><span class="mivoto ${a}">${MIVOTO[a]}</span></td><td><span class="mivoto ${b}">${MIVOTO[b]}</span></td></tr>`;}).join("")}</tbody></table></div>${dif.length>20?`<p class="nota">Y ${dif.length-20} más.</p>`:""}`:`<p class="nota">Votaron siempre lo mismo.</p>`}`;
+  }
+  return `<section class="sec"><div class="sec-h"><h2>Comparar con otro diputado</h2><p>Coincidencia de voto y votaciones en las que se separaron.</p></div>
+    <div class="controls"><input id="comp-q" list="comp-lista" placeholder="Escribe un nombre…" aria-label="Diputado con el que comparar" value="${o&&o!==d?esc(legible(o.n)):""}"><datalist id="comp-lista">${opciones}</datalist></div>${cuerpo}</section>`;
+}
 
 /* ---------- inicio ---------- */
 const frases = t => (t||"").split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡«])/);
@@ -1321,10 +1488,12 @@ function renderVotaciones(){
   const opts = [["todas","Todas"],["ok","Aprobadas"],["ko","Rechazadas"],["ajustadas","Ajustadas (≤10 votos)"]];
   $("#votaciones").innerHTML = `
     <div class="view-intro"><div><h2>Votaciones</h2><p>Resultados oficiales, voto de cada diputado y posición mayoritaria de cada grupo. Pasa el ratón por un escaño para ver quién es; púlsalo para abrir su ficha.</p></div></div>
+    ${CON_PLANO?`<div class="chart" id="repro-caja">${reproductor()}</div>`:""}
     <div class="chart"><h3>Quién decide</h3><p class="sub">${decideIntro}</p>${rankingDecide()}</div>
     <div class="controls" id="v-f">${opts.map(([k,l])=>`<button class="chipbtn" data-k="${k}" aria-pressed="${vFilter.res===k}">${l}</button>`).join("")}</div>
     <div class="votes">${listaVotos(list,false)}</div>`;
   $("#v-f").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; vFilter.res=b.dataset.k; renderVotaciones(); });
+  iniciarReproductor();
 }
 
 /* ---------- método ---------- */
@@ -1386,6 +1555,12 @@ TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
+  const hm = e.target.closest("[data-hm]");
+  if (hm){ mapaHemi.metrica=hm.dataset.hm; if (mapaHemi.metrica==="turnos" && !EXTRA){ cargarExtra().then(pintarHemiDatos); } pintarHemiDatos(); return; }
+  const rp = e.target.closest("[data-repro]");
+  if (rp){ const a=rp.dataset.repro; if (a==="play") reproPlay(); else { reproParar(); repro.k += a==="next"?1:-1; reproPintar(); } return; }
+  const rk = e.target.closest("[data-repro-k]");
+  if (rk){ reproParar(); repro.k=+rk.dataset.reproK; reproPintar(); return; }
   const ib = e.target.closest("[data-ini]");
   if (ib && INICIATIVAS[ib.dataset.ini]){ tip.hidden=true; irIniciativa(ib.dataset.ini); return; }
   if (e.target.closest("[data-ini-volver]")){ iniSel=null; rendered.votaciones=false; show("votaciones",true); window.scrollTo(0,0); return; }

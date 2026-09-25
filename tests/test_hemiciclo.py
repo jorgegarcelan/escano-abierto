@@ -11,3 +11,11 @@ def test_leer_plano():
     ministro = p["gobierno"][0]                                                # no es diputado: no vota
     assert ministro["nombre"] == "Cuerpo Caballero, Carlos" and "Ministro de Economía" in ministro["cargo"]
     assert "Cuerpo Caballero, Carlos" not in p["escanos"]
+
+
+def test_composicion_de_comision():
+    import json
+    from escano.organos import leer_composicion
+    m = leer_composicion(json.loads((Path(__file__).parent / "fixtures" / "comision_muestra.json").read_text()))
+    assert m[0]["nombre"] == "Ruiz Boix, Juan Carlos" and m[0]["cargo"] == "Presidente"
+    assert m[0]["codigo"] == 68 and m[0]["siglas"] == "GS" and m[0]["baja"] == ""

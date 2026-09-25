@@ -11,7 +11,7 @@ import unicodedata
 from collections import Counter, defaultdict
 from datetime import date
 
-from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo
+from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as mod_organos
 from .analisis import analizar, resumir_sesion
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO, VOTACIONES
 
@@ -319,6 +319,38 @@ def construir(con_ia: bool = True) -> dict:
     return salida
 
 
+def _clave_apellidos(s: str) -> str:
+    s = "".join(c for c in unicodedata.normalize("NFD", s.lower()) if unicodedata.category(c) != "Mn")
+    return " ".join(s.replace("-", " ").split())
+
+
+def extras_diputados(nombres: list[str]) -> dict:
+    """Lo que la ficha carga aparte: biografía, comisiones y turnos de palabra por órgano.
+
+    Los turnos salen de los Diarios procesados (data/sesiones): el Diario nombra al orador por sus apellidos,
+    que se casan con los del diputado cuando no hay ambigüedad.
+    """
+    ficha = mod_diputados.leer()
+    salida = {n: {"bio": ficha.get(n, {}).get("biografia", ""), "comisiones": [], "turnos": {}} for n in nombres}
+    for comision, miembros in mod_organos.leer().items():
+        for m in miembros:
+            if m["nombre"] in salida and m.get("codigo") and not m.get("baja"):
+                salida[m["nombre"]]["comisiones"].append([comision, m["cargo"]])
+    por_apellidos: dict[str, list[str]] = defaultdict(list)
+    for n in nombres:
+        por_apellidos[_clave_apellidos(n.split(",")[0])].append(n)
+    for f in sorted(SESIONES.glob("*.json")):
+        ses = json.loads(f.read_text())
+        for iv in ses.get("intervenciones", []):
+            if iv["grupo"] in ("MESA", "COMP"):
+                continue
+            candidatos = por_apellidos.get(_clave_apellidos(iv["orador"]), [])
+            if len(candidatos) == 1:
+                t = salida[candidatos[0]]["turnos"]
+                t[ses["organo"]] = t.get(ses["organo"], 0) + 1
+    return {n: e for n, e in salida.items() if e["bio"] or e["comisiones"] or e["turnos"]}
+
+
 def escribir_web(salida: dict) -> None:
     """Parte la salida por meses: site/datos/indice.json y site/datos/AAAA-MM.json."""
     d = salida["datos"]
@@ -333,7 +365,7 @@ def escribir_web(salida: dict) -> None:
 
     carpeta = SITIO / "datos"
     carpeta.mkdir(parents=True, exist_ok=True)
-    for viejo in carpeta.glob("????-??.json"):
+    for viejo in carpeta.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9].json"):
         if viejo.stem not in meses:
             viejo.unlink()
     for mes, contenido in meses.items():
@@ -345,4 +377,6 @@ def escribir_web(salida: dict) -> None:
                    "intervenciones": len(c["intervenciones"])} for m, c in sorted(meses.items())],
     }
     (carpeta / "indice.json").write_text(json.dumps(indice, ensure_ascii=False))
+    (carpeta / "diputados-extra.json").write_text(
+        json.dumps(extras_diputados([x[0] for x in d["diputados"]]), ensure_ascii=False))
     (SITIO / "data.json").unlink(missing_ok=True)   # formato anterior, en un solo fichero

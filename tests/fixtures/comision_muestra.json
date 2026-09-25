@@ -1,0 +1,40 @@
+{
+ "data": [
+  {
+   "idCargo": 2,
+   "apellidosNombre": "Ruiz Boix, Juan Carlos",
+   "fechaAltaFormat": "04/12/2023",
+   "urlFichaDiputado": "/busqueda-de-diputados?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&mostrarFicha=true&codParlamentario=68&idLegislatura=XV",
+   "descCargo": "Presidente",
+   "siglas": "GS",
+   "fechaBajaFormat": ""
+  },
+  {
+   "idCargo": 4,
+   "apellidosNombre": "Santiago Romero, Enrique Fernando",
+   "fechaAltaFormat": "13/03/2024",
+   "urlFichaDiputado": "/busqueda-de-diputados?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&mostrarFicha=true&codParlamentario=125&idLegislatura=XV",
+   "descCargo": "Vicepresidente Primero",
+   "siglas": "GSUMAR",
+   "fechaBajaFormat": ""
+  },
+  {
+   "idCargo": 5,
+   "apellidosNombre": "Rojas García, Carlos",
+   "fechaAltaFormat": "04/12/2023",
+   "urlFichaDiputado": "/busqueda-de-diputados?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&mostrarFicha=true&codParlamentario=12&idLegislatura=XV",
+   "descCargo": "Vicepresidente Segundo",
+   "siglas": "GP",
+   "fechaBajaFormat": ""
+  },
+  {
+   "idCargo": 9,
+   "apellidosNombre": "Mercadal Baquero, Pepe",
+   "fechaAltaFormat": "04/12/2023",
+   "urlFichaDiputado": "/busqueda-de-diputados?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&mostrarFicha=true&codParlamentario=190&idLegislatura=XV",
+   "descCargo": "Secretario Primero",
+   "siglas": "GS",
+   "fechaBajaFormat": ""
+  }
+ ]
+}
