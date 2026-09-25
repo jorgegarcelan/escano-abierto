@@ -1,0 +1,126 @@
+/* Marca en prueba: Neoclásico.
+   El Palacio de las Cortes y sus salas: piedra, bronce de los leones, capitales de inscripción,
+   molduras y simetría. Una Caslon de cartela para los titulares y un grano de papel apenas visible. */
+@import url("https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+html:root[data-marca="neoclasico"]{
+  --bg:#ECE8E1; --surface:#F8F6F2; --sunk:#E3DED5; --ink:#1B1915; --muted:#5C574F; --line:#C9C1B3; --line-strong:#8A6A3B;
+  --sub:#EBDDB9; --on-vote:#F8F6F2; --bronce:#8A6A3B;
+  --si:#4A6B45; --no:#8F3A2D; --abst:#A88A45; --nv:#B7B0A4;
+  --display:"Libre Caslon Display",Georgia,serif; --serif:"Libre Caslon Text",Georgia,serif;
+  --sans:"Libre Franklin",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --r-card:0; --r-card-lg:0; --r-pill:0; --r-ctl:0; --r-chip:0; --borde:1px;
+  --ancho:1120px;
+  --sombra:0 1px 0 rgba(27,25,21,.04), 0 18px 36px -24px rgba(27,25,21,.25);
+  --grano:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="neoclasico"]:not([data-theme="light"]){
+    --bg:#16140F; --surface:#1E1B15; --sunk:#27231C; --ink:#EEE8DC; --muted:#ABA392; --line:#3C372D; --line-strong:#B8925A;
+    --sub:#4A3E22; --on-vote:#16140F; --bronce:#C49C62; --si:#86A77E; --no:#D27463; --abst:#D0AE66; --nv:#5B554A;
+    --sombra:0 18px 36px -24px rgba(0,0,0,.8);
+  }
+}
+html:root[data-marca="neoclasico"][data-theme="dark"]{
+  --bg:#16140F; --surface:#1E1B15; --sunk:#27231C; --ink:#EEE8DC; --muted:#ABA392; --line:#3C372D; --line-strong:#B8925A;
+  --sub:#4A3E22; --on-vote:#16140F; --bronce:#C49C62; --si:#86A77E; --no:#D27463; --abst:#D0AE66; --nv:#5B554A;
+  --sombra:0 18px 36px -24px rgba(0,0,0,.8);
+}
+
+html[data-marca="neoclasico"] body{font-size:15.5px;line-height:1.62;background-image:var(--grano)}
+html[data-marca="neoclasico"] ::selection{background:var(--sub);color:#1B1915}
+html[data-marca="neoclasico"] a{text-decoration-color:var(--bronce);text-underline-offset:3px}
+
+/* ---------- tipografía: capitales de inscripción para lo pequeño, Caslon de cartela para lo grande ---------- */
+html[data-marca="neoclasico"] :is(h1,h2,h3,.hero-h,.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-weight:400;letter-spacing:-.005em}
+html[data-marca="neoclasico"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-family:var(--sans);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.22em;color:var(--bronce)}
+html[data-marca="neoclasico"] .eyebrow{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.24em;color:var(--bronce)}
+html[data-marca="neoclasico"] :is(th,.organ){letter-spacing:.2em;font-weight:600;color:var(--bronce)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="neoclasico"] .topbar{background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-bottom:0}
+html[data-marca="neoclasico"] .topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);opacity:.6}
+html[data-marca="neoclasico"] .topbar-in{min-height:72px}
+html[data-marca="neoclasico"] .brand .logo{-webkit-mask:url(neoclasico.svg) center/contain no-repeat;mask:url(neoclasico.svg) center/contain no-repeat;background:var(--ink);height:34px;aspect-ratio:100/76}
+html[data-marca="neoclasico"] .brand .nombre{display:inline;font-family:var(--display);font-size:17px;letter-spacing:.2em;text-transform:uppercase;font-weight:400}
+html[data-marca="neoclasico"] nav.tabs button{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600;padding:0 9px;border-bottom-width:1px}
+html[data-marca="neoclasico"] nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--bronce)}
+html[data-marca="neoclasico"] .periodo-bar{justify-content:center;padding-top:22px}
+html[data-marca="neoclasico"] .periodo-bar label{letter-spacing:.24em;color:var(--bronce)}
+html[data-marca="neoclasico"] .periodo-bar select{border-color:var(--line);background:var(--surface)}
+
+/* Títulos de sección centrados, entre filetes con un rombo. */
+html[data-marca="neoclasico"] :is(.view-intro,.sec-h){flex-direction:column;align-items:center;text-align:center;gap:10px}
+html[data-marca="neoclasico"] :is(.view-intro,.sec-h)>div{display:flex;flex-direction:column;align-items:center}
+html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2){font-size:44px;line-height:1.05;display:flex;align-items:center;gap:22px}
+html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2)::before,
+html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2)::after{content:"";width:64px;height:9px;flex:none;background:
+  linear-gradient(var(--bronce),var(--bronce)) center/100% 1px no-repeat,
+  linear-gradient(45deg,transparent 42%,var(--bronce) 42% 58%,transparent 58%) center/9px 9px no-repeat;opacity:.8}
+html[data-marca="neoclasico"] :is(.view-intro p,.sec-h p){margin-inline:auto;font-family:var(--serif);font-style:italic;font-size:16px}
+
+/* ---------- tarjetas: moldura interior ---------- */
+html[data-marca="neoclasico"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method){border-color:var(--line);outline:1px solid var(--line);outline-offset:-7px}
+html[data-marca="neoclasico"] :is(.chart,.session,.vote,.card){padding:26px 28px}
+html[data-marca="neoclasico"] .punto .vote{outline:0;background:var(--sunk);box-shadow:none;border:0}
+html[data-marca="neoclasico"] :is(.gtable-wrap,.dtable-wrap,.heat-wrap){border-color:var(--line);box-shadow:var(--sombra)}
+
+/* ---------- portada ---------- */
+html[data-marca="neoclasico"] .hero{padding-block:34px 60px;gap:64px}
+html[data-marca="neoclasico"] .hero-h{font-size:clamp(46px,5.4vw,78px);line-height:1;margin-top:18px}
+html[data-marca="neoclasico"] .hero-lede{font-family:var(--serif);font-size:18px;line-height:1.7}
+html[data-marca="neoclasico"] .hero-vote{padding:32px 30px 26px}
+html[data-marca="neoclasico"] .hemi-center b{font-size:clamp(48px,5vw,68px)}
+html[data-marca="neoclasico"] .hemi-center span{letter-spacing:.24em;color:var(--bronce)}
+html[data-marca="neoclasico"] .hemi .band{stroke-width:2}
+html[data-marca="neoclasico"] .hemi .glab{font-family:var(--sans);letter-spacing:.14em;font-size:6.5px}
+html[data-marca="neoclasico"] .btn{border:1px solid var(--ink);padding:13px 22px;text-transform:uppercase;letter-spacing:.18em;font-size:11.5px;font-weight:600}
+html[data-marca="neoclasico"] .btn.primary{background:var(--ink);color:var(--surface)}
+html[data-marca="neoclasico"] .btn:hover{box-shadow:none;background:var(--bronce);border-color:var(--bronce);color:var(--surface)}
+
+/* Cifras entre filetes, centradas. */
+html[data-marca="neoclasico"] .kpis{justify-content:center;border-width:0;padding:0;gap:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:3px double var(--line-strong);border-bottom:3px double var(--line-strong)}
+html[data-marca="neoclasico"] .kpi{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:22px 10px 18px}
+html[data-marca="neoclasico"] .kpi+.kpi{border-left:1px solid var(--line)}
+html[data-marca="neoclasico"] .kpi b{font-size:50px;line-height:.95}
+html[data-marca="neoclasico"] .kpi span{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;max-width:18ch}
+
+html[data-marca="neoclasico"] .sec{padding-top:64px}
+html[data-marca="neoclasico"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-family:var(--serif);font-style:italic;font-size:1.18em;line-height:1.5}
+html[data-marca="neoclasico"] blockquote mark{background:none;color:inherit;border-bottom:1px solid var(--bronce);padding:0}
+html[data-marca="neoclasico"] .face .avatar{border-radius:50%;font-family:var(--display);font-size:15px}
+html[data-marca="neoclasico"] .face .who b{font-family:var(--display);font-size:24px}
+html[data-marca="neoclasico"] .face-foot{background:var(--sunk);letter-spacing:.02em}
+html[data-marca="neoclasico"] .vcard:hover{border-color:var(--bronce);outline-color:var(--bronce)}
+html[data-marca="neoclasico"] .vcard .vc-n{font-size:32px}
+
+/* ---------- datos ---------- */
+html[data-marca="neoclasico"] .res{letter-spacing:.14em;font-size:10px;padding:4px 8px}
+html[data-marca="neoclasico"] .res.mix{background:var(--sunk);color:var(--ink)}
+html[data-marca="neoclasico"] .gp{background:none;border:1px solid var(--line)}
+html[data-marca="neoclasico"] :is(.tag,.tone){background:var(--sunk)}
+html[data-marca="neoclasico"] .stack{height:8px}
+html[data-marca="neoclasico"] .chipbtn{border-color:var(--line);text-transform:uppercase;letter-spacing:.12em;font-size:10.5px;padding:7px 12px}
+html[data-marca="neoclasico"] .chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+html[data-marca="neoclasico"] .controls input{border-color:var(--line);background:var(--surface);padding:10px 14px;font-family:var(--serif);font-style:italic}
+html[data-marca="neoclasico"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--ink);border-radius:0;height:6px}
+html[data-marca="neoclasico"] .decide-row .trk i.abs{background:var(--bronce);opacity:.55}
+html[data-marca="neoclasico"] :is(.gtable-wrap,.dtable-wrap) thead th{border-bottom:3px double var(--line-strong)}
+html[data-marca="neoclasico"] table.dt tbody tr:hover{background:var(--sunk)}
+html[data-marca="neoclasico"] .tile{border-color:var(--line);outline:1px solid var(--line);outline-offset:-4px}
+html[data-marca="neoclasico"] .tile .ab{font-family:var(--sans);letter-spacing:.12em;font-size:9.5px}
+html[data-marca="neoclasico"] .date .d{font-size:60px}
+html[data-marca="neoclasico"] .date .m{letter-spacing:.2em;color:var(--bronce)}
+html[data-marca="neoclasico"] .day{border-bottom:1px solid var(--line)}
+html[data-marca="neoclasico"] .timeline{border-left:1px solid var(--line-strong)}
+html[data-marca="neoclasico"] .timeline li::before{transform:rotate(45deg);border-radius:0;border-color:var(--bronce);width:10px;height:10px;left:-6px}
+html[data-marca="neoclasico"] #tip{background:var(--ink);color:var(--surface);border-radius:0;font-size:12.5px}
+html[data-marca="neoclasico"] footer{text-align:center;border-top:3px double var(--line-strong);font-family:var(--serif);font-style:italic}
+html[data-marca="neoclasico"] .marca-sel{justify-content:center;font-style:normal}
+@media (max-width:720px){
+  html[data-marca="neoclasico"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="neoclasico"] .kpi+.kpi{border-left:0}
+  html[data-marca="neoclasico"] .brand .nombre{display:none}
+  html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2){font-size:32px}
+  html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2)::before,html[data-marca="neoclasico"] :is(.view-intro h2,.sec-h h2)::after{width:28px}
+}

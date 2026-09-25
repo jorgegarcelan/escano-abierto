@@ -1,0 +1,121 @@
+/* Marca en prueba: Puntillismo.
+   La información como trama de puntos, al modo de un catálogo de museo: mucho aire, una serif de
+   cartela, sombras suaves y tramas de semitono que se desvanecen. Los datos se dibujan con puntos. */
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap");
+
+html:root[data-marca="puntillismo"]{
+  --bg:#F6F7F9; --surface:#FFFFFF; --sunk:#EEF1F5; --ink:#14233A; --muted:#5A6878; --line:#E3E8EE; --line-strong:#9AA6B4;
+  --sub:#FFE39B; --on-vote:#FFFFFF;
+  --si:#2B8661; --no:#C44536; --abst:#C8972B; --nv:#B3BCC6;
+  --display:"DM Serif Display",Georgia,serif; --serif:"DM Serif Display",Georgia,serif;
+  --sans:"Karla",system-ui,sans-serif; --mono:"Martian Mono",ui-monospace,monospace;
+  --r-card:22px; --r-card-lg:28px; --r-pill:999px; --r-ctl:12px; --r-chip:999px; --borde:0px;
+  --ancho:1120px;
+  --sombra:0 1px 2px rgba(20,35,58,.05), 0 12px 32px -12px rgba(20,35,58,.14);
+  --asiento:punto;
+  --trama:radial-gradient(var(--ink) 1.1px, transparent 1.5px);
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="puntillismo"]:not([data-theme="light"]){
+    --bg:#0C131C; --surface:#131C27; --sunk:#1A2533; --ink:#E6ECF3; --muted:#9AA9B9; --line:#223043; --line-strong:#4D5E72;
+    --sub:#5A4A18; --on-vote:#0C131C; --si:#4DB582; --no:#E46D5E; --abst:#DDB04E; --nv:#3C4A5A;
+    --sombra:0 1px 0 rgba(255,255,255,.03) inset, 0 16px 40px -16px rgba(0,0,0,.7);
+  }
+}
+html:root[data-marca="puntillismo"][data-theme="dark"]{
+  --bg:#0C131C; --surface:#131C27; --sunk:#1A2533; --ink:#E6ECF3; --muted:#9AA9B9; --line:#223043; --line-strong:#4D5E72;
+  --sub:#5A4A18; --on-vote:#0C131C; --si:#4DB582; --no:#E46D5E; --abst:#DDB04E; --nv:#3C4A5A;
+  --sombra:0 1px 0 rgba(255,255,255,.03) inset, 0 16px 40px -16px rgba(0,0,0,.7);
+}
+
+html[data-marca="puntillismo"] body{font-size:16px;line-height:1.6}
+html[data-marca="puntillismo"] ::selection{background:var(--sub);color:#14233A}
+
+/* ---------- tipografía ---------- */
+html[data-marca="puntillismo"] :is(h1,h2,h3,.hero-h,.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-weight:400;letter-spacing:-.01em}
+html[data-marca="puntillismo"] .eyebrow{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.1em;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+html[data-marca="puntillismo"] .eyebrow::before{content:"";width:18px;height:6px;background:var(--trama) 0 0/4px 4px;opacity:.8}
+html[data-marca="puntillismo"] :is(th,.organ){font-family:var(--mono);font-weight:500;letter-spacing:.08em;font-size:10px}
+html[data-marca="puntillismo"] .organ{color:var(--muted)}
+
+/* ---------- barra superior ---------- */
+html[data-marca="puntillismo"] .topbar{background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:0}
+html[data-marca="puntillismo"] .topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--trama) 0 0/6px 3px;opacity:.28}
+html[data-marca="puntillismo"] .topbar-in{min-height:68px}
+html[data-marca="puntillismo"] .brand .logo{-webkit-mask:url(puntillismo.svg) center/contain no-repeat;mask:url(puntillismo.svg) center/contain no-repeat;background:var(--ink);height:30px;aspect-ratio:100/56}
+html[data-marca="puntillismo"] .brand .nombre{display:inline;font-size:24px;font-weight:400;letter-spacing:-.01em}
+html[data-marca="puntillismo"] nav.tabs button{border:0;font-weight:600;font-size:14.5px;position:relative;padding:0 11px}
+html[data-marca="puntillismo"] nav.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:50%;bottom:9px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+html[data-marca="puntillismo"] .periodo-bar{padding-top:24px}
+html[data-marca="puntillismo"] .periodo-bar label{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.1em}
+html[data-marca="puntillismo"] .periodo-bar select{border-radius:999px;border-color:var(--line);background:var(--surface);padding:6px 12px;box-shadow:var(--sombra)}
+
+/* ---------- títulos de sección con trama que se desvanece ---------- */
+html[data-marca="puntillismo"] :is(.view-intro h2,.sec-h h2){font-size:40px;line-height:1.05;position:relative;padding-bottom:14px}
+html[data-marca="puntillismo"] :is(.view-intro h2,.sec-h h2)::after{content:"";position:absolute;left:0;bottom:0;width:160px;height:8px;background:var(--trama) 0 0/6px 6px;-webkit-mask:linear-gradient(90deg,#000,transparent);mask:linear-gradient(90deg,#000,transparent);opacity:.5}
+
+/* ---------- tarjetas ---------- */
+html[data-marca="puntillismo"] :is(.chart,.session,.vote,.card){padding:24px 26px}
+html[data-marca="puntillismo"] .punto .vote{background:var(--sunk);box-shadow:none}
+html[data-marca="puntillismo"] :is(.gtable-wrap,.dtable-wrap,.heat-wrap){border:0;box-shadow:var(--sombra);border-radius:var(--r-card)}
+html[data-marca="puntillismo"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:24px}
+html[data-marca="puntillismo"] .face{border-radius:var(--r-card-lg)}
+html[data-marca="puntillismo"] .face>div+div{border-left:1px dashed var(--line-strong)}
+
+/* ---------- portada ---------- */
+html[data-marca="puntillismo"] .hero{padding-block:36px 64px;gap:64px}
+html[data-marca="puntillismo"] .hero-h{font-size:clamp(46px,5.4vw,76px);line-height:1;letter-spacing:-.02em;margin-top:18px}
+html[data-marca="puntillismo"] .hero-lede{font-size:18.5px;line-height:1.65;color:var(--muted)}
+html[data-marca="puntillismo"] .hero-vote{padding:28px 28px 24px;position:relative;overflow:hidden;border-radius:var(--r-card-lg)}
+html[data-marca="puntillismo"] .hero-vote::before{content:"";position:absolute;right:-40px;top:-40px;width:260px;height:260px;background:var(--trama) 0 0/9px 9px;-webkit-mask:radial-gradient(circle at 100% 0,#000,transparent 70%);mask:radial-gradient(circle at 100% 0,#000,transparent 70%);opacity:.14;pointer-events:none}
+html[data-marca="puntillismo"] .hemi-center b{font-size:clamp(44px,4.8vw,64px)}
+html[data-marca="puntillismo"] .hemi-center span{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.14em}
+html[data-marca="puntillismo"] .hemi .band{stroke-width:1.6;stroke-dasharray:.1 3.4;stroke-linecap:round;stroke-width:2.6}
+html[data-marca="puntillismo"] .hemi .glab{font-family:var(--mono);font-weight:500;font-size:6.5px}
+html[data-marca="puntillismo"] .btn{border-radius:999px;padding:12px 22px;font-weight:600;border:1px solid var(--line-strong)}
+html[data-marca="puntillismo"] .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);box-shadow:0 8px 20px -8px rgba(20,35,58,.5)}
+html[data-marca="puntillismo"] .btn:hover{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 12%,transparent)}
+
+html[data-marca="puntillismo"] .kpis{border:0;padding-block:8px;gap:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+html[data-marca="puntillismo"] .kpi{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 20px;position:relative}
+html[data-marca="puntillismo"] .kpi+.kpi::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:2px;background:var(--trama) 0 0/2px 5px;opacity:.35}
+html[data-marca="puntillismo"] .kpi b{font-size:48px;line-height:.95}
+html[data-marca="puntillismo"] .kpi span{font-size:12.5px;max-width:none}
+
+html[data-marca="puntillismo"] .sec{padding-top:64px}
+html[data-marca="puntillismo"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-family:"DM Serif Display",serif;font-style:italic;font-weight:400;font-size:1.25em;line-height:1.35}
+html[data-marca="puntillismo"] blockquote mark{background:radial-gradient(color-mix(in srgb,var(--sub) 100%,#000 8%) 1.3px,transparent 1.7px) 0 0/4px 4px,color-mix(in srgb,var(--sub) 70%,transparent);padding:0 .12em;border-radius:3px}
+html[data-marca="puntillismo"] .face .avatar{font-family:var(--mono);font-weight:500}
+html[data-marca="puntillismo"] .face-foot{background:var(--sunk)}
+html[data-marca="puntillismo"] .vcard{border:0;transition:transform .2s,box-shadow .2s}
+html[data-marca="puntillismo"] .vcard:hover{transform:translateY(-3px);box-shadow:0 1px 2px rgba(20,35,58,.05),0 20px 40px -14px rgba(20,35,58,.22)}
+html[data-marca="puntillismo"] .vcard .vc-n{font-size:28px}
+
+/* ---------- datos: barras dibujadas con puntos ---------- */
+html[data-marca="puntillismo"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--trama) 0 50%/5px 5px;border-radius:0}
+html[data-marca="puntillismo"] .decide-row .trk i.abs{background:radial-gradient(color-mix(in srgb,var(--ink) 40%,transparent) 1.1px,transparent 1.5px) 0 50%/5px 5px}
+html[data-marca="puntillismo"] .coh-row .trk{background:none}
+html[data-marca="puntillismo"] .rank-row .br{height:12px}
+html[data-marca="puntillismo"] .res{border-radius:999px;padding:3px 10px;letter-spacing:.05em}
+html[data-marca="puntillismo"] .res.mix{background:var(--sunk);color:var(--ink)}
+html[data-marca="puntillismo"] .gp{border-radius:999px;background:var(--sunk);padding:3px 9px}
+html[data-marca="puntillismo"] :is(.tag,.tone,.pill){border-radius:999px}
+html[data-marca="puntillismo"] .stack{height:8px;border-radius:999px}
+html[data-marca="puntillismo"] .chipbtn{border-radius:999px;border-color:var(--line);box-shadow:0 1px 2px rgba(20,35,58,.06)}
+html[data-marca="puntillismo"] .chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+html[data-marca="puntillismo"] .controls input{border-radius:999px;border-color:var(--line);padding:10px 16px;box-shadow:var(--sombra)}
+html[data-marca="puntillismo"] table.dt tbody tr:hover{background:var(--sunk)}
+html[data-marca="puntillismo"] .tile{border:0;box-shadow:0 1px 2px rgba(20,35,58,.08);border-radius:10px}
+html[data-marca="puntillismo"] .tile .ab{font-family:var(--mono);font-weight:500;font-size:9.5px}
+html[data-marca="puntillismo"] .date .d{font-size:56px}
+html[data-marca="puntillismo"] .day{border-bottom:0;padding-bottom:36px}
+html[data-marca="puntillismo"] .timeline{border-left:2px dotted var(--line-strong)}
+html[data-marca="puntillismo"] #tip{background:var(--ink);color:var(--bg);border-radius:12px;font-size:12.5px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+html[data-marca="puntillismo"] footer{border-top:0;position:relative;padding-top:28px}
+html[data-marca="puntillismo"] footer::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--trama) 0 0/6px 3px;opacity:.28}
+@media (max-width:720px){
+  html[data-marca="puntillismo"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="puntillismo"] .kpi+.kpi::before{display:none}
+  html[data-marca="puntillismo"] .brand .nombre{display:none}
+  html[data-marca="puntillismo"] :is(.view-intro h2,.sec-h h2){font-size:30px}
+}

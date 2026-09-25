@@ -1,0 +1,135 @@
+/* Marca en prueba: Marcador.
+   El panel de votaciones del hemiciclo: un tablero oscuro donde las cifras se encienden en matriz de
+   puntos. Negro profundo, LED blanco cálido y el color solo para el sentido del voto.
+   Se carga con ?marca=marcador encima de la marca actual. */
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap");
+
+html:root[data-marca="marcador"]{
+  color-scheme:dark;
+  --bg:#08090B; --surface:#101216; --sunk:#171A1F; --ink:#EEEEE8; --muted:#8B929C; --line:#1F232A; --line-strong:#3A404A;
+  --sub:#3B3413; --on-vote:#08090B;
+  --si:#39D98A; --no:#FF5D52; --abst:#F5C542; --nv:#353B43;
+  --r-aplausos:#5AA9E6; --r-risas:#E0A63F; --r-rumores:#A48BE0; --r-protestas:#FF6B5A;
+  --sans:"Geist",system-ui,-apple-system,sans-serif; --serif:"Geist",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace;
+  --display:"Geist",system-ui,sans-serif;
+  --led:"Doto","Geist Mono",monospace;
+  --r-card:14px; --r-card-lg:18px; --r-pill:8px; --r-ctl:8px; --r-chip:5px;
+  --ancho:1180px;
+  --sombra:inset 0 1px 0 rgba(255,255,255,.045), 0 1px 0 rgba(0,0,0,.6), 0 24px 48px -32px rgba(0,0,0,.9);
+  --asiento:cuadrado;
+  --brillo:0 0 18px color-mix(in srgb, currentColor 35%, transparent);
+}
+
+/* ---------- ambiente ---------- */
+html[data-marca="marcador"] body{
+  background:
+    radial-gradient(1200px 520px at 50% -180px, rgba(120,140,170,.14), transparent 70%),
+    var(--bg);
+  background-attachment:fixed;
+  font-size:15px; letter-spacing:-.003em;
+}
+html[data-marca="marcador"] ::selection{background:#EEEEE8;color:#08090B}
+html[data-marca="marcador"] a{color:var(--ink);text-decoration-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+html[data-marca="marcador"] a:hover{text-decoration-color:var(--ink)}
+html[data-marca="marcador"] :focus-visible{outline-color:var(--si)}
+
+/* ---------- tipografía ---------- */
+html[data-marca="marcador"] :is(h1,h2,h3){font-weight:600;letter-spacing:-.02em}
+html[data-marca="marcador"] .eyebrow,
+html[data-marca="marcador"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--mono);letter-spacing:.04em}
+html[data-marca="marcador"] .eyebrow{color:var(--muted);font-weight:500;font-size:11px;display:inline-flex;align-items:center;gap:8px}
+html[data-marca="marcador"] .eyebrow::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--si);box-shadow:0 0 10px var(--si)}
+/* La matriz de puntos, solo donde el texto es grande. */
+html[data-marca="marcador"] :is(.hero-h,.kpi b,.hemi-center b,.vcard .vc-n,.date .d,.view-intro h2,.sec-h h2,.ficha-top h2,.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--led);font-weight:900;letter-spacing:.02em}
+html[data-marca="marcador"] :is(.hero-h,.view-intro h2,.sec-h h2,.ficha-top h2){text-transform:uppercase}
+html[data-marca="marcador"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d){text-shadow:var(--brillo)}
+
+/* ---------- barra superior y periodo ---------- */
+html[data-marca="marcador"] .topbar{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);border-bottom-color:rgba(255,255,255,.06)}
+html[data-marca="marcador"] .topbar-in{min-height:64px}
+html[data-marca="marcador"] .brand .logo{-webkit-mask:none;mask:none;background:url(marcador.svg) center/contain no-repeat;height:28px;aspect-ratio:100/56;border-radius:4px}
+html[data-marca="marcador"] .brand .nombre{display:inline;font-family:var(--led);font-weight:900;text-transform:uppercase;font-size:19px;letter-spacing:.03em}
+html[data-marca="marcador"] nav.tabs{align-self:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+html[data-marca="marcador"] nav.tabs button{border:0;border-radius:7px;padding:7px 12px;font-size:13.5px;color:var(--muted);transition:background .15s,color .15s}
+html[data-marca="marcador"] nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+html[data-marca="marcador"] nav.tabs button[aria-selected="true"]{color:var(--bg);background:var(--ink);box-shadow:0 0 16px rgba(238,238,232,.18)}
+html[data-marca="marcador"] .periodo-bar{padding-top:22px;font-family:var(--mono);font-size:12px}
+html[data-marca="marcador"] .periodo-bar select{background:var(--surface);border-color:var(--line-strong);font-family:var(--mono);font-size:12.5px;border-radius:8px;padding:5px 10px}
+
+/* ---------- tarjetas ---------- */
+html[data-marca="marcador"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){
+  background:linear-gradient(180deg, color-mix(in srgb,var(--surface) 100%,#fff 2.5%), var(--surface) 38%);
+  border-color:rgba(255,255,255,.07);
+}
+html[data-marca="marcador"] :is(.chart,.session,.vote,.card){padding:20px 22px}
+html[data-marca="marcador"] .punto .vote{background:var(--sunk);box-shadow:none}
+html[data-marca="marcador"] :is(.chart h3,.panel h3,.card h3,.session-head h3){font-size:17px;font-weight:600;letter-spacing:-.01em}
+html[data-marca="marcador"] .chart .sub{color:var(--muted)}
+
+/* ---------- portada ---------- */
+html[data-marca="marcador"] .hero{padding-block:28px 48px;gap:56px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+html[data-marca="marcador"] .hero-h{font-size:clamp(38px,4.3vw,58px);line-height:1.04;letter-spacing:.01em;margin-top:18px}
+html[data-marca="marcador"] .hero-lede{font-size:17.5px;line-height:1.6;color:#C9CCD1;max-width:54ch}
+html[data-marca="marcador"] .hero-vote{
+  padding:26px 26px 22px; border-radius:var(--r-card-lg);
+  background:
+    radial-gradient(rgba(255,255,255,.06) 1px, transparent 1.3px) 0 0/9px 9px,
+    linear-gradient(180deg,#12151A,#0D0F13);
+}
+html[data-marca="marcador"] .hemi-center b{font-size:clamp(40px,4.6vw,60px)}
+html[data-marca="marcador"] .hemi-center span{font-family:var(--mono);letter-spacing:.12em;color:var(--muted)}
+html[data-marca="marcador"] .hemi .band{stroke-width:2.2;opacity:.9}
+html[data-marca="marcador"] .hemi .glab{font-family:var(--mono);font-weight:500}
+html[data-marca="marcador"] .hemi :is(.S,.N,.A){filter:drop-shadow(0 0 1.4px currentColor)}
+html[data-marca="marcador"] .hemi .S{color:var(--si)} html[data-marca="marcador"] .hemi .N{color:var(--no)} html[data-marca="marcador"] .hemi .A{color:var(--abst)}
+html[data-marca="marcador"] .hemi .X{stroke:#2A2F36}
+html[data-marca="marcador"] .btn{border-radius:10px;padding:11px 18px;font-weight:600;border-color:var(--line-strong)}
+html[data-marca="marcador"] .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);box-shadow:0 0 24px rgba(238,238,232,.16)}
+html[data-marca="marcador"] .btn:hover{box-shadow:0 0 0 1px var(--ink)}
+
+/* Las cifras del periodo, como un marcador de celdas. */
+html[data-marca="marcador"] .kpis{border:1px solid rgba(255,255,255,.07);border-radius:var(--r-card);padding:0;gap:0;background:linear-gradient(180deg,#121419,#0E1014);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));overflow:hidden}
+html[data-marca="marcador"] .kpi{flex-direction:column;align-items:flex-start;gap:10px;padding:20px 20px 18px;border-right:1px solid rgba(255,255,255,.06)}
+html[data-marca="marcador"] .kpi:last-child{border-right:0}
+html[data-marca="marcador"] .kpi b{font-size:44px;line-height:.9}
+html[data-marca="marcador"] .kpi span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;max-width:none}
+html[data-marca="marcador"] .kpi.alert b{color:var(--no)}
+
+html[data-marca="marcador"] .sec{padding-top:56px}
+html[data-marca="marcador"] .sec-h h2{font-size:30px}
+html[data-marca="marcador"] .face{border-radius:var(--r-card-lg)}
+html[data-marca="marcador"] .face-foot{background:rgba(255,255,255,.02)}
+html[data-marca="marcador"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-style:normal;font-weight:500;letter-spacing:-.01em}
+html[data-marca="marcador"] blockquote mark{background:none;color:var(--ink);box-shadow:inset 0 -.42em 0 rgba(245,197,66,.28);padding:0 .1em}
+html[data-marca="marcador"] .face .avatar{border-radius:8px;font-family:var(--mono)}
+html[data-marca="marcador"] .vcard{padding:16px;border-radius:var(--r-card);transition:border-color .15s,transform .15s}
+html[data-marca="marcador"] .vcard:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+html[data-marca="marcador"] .vcard .vc-n{font-size:26px}
+
+/* ---------- etiquetas y datos ---------- */
+html[data-marca="marcador"] .res{color:#08090B;font-family:var(--mono);letter-spacing:.06em;border-radius:5px}
+html[data-marca="marcador"] .res.mix{color:var(--ink)}
+html[data-marca="marcador"] .gp{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+html[data-marca="marcador"] .gp .v{font-family:var(--mono)}
+html[data-marca="marcador"] .stack{height:10px;border-radius:3px;background:#1A1D22}
+html[data-marca="marcador"] .stack .half{border-left-color:var(--ink);opacity:.35}
+html[data-marca="marcador"] .tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05)}
+html[data-marca="marcador"] .tone{background:rgba(255,255,255,.05)}
+html[data-marca="marcador"] :is(.chipbtn){background:var(--surface);border-color:var(--line-strong);border-radius:8px}
+html[data-marca="marcador"] .chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+html[data-marca="marcador"] .pill{border-radius:5px;font-family:var(--mono);letter-spacing:.04em}
+html[data-marca="marcador"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b){background:var(--ink);box-shadow:0 0 12px rgba(238,238,232,.15)}
+html[data-marca="marcador"] table{font-variant-numeric:tabular-nums}
+html[data-marca="marcador"] :is(th){font-size:10.5px}
+html[data-marca="marcador"] table.dt tbody tr:hover{background:rgba(255,255,255,.03)}
+html[data-marca="marcador"] .tile{background:#111318;border-color:rgba(255,255,255,.07)}
+html[data-marca="marcador"] .tile .ab{font-family:var(--mono);font-weight:600}
+html[data-marca="marcador"] .date .d{font-size:52px}
+html[data-marca="marcador"] #tip{background:#EEEEE8;color:#08090B;font-family:var(--mono);font-size:12px;border-radius:8px}
+html[data-marca="marcador"] footer{border-top-color:rgba(255,255,255,.06);font-family:var(--mono);font-size:11.5px;line-height:1.7}
+@media (max-width:720px){
+  html[data-marca="marcador"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="marcador"] .kpi{border-bottom:1px solid rgba(255,255,255,.06)}
+  html[data-marca="marcador"] nav.tabs{background:none;border:0;box-shadow:none}
+  html[data-marca="marcador"] .brand .nombre{display:none}
+}

@@ -1,0 +1,134 @@
+/* Marca en prueba: Brutalismo.
+   Editorial en bruto, a la suiza: retícula a la vista, celdas que comparten bordes, una Times enorme
+   para los titulares y monoespaciada para todo lo demás. Sin radios, sin sombras, sin adornos:
+   solo jerarquía y contraste. */
+@import url("https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700;800&display=swap");
+
+html:root[data-marca="brutalismo"]{
+  --bg:#FFFFFF; --surface:#FFFFFF; --sunk:#EFEFEF; --ink:#000000; --muted:#555555; --line:#000000; --line-strong:#000000;
+  --sub:#E4E4E4; --on-vote:#FFFFFF;
+  --si:#157347; --no:#B3261E; --abst:#8A8A8A; --nv:#CFCFCF;
+  --display:"Tinos","Times New Roman",Times,serif; --serif:"Tinos","Times New Roman",Times,serif;
+  --sans:"JetBrains Mono",ui-monospace,monospace; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --r-card:0; --r-card-lg:0; --r-pill:0; --r-ctl:0; --r-chip:0; --borde:1px;
+  --ancho:1280px;
+  --asiento:cuadrado;
+  --inv:#000000; --sobre-inv:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="brutalismo"]:not([data-theme="light"]){
+    --bg:#000000; --surface:#000000; --sunk:#1C1C1C; --ink:#FFFFFF; --muted:#ABABAB; --line:#FFFFFF; --line-strong:#FFFFFF;
+    --sub:#333333; --on-vote:#000000; --si:#38B26F; --no:#FF5A4E; --abst:#A8A8A8; --nv:#4A4A4A;
+    --inv:#FFFFFF; --sobre-inv:#000000;
+  }
+}
+html:root[data-marca="brutalismo"][data-theme="dark"]{
+  --bg:#000000; --surface:#000000; --sunk:#1C1C1C; --ink:#FFFFFF; --muted:#ABABAB; --line:#FFFFFF; --line-strong:#FFFFFF;
+  --sub:#333333; --on-vote:#000000; --si:#38B26F; --no:#FF5A4E; --abst:#A8A8A8; --nv:#4A4A4A;
+  --inv:#FFFFFF; --sobre-inv:#000000;
+}
+
+html[data-marca="brutalismo"]{overflow-x:clip}
+html[data-marca="brutalismo"] body{font-size:13.5px;line-height:1.55;letter-spacing:-.01em}
+html[data-marca="brutalismo"] ::selection{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] a{text-decoration-thickness:1px;text-underline-offset:3px}
+html[data-marca="brutalismo"] a:hover,html[data-marca="brutalismo"] .linklike:hover{background:var(--inv);color:var(--sobre-inv);text-decoration:none}
+
+/* ---------- tipografía ---------- */
+html[data-marca="brutalismo"] :is(h1,h2,h3){font-weight:700;letter-spacing:-.025em}
+html[data-marca="brutalismo"] :is(.chart h3,.panel h3,.card h3,.session-head h3,.face .who b){font-family:var(--mono);font-weight:800;font-size:14px;letter-spacing:-.01em;text-transform:uppercase}
+html[data-marca="brutalismo"] .eyebrow{font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:0;text-transform:uppercase;color:var(--ink)}
+html[data-marca="brutalismo"] .eyebrow::before{content:"// "}
+html[data-marca="brutalismo"] :is(th,.organ){font-family:var(--mono);letter-spacing:0;font-weight:700;color:var(--ink)}
+
+/* ---------- barra superior: banda invertida a todo el ancho ---------- */
+html[data-marca="brutalismo"] .topbar{background:var(--inv);color:var(--sobre-inv);border-bottom:0;box-shadow:0 0 0 100vmax var(--inv);clip-path:inset(0 -100vmax)}
+html[data-marca="brutalismo"] .topbar-in{min-height:48px;gap:0}
+html[data-marca="brutalismo"] .brand{color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .brand .logo{display:none}
+html[data-marca="brutalismo"] .brand .nombre{display:inline;font-family:var(--mono);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.02em}
+html[data-marca="brutalismo"] .brand .nombre::before{content:"■ "}
+html[data-marca="brutalismo"] nav.tabs{gap:0;align-self:stretch}
+html[data-marca="brutalismo"] nav.tabs button{color:var(--sobre-inv);border:0;border-left:1px solid color-mix(in srgb,var(--sobre-inv) 35%,transparent);padding:0 14px;font-family:var(--mono);font-size:12px;text-transform:uppercase;opacity:.75}
+html[data-marca="brutalismo"] nav.tabs button:hover{opacity:1}
+html[data-marca="brutalismo"] nav.tabs button[aria-selected="true"]{background:var(--sobre-inv);color:var(--inv);opacity:1;border-bottom:0}
+html[data-marca="brutalismo"] .periodo-bar{padding:0;border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px;min-height:40px;font-size:12px}
+html[data-marca="brutalismo"] .periodo-bar label{font-family:var(--mono);letter-spacing:0;font-weight:800}
+html[data-marca="brutalismo"] .periodo-bar select{border:1px solid var(--line);font-family:var(--mono);font-size:12px;background:var(--bg)}
+
+/* ---------- retícula: celdas que comparten bordes ---------- */
+html[data-marca="brutalismo"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){border-color:var(--line);box-shadow:none}
+html[data-marca="brutalismo"] :is(.chart,.session,.vote,.card){padding:18px 20px}
+html[data-marca="brutalismo"] :is(.two,.temas-top,.tema-panel,.vgrid,.cards,.votes){gap:0}
+html[data-marca="brutalismo"] :is(.two,.temas-top,.tema-panel,.vgrid,.cards)>*{margin:0 -1px -1px 0}
+html[data-marca="brutalismo"] .votes>.vote+.vote{margin-top:-1px}
+html[data-marca="brutalismo"] .punto .vote{background:var(--sunk);border:0}
+html[data-marca="brutalismo"] :is(.view-intro h2,.sec-h h2){font-size:clamp(44px,5vw,72px);line-height:.92;letter-spacing:-.04em}
+html[data-marca="brutalismo"] .view-intro{border-bottom:3px solid var(--line);padding-bottom:14px}
+html[data-marca="brutalismo"] .sec{padding-top:48px}
+html[data-marca="brutalismo"] .sec-h{border-bottom:3px solid var(--line);padding-bottom:10px;align-items:end}
+html[data-marca="brutalismo"] :is(.view-intro p,.sec-h p){color:var(--ink)}
+
+/* ---------- portada ---------- */
+html[data-marca="brutalismo"] main{padding-top:0}
+html[data-marca="brutalismo"] .hero{gap:0;padding:0;border-bottom:3px solid var(--line);align-items:stretch;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+html[data-marca="brutalismo"] .hero>div:first-child{padding:36px 36px 36px 0;border-right:1px solid var(--line)}
+html[data-marca="brutalismo"] .hero-h{font-size:clamp(52px,6.4vw,104px);line-height:.88;letter-spacing:-.045em;margin-top:22px}
+html[data-marca="brutalismo"] .hero-lede{font-size:14px;line-height:1.6;max-width:62ch}
+html[data-marca="brutalismo"] .hero-vote{border:0;background:var(--inv);color:var(--sobre-inv);padding:28px}
+html[data-marca="brutalismo"] .hero-vote :is(.eyebrow,.hv-sub,.hemi-center span,.hemi-legend,.linklike,.oficial){color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .hero-vote .hemi .glab{fill:var(--sobre-inv)}
+html[data-marca="brutalismo"] .hero-vote .hemi .X{stroke:#666}
+html[data-marca="brutalismo"] .hero-vote .oficial{border-color:currentColor}
+html[data-marca="brutalismo"] .hemi-center b{font-family:var(--mono);font-weight:800;letter-spacing:-.06em;font-size:clamp(48px,5.2vw,72px)}
+html[data-marca="brutalismo"] .hemi-center span{font-family:var(--mono);letter-spacing:0}
+html[data-marca="brutalismo"] .btn{border:1px solid var(--line);padding:12px 18px;font-family:var(--mono);font-size:12px;text-transform:uppercase;font-weight:700}
+html[data-marca="brutalismo"] .btn.primary{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .btn:hover{background:var(--inv);color:var(--sobre-inv);box-shadow:none}
+html[data-marca="brutalismo"] .btn.primary:hover{background:var(--bg);color:var(--ink)}
+
+/* Cifras en una tabla de celdas. */
+html[data-marca="brutalismo"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;border-top:0;border-bottom:3px solid var(--line)}
+html[data-marca="brutalismo"] .kpi{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px;border-right:1px solid var(--line)}
+html[data-marca="brutalismo"] .kpi:last-child{border-right:0}
+html[data-marca="brutalismo"] .kpi b{font-family:var(--mono);font-weight:800;font-size:52px;letter-spacing:-.07em;line-height:.85}
+html[data-marca="brutalismo"] .kpi span{color:var(--ink);text-transform:uppercase;font-size:11px;max-width:none}
+
+html[data-marca="brutalismo"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.3em;line-height:1.3}
+html[data-marca="brutalismo"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.1em 0 var(--ink);padding:0}
+html[data-marca="brutalismo"] .face{gap:0}
+html[data-marca="brutalismo"] .face .avatar{border-radius:0;font-family:var(--mono)}
+html[data-marca="brutalismo"] .face-foot{background:var(--sunk);border-top-color:var(--line)}
+html[data-marca="brutalismo"] .vcard:hover{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .vcard:hover :is(.vc-s,.res){color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .vcard .vc-n{font-family:var(--mono);font-weight:800;letter-spacing:-.06em;font-size:28px}
+
+/* ---------- datos ---------- */
+html[data-marca="brutalismo"] .res{font-family:var(--mono);letter-spacing:0;border-radius:0}
+html[data-marca="brutalismo"] .res.mix{background:none;border:1px solid currentColor;color:inherit}
+html[data-marca="brutalismo"] .gp{background:none;border:1px solid var(--line);border-radius:0}
+html[data-marca="brutalismo"] :is(.tag,.tone,.pill){border-radius:0;background:none;border:1px solid var(--line)}
+html[data-marca="brutalismo"] .stack{border-radius:0;height:14px;outline:1px solid var(--line)}
+html[data-marca="brutalismo"] .stack .half{border-left:1px solid var(--ink);opacity:1}
+html[data-marca="brutalismo"] .chipbtn{border-radius:0;border-color:var(--line);font-family:var(--mono);font-size:12px}
+html[data-marca="brutalismo"] .chipbtn[aria-pressed="true"]{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .controls input{border-radius:0;border-color:var(--line);font-family:var(--mono)}
+html[data-marca="brutalismo"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b,table.upset td.bar b){background:var(--ink);border-radius:0}
+html[data-marca="brutalismo"] .decide-row .trk i.abs{background:repeating-linear-gradient(45deg,var(--ink) 0 1px,transparent 1px 4px)}
+html[data-marca="brutalismo"] .coh-row .trk{background:none;outline:1px solid var(--line);border-radius:0}
+html[data-marca="brutalismo"] :is(table.dt,table.vt) tbody tr:hover{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] :is(table.dt,table.vt) tbody tr:hover :is(button,a,.linklike){color:var(--sobre-inv)}
+html[data-marca="brutalismo"] :is(.gtable-wrap,.dtable-wrap) thead th{border-bottom:3px solid var(--line)}
+html[data-marca="brutalismo"] .tile{border-radius:0;border-color:var(--line)}
+html[data-marca="brutalismo"] .tile:hover{background:var(--inv);color:var(--sobre-inv)}
+html[data-marca="brutalismo"] .date .d{font-family:var(--mono);font-weight:800;letter-spacing:-.07em;font-size:60px}
+html[data-marca="brutalismo"] .day{border-bottom:3px solid var(--line)}
+html[data-marca="brutalismo"] .timeline{border-left:3px solid var(--line)}
+html[data-marca="brutalismo"] .timeline li::before{border-radius:0}
+html[data-marca="brutalismo"] #tip{background:var(--inv);color:var(--sobre-inv);border-radius:0;font-family:var(--mono);font-size:11.5px}
+html[data-marca="brutalismo"] footer{border-top:3px solid var(--line);color:var(--ink);font-size:11.5px}
+@media (max-width:720px){
+  html[data-marca="brutalismo"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="brutalismo"] .kpi{border-bottom:1px solid var(--line)}
+  html[data-marca="brutalismo"] .hero>div:first-child{padding:24px 0;border-right:0}
+}

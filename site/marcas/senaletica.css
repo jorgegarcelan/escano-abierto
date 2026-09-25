@@ -1,0 +1,127 @@
+/* Marca en prueba: Señalética.
+   Como la señalización de una red de transporte o de un edificio público: placas negras, letra de
+   carretera, flechas, números de andén. Formas del Bauhaus sin sus colores primarios (rojo, azul y
+   amarillo son PSOE, PP y ERC). Todo se entiende de un vistazo. */
+@import url("https://fonts.googleapis.com/css2?family=Overpass:wght@400;500;600;700;800;900&family=Overpass+Mono:wght@400;600;700&display=swap");
+
+html:root[data-marca="senaletica"]{
+  --bg:#F1F1EE; --surface:#FFFFFF; --sunk:#E7E7E3; --ink:#111213; --muted:#50555B; --line:#D3D4D0; --line-strong:#111213;
+  --sub:#FFE17A; --on-vote:#FFFFFF;
+  --si:#17774A; --no:#BF3A2B; --abst:#C98A10; --nv:#9BA1A7;
+  --sans:"Overpass",system-ui,sans-serif; --serif:"Overpass",system-ui,sans-serif; --mono:"Overpass Mono",ui-monospace,monospace;
+  --display:"Overpass",system-ui,sans-serif;
+  --r-card:14px; --r-card-lg:18px; --r-pill:10px; --r-ctl:8px; --r-chip:6px; --borde:2px;
+  --ancho:1180px;
+  --placa:var(--ink); --sobre-placa:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  html:root[data-marca="senaletica"]:not([data-theme="light"]){
+    --bg:#0E0F10; --surface:#17191B; --sunk:#202326; --ink:#F3F3F0; --muted:#A6ACB2; --line:#2E3236; --line-strong:#F3F3F0;
+    --sub:#5A4A10; --on-vote:#0E0F10; --si:#3FB57A; --no:#E86A5C; --abst:#E0A93A; --nv:#5B6167;
+    --placa:#F3F3F0; --sobre-placa:#0E0F10;
+  }
+}
+html:root[data-marca="senaletica"][data-theme="dark"]{
+  --bg:#0E0F10; --surface:#17191B; --sunk:#202326; --ink:#F3F3F0; --muted:#A6ACB2; --line:#2E3236; --line-strong:#F3F3F0;
+  --sub:#5A4A10; --on-vote:#0E0F10; --si:#3FB57A; --no:#E86A5C; --abst:#E0A93A; --nv:#5B6167;
+  --placa:#F3F3F0; --sobre-placa:#0E0F10;
+}
+
+html[data-marca="senaletica"] body{font-size:15.5px}
+html[data-marca="senaletica"] ::selection{background:var(--placa);color:var(--sobre-placa)}
+html[data-marca="senaletica"] a{text-decoration-thickness:2px;text-underline-offset:3px}
+
+/* ---------- tipografía: letra de carretera, pesada y compacta ---------- */
+html[data-marca="senaletica"] :is(h1,h2,h3){font-weight:900;letter-spacing:-.02em}
+html[data-marca="senaletica"] .eyebrow{display:inline-block;background:var(--placa);color:var(--sobre-placa);padding:4px 9px 3px;border-radius:6px;font-weight:800;font-size:11px;letter-spacing:.08em}
+html[data-marca="senaletica"] :is(th,.organ){font-weight:800;letter-spacing:.07em}
+html[data-marca="senaletica"] :is(.vote-h .sub,.hv-sub,.vc-s,.date .w){font-weight:600}
+
+/* ---------- barra superior ---------- */
+html[data-marca="senaletica"]{overflow-x:clip}
+/* La barra ocupa todo el ancho de la ventana, como una cenefa de señalización. */
+html[data-marca="senaletica"] .topbar{background:var(--surface);border-bottom:0;box-shadow:0 0 0 100vmax var(--surface);clip-path:inset(0 -100vmax -4px)}
+html[data-marca="senaletica"] .topbar::after{content:"";position:absolute;left:-100vmax;right:-100vmax;bottom:-4px;height:4px;background:var(--placa)}
+html[data-marca="senaletica"] .topbar-in{min-height:66px}
+html[data-marca="senaletica"] .brand .logo{-webkit-mask:none;mask:none;background:url(senaletica.svg) center/contain no-repeat;height:34px;aspect-ratio:1}
+html[data-marca="senaletica"] .brand .nombre{display:inline;font-weight:900;font-size:21px;letter-spacing:-.02em}
+html[data-marca="senaletica"] nav.tabs{gap:4px;align-self:center}
+html[data-marca="senaletica"] nav.tabs button{border:0;padding:8px 12px 7px;border-radius:8px;font-weight:700;font-size:14px;color:var(--ink)}
+html[data-marca="senaletica"] nav.tabs button:hover{background:var(--sunk)}
+html[data-marca="senaletica"] nav.tabs button[aria-selected="true"]{background:var(--placa);color:var(--sobre-placa)}
+html[data-marca="senaletica"] .periodo-bar{padding-top:20px;font-weight:600}
+html[data-marca="senaletica"] .periodo-bar label{background:var(--placa);color:var(--sobre-placa);padding:3px 8px 2px;border-radius:5px}
+html[data-marca="senaletica"] .periodo-bar select{border:2px solid var(--line-strong);font-weight:700;border-radius:8px}
+
+/* ---------- placas: tarjetas con borde grueso y cabecera negra ---------- */
+html[data-marca="senaletica"] :is(.session,.vote,.card,.chart,.hero-vote,.face,.vcard,.method,.gtable-wrap,.dtable-wrap,.heat-wrap){border-color:var(--line-strong)}
+html[data-marca="senaletica"] :is(.chart,.session,.vote,.card){padding:20px 22px}
+html[data-marca="senaletica"] .chart>h3:first-child,
+html[data-marca="senaletica"] .panel>h3:first-child{margin:-20px -22px 6px;padding:13px 22px 11px;background:var(--placa);color:var(--sobre-placa);border-radius:11px 11px 0 0;font-size:17px;letter-spacing:-.01em}
+html[data-marca="senaletica"] .panel>h3:first-child{margin:0 0 4px;border-radius:10px}
+html[data-marca="senaletica"] .punto .vote{border-width:0;background:var(--sunk)}
+html[data-marca="senaletica"] :is(.session-head h3,.card h3){font-size:22px}
+
+/* Títulos de sección con flecha de indicación. */
+html[data-marca="senaletica"] :is(.view-intro h2,.sec-h h2){font-size:34px;display:flex;align-items:center;gap:12px}
+html[data-marca="senaletica"] :is(.view-intro h2,.sec-h h2)::before{content:"→";display:inline-grid;place-items:center;width:1.05em;height:1.05em;flex:none;background:var(--placa);color:var(--sobre-placa);border-radius:.2em;font-size:.82em;line-height:1;padding-top:.06em}
+
+/* ---------- portada ---------- */
+html[data-marca="senaletica"] .hero{padding-block:32px 48px;gap:56px}
+html[data-marca="senaletica"] .hero-h{font-size:clamp(40px,4.8vw,66px);line-height:.98;letter-spacing:-.035em;margin-top:16px}
+html[data-marca="senaletica"] .hero-lede{font-size:18px;line-height:1.55;font-weight:500}
+html[data-marca="senaletica"] .hero-vote{padding:0 0 20px;overflow:hidden}
+html[data-marca="senaletica"] .hero-vote>.eyebrow{display:block;border-radius:0;padding:12px 18px 10px;text-align:left!important;font-size:12px}
+html[data-marca="senaletica"] .hero-vote>*:not(.eyebrow){margin-inline:20px}
+html[data-marca="senaletica"] .hemi-center b{font-weight:900;letter-spacing:-.04em;font-size:clamp(40px,4.4vw,58px)}
+html[data-marca="senaletica"] .hemi-center span{font-weight:800}
+html[data-marca="senaletica"] .hemi .band{stroke-width:4}
+html[data-marca="senaletica"] .hemi .glab{font-weight:800;fill:var(--ink)}
+html[data-marca="senaletica"] .btn{border:2px solid var(--line-strong);border-radius:10px;font-weight:800;padding:11px 18px}
+html[data-marca="senaletica"] .btn.primary{background:var(--placa);color:var(--sobre-placa)}
+html[data-marca="senaletica"] :is(.btn,.linklike)::after{content:" →";font-weight:900}
+html[data-marca="senaletica"] .btn:hover{box-shadow:none;transform:translateX(2px)}
+
+/* Las cifras, como números de andén. */
+html[data-marca="senaletica"] .kpis{border:0;gap:14px 36px;padding-block:22px}
+html[data-marca="senaletica"] .kpi{align-items:center;gap:10px}
+html[data-marca="senaletica"] .kpi b{background:var(--placa);color:var(--sobre-placa);font-weight:900;font-size:26px;line-height:1;min-width:1.7em;padding:8px 10px 6px;border-radius:9px;text-align:center;letter-spacing:-.03em}
+html[data-marca="senaletica"] .kpi.alert b{background:var(--no);color:#fff}
+html[data-marca="senaletica"] .kpi span{font-weight:700;color:var(--ink);font-size:13px}
+
+html[data-marca="senaletica"] .sec{padding-top:52px}
+html[data-marca="senaletica"] :is(.face blockquote,.iv blockquote,.citas blockquote,.card blockquote){font-style:normal;font-weight:800;letter-spacing:-.015em}
+html[data-marca="senaletica"] blockquote mark{background:var(--sub);padding:0 .15em;border-radius:3px}
+html[data-marca="senaletica"] .face .avatar{border-radius:9px;font-weight:900}
+html[data-marca="senaletica"] .face-foot{background:var(--sunk);font-weight:600}
+html[data-marca="senaletica"] .vcard{transition:transform .12s}
+html[data-marca="senaletica"] .vcard:hover{transform:translateY(-2px);border-color:var(--line-strong)}
+html[data-marca="senaletica"] .vcard .vc-n{font-weight:900;letter-spacing:-.03em}
+
+/* ---------- datos ---------- */
+html[data-marca="senaletica"] .res{border-radius:6px;font-weight:900;letter-spacing:.06em;padding:4px 8px 3px}
+html[data-marca="senaletica"] .res.mix{background:var(--sunk);color:var(--ink)}
+html[data-marca="senaletica"] .gp{background:var(--surface);border:1.5px solid var(--line-strong);font-weight:800}
+html[data-marca="senaletica"] .gp .v{font-weight:700}
+html[data-marca="senaletica"] .stack{height:12px;border-radius:4px}
+html[data-marca="senaletica"] .stack .half{border-left:2px solid var(--ink);opacity:.7}
+html[data-marca="senaletica"] :is(.chipbtn){border:2px solid var(--line-strong);border-radius:9px;font-weight:700}
+html[data-marca="senaletica"] .chipbtn[aria-pressed="true"]{background:var(--placa);color:var(--sobre-placa)}
+html[data-marca="senaletica"] :is(.pill,.tone,.tag){border-radius:6px;font-weight:700}
+html[data-marca="senaletica"] .tag{background:var(--sunk);color:var(--ink)}
+html[data-marca="senaletica"] :is(.rank-row .br,.decide-row .trk i.voto,.topic .tb,.coh-row .trk b,.pct i b){background:var(--placa)}
+html[data-marca="senaletica"] :is(.gtable-wrap,.dtable-wrap) thead th{background:var(--placa);color:var(--sobre-placa);border-bottom:0}
+html[data-marca="senaletica"] :is(.gtable-wrap,.dtable-wrap) thead th button{color:inherit}
+html[data-marca="senaletica"] table.dt tbody tr:hover{background:var(--sub)}
+html[data-marca="senaletica"] .tile{border:2px solid var(--line-strong);border-radius:8px}
+html[data-marca="senaletica"] .tile .ab{font-weight:900}
+html[data-marca="senaletica"] .date .d{font-weight:900;letter-spacing:-.04em;font-size:48px}
+html[data-marca="senaletica"] .date .m{font-weight:800}
+html[data-marca="senaletica"] .timeline{border-left:4px solid var(--placa)}
+html[data-marca="senaletica"] .timeline li::before{border-radius:4px;border-width:3px;left:-9px}
+html[data-marca="senaletica"] #tip{background:var(--placa);color:var(--sobre-placa);font-weight:600;border-radius:8px}
+html[data-marca="senaletica"] footer{border-top:4px solid var(--placa);padding-top:18px;font-weight:500}
+@media (max-width:720px){
+  html[data-marca="senaletica"] .brand .nombre{display:none}
+  html[data-marca="senaletica"] :is(.view-intro h2,.sec-h h2){font-size:26px}
+}
