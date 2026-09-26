@@ -9,6 +9,7 @@
     python -m escano agenda                     # solo el orden del día de los próximos plenos
     python -m escano preguntas [--completo]     # preguntas escritas al Gobierno (la primera vez, --completo)
     python -m escano lote [--estado | --ver]    # analiza con IA todo lo pendiente por la Batch API de Gemini
+    python -m escano explora [--solo temas]     # unifica temas, lugares y propuestas para la pestaña Explora
 """
 from __future__ import annotations
 
@@ -19,7 +20,7 @@ from datetime import date, timedelta
 import json
 
 from . import agenda, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
-from .config import CRUDOS, VOTACIONES
+from .config import CRUDOS, PROVEEDOR, VOTACIONES
 from .construir import construir
 
 
@@ -57,6 +58,11 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
             print(f"  {ses['id']}: {ses['fecha']} · {ses['organo']} · {len(ses['intervenciones'])} turnos")
             estado[serie] = max(estado[serie], numero)
     diario.guardar_estado(estado)
+
+    if con_ia and PROVEEDOR == "gemini":
+        print("· Pestaña Explora: temas, lugares y propuestas nuevos")
+        from . import normalizar
+        normalizar.ejecutar()
 
     print("· Construyendo la web" + (" (sin IA)" if not con_ia else ""))
     datos = construir(con_ia=con_ia)
@@ -132,6 +138,8 @@ def main(argv: list[str] | None = None) -> None:
     pq = sub.add_parser("preguntas", help="descarga las preguntas escritas al Gobierno")
     pq.add_argument("--completo", action="store_true", help="recorre toda la legislatura, no solo lo nuevo")
     sub.add_parser("agenda", help="descarga el orden del día de los próximos plenos y la tramitación de leyes")
+    ex = sub.add_parser("explora", help="unifica con IA temas, lugares y propuestas (solo lo que falte)")
+    ex.add_argument("--solo", choices=["temas", "lugares", "propuestas"])
     lt = sub.add_parser("lote", help="analiza con IA todo lo pendiente por la Batch API de Gemini (se puede relanzar)")
     lt.add_argument("--estado", action="store_true", help="solo muestra cómo va")
     lt.add_argument("--ver", action="store_true", help="progreso en directo (Ctrl+C para salir; no para el lote)")
@@ -161,6 +169,9 @@ def main(argv: list[str] | None = None) -> None:
         ag = agenda.actualizar()
         print(f"{len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión, "
               f"{len(leyes.actualizar()['iniciativas'])} iniciativas legislativas")
+    elif args.orden == "explora":
+        from . import normalizar
+        normalizar.ejecutar(args.solo)
     elif args.orden == "lote":
         from . import lotes
         if args.ver:

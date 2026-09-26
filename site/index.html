@@ -211,6 +211,14 @@ details.cifras>summary::before{content:"▸ "} details.cifras[open]>summary::bef
 .gpos{display:flex;flex-wrap:wrap;gap:5px}
 .gp{font-size:11.5px;font-weight:600;border-radius:var(--r-chip);padding:2px 7px;display:inline-flex;gap:5px;align-items:center;background:var(--sunk)}
 .gp .v{font-family:var(--mono);font-weight:500}
+details.porque{margin-top:2px}
+details.porque>summary{cursor:pointer;font-size:13px;font-weight:600;list-style:none}
+details.porque>summary::-webkit-details-marker{display:none}
+details.porque>summary::before{content:"▸ "} details.porque[open]>summary::before{content:"▾ "}
+details.porque ul{list-style:none;margin:8px 0 6px;padding:0;display:grid;gap:7px}
+details.porque li{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:baseline;font-size:13.5px;max-width:84ch}
+details.porque .quien{font-size:12.5px;color:var(--muted)}
+@media (max-width:640px){ details.porque li{grid-template-columns:1fr} }
 .gp.S .v{color:var(--si)} .gp.N .v{color:var(--no)} .gp.A .v{color:var(--abst)} .gp.D .v,.gp.q .v{color:var(--muted)}
 
 /* groups */
@@ -796,6 +804,65 @@ body.con-buscador{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   .stack i,.tonebar i,.topic .tb{transition:width .4s ease}
 }
+/* explora */
+.exp-nav{display:flex;flex-wrap:wrap;gap:6px 18px;padding-block:12px;border-bottom:1px solid var(--line)}
+.exp-nav a{font-size:14px;font-weight:500;color:var(--ink)}
+.exp-semana{display:flex;align-items:center;gap:12px}
+.exp-semana .btn{padding:4px 12px}
+.exp-chips,.exp-temas{display:flex;flex-wrap:wrap;gap:6px}
+.exp-chip{appearance:none;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-chip);padding:6px 10px;display:grid;text-align:left}
+.exp-chip small{font-size:12px;color:var(--muted)}
+.exp-chip[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.exp-tag-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.exp-tag-h h3{font-size:20px;margin:0}
+.exp-busca{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.exp-busca input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--r-chip);padding:4px 8px;width:180px}
+.exp-cols{display:flex;align-items:flex-end;gap:1px;height:120px;border-bottom:1px solid var(--line-strong)}
+.exp-cols i{flex:1;min-width:1px;background:var(--line-strong);border-radius:2px 2px 0 0;min-height:1px}
+.exp-cols i.act,.exp-cols i:hover{background:var(--ink)}
+.exp-anios{position:relative;height:16px;font-size:11.5px;color:var(--muted)}
+.exp-anios span{position:absolute;top:2px}
+.exp-grupos{display:grid;gap:4px;margin-top:6px}
+.exp-g{display:grid;grid-template-columns:auto 104px 1fr auto;gap:8px;align-items:center;font-size:13px}
+.exp-g .trk{height:10px}
+.exp-g .trk i{display:block;height:100%;border-radius:0 4px 4px 0;min-width:2px}
+.exp-leyenda{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;align-items:center}
+.exp-leyenda i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.exp-leyenda i.si,.exp-stack i.si{background:var(--si)} .exp-leyenda i.parcial,.exp-stack i.parcial{background:var(--abst)} .exp-leyenda i.no,.exp-stack i.no{background:var(--no)}
+.exp-orden{margin-left:auto;color:var(--muted)}
+.exp-orden .linklike{font-size:13px}
+.exp-orden .linklike[aria-pressed="true"]{font-weight:700;text-decoration:none}
+.exp-mins{display:grid;gap:2px}
+.exp-min-h{appearance:none;background:none;border:0;font:inherit;color:inherit;text-align:left;width:100%;display:grid;grid-template-columns:minmax(120px,230px) 1fr 130px;gap:12px;align-items:center;padding:6px;border-radius:6px}
+button.exp-min-h{cursor:pointer}
+button.exp-min-h:hover,.exp-min.abierto>.exp-min-h{background:var(--sunk)}
+.exp-nom{display:grid;min-width:0}
+.exp-nom b{font-weight:600;font-size:14px}
+.exp-nom small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp-stack{display:flex;gap:2px;height:14px}
+.exp-stack i{height:100%;border-radius:2px}
+.exp-pc{font-size:13px;text-align:right;display:grid;white-space:nowrap}
+.exp-pc small{font-size:11.5px;color:var(--muted)}
+.exp-casos{list-style:none;margin:6px 0 10px;padding:0 6px;display:grid;gap:10px;font-size:13.5px;max-width:90ch}
+.exp-prop{align-content:start}
+.exp-prop-h{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.exp-prop-h small{color:var(--muted);margin-left:auto;font-size:12.5px}
+.exp-prop ol{margin:0;padding-left:0;list-style:none;display:grid;gap:2px}
+.exp-prop summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:4px 0;border-bottom:1px solid var(--line)}
+.exp-prop summary::-webkit-details-marker{display:none}
+.exp-prop summary .num{color:var(--muted);font-size:12.5px}
+.exp-prop ul{margin:6px 0 8px;padding-left:16px;display:grid;gap:5px;font-size:13px}
+.exp-juego blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(18px,2.4vw,24px);line-height:1.4;max-width:60ch}
+.exp-ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:8px}
+.exp-op{display:flex;gap:7px;align-items:center;appearance:none;font:500 14px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:10px 14px;cursor:pointer;text-align:left}
+.exp-op:hover:not([disabled]){border-color:var(--ink)}
+.exp-op.ok{border-color:var(--si);box-shadow:inset 0 0 0 2px var(--si)}
+.exp-op.ko{border-color:var(--no);box-shadow:inset 0 0 0 2px var(--no);opacity:.8}
+.exp-op[disabled]{cursor:default}
+.exp-sol{margin:0;font-size:14.5px}
+.exp-marcador{display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-decoration:underline;list-style:none}
+@media (max-width:640px){ .exp-min-h{grid-template-columns:1fr 124px} .exp-min-h .exp-stack{grid-column:1/-1;order:3} .exp-orden{margin-left:0} .exp-g{grid-template-columns:auto 60px 1fr auto} }
 </style>
 </head>
 <body>
@@ -811,6 +878,7 @@ body.con-buscador{overflow:hidden}
         <button role="tab" id="tab-votaciones" aria-controls="votaciones" aria-selected="false">Votaciones</button>
         <button role="tab" id="tab-leyes" aria-controls="leyes" aria-selected="false">Leyes</button>
         <button role="tab" id="tab-temas" aria-controls="temas" aria-selected="false">Temas</button>
+        <button role="tab" id="tab-explora" aria-controls="explora" aria-selected="false">Explora</button>
         <button role="tab" id="tab-diputados" aria-controls="diputados" aria-selected="false">Diputados</button>
         <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Grupos</button>
         <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
@@ -824,6 +892,7 @@ body.con-buscador{overflow:hidden}
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
     <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
+    <section class="view" id="explora" role="tabpanel" aria-labelledby="tab-explora" hidden></section>
     <section class="view" id="diputados" role="tabpanel" aria-labelledby="tab-diputados" hidden></section>
     <section class="view" id="grupos" role="tabpanel" aria-labelledby="tab-grupos" hidden></section>
     <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
@@ -953,9 +1022,17 @@ function voteRow(v, compact){
       <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
     <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">JSON oficial</a></div>
     <div class="gpos">${gp}</div>
+    ${porqueVoto(v)}
     ${decideNota(v)}
     ${(v.discrepantes||[]).length?`<p class="nota">Votaron distinto a su grupo: ${esc(v.discrepantes.slice(0,12).join(", "))}${v.discrepantes.length>12?` y ${v.discrepantes.length-12} más`:""}</p>`:""}
   </article>`;
+}
+function porqueVoto(v){
+  const gs = PARL.filter(g=>v.porque?.[g]);
+  if (!gs.length) return "";
+  return `<details class="porque"><summary>Por qué votó así cada grupo</summary><ul>${gs.map(g=>{ const [m,o,s,f]=v.porque[g], x=v.grupos[g]||"?";
+    return `<li><span class="gp ${x}">${gdot(g)}${g}<span class="v">${VLABEL[x]}</span></span><span>${esc(m)} <button class="linklike quien" data-irs="${esc(s)}" data-f="${esc(f)}">${esc(o)}</button></span></li>`; }).join("")}</ul>
+    <p class="nota">Motivo resumido con IA a partir del debate de esta iniciativa en el Diario de Sesiones. Solo aparece si lo que dijo el grupo coincide con lo que votó.</p></details>`;
 }
 function ivCard(i){
   const pos = i.pos ? `<span class="pill pos-${i.pos.replace(/ /g,"-")}">${esc(i.pos[0].toUpperCase()+i.pos.slice(1))}</span>` : "";
@@ -1879,7 +1956,9 @@ async function renderProvincia(){
       <div>${hemiProvincia(ds)}</div></div>
     <div class="tus-grid">${tarjetas}</div>
     ${aj.length?`<section class="sec"><div class="sec-h"><h2>Cómo votaron en las decisiones más ajustadas</h2><p>Un punto por diputado, en el orden de arriba: <span class="leyenda-v"><i class="S"></i>sí <i class="N"></i>no <i class="A"></i>abstención <i class="X"></i>no vota</span></p></div><div class="pv">${filasAj}</div></section>`:""}
+    <section class="sec" id="prov-lugar"></section>
     <section class="sec" id="prov-preguntas"><div class="sec-h"><h2>Qué preguntan al Gobierno</h2><p>Sus ${glosa("pregunta-escrita","preguntas escritas")} más recientes.</p></div><div class="nota">Cargando…</div></section>`;
+  pintarLugar(circ);
   const listas = await Promise.all(ds.filter(d=>P?.diputados?.[d.i]).map(d=>fetch(`datos/preguntas/${d.slug}.json`).then(r=>r.ok?r.json():[]).catch(()=>[]).then(l=>l.slice(0,30).map(p=>[...p.slice(0,5),d]))));
   const todas = listas.flat().sort((a,b)=>b[1].localeCompare(a[1])).filter((p,k,arr)=>arr.findIndex(q=>q[0]===p[0])===k).slice(0,25);
   const sec = $("#prov-preguntas"); if (!sec) return;
@@ -2026,7 +2105,7 @@ function renderSobre(){
         <h3>Origen de los datos</h3>
         <p>La información procede de fuentes públicas del Congreso de los Diputados (datos abiertos, Diario de Sesiones, Boletín Oficial de las Cortes Generales, buscador de iniciativas y agenda) y se reutiliza de acuerdo con la normativa sobre reutilización de la información del sector público (Ley 37/2007), citando siempre la fuente y enlazando al documento original. Las fotografías de los diputados son las que publica el Congreso y se muestran directamente desde su web.</p>
         <h3>Exactitud</h3>
-        <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los textos generados con inteligencia artificial (resúmenes de sesiones e intervenciones, frases de síntesis, tono, intensidad, si el Gobierno contesta a lo que se le pregunta, el motivo de cada postura, compromisos, propuestas, cifras, territorios y leyes mencionados) son orientativos, se indican como tales y pueden contener errores; ante cualquier duda, prevalece el Diario de Sesiones enlazado. Nada de lo publicado constituye asesoramiento jurídico.</p>
+        <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los textos generados con inteligencia artificial (resúmenes de sesiones e intervenciones, frases de síntesis, tono, intensidad, si el Gobierno contesta a lo que se le pregunta, el motivo de cada postura, compromisos, propuestas, cifras, territorios y leyes mencionados, además de la unificación de temas, la ubicación de los lugares y la agrupación de propuestas de la sección Explora) son orientativos, se indican como tales y pueden contener errores; ante cualquier duda, prevalece el Diario de Sesiones enlazado. Nada de lo publicado constituye asesoramiento jurídico.</p>
         <h3>Personas</h3>
         <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a> o a través de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com</a>, y se revisará lo antes posible.</p>
         <h3>Privacidad</h3>
@@ -2265,6 +2344,146 @@ function renderInicio(){
   if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
 
+/* ---------- explora: lo que sale de juntar toda la legislatura ---------- */
+let EXPLORA = null, exploraPromesa = null;
+const expSel = {semana:null, tag:null, orden:"n", ministro:null, tema:"vivienda"};
+const juego = {cita:null, ok:0, total:0, resp:null, opciones:[]};
+function cargarExplora(){
+  if (EXPLORA) return Promise.resolve(EXPLORA);
+  return exploraPromesa ||= Promise.all(["radar","contesta","propuestas","citas"].map(n=>fetch(`datos/explora-${n}.json`).then(r=>r.ok?r.json():null).catch(()=>null)))
+    .then(([radar,contesta,propuestas,citas])=>EXPLORA={radar,contesta,propuestas,citas});
+}
+const semanaLarga = iso => { const d=dt(iso); return `semana del ${d.d} de ${MESES_LARGOS[MESES.indexOf(d.m)]}`; };
+const expPct = (a,n) => n ? Math.round(a/n*100) : 0;
+
+function expRadar(){
+  const R = EXPLORA.radar; if (!R) return "";
+  const ds = R.destacados.filter(w=>w.temas.length);
+  const w = ds.find(x=>x.semana===expSel.semana) || ds[ds.length-1];
+  if (!w) return "";
+  expSel.semana = w.semana;
+  const k = ds.indexOf(w);
+  const tag = R.temas[expSel.tag] ? expSel.tag : w.temas[0][0];
+  expSel.tag = tag;
+  const t = R.temas[tag];
+  const chips = w.temas.map(([c,n,media,nuevo])=>`<button class="exp-chip" data-exp-tag="${esc(c)}" aria-pressed="${c===tag}"><b>${esc(c)}</b><small>${n} ${n===1?"intervención":"intervenciones"} · ${nuevo?"nuevo":media<1?"antes, casi nada":`×${(n/media).toLocaleString("es-ES",{maximumFractionDigits:1})} lo habitual`}</small></button>`).join("");
+  const max = Math.max(...t.serie, 1), sw = R.semanas;
+  const pico = t.serie.indexOf(Math.max(...t.serie));
+  const cols = t.serie.map((n,i)=>`<i class="${sw[i]===w.semana?"act":""}" style="height:${(n/max*100).toFixed(1)}%" data-tip="${esc(`<b>${semanaLarga(sw[i])}</b><br>${n} ${n===1?"intervención":"intervenciones"}`)}"></i>`).join("");
+  const anios = sw.map((s,i)=>[s,i]).filter(([s,i])=>i===0 || s.slice(0,4)!==sw[i-1].slice(0,4)).map(([s,i])=>`<span style="left:${(i/sw.length*100).toFixed(1)}%">${s.slice(0,4)}</span>`).join("");
+  const gs = Object.entries(t.grupos).filter(([g])=>G[g]).slice(0,8), gmax = gs[0]?.[1]||1;
+  return `<section class="sec" id="exp-radar"><div class="sec-h"><h2>De qué se habla</h2><p>Los temas que se disparan cada semana respecto a sus ocho semanas anteriores. Las etiquetas las pone la IA a cada intervención y se unifican (DANA, gota fría y Paiporta cuentan juntas).</p></div>
+    <div class="chart">
+      <div class="exp-semana"><button class="btn" data-exp-sem="${ds[k-1]?.semana||""}" ${k?"":"disabled"} aria-label="Semana anterior">←</button><b>${esc(semanaLarga(w.semana).replace(/^s/,"S"))}</b><button class="btn" data-exp-sem="${ds[k+1]?.semana||""}" ${k<ds.length-1?"":"disabled"} aria-label="Semana siguiente">→</button></div>
+      <div class="exp-chips">${chips}</div>
+    </div>
+    <div class="chart"><div class="exp-tag-h"><h3>${esc(tag)}</h3><label class="exp-busca">Otro tema <input list="exp-tags" data-exp-input placeholder="Busca un tema…"></label><datalist id="exp-tags">${Object.keys(R.temas).sort((a,b)=>a.localeCompare(b,"es")).map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
+      <p class="sub" style="margin:0">${fmt(t.n)} intervenciones en la legislatura · aparece por primera vez el ${fechaCorta(t.primera)} · pico en la ${semanaLarga(sw[pico])}</p>
+      <div class="exp-cols" role="img" aria-label="Intervenciones por semana sobre ${esc(tag)}">${cols}</div><div class="exp-anios">${anios}</div>
+      <div><div class="eyebrow">Quién lo saca</div><div class="exp-grupos">${gs.map(([g,n])=>`<div class="exp-g">${gdot(g)}<span>${esc(gname(g))}</span><span class="trk"><i style="width:${(n/gmax*100).toFixed(1)}%;background:${G[g].color}"></i></span><span class="num">${fmt(n)}</span></div>`).join("")}</div></div>
+      <p><button class="linklike" data-tema="${esc(tag)}">Ver quién habla de «${esc(tag)}» en el periodo</button></p>
+    </div></section>`;
+}
+
+function expContesta(){
+  const C = EXPLORA.contesta; if (!C) return "";
+  const orden = {n:(a,b)=>b.n-a.n, si:(a,b)=>b.si/b.n-a.si/a.n, no:(a,b)=>b.no/b.n-a.no/a.n}[expSel.orden];
+  const barra = (si,pa,no) => { const n=si+pa+no; return `<span class="exp-stack" role="img" aria-label="Contesta ${expPct(si,n)} %, en parte ${expPct(pa,n)} %, no ${expPct(no,n)} %">${[[si,"si"],[pa,"parcial"],[no,"no"]].map(([x,c])=>x?`<i class="${c}" style="width:${(x/n*100).toFixed(2)}%" data-tip="${esc(`${c==="si"?"Contesta":c==="parcial"?"En parte":"No contesta"}: ${x} de ${n} (${expPct(x,n)} %)`)}"></i>`:"").join("")}</span>`; };
+  const filas = C.ministros.slice().sort(orden).map(m=>{
+    const abierto = expSel.ministro===m.orador;
+    const casos = abierto ? `<ul class="exp-casos">${m.casos.map(([f,s,r,mot,po,pg,fr])=>`<li><span class="nota">${fechaCorta(f)}</span>${po?`<br><span class="nota">Pregunta ${gdot(pg)}${esc(po)}:</span> ${esc(fr)}`:""}<br><span class="pill resp-${r==="sí"?"si":r}">${r==="sí"?"Contesta":r==="parcial"?"En parte":"No contesta"}</span> ${esc(mot)} <button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver la sesión</button></li>`).join("")}</ul>` : "";
+    return `<div class="exp-min${abierto?" abierto":""}"><button class="exp-min-h" data-exp-min="${esc(m.orador)}" aria-expanded="${abierto}"><span class="exp-nom"><b>${esc(m.orador)}</b><small>${esc(m.rol)}</small></span>${barra(m.si,m.parcial,m.no)}<span class="num exp-pc">${expPct(m.si,m.n)} % sí · ${expPct(m.no,m.n)} % no<small>${m.n} respuestas</small></span></button>${casos}</div>`; }).join("");
+  const pg = Object.entries(C.por_grupo).filter(([g])=>G[g]).sort((a,b)=>(b[1].si+b[1].parcial+b[1].no)-(a[1].si+a[1].parcial+a[1].no));
+  return `<section class="sec" id="exp-contesta"><div class="sec-h"><h2>¿Contesta el Gobierno?</h2><p>En cada respuesta del Gobierno en el control, la IA valora si contesta a lo que se le pregunta. Es una valoración orientativa: abre a cada ministro para ver los casos y sus sesiones.</p></div>
+    <div class="chart">
+      <div class="exp-leyenda"><span><i class="si"></i>Contesta</span><span><i class="parcial"></i>En parte</span><span><i class="no"></i>No contesta</span>
+        <span class="exp-orden">Ordenar: ${[["n","más respuestas"],["si","más contesta"],["no","menos contesta"]].map(([k,l])=>`<button class="linklike" data-exp-orden="${k}" aria-pressed="${expSel.orden===k}">${l}</button>`).join(" · ")}</span></div>
+      <div class="exp-mins">${filas}</div>
+      <p class="nota">Solo miembros del Gobierno con 20 respuestas o más en toda la legislatura.</p>
+    </div>
+    <div class="chart"><h3>Según quién pregunta</h3>
+      <div class="exp-mins">${pg.map(([g,c])=>{ const n=c.si+c.parcial+c.no; return `<div class="exp-min"><div class="exp-min-h"><span class="exp-nom"><b>${gdot(g)}${esc(G[g].nombre)}</b></span>${barra(c.si,c.parcial,c.no)}<span class="num exp-pc">${expPct(c.si,n)} % sí · ${expPct(c.no,n)} % no<small>${n} respuestas</small></span></div></div>`; }).join("")}</div>
+      <p class="nota">Las preguntas de la oposición suelen ser más duras y abiertas que las de los grupos que apoyan al Gobierno, así que es esperable que se conteste más a unas que a otras.</p>
+    </div></section>`;
+}
+
+const ORDEN_PROP = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","MIXTO","GOB"];
+function expPropuestas(){
+  const P = EXPLORA.propuestas; if (!P) return "";
+  const temas = Object.keys(P).sort((a,b)=>Object.values(P[b]).reduce((s,x)=>s+x.total,0)-Object.values(P[a]).reduce((s,x)=>s+x.total,0));
+  const tema = P[expSel.tema] ? expSel.tema : temas[0];
+  expSel.tema = tema;
+  const nombreTema = TEMAS_IDX?.[tema]?.nombre || tema;
+  const tarjetas = ORDEN_PROP.filter(g=>P[tema][g] && G[g]).map(g=>{ const x=P[tema][g];
+    return `<div class="chart exp-prop"><div class="exp-prop-h">${gdot(g)}<b>${esc(G[g].nombre)}</b><small>${fmt(x.total)} propuestas</small></div>
+      <ol>${x.lineas.map(l=>`<li><details><summary><span>${esc(l.titulo)}</span><span class="num">${l.n}</span></summary><ul>${l.ejemplos.map(([t,o,s,f])=>`<li>«${esc(t)}» <span class="nota">${esc(o)}, ${fechaCorta(f)}</span> <button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver</button></li>`).join("")}</ul></details></li>`).join("")}</ol></div>`; }).join("");
+  if (!TEMAS_IDX) cargarTemasIdx().then(()=>{ const h=$("#exp-propuestas"); if (h) h.outerHTML = expPropuestas(); });
+  return `<section class="sec" id="exp-propuestas"><div class="sec-h"><h2>Qué propone cada grupo</h2><p>Las medidas concretas que cada grupo ha pedido en el Congreso, agrupadas con IA cuando piden lo mismo. El número es cuántas veces se ha propuesto; ábrelas para ver ejemplos y su sesión.</p></div>
+    <div class="exp-temas">${temas.map(t=>`<button class="exp-chip" data-exp-tema="${t}" aria-pressed="${t===tema}"><b>${esc(TEMAS_IDX?.[t]?.nombre||t)}</b></button>`).join("")}</div>
+    <h3 class="sr">${esc(nombreTema)}</h3>
+    <div class="grid2">${tarjetas}</div></section>`;
+}
+
+const GRUPOS_JUEGO = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","GOB"];
+function nuevaCita(){
+  const C = EXPLORA.citas||[]; if (!C.length) return;
+  juego.cita = C[Math.floor(Math.random()*C.length)];
+  const otros = GRUPOS_JUEGO.filter(g=>g!==juego.cita[2]).sort(()=>Math.random()-.5).slice(0,3);
+  juego.opciones = [juego.cita[2], ...otros].sort(()=>Math.random()-.5);
+  juego.resp = null;
+}
+function expJuego(){
+  if (!EXPLORA.citas?.length) return "";
+  if (!juego.cita) nuevaCita();
+  const [cita,orador,g,s,f] = juego.cita, r = juego.resp;
+  const ops = juego.opciones.map(o=>`<button class="exp-op${r?(o===g?" ok":o===r?" ko":""):""}" data-exp-op="${o}" ${r?"disabled":""}>${gdot(o)}${esc(o==="GOB"?"Gobierno":G[o]?.nombre||o)}</button>`).join("");
+  return `<section class="sec" id="exp-juego"><div class="sec-h"><h2>¿Quién lo dijo?</h2><p>Frases literales del Diario de Sesiones. Adivina de qué grupo es quien habla.</p></div>
+    <div class="chart exp-juego"><blockquote><mark>«${esc(cita)}»</mark></blockquote>
+      <div class="exp-ops">${ops}</div>
+      ${r?`<p class="exp-sol">${r===g?"¡Acierto!":"No era ese grupo."} Lo dijo <b>${esc(orador)}</b> (${esc(g==="GOB"?"Gobierno":G[g]?.nombre||g)}) el ${fechaCorta(f)}. <button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver la sesión</button></p>`:""}
+      <div class="exp-marcador"><span class="num">${juego.ok} aciertos de ${juego.total}</span><button class="btn${r?" primary":""}" data-exp-otra>${r?"Otra frase":"Saltar"}</button></div>
+    </div></section>`;
+}
+
+async function renderExplora(){
+  const el = $("#explora");
+  if (!EXPLORA){ el.innerHTML = `<p class="nota">Cargando…</p>`; await cargarExplora(); }
+  el.innerHTML = `<div class="view-intro"><div><h2>Explora</h2><p>Lo que sale de juntar el análisis de todas las intervenciones de la legislatura, no solo del periodo elegido. Lo resume la IA a partir del Diario de Sesiones: es orientativo, y cada dato enlaza a su sesión.</p></div></div>
+    <nav class="exp-nav" aria-label="Secciones">${[["exp-radar","De qué se habla"],["exp-contesta","¿Contesta el Gobierno?"],["exp-propuestas","Qué propone cada grupo"],["exp-juego","¿Quién lo dijo?"]].map(([a,l])=>`<a href="#${a}" data-exp-ir="${a}">${l}</a>`).join("")}</nav>
+    ${expRadar()}${expContesta()}${expPropuestas()}${expJuego()}`;
+}
+function repintarExp(id, fn){ const h=document.getElementById(id); if (h) h.outerHTML = fn(); }
+$("#explora").addEventListener("click", e=>{
+  const x = e.target.closest("[data-exp-tag],[data-exp-sem],[data-exp-orden],[data-exp-min],[data-exp-tema],[data-exp-op],[data-exp-otra],[data-exp-ir]");
+  if (!x) return;
+  const d = x.dataset;
+  if (d.expIr){ e.preventDefault(); document.getElementById(d.expIr)?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); return; }
+  if (d.expTag){ expSel.tag=d.expTag; repintarExp("exp-radar", expRadar); }
+  else if (d.expSem){ expSel.semana=d.expSem; expSel.tag=null; repintarExp("exp-radar", expRadar); }
+  else if (d.expOrden){ expSel.orden=d.expOrden; repintarExp("exp-contesta", expContesta); }
+  else if (d.expMin){ expSel.ministro = expSel.ministro===d.expMin ? null : d.expMin; repintarExp("exp-contesta", expContesta); }
+  else if (d.expTema){ expSel.tema=d.expTema; repintarExp("exp-propuestas", expPropuestas); }
+  else if (d.expOp){ juego.resp=d.expOp; juego.total++; if (d.expOp===juego.cita[2]) juego.ok++; repintarExp("exp-juego", expJuego); }
+  else if ("expOtra" in d){ nuevaCita(); repintarExp("exp-juego", expJuego); }
+}, SIG);
+$("#explora").addEventListener("change", e=>{ const i=e.target.closest("[data-exp-input]"); if (i && EXPLORA.radar?.temas[i.value]){ expSel.tag=i.value; repintarExp("exp-radar", expRadar); } }, SIG);
+
+async function pintarLugar(circ){
+  const x = await fetch(`datos/lugares/${slug(circ)}.json`).then(r=>r.ok?r.json():null).catch(()=>null);
+  const sec = $("#prov-lugar"); if (!sec) return;
+  if (!x || !(x.n || x.comunidad?.n)){ sec.remove(); return; }
+  const fila = ([f,s,o,g,lug,fr]) => `<li><span class="nota">${fechaCorta(f)} · ${G[g]?gdot(g):""}${esc(o)}</span><br>${esc(fr)} <span class="tag lugar">${esc(lug)}</span> <button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver</button></li>`;
+  const bloque = (d, nombre) => { const gs = Object.entries(d.grupos).filter(([g])=>G[g]).slice(0,8), gmax = gs[0]?.[1]||1;
+    return `<div class="grid2"><div class="chart"><div class="eyebrow">De qué se habla</div><div class="tags">${d.temas.map(([t,n])=>`<span class="tag">${esc(t)} <span class="num">${n}</span></span>`).join("")}</div>
+      <div class="eyebrow">Quién habla de ${esc(nombre)}</div><div class="exp-grupos">${gs.map(([g,n])=>`<div class="exp-g">${gdot(g)}<span>${esc(gname(g))}</span><span class="trk"><i style="width:${(n/gmax*100).toFixed(1)}%;background:${G[g].color}"></i></span><span class="num">${fmt(n)}</span></div>`).join("")}</div></div>
+      <div class="chart"><div class="eyebrow">Lo más reciente</div><ul class="exp-casos">${d.central.slice(0,8).map(fila).join("")}</ul>
+        ${d.central.length>8?`<details class="exp-mas"><summary>Ver más</summary><ul class="exp-casos">${d.central.slice(8).map(fila).join("")}</ul></details>`:""}
+        ${d.pasada.length?`<details class="exp-mas"><summary>Menciones de pasada (${d.pasada.length}${d.pasada.length>=40?"+":""})</summary><p class="nota">Intervenciones que citan ${esc(nombre)} sin que sea su asunto principal. Puede colarse alguna confusión, por ejemplo con apellidos.</p><ul class="exp-casos">${d.pasada.map(fila).join("")}</ul></details>`:""}</div></div>`; };
+  const cc = x.comunidad;
+  sec.innerHTML = `${x.n?`<div class="sec-h"><h2>Lo que se dice de ${esc(circ)}</h2><p>${fmt(x.n)} ${x.n===1?"intervención":"intervenciones"} de la legislatura tratan sobre ${esc(circ)} o sus municipios. Los lugares los detecta la IA en cada intervención.</p></div>${bloque(x, circ)}`:""}
+    ${cc?.n?`<div class="sec-h" style="margin-top:18px"><h2>Y de ${esc(cc.nombre)}</h2><p>${fmt(cc.n)} intervenciones tratan sobre la comunidad en su conjunto.</p></div>${bloque(cc, cc.nombre)}`:""}`;
+}
+
 /* ---------- días ---------- */
 function renderDias(){
   const byDate = {};
@@ -2435,6 +2654,9 @@ function renderMetodo(){
       <li>El <b>embudo</b> de las leyes cuenta hasta qué etapa llegó cada iniciativa según las fases de su tramitación oficial: admitida a debate (toma en consideración, o directamente si es un proyecto del Gobierno o viene del Senado), informe de la ponencia en comisión, aprobación en el Congreso, paso por el Senado y publicación como ley.</li>
       <li>El <b>congelador</b> ordena las iniciativas vivas por el número de veces que la Mesa ha ampliado su plazo de enmiendas; cada ampliación suele ser de una semana.</li>
       <li><b>La semana en el Congreso</b> se escribe con reglas fijas, sin IA: el titular es, por este orden, un decreto derogado, una ley que termina su tramitación, una votación decidida por diez votos o menos, o el balance de votaciones.</li>
+      <li><b>Por qué votó así cada grupo</b>: el motivo de cada grupo sale del debate de esa misma iniciativa (el mismo día o, si se votó otro, por su número de expediente) y solo se muestra si la postura que expresó en el debate coincide con lo que votó.</li>
+      <li><b>Explora</b> junta toda la legislatura. En <b>de qué se habla</b>, la IA unifica las etiquetas de tema que son la misma cosa (plurales, tildes, sinónimos exactos; nunca las cambia por una categoría más general) y un tema se destaca cuando una semana dobla con creces su media de las ocho anteriores. En <b>¿contesta el Gobierno?</b> cada respuesta del control lleva la valoración de la IA (sí, en parte, no) y se asocia a la última intervención de otro grupo en ese asunto; solo salen quienes tienen 20 respuestas o más. En <b>qué propone cada grupo</b>, la IA agrupa las propuestas concretas que piden lo mismo a partir de las 500 más recientes de cada grupo y tema. <b>¿Quién lo dijo?</b> usa citas comprobadas literalmente, sin las que nombran al propio partido.</li>
+      <li><b>Lo que se dice de tu provincia</b>: la IA sitúa cada lugar mencionado en su provincia y comunidad. Las cifras cuentan solo las intervenciones cuyo resumen trata del lugar; las que lo citan de pasada se listan aparte.</li>
       <li>Los <b>temas para seguir</b> (vivienda, sanidad, pensiones…) se asignan con una lista fija de palabras clave sobre el texto oficial, igual para votaciones, leyes, orden del día y preguntas. Un asunto puede tener varios temas o ninguno.</li>
       <li><b>«¿Qué significa?»</b> es una frase fija según el tipo de votación y su resultado; no depende de quién presenta la iniciativa.</li>
       <li>Una <b>pregunta escrita</b> cuenta como «sin contestar tras más de 60 días» si sigue abierta 60 días después de su calificación por la Mesa. El plazo legal es de 20 días desde la publicación, prorrogables otros 20; el margen cubre el tiempo hasta que se publica. El tiempo de respuesta va de la calificación al cierre de la pregunta.</li>
@@ -2568,10 +2790,10 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","leyes","temas","diputados","grupos","oradores","metodo"];
+const TABS = ["inicio","dias","votaciones","leyes","temas","explora","diputados","grupos","oradores","metodo"];
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
 // la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
 let ultimaVista = null;

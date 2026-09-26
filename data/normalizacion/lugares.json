@@ -1,0 +1,6922 @@
+{
+"A Capela": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"A Cañiza": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"A Coruña": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"A Estrada": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"A Fonsagrada": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"A Gudiña": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"A Illa de Arousa": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"A Lama": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"A Laracha": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"A Mariña": [
+"comarca",
+"Galicia",
+"Lugo"
+],
+"A Pastoriza": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"A Pobra do Caramiñal": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"A Ulloa": [
+"comarca",
+"Galicia",
+"Lugo"
+],
+"AP-51": [
+"otro",
+"Castilla y León",
+"Ávila"
+],
+"AP-6": [
+"otro",
+"",
+""
+],
+"AP-61": [
+"otro",
+"Castilla y León",
+"Segovia"
+],
+"Abanto y Ciérvana": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Abanto y Ciérvana-Abanto Zierbena": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Abegondo": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Abla": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Ablitas": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Acebuchal": [
+"otro",
+"Andalucía",
+"Málaga"
+],
+"Adamuz": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Adanero": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Adeje": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Adrall": [
+"otro",
+"Cataluña",
+"Lleida"
+],
+"Aguas Nuevas": [
+"otro",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Aguilar de Campoo": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Aiaraldea": [
+"comarca",
+"País Vasco",
+"Araba/Álava"
+],
+"Ajalvir": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Alacant": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Alange": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Alatoz": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Alba de Tormes": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Albacete": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Albal": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Albons": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Alboraya": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Albufera": [
+"otro",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Albuixech": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Alcalá de Henares": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Alcalá del Júcar": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Alcanar": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Alcaracejos": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Alcarràs": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Alcañices": [
+"municipio",
+"Castilla y León",
+"Zamora"
+],
+"Alcañiz": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Alcolea": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Alcorcón": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Alcoy": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Alcublas": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Alcázar de San Juan": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Alcúdia": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Aldaia": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Alemania": [
+"otro",
+"",
+""
+],
+"Alfafar": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Alfaro": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Algeciras": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Algemesí": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Algueña": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Alhama": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Alhaurín de la Torre": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Alicante": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Aliste": [
+"comarca",
+"Castilla y León",
+"Zamora"
+],
+"Aljarafe": [
+"comarca",
+"Andalucía",
+"Sevilla"
+],
+"Allande": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Aller": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Almacelles": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Almadén": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Almagro": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Almansa": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Almaraz": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Almargen": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Almazán": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"Almedina": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Almenara": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Almendralejo": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Almería": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Almodóvar del Pinar": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Almonte": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Almorox": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Almudévar": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Almussafes": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Alpedrete": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Alpera": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Alsasua": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Alt Empordà": [
+"comarca",
+"Cataluña",
+"Girona"
+],
+"Altafulla": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Altea": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Alto Deva": [
+"comarca",
+"País Vasco",
+"Gipuzkoa"
+],
+"Alzira": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Ameyugo": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Amposta": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Amurrio": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Andalucía": [
+"comunidad",
+"Andalucía",
+""
+],
+"Andalusia": [
+"comunidad",
+"Andalucía",
+""
+],
+"Andilla": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Andorra": [
+"otro",
+"",
+""
+],
+"Andújar": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Angrois": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"Anguiano": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Ansoáin": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Antequera": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Aoiz": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Araba": [
+"provincia",
+"País Vasco",
+"Araba/Álava"
+],
+"Araba/Álava": [
+"provincia",
+"País Vasco",
+"Araba/Álava"
+],
+"Aragón": [
+"comunidad",
+"Aragón",
+""
+],
+"Aranda": [
+"comarca",
+"Aragón",
+"Zaragoza"
+],
+"Aranda de Duero": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Aranjuez": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Arbeca": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Arbúcies": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Arcos de la Frontera": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Ares": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Argamasilla de Alba": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Arganda": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Arganda del Rey": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Argelia": [
+"otro",
+"",
+""
+],
+"Arguedas": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Arjona": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Arkaute": [
+"otro",
+"País Vasco",
+"Araba/Álava"
+],
+"Armilla": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Arrasate-Mondragón": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Arrecife": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Arrigorriaga": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Arroyo de la Encomienda": [
+"municipio",
+"Castilla y León",
+"Valladolid"
+],
+"Arroyomolinos": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Artajona": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Arteixo": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Artieda": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Arucas": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Arzúa": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Arévalo": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"As Pontes": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"As Pontes de García Rodríguez": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"As Somozas": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Ascaso": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Ascó": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Aspa": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Astigarraga": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Astorga": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Asturias": [
+"comunidad",
+"Asturias",
+"Asturias"
+],
+"Austria": [
+"otro",
+"",
+""
+],
+"Avilés": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Axarquía": [
+"comarca",
+"Andalucía",
+"Málaga"
+],
+"Ayala": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Ayamonte": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Ayerbe": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Azkoitia": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Aznalcóllar": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Azpeitia": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Azuqueca": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Azuqueca de Henares": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Badajoz": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Badalona": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Baeza": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Bages": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Bahía de Cádiz": [
+"comarca",
+"Andalucía",
+"Cádiz"
+],
+"Bailén": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Baix Ebre": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Baix Llobregat": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Baix Segre": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Bajo Aragón": [
+"comarca",
+"Aragón",
+"Teruel"
+],
+"Balaguer": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Baleares": [
+"comunidad",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Bande": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Barajas": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Barakaldo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Barbanza": [
+"comarca",
+"Galicia",
+"Coruña (A)"
+],
+"Barbate": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Barberà del Vallès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Barcelona": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Barcelona (provincia) y/o Barcelona (municipio) -> Barcelona": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Barcelona y Hospitalet de Llobregat": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Barcelona y Majadahonda": [
+"otro",
+"",
+""
+],
+"Bardenas Reales": [
+"comarca",
+"Navarra",
+"Navarra"
+],
+"Barreiros": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Barrika": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Basauri": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Beariz": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Beas": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Beas de Segura": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Beget": [
+"otro",
+"Cataluña",
+"Girona"
+],
+"Begues": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Bejís": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Belalcázar": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Belchite": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Belianes": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Bellpuig": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Bembibre": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Benahavís": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Benalmádena": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Benamahoma": [
+"otro",
+"Andalucía",
+"Cádiz"
+],
+"Benamejí": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Benavente": [
+"municipio",
+"Castilla y León",
+"Zamora"
+],
+"Benavites": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Benetússer": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Benicarló": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Benicasim": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Benicàssim": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Benidorm": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Benissa": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Benitatxell": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Bermeo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Berriozar": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Betanzos": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Bilbao": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Binéfar": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Bizkaia": [
+"provincia",
+"País Vasco",
+"Bizkaia"
+],
+"Bizkaia (Vizcaya)|Bizkaia|Vizcaya|Bizkaia/Vizcaya|Bizkaia / Vizcaya|Bizkaia y Vizcaya|Bizkaia o Vizcaya|Bizkaia": [
+"provincia",
+"País Vasco",
+"Bizkaia"
+],
+"Blanes": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Boadilla": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Boadilla del Monte": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Bobadilla": [
+"otro",
+"Andalucía",
+"Málaga"
+],
+"Bolbaite": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Bonares": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Borja": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Bormujos": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Borriana": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Bossòst": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Brazatortas": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Brenes": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Brinkola": [
+"otro",
+"País Vasco",
+"Gipuzkoa"
+],
+"Briviesca": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Bruselas": [
+"otro",
+"",
+""
+],
+"Buitrago": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Burela": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Burgos": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Burjassot": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Burlada": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Burriana": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Buñol": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Bárdenas": [
+"comarca",
+"Navarra",
+"Navarra"
+],
+"Béjar": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Bétera": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Cabanillas del Campo": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Cabañeros": [
+"otro",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Cabezuela del Valle": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Cabrera": [
+"comarca",
+"Castilla y León",
+"León"
+],
+"Cabrera de Mar": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cadaqués": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Cadrete": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Calahorra": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Calamocha": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Calanda": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Calatayud": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Caldes de Montbui": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Calp": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Calvià": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Camargo": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Camas": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Cambre": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Cambrils": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Camp de Tarragona": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Campamento": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Campo Arañuelo": [
+"comarca",
+"Extremadura",
+"Cáceres"
+],
+"Campo de Borja": [
+"comarca",
+"Aragón",
+"Zaragoza"
+],
+"Campo de Cartagena": [
+"comarca",
+"Región de Murcia",
+"Murcia"
+],
+"Campo de Criptana": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Campo de Daroca": [
+"comarca",
+"Aragón",
+"Zaragoza"
+],
+"Campo de Gibraltar": [
+"comarca",
+"Andalucía",
+"Cádiz"
+],
+"Campo de Montiel": [
+"comarca",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Campo de Tabernas": [
+"comarca",
+"Andalucía",
+"Almería"
+],
+"Camporrobles": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Canal Roya": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Canarias": [
+"comunidad",
+"Canarias",
+""
+],
+"Canet": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Canet de Mar": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Caneto": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Canfranc": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Cangas de Morrazo": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Cantabria": [
+"comunidad",
+"Cantabria",
+"Cantabria"
+],
+"Cantillana": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Cap de Creus": [
+"otro",
+"Cataluña",
+"Girona"
+],
+"Caparroso": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Caravaca de la Cruz": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Carbajosa de la Sagrada": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Carballo": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Carboneras": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Carcabuey": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Carcaixent": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Cardedeu": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cardona": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cariñena": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Cariño": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Carlet": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Cartagena": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Cartagena_Región de Murcia": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Cartaya": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Cartes": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Casabermeja": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Casares": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Casas Ibáñez": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Casas de Ves": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Casas-Ibáñez": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Casetas": [
+"otro",
+"Aragón",
+"Zaragoza"
+],
+"Caspe": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Castejón": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Castell d'Aro, Platja d'Aro i S'Agaró": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Castell-Platja d'Aro": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Castellbisbal": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Castelldefels": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Castelló": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Castellón": [
+"provincia",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Castellón de la Plana / Castelló de la Plana": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Castildelgado": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Castilfrío": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"Castilfrío de la Sierra": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"Castilla": [
+"otro",
+"",
+""
+],
+"Castilla y León": [
+"comunidad",
+"Castilla y León",
+""
+],
+"Castilla y León, cuando es la mejor herramienta de transformación social de nuestro país!": [
+"comunidad",
+"Castilla y León",
+""
+],
+"Castilla-La Mancha": [
+"comunidad",
+"Castilla-La Mancha",
+""
+],
+"Castilla-La Mancha de pasada pero Lorca/Totana/Vera son municipios de Almería y Murcia: Almería, Región de Murcia, Totana, Lorca, Vera, Águilas": [
+"otro",
+"",
+""
+],
+"Castrillón": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Castro Urdiales": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Castro-Urdiales": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Catalunya": [
+"comunidad",
+"Cataluña",
+""
+],
+"Cataluña": [
+"comunidad",
+"Cataluña",
+""
+],
+"Cataluña (Rodalies)": [
+"comunidad",
+"Cataluña",
+""
+],
+"Cataluña Madrid": [
+"otro",
+"",
+""
+],
+"Cataluña Madrid España": [
+"otro",
+"",
+""
+],
+"Cataluña Parlament": [
+"comunidad",
+"Cataluña",
+""
+],
+"Cataluña Parlament de Catalunya": [
+"comunidad",
+"Cataluña",
+""
+],
+"Cataluña y Barcelona -> Cataluña, Barcelona -> Cataluña, Barcelona -> [\"Cataluña\", \"Barcelona\"] -> check valid names: Cataluña, Barcelona -> [\"Cataluña\", \"Barcelona\"]": [
+"comunidad",
+"Cataluña",
+""
+],
+"Catarroja": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Caudete": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Caudiel": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Cazorla": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Cañada Real": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Cedillo": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Celadas": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Celanova": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Cella": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Centelles": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cerceda": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Cerdanya": [
+"comarca",
+"Cataluña",
+"Girona"
+],
+"Cerdanyola del Vallès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cerro Muriano": [
+"otro",
+"Andalucía",
+"Córdoba"
+],
+"Cervera": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Cervera del Río Alhama": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Cervo": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Ceuta": [
+"comunidad",
+"Ceuta",
+"Ceuta"
+],
+"Ceuta (Ciudad Autónoma)": [
+"comunidad",
+"Ceuta",
+"Ceuta"
+],
+"Ceuta y Melilla": [
+"otro",
+"",
+""
+],
+"Ceuta-Melilla": [
+"otro",
+"",
+""
+],
+"Chamberí": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Cheste": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Chiclana": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Chile": [
+"otro",
+"",
+""
+],
+"Chinchilla": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Chipiona": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Chiva": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Chodes": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Chulilla": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Churriana de la Vega": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Ciempozuelos": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Cieza": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Cinco Casas": [
+"otro",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Cistierna": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Ciudad Real": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Ciudad Rodrigo": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Ciutadella": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Cizur": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Cofrentes": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Cofrents": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Collado Villalba": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Colmenar Viejo": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Comillas": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Comunidad Autónoma vasca": [
+"comunidad",
+"País Vasco",
+""
+],
+"Comunidad Foral de Navarra": [
+"comunidad",
+"Navarra",
+"Navarra"
+],
+"Comunidad Valenciana": [
+"comunidad",
+"Comunitat Valenciana",
+""
+],
+"Comunidad de Aragón": [
+"comunidad",
+"Aragón",
+""
+],
+"Comunidad de Madrid": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Comunitat Valenciana": [
+"comunidad",
+"Comunitat Valenciana",
+""
+],
+"Comunitat Valenciana-Comunidad Valenciana": [
+"comunidad",
+"Comunitat Valenciana",
+""
+],
+"Condado de Treviño": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Conil": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Conil de la Frontera": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Corcubión": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Corella": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Cornellà": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cornellà de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cornellá": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Cortes de Pallás": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Coslada": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Costa Brava": [
+"otro",
+"Cataluña",
+"Girona"
+],
+"Costa da Morte": [
+"comarca",
+"Galicia",
+"Coruña (A)"
+],
+"Costa del Sol": [
+"comarca",
+"Andalucía",
+"Málaga"
+],
+"Coín": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Crevillent": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Crevillente": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Cuart de Poblet": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Cuarte de Huerva": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Cuenca": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Cullera": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Culleredo": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Cumbres de San Bartolomé": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Cunit": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Curtis": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Cáceres": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Cádiz": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Cárcar": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Cártama": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Córdoba": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Cúllar Vega": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Dalías": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Daroca": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Daya Vieja": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Delta del Ebro": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Deltebre": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Denia": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Don Benito": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Donosti": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Donostia": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Donostia / San Sebastián": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Donostia-San Sebastián": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Dos Hermanas": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Dozón": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Doña Mencía": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Doñana": [
+"comarca",
+"Andalucía",
+"Huelva"
+],
+"Dulantzi": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Dumbría": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Durango": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Dénia": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Ebro": [
+"otro",
+"",
+""
+],
+"Eibar": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Eivissa": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Ejea de los Caballeros": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"El Altet": [
+"otro",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"El Bierzo": [
+"comarca",
+"Castilla y León",
+"León"
+],
+"El Borge": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"El Cabril": [
+"otro",
+"Andalucía",
+"Córdoba"
+],
+"El Campello": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"El Catllar": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"El Ejido": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"El Gastor": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"El Hierro": [
+"comarca",
+"Canarias",
+"S/C Tenerife"
+],
+"El Llano del Beal": [
+"otro",
+"Región de Murcia",
+"Murcia"
+],
+"El Palau d'Anglesola": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"El Palo": [
+"otro",
+"Andalucía",
+"Málaga"
+],
+"El Paso": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"El Penedès": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"El Pinar de El Hierro": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"El Pozuelo": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"El Prat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"El Prat de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"El Puche": [
+"otro",
+"Andalucía",
+"Almería"
+],
+"El Puerto de Santa María": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"El Rosario": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"El Vendrell": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"El Viso": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Elche": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Elche de la Sierra": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Elda": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Elizondo": [
+"otro",
+"Navarra",
+"Navarra"
+],
+"Elorrio": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Elx": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Enix": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Errenteria": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Errezil": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Escúzar": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"España": [
+"otro",
+"",
+""
+],
+"España Cataluña": [
+"comunidad",
+"Cataluña",
+""
+],
+"España En su conjunto no suele ser territorio estricto, Cataluña es la comunidad autónoma mencionada centralmente: Cataluña": [
+"comunidad",
+"Cataluña",
+""
+],
+"España García (Ministro de Hacienda)": [
+"otro",
+"",
+""
+],
+"España Gautier": [
+"otro",
+"",
+""
+],
+"España de la Plana / Castellón de la Plana": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"España de pasada (Navarra específica)": [
+"comunidad",
+"Navarra",
+"Navarra"
+],
+"España de verdad": [
+"otro",
+"",
+""
+],
+"España en su conjunto (mencionada como España o país) no se incluye según el criterio común salvo comunidades/provincias/municipios concretos, por lo que la lista queda vacía.": [
+"otro",
+"",
+""
+],
+"España en su conjunto (no aplica territorio específico) y se ignoran menciones del rival, en su texto solo cita 'nuestro país' de pasada, así que vacío": [
+"otro",
+"",
+""
+],
+"España en su conjunto (referida como 'nuestro país') e implícitamente por los indicadores globales nacionales, pero no menciona territorios específicos a nivel de comunidades, provincias o municipios autónomos concretos que deban registrarse de acuerdo con las instrucciones de la plantilla parlamentaria; por lo tanto se mantiene el campo como lista vacía o se omite según formato habitual, aquí lista vacía:": [
+"otro",
+"",
+""
+],
+"España en su conjunto y de pasada (no aplica a nivel autonómico o municipal)": [
+"otro",
+"",
+""
+],
+"España en su conjunto y sin mención a otros territorios específicos autonómicos o locales dentro del texto analizado se debe dejar vacío según las instrucciones": [
+"otro",
+"",
+""
+],
+"España hacia el contexto general de nuestro país, no aplica especificar territorios subestatales según el texto": [
+"otro",
+"",
+""
+],
+"España independiente de no ser CCAA pero Ceuta y Melilla aplican como ciudades autónomas de España": [
+"otro",
+"",
+""
+],
+"España normalizada territorialmente si aplica, Ceuta principal": [
+"comunidad",
+"Ceuta",
+"Ceuta"
+],
+"España periférica": [
+"otro",
+"",
+""
+],
+"España pública": [
+"otro",
+"",
+""
+],
+"España pública policiales de Ceuta y Melilla y los cita en general, pero en España: Ceuta, Melilla, Región de Murcia, Comunidad Valenciana, Comunidad de Madrid, Madrid, Murcia, Valencia y España.": [
+"otro",
+"",
+""
+],
+"España residualmente no aplica salvo Ávila": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"España rural": [
+"otro",
+"",
+""
+],
+"España urbanas": [
+"otro",
+"",
+""
+],
+"España vasca": [
+"otro",
+"",
+""
+],
+"España y resto del mundo excluidos salvo territorios de España: solo Valencia es válido según instrucciones sobre entidades españolas, España no es territorio subestatal pero Valencia sí lo es": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Espirdo": [
+"municipio",
+"Castilla y León",
+"Segovia"
+],
+"Esplugas de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Esplugues": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Esplugues de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Esporlas": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Esquíroz": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Estados Unidos": [
+"otro",
+"",
+""
+],
+"Estella": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Estepona": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Estremera": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Estubeny": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Etxarri Aranatz": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Etxarri-Aranatz": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Europa": [
+"otro",
+"",
+""
+],
+"Euskadi": [
+"comunidad",
+"País Vasco",
+""
+],
+"Euskadi de verdad": [
+"comunidad",
+"País Vasco",
+""
+],
+"Euskal Herria": [
+"otro",
+"",
+""
+],
+"Extremadura": [
+"comunidad",
+"Extremadura",
+""
+],
+"Extremadura_Extremadura": [
+"comunidad",
+"Extremadura",
+""
+],
+"Extremadura_Extremadura_Extremadura": [
+"comunidad",
+"Extremadura",
+""
+],
+"Extremadura_comunidad autónoma de extremadura": [
+"comunidad",
+"Extremadura",
+""
+],
+"Ezkio": [
+"otro",
+"País Vasco",
+"Gipuzkoa"
+],
+"Falset": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Fayón": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Felix": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Fene": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Fernán Caballero": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Ferrol": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Ferrolterra": [
+"comarca",
+"Galicia",
+"Coruña (A)"
+],
+"Figueras": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Figueres": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Fines": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Fisterra": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Fiñana": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Flix": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Fontcalent": [
+"otro",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Fontiveros": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Fonz": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Formentera": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Foz": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Fraga": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Francia": [
+"otro",
+"",
+""
+],
+"Francia y Alemania (como socios)": [
+"otro",
+"",
+""
+],
+"Fuendetodos": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Fuengirola": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Fuenlabrada": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Fuente Obejuna": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Fuente Palmera": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Fuentes de Andalucía": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Fuerteventura": [
+"comarca",
+"Canarias",
+"Palmas (Las)"
+],
+"Galapagar": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Gales": [
+"otro",
+"",
+""
+],
+"Galicia": [
+"comunidad",
+"Galicia",
+""
+],
+"Galicia euskadi vigo etc (solo 6 max, usemos oficiales) País Vasco, Cataluña, Extremadura, Comunitat Valenciana, Vigo, Galicia": [
+"otro",
+"",
+""
+],
+"Gallarta": [
+"otro",
+"País Vasco",
+"Bizkaia"
+],
+"Gallur": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Gandesa": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Gandia": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Gandía": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Garoña": [
+"otro",
+"Castilla y León",
+"Burgos"
+],
+"Garraf": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Gasteiz": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Gata de Gorgos": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Gatika": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Gavà": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Gavá": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Gaza": [
+"otro",
+"",
+""
+],
+"Gelida": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Gernika-Lumo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Gerona": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Getafe": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Gibraleón": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Gibraltar": [
+"otro",
+"",
+""
+],
+"Gijón": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Ginebra": [
+"otro",
+"",
+""
+],
+"Gipuzkoa": [
+"provincia",
+"País Vasco",
+"Gipuzkoa"
+],
+"Girona": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Gobernador": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Gorafe": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Grado": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Gran Canaria": [
+"comarca",
+"Canarias",
+"Palmas (Las)"
+],
+"Granada": [
+"municipio",
+"Andalucía",
+"Granada"
+],
+"Granadilla de Abona": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Granollers": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Graus": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Grazalema": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Grañón": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Guadalajara": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Guadalquivir": [
+"otro",
+"Andalucía",
+""
+],
+"Guadalupe": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Guadarrama": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Guardamar del Segura": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Guardo": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Guernica": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Guipúzcoa": [
+"provincia",
+"País Vasco",
+"Gipuzkoa"
+],
+"Gélida": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Gúdar-Javalambre": [
+"comarca",
+"Aragón",
+"Teruel"
+],
+"Hellín": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Hernani": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Herrera": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Herrera de Pisuerga": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Hinojos": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Hinojosa del Duque": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Hita": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Hondarribia": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Hornachos": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Hornachuelos": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Horta Sud": [
+"comarca",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Horta de Sant Joan": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Hortaleza": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Hospitalet": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Hospitalet de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Hoyo de Manzanares": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Huelva": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Huesca": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Humanes": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Humilladero": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Hungría": [
+"otro",
+"",
+""
+],
+"Huércal-Overa": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Ibi": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Ibiza": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Ibiza/Eivissa": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Igualada": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Illa de Arousa": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Illes Balears": [
+"comunidad",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Inca": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Irun": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Irán": [
+"otro",
+"",
+""
+],
+"Irún": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Isla Cristina": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Islas Baleares": [
+"comunidad",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Islas Canarias": [
+"comunidad",
+"Canarias",
+""
+],
+"Isles Balears": [
+"comunidad",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Isuerre": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Italia": [
+"otro",
+"",
+""
+],
+"Iznatoraf": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Jaca": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Jaén": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Jerez": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Jerez de la Frontera": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Jordania": [
+"otro",
+"",
+""
+],
+"Jorquera": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Jumilla": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Jérica": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Karrantza Harana / Valle de Carranza": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"L'Aldea": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"L'Escala": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"L'Horta Sud": [
+"comarca",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"L'Hospitalet de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"La Albufera": [
+"otro",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"La Carlota": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"La Cerollera": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"La Font de la Figuera": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"La Garriga": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"La Gomera": [
+"comarca",
+"Canarias",
+"S/C Tenerife"
+],
+"La Graciosa": [
+"otro",
+"Canarias",
+"Palmas (Las)"
+],
+"La Laguna": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"La Latina": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"La Llagosta": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"La Línea": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"La Línea de la Concepción": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"La Mancha": [
+"comarca",
+"Castilla-La Mancha",
+""
+],
+"La Mojonera": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"La Muela": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"La Nucía": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"La Orotava": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"La Palma": [
+"comarca",
+"Canarias",
+"S/C Tenerife"
+],
+"La Palma del Condado": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"La Panadella": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"La Pobla de Segur": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"La Puebla de Alfindén": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"La Puebla de Arganzón": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"La Puebla de Cazalla": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"La Ribagorza": [
+"comarca",
+"Aragón",
+"Huesca"
+],
+"La Ribera": [
+"comarca",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"La Rinconada": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"La Rioja": [
+"comunidad",
+"La Rioja",
+"Rioja (La)"
+],
+"La Robla": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"La Roda": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"La Ràpita": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"La Sagrera": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"La Serrada": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"La Seu d'Urgell": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"La Torre de l'Espanyol": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"La Unión": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"La Viñuela": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Labastida": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Laguna de Duero": [
+"municipio",
+"Castilla y León",
+"Valladolid"
+],
+"Lalín": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Langreo": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Lantarón": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Lanzarote": [
+"comarca",
+"Canarias",
+"Palmas (Las)"
+],
+"Lardero": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Laredo": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Larouco": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Larraul": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Las Cabezas de San Juan": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Las Hurdes": [
+"comarca",
+"Extremadura",
+"Cáceres"
+],
+"Las Médulas": [
+"otro",
+"Castilla y León",
+"León"
+],
+"Las Palmas": [
+"provincia",
+"Canarias",
+"Palmas (Las)"
+],
+"Las Palmas de Gran Canaria": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Las Pedroñeras": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Las Rozas": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Las Valeras": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Las Villuercas": [
+"comarca",
+"Extremadura",
+"Cáceres"
+],
+"Laudio": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Laviana": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Lebrija": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Ledrada": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Leganés": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Leiza": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Lekeitio": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Lekunberri": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Lepe": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Lerma": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Lerín": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Les Borges Blanques": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Les Garrigues": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Les Masies de Voltregà": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Letur": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Levante": [
+"otro",
+"",
+""
+],
+"León": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Linares": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Liétor": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Llanera": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Llanes": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Llançà": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Lleida": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Llerena": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Llodio": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Llucmajor": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Llíber": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Loarre": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Lobeira": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Lobios": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Logroño": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Lopera": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Lora del Río": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Lorca": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Loriguilla": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Los Alcázares": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Los Barrios": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Los Gallardos": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Los Llanos de Aridane": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Los Monegros": [
+"comarca",
+"Aragón",
+"Huesca"
+],
+"Los Palacios": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Los Palacios y Villafranca": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Los Pedroches": [
+"comarca",
+"Andalucía",
+"Córdoba"
+],
+"Los Realejos": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Loscos": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Lozoyuela": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Lugo": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Lumbrales": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Lérida": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Madrid": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid (Comunidad de)": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid (Comunidad)": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid (Comunidad) y similares deben unificarse: Comunidad de Madrid": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid (comunidad autónoma)": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid (municipio)": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid España": [
+"otro",
+"",
+""
+],
+"Madrid capital": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrid y Comunidad de Madrid y Comunidad de Madrid y Comunidad de Madrid y Comunidad de Madrid y Comunidad de Madrid": [
+"comunidad",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Madrigueras": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Mahora": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Mahón": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Mairena del Alcor": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Mairena del Aljarafe": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Majadahonda": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Malagón": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Maleján": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Maliaño": [
+"otro",
+"Cantabria",
+"Cantabria"
+],
+"Mallorca": [
+"comarca",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Malpartida de Cáceres": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Manacor": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Mancha Real": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Manilva": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Manises": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Manlleu": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Manresa": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Maqueda": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Mar Menor": [
+"comarca",
+"Región de Murcia",
+"Murcia"
+],
+"Marbella": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Marco de Jerez": [
+"comarca",
+"Andalucía",
+"Cádiz"
+],
+"Maresme": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Marinaleda": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Marmolejo": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Marratxí": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Martorell": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Martos": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Marín": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Masdenverge": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Masies de Voltregà": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Massanassa": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Matalascañas": [
+"otro",
+"Andalucía",
+"Huelva"
+],
+"Mataró": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Mazarrón": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Medinaceli": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"Mediterráneo": [
+"otro",
+"",
+""
+],
+"Meira": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Meirama": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"Melilla": [
+"comunidad",
+"Melilla",
+"Melilla"
+],
+"Melilla y Aragón": [
+"otro",
+"",
+""
+],
+"Mengíbar": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Menorca": [
+"comarca",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Mequinenza": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Mieres": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Miguelturra": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Mijas": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Mira": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Miranda": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Miranda de Ebro": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Miravete de la Sierra": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Moaña": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Mocejón": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Moeche": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Moguer": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Mogán": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Molina de Aragón": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Molina de Segura": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Mollerussa": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Mollet del Vallès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Mollina": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Mombeltrán": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Monforte": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Monforte de Lemos": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Monforte de Moyuela": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Monforte del Cid": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Montanuy": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Montblanc": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Montcada": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Montcada i Reixac": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Monte de El Pardo": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Monteagudo": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Montealegre del Castillo": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Monterroso": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Montesa": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Montferrer": [
+"otro",
+"Cataluña",
+"Lleida"
+],
+"Montiel": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Montilla": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Montilla-Moriles": [
+"otro",
+"Andalucía",
+"Córdoba"
+],
+"Montoro": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Montroy": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Monzón": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Moratalla": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Morella": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Morón": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Morón de la Frontera": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Mos": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Motilla del Palancar": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Murcia": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Muros": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Muskiz": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Muñogalindo": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Málaga": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Málaga capital y provincia (Málaga)": [
+"provincia",
+"Andalucía",
+"Málaga"
+],
+"Málaga-Costa del Sol": [
+"comarca",
+"Andalucía",
+"Málaga"
+],
+"Mérida": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"México": [
+"otro",
+"",
+""
+],
+"Móstoles": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Narón": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Nava de la Asunción": [
+"municipio",
+"Castilla y León",
+"Segovia"
+],
+"Navajas": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Navalacruz": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Navalcarnero": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Navalmoral": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Navalmoral de la Mata": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Navalperal de Pinares": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Navaluenga": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Navarra": [
+"comunidad",
+"Navarra",
+"Navarra"
+],
+"Navas del Rey": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Neda": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Nerja": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Noia": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Nou Barris": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Noáin": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Nules": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Nuévalos": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Nàquera": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Nájera": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Náquera": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Níjar": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"O Corgo": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"O Incio": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"O Pereiro de Aguiar": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"O Pino": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"O Porriño": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"O Sar": [
+"comarca",
+"Galicia",
+"Coruña (A)"
+],
+"OCDE": [
+"otro",
+"",
+""
+],
+"Oencia": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Ojén": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Oleiros": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Olesa de Montserrat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Oliva": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Olivenza": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Olmedo": [
+"municipio",
+"Castilla y León",
+"Valladolid"
+],
+"Olot": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Ondarroa": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Onil": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Ontinyent": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Orbaizeta": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Orcoyen": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Ordis": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Orduña": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Oriente Medio": [
+"otro",
+"",
+""
+],
+"Orihuela": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Orihuela del Tremedal": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Oropesa": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Osona": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Ourense": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Outeiro de Rei": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Oviedo": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Oñate": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Paiporta": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Palamós": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Palas de Rei": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Palencia": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Palestina": [
+"otro",
+"",
+""
+],
+"Palma": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Palma de Mallorca": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Palma del Río": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Palomares": [
+"otro",
+"Andalucía",
+"Almería"
+],
+"Palos de la Frontera": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Pamplona": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Pancorbo": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Paniza": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Panticosa": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Pantón": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Paredes de Nava": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Parets": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Parets del Vallès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Parla": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Paterna": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"País Basc": [
+"comunidad",
+"País Vasco",
+""
+],
+"País Vasco": [
+"comunidad",
+"País Vasco",
+""
+],
+"País Vasco España": [
+"otro",
+"",
+""
+],
+"País Vasco España UPV/EHU Basque Country": [
+"otro",
+"",
+""
+],
+"País Vasco y Cataluña no, sólo municipios válidos citados de verdad: Vitoria-Gasteiz, Lleida, Gijón, Vigo": [
+"otro",
+"",
+""
+],
+"País Vasco y Madrid no aplican ni aparecen salvo Valencia y Comunidad Valenciana (Generalitat) y Barajas de pasada en la previa; sólo Valencia y Comunidad Valenciana aplican contextualmente reales: Valencia, Comunidad Valenciana, España (no territorializado) -> ['Valencia', 'Comunidad Valenciana'] son los aplicables directos en texto: Valencia, Comunidad Valenciana, España (se omite España al ser nacional). Dejamos 'Valencia' y 'Comunidad Valenciana'": [
+"otro",
+"",
+""
+],
+"País Vasco y Navarra (Comunidad Foral de) - País Vasco (Euskadi) y Ceuta y Melilla y Andalucía y Canarias - Ceuta, Melilla, Canarias, País Vasco, Algeciras, Tarifa => País Vasco, Ceuta, Melilla, Canarias, Andalucía => simplificado a nombres oficiales comunes: País Vasco, Ceuta, Melilla, Canarias, Algeciras, Tarifa (o los autorizados por la instrucción: País Vasco, Ceuta, Melilla, Canarias)": [
+"otro",
+"",
+""
+],
+"País Vasco y Navarra (no aplica)": [
+"otro",
+"",
+""
+],
+"Países Bajos": [
+"otro",
+"",
+""
+],
+"Paüls": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Pedralbes": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Pedreguer": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Pedreña": [
+"otro",
+"Cantabria",
+"Cantabria"
+],
+"Pedro Abad": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Pedro Muñoz": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Pedroche": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Pego": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Penedès": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Península Ibérica, España (Península)": [
+"otro",
+"",
+""
+],
+"Peralta": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Pereiro de Aguiar": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Perpiñán": [
+"otro",
+"",
+""
+],
+"Petrer": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Peñaflor": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Peñalba de Ávila": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Peñíscola": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Picanya": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Picassent": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Piera": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Pinofranqueado": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Pinoso": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Pirineo": [
+"otro",
+"",
+""
+],
+"Pirineos": [
+"otro",
+"",
+""
+],
+"Pisuerga": [
+"otro",
+"Castilla y León",
+"Valladolid"
+],
+"Piélagos": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Pla d'Urgell": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Plasencia": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Platja d'Aro": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Pobla de Montornès": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Pol": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Pola de Laviana": [
+"otro",
+"Asturias",
+"Asturias"
+],
+"Pola de Lena": [
+"otro",
+"Asturias",
+"Asturias"
+],
+"Polinyà de Xúquer": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Polop": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Ponferrada": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Poniente Almeriense": [
+"comarca",
+"Andalucía",
+"Almería"
+],
+"Ponteareas": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Pontevedra": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Porcuna": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Port de la Selva": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Portbou": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Portilla": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Portmán": [
+"otro",
+"Región de Murcia",
+"Murcia"
+],
+"Portugal": [
+"otro",
+"",
+""
+],
+"Portugalete": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Pozo Cañada": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Pozoblanco": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Pozuelo de Alarcón": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Pravia": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Priorat": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Puebla de Sanabria": [
+"municipio",
+"Castilla y León",
+"Zamora"
+],
+"Puente Genil": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Puente de Vallecas": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Puerto Real": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Puerto Serrano": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Puerto del Rosario": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Puertollano": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Pueyo": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Puigcerdà": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Pulpí": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Punta Umbría": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Puntagorda": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Puntallana": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Pájara": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Pétrola": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Quart de Poblet": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Quinto": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Red Eléctrica Española": [
+"otro",
+"",
+""
+],
+"Redecilla del Camino": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Redondela": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Región de Murcia": [
+"comunidad",
+"Región de Murcia",
+"Murcia"
+],
+"Región de Murcia (Murcia)": [
+"comunidad",
+"Región de Murcia",
+"Murcia"
+],
+"Reino Unido": [
+"otro",
+"",
+""
+],
+"Rentería": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Requena": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Retortillo": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Reus": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Riba-roja": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Riba-roja de Túria": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Ribadeo": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Ribadesella": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Ribeira": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Ribera Alta": [
+"comarca",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Ribera d'Ebre": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Ribera de Navarra": [
+"comarca",
+"Navarra",
+"Navarra"
+],
+"Rincón de Soto": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Rincón de la Victoria": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Rioja Alavesa": [
+"comarca",
+"País Vasco",
+"Araba/Álava"
+],
+"Riola": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Ripoll": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Riudoms": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Rivas-Vaciamadrid": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Robledo de Chavela": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Rociana": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Roda de Barà": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Roda de Berà": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Romangordo": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Ronda": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Roquetas": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Roquetas de Mar": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Roses": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Rota": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Rubí": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Ría de Arousa": [
+"otro",
+"Galicia",
+"Pontevedra"
+],
+"S'Agaró": [
+"otro",
+"Cataluña",
+"Girona"
+],
+"Sa Pobla": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Sabadell": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sagunto": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Salamanca": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Salamanca (barrio)": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Salas de los Infantes": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Salinas de Añana": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Sallent": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Salnés": [
+"comarca",
+"Galicia",
+"Pontevedra"
+],
+"Salou": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Salt": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Salteras": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Samos": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"San Bartolomé de Pinares": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"San Bartolomé de Tirajana": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"San Blas": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"San Cibrao": [
+"otro",
+"Galicia",
+"Lugo"
+],
+"San Cibrao das Viñas": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"San Cristóbal de La Laguna": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"San Esteban de Gormaz": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"San Fernando": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"San Fernando de Henares": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"San Juan del Puerto": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"San Lorenzo de El Escorial": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"San Martín de la Vega": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"San Martín del Pedroso": [
+"otro",
+"Castilla y León",
+"Zamora"
+],
+"San Martín del Rey Aurelio": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"San Martín del Tesorillo": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"San Millán de la Cogolla": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"San Roque": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"San Sebastián": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"San Sebastián de los Reyes": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"San Vicente de Raspeig": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"San Vicente de la Barquera": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"San Vicente del Raspeig": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Sanabria": [
+"comarca",
+"Castilla y León",
+"Zamora"
+],
+"Sanchidrián": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Sangüesa": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Sanlúcar de Barrameda": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Sanlúcar de Guadiana": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Sanlúcar la Mayor": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Sant Adrià de Besòs": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Andreu": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Sant Andreu de la Barca": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Boi de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Celoni": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Climent Sescebes": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Sant Climent de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Cugat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Cugat del Vallès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Feliu de Llobregat": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Fost de Campsentelles": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Jaume d'Enveja": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Sant Joan Despí": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Joan d'Alacant": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Sant Joan de les Abadesses": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Sant Llorenç des Cardassar": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Sant Quirze de Besora": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sant Vicenç de Calders": [
+"otro",
+"Cataluña",
+"Tarragona"
+],
+"Sant Vicenç dels Horts": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Santa Coloma": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Santa Coloma de Gramanet": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Santa Coloma de Gramenet": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Santa Cruz de La Palma": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Santa Cruz de Tenerife": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Santa Eulària des Riu": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Santa Margalida": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Santa Maria del Camí": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Santa María de Garoña": [
+"otro",
+"Castilla y León",
+"Burgos"
+],
+"Santa Pola": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Santa Susanna": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Santander": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Santiago": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Santiago de Compostela": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Santo Domingo de la Calzada": [
+"municipio",
+"La Rioja",
+"Rioja (La)"
+],
+"Santomera": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Santoña": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Sants de la Infanta Cristina de Borbón y Grecia?": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Santurtzi": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Sanxenxo": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Saravillo": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Sariñena": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Sarral": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Sarria": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Saucedilla": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Sedaví": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Segovia": [
+"municipio",
+"Castilla y León",
+"Segovia"
+],
+"Segrià": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Selaya": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Sencelles": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Serveto": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Sestao": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Setcases": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Sevilla": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Sevilla (provincia) y Sevilla (municipio) (conglomerado) / Sevilla / Cantabria / País Vasco / Castellón / Valencia / Comunitat Valenciana -> mejor solo los oficiales: Comunitat Valenciana, Valencia, Castellón, Cantabria, País Vasco, Sevilla": [
+"otro",
+"",
+""
+],
+"Señorío de Vizcaya": [
+"provincia",
+"País Vasco",
+"Bizkaia"
+],
+"Siero": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Sierra de Gata": [
+"comarca",
+"Extremadura",
+"Cáceres"
+],
+"Sierra de Yeguas": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Sierra de la Culebra": [
+"otro",
+"Castilla y León",
+"Zamora"
+],
+"Sierra de las Nieves": [
+"comarca",
+"Andalucía",
+"Málaga"
+],
+"Sigrás": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"Silleda": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Sin": [
+"otro",
+"Aragón",
+"Huesca"
+],
+"Sitges": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Sobrarbe": [
+"comarca",
+"Aragón",
+"Huesca"
+],
+"Socuéllamos": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Solsona": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Somontano": [
+"comarca",
+"Aragón",
+"Huesca"
+],
+"Somozas": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Soria": [
+"municipio",
+"Castilla y León",
+"Soria"
+],
+"Sorihuela del Guadalimar": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Soto del Barco": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Soto del Real": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Sueca": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Suecia": [
+"otro",
+"",
+""
+],
+"Suiza": [
+"otro",
+"",
+""
+],
+"Sukarrieta": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Sóller": [
+"municipio",
+"Illes Balears",
+"Balears (Illes)"
+],
+"Súria": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"TAYS": [
+"otro",
+"",
+""
+],
+"Taboadela": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Tacoronte": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Tafalla": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Taganana": [
+"otro",
+"Canarias",
+"S/C Tenerife"
+],
+"Talarn": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Talavera": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Talavera de la Reina": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Talayuela": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Tamarite de Litera": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Tarazona": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Tarazona de la Mancha": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Tardienta": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Tarifa": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Tarragona": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Tazacorte": [
+"municipio",
+"Canarias",
+"S/C Tenerife"
+],
+"Teba": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Tefía": [
+"otro",
+"Canarias",
+"Palmas (Las)"
+],
+"Teguise": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Teixeiro": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"Telde": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Tenerife": [
+"comarca",
+"Canarias",
+"S/C Tenerife"
+],
+"Terra Alta": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"Terra de Melide": [
+"comarca",
+"Galicia",
+"Coruña (A)"
+],
+"Terrassa": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Terres de l'Ebre": [
+"otro",
+"Cataluña",
+"Tarragona"
+],
+"Teruel": [
+"municipio",
+"Aragón",
+"Teruel"
+],
+"Teulada": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Tierra de Barros": [
+"comarca",
+"Extremadura",
+"Badajoz"
+],
+"Tierra de Campos": [
+"comarca",
+"Castilla y León",
+""
+],
+"Tineo": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Toledo": [
+"municipio",
+"Castilla-La Mancha",
+"Toledo"
+],
+"Tolosa": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Tolva": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Tomelloso": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Topas": [
+"municipio",
+"Castilla y León",
+"Salamanca"
+],
+"Torelló": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Toro": [
+"municipio",
+"Castilla y León",
+"Zamora"
+],
+"Torquemada": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Torralba": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Torre Pacheco": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Torre-Pacheco": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Torreblanca": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Torredembarra": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Torrefeta i Florejacs": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Torrejón": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Torrejón de Ardoz": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Torrejón de Ardoz, Madrid": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Torrelaguna": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Torrelavega": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Torrellano": [
+"otro",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Torrelodones": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Torremolinos": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Torrent": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Torrevieja": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Torroella de Montgrí": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Torrox": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Tortosa": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Touro": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Tous": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Trabada": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Trapagaran": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Tremp": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Tres Cantos": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Treviño": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"Triacastela": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Trigueros": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Trillo": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Trubia": [
+"otro",
+"Asturias",
+"Asturias"
+],
+"Trujillo": [
+"municipio",
+"Extremadura",
+"Cáceres"
+],
+"Tudela": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Tui": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Tulebras": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Turís": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Tàrrega": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Tárrega": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Tíjola": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"UE": [
+"otro",
+"",
+""
+],
+"Ubrique": [
+"municipio",
+"Andalucía",
+"Cádiz"
+],
+"Ucrania": [
+"otro",
+"",
+""
+],
+"Ugao-Miraballes": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Ulldecona": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Unión Europea": [
+"otro",
+"",
+""
+],
+"Urdaibai": [
+"comarca",
+"País Vasco",
+"Bizkaia"
+],
+"Urduliz": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Urgell": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Urnieta": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Usansolo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Usera": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Usánsolo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Utiel": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Utrera": [
+"municipio",
+"Andalucía",
+"Sevilla"
+],
+"Vacarisses": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Val d'Aran": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Val d'Arán": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Valdemorillo": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Valdés": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Valencia": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Valencia (ajustado a instrucciones: solo entidades subestatales)": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Valencia (provincia/comunidad autónoma o municipio según contexto amplio, usemos la denominación estándar)": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Vall d'Uixó": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Valladolid": [
+"municipio",
+"Castilla y León",
+"Valladolid"
+],
+"Valldoreix": [
+"otro",
+"Cataluña",
+"Barcelona"
+],
+"Valle de Arán": [
+"comarca",
+"Cataluña",
+"Lleida"
+],
+"Valle de Egüés": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Valle de Salazar": [
+"comarca",
+"Navarra",
+"Navarra"
+],
+"Valle de Trápaga-Trapagaran": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Valle del Guadiato": [
+"comarca",
+"Andalucía",
+"Córdoba"
+],
+"Vallibona": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Vallirana": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Valls": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Vallès Occidental": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Vallès Oriental": [
+"comarca",
+"Cataluña",
+"Barcelona"
+],
+"Valmuel": [
+"otro",
+"Aragón",
+"Teruel"
+],
+"Valsequillo": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Valtierra": [
+"municipio",
+"Navarra",
+"Navarra"
+],
+"Valverde de Júcar": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Valverde del Camino": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"València": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Vandellòs": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Vandellòs i l'Hospitalet de l'Infant": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Vega Baja": [
+"comarca",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Vega de Pas": [
+"municipio",
+"Cantabria",
+"Cantabria"
+],
+"Venezuela": [
+"otro",
+"",
+""
+],
+"Venta de Baños": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Ventalló": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Venturada": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Verdú": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Viana do Bolo": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Vic": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Vidrà": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Vielha": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Vigo": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Vila-real": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Vila-seca": [
+"municipio",
+"Cataluña",
+"Tarragona"
+],
+"Viladecans": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Viladecavalls": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Vilafant": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"Vilafranca del Penedès": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Vilagarcía de Arousa": [
+"municipio",
+"Galicia",
+"Pontevedra"
+],
+"Vilagrassa": [
+"municipio",
+"Cataluña",
+"Lleida"
+],
+"Vilamarxant": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Vilanova i la Geltrú": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Vilariño": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Vilasantar": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Vilassar de Mar": [
+"municipio",
+"Cataluña",
+"Barcelona"
+],
+"Villa del Prado": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Villacarrillo": [
+"municipio",
+"Andalucía",
+"Jaén"
+],
+"Villada": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Villadangos del Páramo": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Villafranca del Bierzo": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Villajoyosa": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Villamartín de Campos": [
+"municipio",
+"Castilla y León",
+"Palencia"
+],
+"Villamayor del Río": [
+"otro",
+"Castilla y León",
+"Burgos"
+],
+"Villanueva de Córdoba": [
+"municipio",
+"Andalucía",
+"Córdoba"
+],
+"Villanueva de Gállego": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Villanueva de Gómez": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Villanueva de Jalón": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Villanueva de los Infantes": [
+"municipio",
+"Castilla-La Mancha",
+"Ciudad Real"
+],
+"Villanúa": [
+"municipio",
+"Aragón",
+"Huesca"
+],
+"Villar de Cañas": [
+"municipio",
+"Castilla-La Mancha",
+"Cuenca"
+],
+"Villarreal": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Villarrobledo": [
+"municipio",
+"Castilla-La Mancha",
+"Albacete"
+],
+"Villaverde": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Villaviciosa": [
+"municipio",
+"Asturias",
+"Asturias"
+],
+"Villaviciosa de Odón": [
+"municipio",
+"Comunidad de Madrid",
+"Madrid"
+],
+"Villena": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Villán de Tordesillas": [
+"municipio",
+"Castilla y León",
+"Valladolid"
+],
+"Vimianzo": [
+"municipio",
+"Galicia",
+"Coruña (A)"
+],
+"Vinalopó": [
+"comarca",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Vinaroz": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Vinaròs": [
+"municipio",
+"Comunitat Valenciana",
+"Castellón/Castelló"
+],
+"Vitoria": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Vitoria-Gasteiz": [
+"municipio",
+"País Vasco",
+"Araba/Álava"
+],
+"Viveiro": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Vizcaya": [
+"provincia",
+"País Vasco",
+"Bizkaia"
+],
+"Vélez-Málaga": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Vícar": [
+"municipio",
+"Andalucía",
+"Almería"
+],
+"Waterloo": [
+"otro",
+"",
+""
+],
+"Xaló": [
+"municipio",
+"Comunitat Valenciana",
+"Alicante/Alacant"
+],
+"Xinzo de Limia": [
+"municipio",
+"Galicia",
+"Ourense"
+],
+"Xirivella": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Xove": [
+"municipio",
+"Galicia",
+"Lugo"
+],
+"Xàtiva": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Yaiza": [
+"municipio",
+"Canarias",
+"Palmas (Las)"
+],
+"Yebes": [
+"municipio",
+"Castilla-La Mancha",
+"Guadalajara"
+],
+"Zafra": [
+"municipio",
+"Extremadura",
+"Badajoz"
+],
+"Zalamea la Real": [
+"municipio",
+"Andalucía",
+"Huelva"
+],
+"Zalla": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Zamora": [
+"municipio",
+"Castilla y León",
+"Zamora"
+],
+"Zaragoza": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Zaratamo": [
+"municipio",
+"País Vasco",
+"Bizkaia"
+],
+"Zarautz": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Zarra": [
+"municipio",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"Zuera": [
+"municipio",
+"Aragón",
+"Zaragoza"
+],
+"Zumaia": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Zumarraga": [
+"municipio",
+"País Vasco",
+"Gipuzkoa"
+],
+"Zuñeda": [
+"municipio",
+"Castilla y León",
+"Burgos"
+],
+"barranco del Poyo": [
+"otro",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"barranco del Poyo, Valencia, Comunidad Valenciana, España (implícito) - solo válidos del texto: Valencia, Castilla-La Mancha, Andalucía, Comunidad Valenciana (Unidad Valenciana) -> Valencia, Castilla-La Mancha, Andalucía, Paiporta (mencionada antes) pero en su texto: Valencia, Castilla-La Mancha, Andalucía.": [
+"otro",
+"",
+""
+],
+"barrio de Salamanca": [
+"otro",
+"Comunidad de Madrid",
+"Madrid"
+],
+"cifras: [": [
+"otro",
+"",
+""
+],
+"delta de l’Ebre": [
+"comarca",
+"Cataluña",
+"Tarragona"
+],
+"delta del Ebro": [
+"otro",
+"Cataluña",
+"Tarragona"
+],
+"empty string guard": [
+"otro",
+"",
+""
+],
+"golfo de Cádiz": [
+"otro",
+"",
+""
+],
+"isla de Alborán": [
+"otro",
+"Andalucía",
+"Almería"
+],
+"l'Albufera": [
+"otro",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"l'Escala": [
+"municipio",
+"Cataluña",
+"Girona"
+],
+"la Albufera": [
+"otro",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"no aplica": [
+"otro",
+"",
+""
+],
+"país común": [
+"otro",
+"",
+""
+],
+"provincia de Málaga": [
+"provincia",
+"Andalucía",
+"Málaga"
+],
+"provincia de Santa Cruz de Tenerife": [
+"provincia",
+"Canarias",
+"S/C Tenerife"
+],
+"provincia de Teruel": [
+"provincia",
+"Aragón",
+"Teruel"
+],
+"provincia de Valencia": [
+"provincia",
+"Comunitat Valenciana",
+"Valencia/València"
+],
+"registro vacio si solo refiere al pais entero": [
+"otro",
+"",
+""
+],
+"ría de Arousa": [
+"otro",
+"Galicia",
+"Pontevedra"
+],
+"ría de O Burgo": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"ría do Burgo": [
+"otro",
+"Galicia",
+"Coruña (A)"
+],
+"sierra de Aralar": [
+"otro",
+"Navarra",
+"Navarra"
+],
+"sierra de Grazalema": [
+"otro",
+"Andalucía",
+"Cádiz"
+],
+"zona euro": [
+"otro",
+"",
+""
+],
+"Águilas": [
+"municipio",
+"Región de Murcia",
+"Murcia"
+],
+"Álava": [
+"provincia",
+"País Vasco",
+"Araba/Álava"
+],
+"Álora": [
+"municipio",
+"Andalucía",
+"Málaga"
+],
+"Áraba": [
+"provincia",
+"País Vasco",
+"Araba/Álava"
+],
+"Ávila": [
+"municipio",
+"Castilla y León",
+"Ávila"
+],
+"Ávila y Baleares": [
+"otro",
+"",
+""
+],
+"Ávila y Ávila provincia": [
+"provincia",
+"Castilla y León",
+"Ávila"
+],
+"Écija": [
+"municipio",
+"Andalucía",
+"Sevilla"
+]
+}

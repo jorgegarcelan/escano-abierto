@@ -13,7 +13,7 @@ from datetime import date
 
 from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as mod_organos
 from . import agenda as mod_agenda, intereses as mod_intereses, leyes as mod_leyes, preguntas as mod_preguntas
-from . import semanas as mod_semanas, temas as mod_temas, votaciones as mod_votaciones
+from . import explora as mod_explora, semanas as mod_semanas, temas as mod_temas, votaciones as mod_votaciones
 from .analisis import analizar, resumir_sesion, solo_cache
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
 
@@ -354,6 +354,14 @@ def construir(con_ia: bool = True) -> dict:
         })
 
     completar_con_mvp(sesiones_web, ivs_web, web_votos)
+    mod_explora.porque_votan(web_votos, sesiones_web, ivs_web)
+    from .normalizar import _leer as leer_normalizacion   # lo que dejó `python -m escano explora`; sin API
+    canon = leer_normalizacion("temas")
+    explora = {"contesta": mod_explora.contesta(sesiones_web, ivs_web),
+               "citas": mod_explora.citas_juego(sesiones_web, ivs_web),
+               "radar": mod_explora.radar(sesiones_web, ivs_web, canon),
+               "propuestas": mod_explora.propuestas(leer_normalizacion("propuestas"))}
+    por_provincia = mod_explora.lugares(sesiones_web, ivs_web, leer_normalizacion("lugares"), canon)
 
     fechas = sorted({s["fecha"] for s in sesiones_web})
     grupos = {g: {**INFO_GRUPOS[g], "codigo": g, "escanos": escanos.get(g, 0)} for g in INFO_GRUPOS}
@@ -367,6 +375,8 @@ def construir(con_ia: bool = True) -> dict:
             "diputados": lista_diputados,
         },
         "intervenciones": ivs_web,
+        "explora": explora,
+        "lugares": por_provincia,
     }
     for v in web_votos:
         v["tm"] = mod_temas.temas_de(v["titulo"], v["texto"])
@@ -578,6 +588,12 @@ def escribir_web(salida: dict) -> None:
         for i, lista in listas.items():
             (sub / f"{slug_web(d['diputados'][i][0])}.json").write_text(json.dumps(lista, ensure_ascii=False))
     (carpeta / "semanas.json").write_text(json.dumps(salida.get("semanas", []), ensure_ascii=False))
+    for nombre, contenido in (salida.get("explora") or {}).items():   # datos de la pestaña Explora
+        (carpeta / f"explora-{nombre}.json").write_text(json.dumps(contenido, ensure_ascii=False))
+    sub_lug = carpeta / "lugares"   # lo que se dice de cada provincia, para su página
+    sub_lug.mkdir(exist_ok=True)
+    for circ, contenido in (salida.get("lugares") or {}).items():
+        (sub_lug / f"{slug_web(circ)}.json").write_text(json.dumps(contenido, ensure_ascii=False))
     leyes = salida.get("leyes") or {"iniciativas": [], "aprobadas": []}
     (carpeta / "leyes.json").write_text(json.dumps({
         "iniciativas": [{**{k: x for k, x in i.items() if k != "fases"},
