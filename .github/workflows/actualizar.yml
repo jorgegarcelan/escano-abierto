@@ -58,4 +58,11 @@ jobs:
           git add data site
           git diff --cached --quiet && exit 0
           git commit -m "Datos del $(date -u +%F)"
-          git push
+          # Si alguien ha subido algo mientras se ejecutaba, se pone encima de lo nuevo y se reintenta. En un
+          # conflicto (datos regenerados en los dos lados) gana la versión de esta ejecución, que es la más reciente.
+          for intento in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            git rebase --abort 2>/dev/null || true
+            sleep $((intento * 20))
+          done
+          exit 1
