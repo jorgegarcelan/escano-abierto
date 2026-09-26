@@ -8,6 +8,7 @@
     python -m escano calidad                    # indicadores del parser por sesión
     python -m escano agenda                     # solo el orden del día de los próximos plenos
     python -m escano preguntas [--completo]     # preguntas escritas al Gobierno (la primera vez, --completo)
+    python -m escano lote [--estado | --ver]    # analiza con IA todo lo pendiente por la Batch API de Gemini
 """
 from __future__ import annotations
 
@@ -131,6 +132,12 @@ def main(argv: list[str] | None = None) -> None:
     pq = sub.add_parser("preguntas", help="descarga las preguntas escritas al Gobierno")
     pq.add_argument("--completo", action="store_true", help="recorre toda la legislatura, no solo lo nuevo")
     sub.add_parser("agenda", help="descarga el orden del día de los próximos plenos y la tramitación de leyes")
+    lt = sub.add_parser("lote", help="analiza con IA todo lo pendiente por la Batch API de Gemini (se puede relanzar)")
+    lt.add_argument("--estado", action="store_true", help="solo muestra cómo va")
+    lt.add_argument("--ver", action="store_true", help="progreso en directo (Ctrl+C para salir; no para el lote)")
+    lt.add_argument("--cancelar", action="store_true", help="cancela los lotes en marcha")
+    lt.add_argument("--limite", type=int, help="manda como mucho este número de peticiones (para probar)")
+    lt.add_argument("--tokens-tanda", type=int, help="tokens de entrada por lote (por defecto, 2 M)")
 
     args = p.parse_args(argv)
     if args.orden == "actualizar":
@@ -154,5 +161,18 @@ def main(argv: list[str] | None = None) -> None:
         ag = agenda.actualizar()
         print(f"{len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión, "
               f"{len(leyes.actualizar()['iniciativas'])} iniciativas legislativas")
+    elif args.orden == "lote":
+        from . import lotes
+        if args.ver:
+            try:
+                lotes.ver()
+            except KeyboardInterrupt:
+                pass
+        elif args.estado:
+            lotes.mostrar_estado()
+        elif args.cancelar:
+            lotes.cancelar()
+        else:
+            lotes.ejecutar(args.limite, args.tokens_tanda or lotes.TOKENS_TANDA)
     elif args.orden == "calidad":
         raise SystemExit(1 if calidad.imprimir(calidad.informe()) else 0)

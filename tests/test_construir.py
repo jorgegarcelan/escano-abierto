@@ -90,3 +90,17 @@ def test_construir(tmp_path, monkeypatch):
     llamadas = falso.llamadas
     mod_construir.construir(con_ia=True)   # segunda vez: todo sale de la caché
     assert falso.llamadas == llamadas
+
+
+def test_intervenciones_ligeras():
+    from collections import defaultdict
+    ivs = [{"s": "S1", "item": "Asunto A", "orador": "X", "g": "PP", "rol": "", "tono": "crítico", "int": 3, "temas": [],
+            "cita": None, "frase": "Pide algo.", "resumen": "Resumen largo.", "cifras": [{"cita": "c", "dato": "d"}]},
+           {"s": "S1", "item": "Asunto A", "orador": "Y", "g": "GOB", "rol": "Ministra", "tono": "defensivo", "int": 2,
+            "temas": ["vivienda"], "cita": "frase", "resumen": "Análisis antiguo, sin frase."}]
+    detalle = defaultdict(list)
+    ligeras, items = mod_construir._intervenciones_ligeras(ivs, detalle)
+    assert items == ["Asunto A"] and ligeras[0]["item"] == ligeras[1]["item"] == 0   # el asunto, una sola vez
+    assert "resumen" not in ligeras[0] and ligeras[0]["d"] == 0 and ligeras[0]["temas"] == []
+    assert detalle["S1"] == [{"resumen": "Resumen largo.", "cifras": [{"cita": "c", "dato": "d"}]}]
+    assert ligeras[1]["resumen"] == "Análisis antiguo, sin frase." and "d" not in ligeras[1]    # sin frase, todo en línea

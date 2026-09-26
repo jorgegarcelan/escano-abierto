@@ -14,7 +14,7 @@ from datetime import date
 from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as mod_organos
 from . import agenda as mod_agenda, intereses as mod_intereses, leyes as mod_leyes, preguntas as mod_preguntas
 from . import semanas as mod_semanas, temas as mod_temas, votaciones as mod_votaciones
-from .analisis import analizar, resumir_sesion
+from .analisis import analizar, resumir_sesion, solo_cache
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
 
 MVP = DATOS / "mvp.json"  # análisis del prototipo; solo rellenan lo que el pipeline aún no ha analizado
@@ -207,15 +207,60 @@ def completar_con_mvp(sesiones: list[dict], ivs: list[dict], votos: list[dict]) 
         p["fuente"] = "mvp"
 
 
+def analisis_de_sesion(ses: dict, votos_dia: list[dict], con_ia: bool = True) -> tuple[dict[int, dict], list[str], dict]:
+    """Análisis de cada intervención (por su orden), asuntos en orden de aparición y resumen de la jornada.
+
+    Sin IA se usa lo que ya esté en la caché de análisis, sin llamar a la API. Con analisis.RECOGER activo
+    tampoco se llama: lotes.py lo usa para saber qué falta, con las mismas claves.
+    """
+    if not con_ia:
+        with solo_cache():
+            return analisis_de_sesion(ses, votos_dia, con_ia=True)
+    ivs = ses["intervenciones"]
+    analisis: dict[int, dict] = {}
+    previa = None
+    for iv in ivs:
+        if iv["grupo"] == "MESA":
+            continue
+        es_respuesta = iv["grupo"] == "GOB" and previa and previa["grupo"] != "GOB"
+        a = analizar(iv, previa["texto"] if es_respuesta else None)
+        if a:
+            analisis[iv["orden"]] = a
+        previa = iv
+
+    asuntos = []
+    for iv in ivs:
+        clave = iv["item"] or iv["seccion"] or "Sesión"
+        if clave not in asuntos:
+            asuntos.append(clave)
+
+    lineas = []
+    for iv in ivs:
+        if (a := analisis.get(iv["orden"])):
+            lineas.append(f"- {iv['orador']} ({iv['grupo']}) sobre «{(iv['item'] or '')[:120]}»: {a['resumen']}")
+    for v in votos_dia:
+        lineas.append(f"- Votación: {v['texto'][:160]} → Sí {v['si']}, No {v['no']}, Abst. {v['abst']}")
+
+    r = {}
+    if lineas or asuntos:
+        r = resumir_sesion(ses["organo"], ses["fecha"], [titulo_legible(a) for a in asuntos], lineas) or {}
+    return analisis, asuntos, r
+
+
+def votos_por_fecha(votaciones: list[dict] | None = None) -> dict[str, list[dict]]:
+    por_fecha: dict[str, list[dict]] = defaultdict(list)
+    for v in votaciones if votaciones is not None else map(_votacion_web, mod_votaciones.leer_todas()):
+        por_fecha[v["fecha"]].append(v)
+    return por_fecha
+
+
 def construir(con_ia: bool = True) -> dict:
     votaciones = mod_votaciones.leer_todas()
     lista_diputados = diputados(votaciones)
     indice = {d[0]: i for i, d in enumerate(lista_diputados)}
     actual = {d[0]: d[1] for d in lista_diputados}
     web_votos = [_votacion_web(v, indice, actual) for v in votaciones]
-    por_fecha: dict[str, list[dict]] = defaultdict(list)
-    for v in web_votos:
-        por_fecha[v["fecha"]].append(v)
+    por_fecha = votos_por_fecha(web_votos)
 
     # Escaños actuales por grupo: los del último voto con más presentes.
     escanos = Counter()
@@ -229,37 +274,10 @@ def construir(con_ia: bool = True) -> dict:
         if not ses.get("fecha"):
             continue
         ivs = ses["intervenciones"]
-        analisis: dict[int, dict] = {}
-        previa = None
-        for iv in ivs:
-            if iv["grupo"] == "MESA":
-                continue
-            if con_ia:
-                es_respuesta = iv["grupo"] == "GOB" and previa and previa["grupo"] != "GOB"
-                a = analizar(iv, previa["texto"] if es_respuesta else None)
-                if a:
-                    analisis[iv["orden"]] = a
-            previa = iv
-
-        # Asuntos en orden de aparición.
-        asuntos = []
-        for iv in ivs:
-            clave = iv["item"] or iv["seccion"] or "Sesión"
-            if clave not in asuntos:
-                asuntos.append(clave)
-
         votos_dia = por_fecha.get(ses["fecha"], []) if ses["serie"] == "PL" else []
-        lineas = []
-        for iv in ivs:
-            if (a := analisis.get(iv["orden"])):
-                lineas.append(f"- {iv['orador']} ({iv['grupo']}) sobre «{(iv['item'] or '')[:120]}»: {a['resumen']}")
-        for v in votos_dia:
-            lineas.append(f"- Votación: {v['texto'][:160]} → Sí {v['si']}, No {v['no']}, Abst. {v['abst']}")
-
-        resumen, titular, titulos = "", "", []
-        if con_ia and (lineas or asuntos):
-            r = resumir_sesion(ses["organo"], ses["fecha"], [titulo_legible(a) for a in asuntos], lineas)
-            resumen, titular, titulos = r.get("resumen", ""), r.get("titular", ""), r.get("titulos", [])
+        analisis, asuntos, r = analisis_de_sesion(ses, votos_dia, con_ia)
+        resumen, titular, titulos = r.get("resumen", ""), r.get("titular", ""), r.get("titulos", [])
+        momentos = [m for m in r.get("momentos", []) if m.get("que")]
 
         puntos = []
         for i, asunto in enumerate(asuntos):
@@ -298,6 +316,7 @@ def construir(con_ia: bool = True) -> dict:
             "id": ses["id"], "fecha": ses["fecha"], "organo": ses["organo"],
             "sesion": f"Sesión nº {ses['sesion']}" if ses.get("sesion") else ses["organo"],
             "ds": ses["ds"], "dsNombre": ses["id"], "titular": titular, "resumen": resumen, "puntos": puntos,
+            **({"momentos": momentos} if momentos else {}),
             "reacciones": dict(reacciones), "turnos": sum(1 for iv in ivs if iv["grupo"] != "MESA"),
             "termometro": {g: dict(c) for g, c in termometro.items()},
         })
@@ -315,6 +334,11 @@ def construir(con_ia: bool = True) -> dict:
                 "tono": a["tono"], "int": a["intensidad"], "temas": a["temas"], "resumen": a["resumen"],
                 "cita": a.get("cita"), "responde": a.get("responde"), "responde_motivo": a.get("responde_motivo"),
                 "reacciones": iv.get("reacciones", {}),
+                # Campos del análisis v2; solo se incluyen si tienen algo, para no engordar los ficheros de cada mes.
+                **{k: v for k, v in (("frase", a.get("en_una_frase")), ("motivo", a.get("motivo_posicion")),
+                                     ("comp", a.get("compromisos")), ("prop", a.get("propuestas")),
+                                     ("cifras", a.get("cifras")), ("lugares", a.get("territorios")),
+                                     ("leyes", a.get("iniciativas"))) if v},
             })
 
     # Plenos con votaciones pero sin Diario publicado todavía.
@@ -464,6 +488,35 @@ def resumen_preguntas(preguntas: list[dict], diputados: list[list], hoy: date | 
 DIAS_SIN_RESPUESTA = 60  # 20 días de plazo + 20 de prórroga desde la publicación, y margen hasta que se publica
 
 
+# Lo que la web necesita de cada intervención para gráficos, búsqueda y rankings; el resto va aparte, por sesión.
+IV_LIGERO = ("s", "item", "orador", "g", "rol", "pos", "tono", "int", "temas", "cita", "responde", "responde_motivo",
+             "frase")
+IV_DETALLE = ("resumen", "motivo", "comp", "prop", "cifras", "lugares", "leyes")
+
+
+def _intervenciones_ligeras(ivs: list[dict], detalle: dict[str, list[dict]]) -> tuple[list[dict], list[str]]:
+    """Intervenciones de un mes sin el texto largo, y la tabla de asuntos (cada uno se escribe una sola vez).
+
+    El texto largo se añade a `detalle[sesión]`; cada intervención guarda en "d" su posición en esa lista.
+    Las que no tienen frase de síntesis (análisis antiguos) lo llevan todo en línea.
+    """
+    items, pos_item, salida = [], {}, []
+    for i in ivs:
+        if i["item"] not in pos_item:
+            pos_item[i["item"]] = len(items)
+            items.append(i["item"])
+        ligera = {k: i[k] for k in IV_LIGERO if i.get(k) not in (None, "") or k in ("temas", "rol")}
+        ligera["item"] = pos_item[i["item"]]
+        resto = {k: i[k] for k in IV_DETALLE if i.get(k)}
+        if i.get("frase"):
+            ligera["d"] = len(detalle[i["s"]])
+            detalle[i["s"]].append(resto)
+        else:
+            ligera.update(resto)
+        salida.append(ligera)
+    return salida, items
+
+
 def escribir_web(salida: dict) -> None:
     """Parte la salida por meses: site/datos/indice.json y site/datos/AAAA-MM.json."""
     d = salida["datos"]
@@ -481,8 +534,18 @@ def escribir_web(salida: dict) -> None:
     for viejo in carpeta.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9].json"):
         if viejo.stem not in meses:
             viejo.unlink()
+    detalle_iv: dict[str, list[dict]] = defaultdict(list)
     for mes, contenido in meses.items():
+        contenido["intervenciones"], contenido["items"] = _intervenciones_ligeras(contenido["intervenciones"], detalle_iv)
         (carpeta / f"{mes}.json").write_text(json.dumps(contenido, ensure_ascii=False))
+    # El detalle de cada intervención, por sesión: la web lo pide solo cuando va a enseñar esas tarjetas.
+    sub_iv = carpeta / "iv"
+    sub_iv.mkdir(exist_ok=True)
+    for viejo in sub_iv.glob("*.json"):
+        if viejo.stem not in detalle_iv:
+            viejo.unlink()
+    for sesion, lista in detalle_iv.items():
+        (sub_iv / f"{sesion}.json").write_text(json.dumps(lista, ensure_ascii=False))
     indice = {
         "meta": d["meta"], "grupos": d["grupos"], "diputados": d["diputados"],
         "hemiciclo": {k: v for k, v in mod_hemiciclo.leer().items() if k != "escanos"},

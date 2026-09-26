@@ -22,7 +22,26 @@ URL_VOTACIONES_DIA = (
 )
 URL_DS = BASE + "/public_oficiales/L{leg}/CONG/DS/{serie}/DSCD-{leg}-{serie}-{num}.PDF"
 
-MODELO = os.environ.get("ESCANO_MODELO", "claude-sonnet-4-5")
+def _cargar_env() -> None:
+    """Carga .env (si existe) en el entorno sin pisar lo que ya esté definido. Nunca lo imprime."""
+    fichero = RAIZ / ".env"
+    if not fichero.exists():
+        return
+    for linea in fichero.read_text().splitlines():
+        linea = linea.strip()
+        if linea and not linea.startswith("#") and "=" in linea:
+            clave, valor = linea.split("=", 1)
+            os.environ.setdefault(clave.strip(), valor.strip().strip('"').strip("'"))
+
+
+_cargar_env()
+
+# Proveedor de IA: Gemini si hay GEMINI_API_KEY; si no, Claude (Anthropic). ESCANO_PROVEEDOR lo fuerza.
+PROVEEDOR = os.environ.get("ESCANO_PROVEEDOR") or ("gemini" if os.environ.get("GEMINI_API_KEY") else "anthropic")
+_MODELO_POR_DEFECTO = {"gemini": "gemini-3.8-flash", "anthropic": "claude-sonnet-4-5"}
+MODELO = os.environ.get("ESCANO_MODELO") or _MODELO_POR_DEFECTO[PROVEEDOR]
+if PROVEEDOR == "gemini" and not MODELO.startswith("gemini"):  # un ESCANO_MODELO de Claude heredado
+    MODELO = _MODELO_POR_DEFECTO["gemini"]
 USER_AGENT = "escano-abierto/0.1"  # el cortafuegos del Congreso rechaza agentes con URL
 
 # Código del grupo en los JSON oficiales -> clave corta usada en la web.

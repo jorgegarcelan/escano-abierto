@@ -41,14 +41,15 @@ jobs:
           restore-keys: crudos-
       - name: Descargar y construir
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ESCANO_MODELO: ${{ vars.ESCANO_MODELO }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ESCANO_PROVEEDOR: gemini   # el mismo modelo que la caché de data/analisis, aunque falte la clave
           ESCANO_SIN_TARJETAS: "1"   # las tarjetas las dibuja Vercel al desplegar
         run: |
           ARGS=""
           [ -n "${{ github.event.inputs.desde }}" ] && ARGS="--desde ${{ github.event.inputs.desde }}"
-          # Con la clave de Anthropic en los secretos, analiza con IA; sin ella, solo datos oficiales.
-          [ -z "$ANTHROPIC_API_KEY" ] && ARGS="$ARGS --sin-ia"
+          # Con la clave de Gemini en los secretos, analiza con IA lo nuevo; sin ella, usa solo los análisis
+          # ya guardados en data/analisis (no se pierde ninguno) y lo nuevo queda para `python -m escano lote`.
+          [ -z "$GEMINI_API_KEY" ] && ARGS="$ARGS --sin-ia"
           python -m escano actualizar $ARGS
       - name: Guardar en el repositorio
         run: |

@@ -176,6 +176,21 @@ blockquote mark{background:var(--sub);color:var(--ink);padding:0 .12em;-webkit-b
 .int i.on{background:var(--ink)}
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .tag{font-size:11.5px;background:var(--sunk);color:var(--muted);border-radius:var(--r-chip);padding:1px 6px}
+.tag.lugar::before{content:"◉ ";font-size:9px}
+.tag.ley{background:transparent;border:1px solid var(--line)}
+.iv p.frase{font-weight:600;font-size:15px;color:var(--ink);margin-top:4px}
+.iv .pos-a-favor{color:var(--si)} .iv .pos-en-contra{color:var(--no)} .iv .pos-abstención{color:var(--abst)}
+.iv-extra{display:grid;gap:6px;margin-top:8px;font-size:13.5px}
+.iv-extra ul{margin:2px 0 0;padding-left:18px;display:grid;gap:3px}
+.iv-extra .eyebrow{font-size:10.5px}
+.iv-extra q{color:var(--muted);font-style:italic}
+.compromiso{border-left:3px solid var(--si);padding:4px 0 4px 10px;background:var(--sunk);border-radius:0 6px 6px 0}
+.compromiso .plazo{font-size:12px;color:var(--muted);white-space:nowrap}
+details.cifras>summary{cursor:pointer;font-size:12.5px;color:var(--muted);list-style:none}
+details.cifras>summary::-webkit-details-marker{display:none}
+details.cifras>summary::before{content:"▸ "} details.cifras[open]>summary::before{content:"▾ "}
+.momentos{margin:0;padding-left:20px;display:grid;gap:6px;max-width:72ch}
+.momentos .quien{color:var(--muted);font-size:13px}
 .qlist{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:14px}
 .qlist li{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:baseline}
 
@@ -825,13 +840,32 @@ body.con-buscador{overflow:hidden}
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, tono e intensidad generados por IA a partir del texto oficial; las citas marcadas se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
+  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave generados por IA a partir del texto oficial; las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
 </div>
 
 <script>
 /* ---------- carga por meses ---------- */
 // datos/indice.json trae lo común y la lista de meses; cada mes está en datos/AAAA-MM.json.
 const CARGADOS = {};
+// Cada mes trae las intervenciones sin el texto largo; el detalle se pide por sesión al ir a enseñar sus tarjetas.
+const IV_POR_ID = {}; let IV_SEQ = 0, pintarIv = null;
+function guardarMes(m, j){
+  (j.intervenciones||[]).forEach(i=>{ if (typeof i.item==="number") i.item = j.items[i.item]; i._id = ++IV_SEQ; IV_POR_ID[i._id] = i; });
+  CARGADOS[m] = j;
+}
+const DETALLE_IV = {};
+function detalleSesion(sid){
+  return DETALLE_IV[sid] ||= fetch(`datos/iv/${encodeURIComponent(sid)}.json`).then(r=>r.ok?r.json():[]).catch(()=>[]);
+}
+const obsIv = new IntersectionObserver(entradas=>entradas.forEach(e=>{
+  if (!e.isIntersecting) return;
+  obsIv.unobserve(e.target);
+  const el = e.target, i = IV_POR_ID[el.dataset.id];
+  if (!i) return;
+  detalleSesion(i.s).then(det=>{ if (!i._det){ Object.assign(i, det[i.d]||{}); i._det = true; } if (el.isConnected && pintarIv) el.outerHTML = pintarIv(i); });
+}), {rootMargin:"800px 0px"});
+new MutationObserver(()=>document.querySelectorAll(".iv[data-pend]:not([data-vigilada])").forEach(el=>{ el.dataset.vigilada = 1; obsIv.observe(el); }))
+  .observe(document.body, {childList:true, subtree:true});
 let INDICE = null, ctl = null;
 const MESES_LARGOS = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const nombreMes = m => { const [y,mm]=m.split("-").map(Number); return `${MESES_LARGOS[mm-1][0].toUpperCase()+MESES_LARGOS[mm-1].slice(1)} ${y}`; };
@@ -849,7 +883,7 @@ function textoPeriodo(fechas){
 }
 async function arrancar(clave){
   const lista = periodos(), p = lista.find(x=>x[0]===clave) || lista[0];
-  await Promise.all(p[2].filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`, {cache:"no-store"}).then(r=>r.json()).then(j=>{ CARGADOS[m]=j; })));
+  await Promise.all(p[2].filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`, {cache:"no-store"}).then(r=>r.json()).then(j=>guardarMes(m, j))));
   const sesiones=[], votaciones=[], ivs=[];
   p[2].forEach(m=>{ const c=CARGADOS[m]; sesiones.push(...c.sesiones); votaciones.push(...c.votaciones); ivs.push(...c.intervenciones); });
   const DATA = {...INDICE, meta:{...INDICE.meta, periodo: textoPeriodo(sesiones.map(s=>s.fecha).sort())}, sesiones, votaciones};
@@ -869,6 +903,7 @@ fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
 }).catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudieron cargar los datos. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
 
 function iniciar(DATA, IVS){
+  pintarIv = i => ivCard(i);
 // Al cambiar de periodo se vuelve a llamar: se retiran los listeners del arranque anterior.
 ctl?.abort(); ctl = new AbortController();
 const SIG = {signal: ctl.signal};
@@ -923,12 +958,23 @@ function voteRow(v, compact){
   </article>`;
 }
 function ivCard(i){
-  return `<div class="iv"><span class="bar" style="background:${G[i.g].color}"></span><div>
-    <div class="iv-h"><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span>${toneChip(i.tono)}${intMeter(i.int)}${i.pos?`<span class="rol">· ${esc(i.pos)}</span>`:""}</div>
-    <p>${esc(i.resumen)}</p>
+  const pos = i.pos ? `<span class="pill pos-${i.pos.replace(/ /g,"-")}">${esc(i.pos[0].toUpperCase()+i.pos.slice(1))}</span>` : "";
+  const comp = (i.comp||[]).map(c=>`<div class="compromiso"><b>${esc(c.que)}</b>${c.plazo?` <span class="plazo">· ${esc(c.plazo)}</span>`:""}<br><q>${esc(c.cita)}</q></div>`).join("");
+  const extra = [
+    comp ? `<div><div class="eyebrow">Se compromete a</div>${comp}</div>` : "",
+    (i.prop||[]).length ? `<div><div class="eyebrow">Propone</div><ul>${i.prop.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>` : "",
+    (i.cifras||[]).length ? `<details class="cifras"><summary>${i.cifras.length} ${i.cifras.length===1?"dato citado":"datos citados"}</summary><ul>${i.cifras.map(c=>`<li><b>${esc(c.dato)}</b> <q>${esc(c.cita)}</q></li>`).join("")}</ul></details>` : "",
+  ].filter(Boolean).join("");
+  const pend = i.d!=null && !i._det;
+  return `<div class="iv"${pend?` data-pend data-id="${i._id}"`:""}><span class="bar" style="background:${G[i.g].color}"></span><div>
+    <div class="iv-h"><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span>${toneChip(i.tono)}${intMeter(i.int)}</div>
+    ${i.frase?`<p class="frase">${esc(i.frase)}</p>`:""}
+    ${i.resumen?`<p>${esc(i.resumen)}</p>`:pend?`<p class="nota">Cargando el resumen…</p>`:""}
     ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}
+    ${pos?`<p class="nota">${pos} ${esc(i.motivo||"")}</p>`:""}
     ${i.responde && i.responde!=="no aplica"?`<p class="nota"><span class="pill resp-${i.responde==="sí"?"si":i.responde}">¿Contesta? ${esc(i.responde)}</span> ${esc(i.responde_motivo||"")}</p>`:""}
-    <div class="tags">${i.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+    ${extra?`<div class="iv-extra">${extra}</div>`:""}
+    <div class="tags">${i.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${(i.lugares||[]).map(t=>`<span class="tag lugar" title="Lugar del que se habla">${esc(t)}</span>`).join("")}${(i.leyes||[]).map(t=>`<span class="tag ley" title="Norma o iniciativa mencionada">${esc(t)}</span>`).join("")}</div>
   </div></div>`;
 }
 
@@ -1581,7 +1627,7 @@ function cargarSemanas(){
   return semanasPromesa ||= fetch("datos/semanas.json").then(r=>r.ok?r.json():[]).catch(()=>[]).then(j=>{ INDICE_BUSCAR = null; return SEMANAS=j; });
 }
 async function datosDeMeses(ms){
-  await Promise.all(ms.filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`).then(r=>r.json()).then(j=>{ CARGADOS[m]=j; }).catch(()=>{})));
+  await Promise.all(ms.filter(m=>!CARGADOS[m]).map(m=>fetch(`datos/${m}.json`).then(r=>r.json()).then(j=>guardarMes(m, j)).catch(()=>{})));
   const vs = {}, ss = {};
   ms.forEach(m=>{ const c=CARGADOS[m]; if (!c) return; c.votaciones.forEach(v=>vs[v.id]=v); c.sesiones.forEach(s=>ss[s.id]=s); });
   return {vs, ss};
@@ -1968,10 +2014,10 @@ function renderSobre(){
       <ul class="sobre-lista">
         <li><b>No es un medio de opinión.</b> No dice qué está bien o mal votado: muestra lo que pasó, con las mismas reglas para todos los grupos.</li>
         <li><b>No está vinculado al Congreso ni a ningún partido.</b> Es un proyecto personal e independiente, sin financiación.</li>
-        <li><b>No se inventa nada.</b> Cada dato enlaza a su fuente oficial. Cuando interviene la IA (resúmenes, tono), se indica, y las citas solo se publican si aparecen literalmente en el Diario de Sesiones.</li>
+        <li><b>No se inventa nada.</b> Cada dato enlaza a su fuente oficial. Cuando interviene la IA (resúmenes, tono, síntesis de cada intervención), se indica, y las citas, cifras y compromisos solo se publican si aparecen literalmente en el Diario de Sesiones.</li>
       </ul></section>
     <section class="sec"><div class="sec-h"><h2>Cómo se hace</h2></div>
-      <p class="prosa">Cada mañana, un proceso automático descarga lo nuevo de la web del Congreso: votaciones, Diarios de Sesiones, orden del día, tramitación de leyes, preguntas escritas y declaraciones de intereses. Lo cruza, lo resume con reglas fijas y publica esta web. El <a href="${REPO}" target="_blank" rel="noopener">código es abierto</a>, y en <a href="#metodo">Método</a> se explica cada cálculo.</p>
+      <p class="prosa">Cada mañana, un proceso automático descarga lo nuevo de la web del Congreso: votaciones, Diarios de Sesiones, orden del día, tramitación de leyes, preguntas escritas y declaraciones de intereses. Lo cruza y publica esta web. Los resúmenes de cada sesión y de cada intervención los escribe un modelo de inteligencia artificial (Gemini, de Google) a partir del texto oficial del Diario de Sesiones, con las mismas instrucciones para todos los grupos. Lo que debe ser literal (citas, cifras y compromisos) se comprueba contra el Diario y se descarta si no aparece tal cual. Lo demás se calcula con reglas fijas. El <a href="${REPO}" target="_blank" rel="noopener">código es abierto</a>, y en <a href="#metodo">Método</a> se explica cada cálculo.</p>
       <p class="prosa">Si ves un error o echas algo en falta, <a href="${REPO}/issues" target="_blank" rel="noopener">abre una incidencia en GitHub</a>. Las correcciones se agradecen.</p></section>
     <section class="sec" id="aviso-legal"><div class="sec-h"><h2>Aviso legal</h2></div>
       <div class="legal">
@@ -1980,7 +2026,7 @@ function renderSobre(){
         <h3>Origen de los datos</h3>
         <p>La información procede de fuentes públicas del Congreso de los Diputados (datos abiertos, Diario de Sesiones, Boletín Oficial de las Cortes Generales, buscador de iniciativas y agenda) y se reutiliza de acuerdo con la normativa sobre reutilización de la información del sector público (Ley 37/2007), citando siempre la fuente y enlazando al documento original. Las fotografías de los diputados son las que publica el Congreso y se muestran directamente desde su web.</p>
         <h3>Exactitud</h3>
-        <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los resúmenes, el tono y la intensidad generados con inteligencia artificial son orientativos y se indican como tales. Nada de lo publicado constituye asesoramiento jurídico.</p>
+        <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los textos generados con inteligencia artificial (resúmenes de sesiones e intervenciones, frases de síntesis, tono, intensidad, si el Gobierno contesta a lo que se le pregunta, el motivo de cada postura, compromisos, propuestas, cifras, territorios y leyes mencionados) son orientativos, se indican como tales y pueden contener errores; ante cualquier duda, prevalece el Diario de Sesiones enlazado. Nada de lo publicado constituye asesoramiento jurídico.</p>
         <h3>Personas</h3>
         <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a> o a través de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com</a>, y se revisará lo antes posible.</p>
         <h3>Privacidad</h3>
@@ -2178,7 +2224,7 @@ function renderInicio(){
     if (preg){
       const sR = DATA.sesiones.find(s=>s.id===resp.s), d = dt(sR.fecha);
       const lado = (i,extra) => `<div><div class="who">${imgFoto(dipDeOrador(i.orador), "avatar foto", ` style="--grupo:${G[i.g].color}"`) || `<span class="avatar" style="background:${G[i.g].color}">${esc(iniciales(i.orador))}</span>`}<div><b>${esc(i.orador)}</b><span class="rol">${esc(i.rol)}</span></div></div>
-        ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}<p>${esc(i.resumen)}</p>${extra||""}</div>`;
+        ${i.cita?`<blockquote><mark>«${esc(i.cita)}»</mark></blockquote>`:""}<p>${esc(i.frase||i.resumen)}</p>${extra||""}</div>`;
       cara = `<section class="sec"><div class="sec-h"><h2>Cara a cara</h2><p>La primera pregunta al Gobierno de la última sesión analizada y su respuesta.</p></div>
         <div class="face">${lado(preg)}${lado(resp, ["sí","parcial","no"].includes(resp.responde)?`<p class="nota"><span class="pill resp-${resp.responde==="sí"?"si":resp.responde}">¿Contesta? ${esc(resp.responde)}</span> ${esc(resp.responde_motivo||"")}</p>`:"")}
         <div class="face-foot"><span>${d.d} ${d.m} · ${esc(sR.organo)} · ${esc(resp.item)}</span><button class="linklike" data-go="dias" data-anchor="s-${sR.id}" style="font-size:13px">Ver la sesión completa</button></div></div></section>`;
@@ -2243,6 +2289,7 @@ function renderDias(){
         <div class="session-head"><div><div class="organ">${esc(s.organo)}</div><h3>${esc(s.sesion)}</h3></div>
           <div class="meta-links">${botonCompartir("sesion/"+slugPy(s.id), s.organo+", "+s.fecha)}${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
         ${s.resumen?`<p class="sum">${esc(s.resumen)}</p>`:""}${s.nota?`<p class="nota">${esc(s.nota)}</p>`:""}
+        ${(s.momentos||[]).length?`<div style="display:grid;gap:6px"><div class="eyebrow">Momentos clave</div><ol class="momentos">${s.momentos.map(m=>`<li>${esc(m.que)}${(m.quien||[]).length?` <span class="quien">· ${esc(m.quien.join(", "))}</span>`:""}</li>`).join("")}</ol></div>`:""}
         ${ivs.length?`<div style="display:grid;gap:6px"><div class="eyebrow">Tono de las intervenciones analizadas</div>${toneBar(ivs)}${toneLegend(ivs)}</div>`:""}
         ${s.reacciones && Object.keys(s.reacciones).length?`<p class="nota">En la Cámara: ${Object.entries(s.reacciones).map(([k,n])=>`${esc(k.replace(/_/g," "))} <b class="num">${n}</b>`).join(" · ")}</p>`:""}
         <div class="puntos">${puntos}</div>
@@ -2311,7 +2358,7 @@ function renderOradores(){
   IVS.forEach(i=>{ (by[i.orador]=by[i.orador]||{nombre:i.orador,g:i.g,rol:i.rol.split(" · ")[0],ivs:[]}).ivs.push(i); });
   let list = Object.values(by);
   const q = orFilter.q.trim().toLowerCase();
-  list = list.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || o.nombre.toLowerCase().includes(q) || o.ivs.some(i=>i.temas.join(" ").toLowerCase().includes(q)||i.resumen.toLowerCase().includes(q))));
+  list = list.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || o.nombre.toLowerCase().includes(q) || o.ivs.some(i=>i.temas.join(" ").toLowerCase().includes(q)||(i.resumen||i.frase||"").toLowerCase().includes(q))));
   list.sort((a,b)=>b.ivs.length-a.ivs.length || (b.ivs.reduce((s,i)=>s+i.int,0)/b.ivs.length)-(a.ivs.reduce((s,i)=>s+i.int,0)/a.ivs.length));
   const present = [...new Set(IVS.map(i=>i.g))];
   const order = [...PARL,"GOB","COMP"].filter(g=>present.includes(g));
@@ -2424,7 +2471,7 @@ function indiceBuscar(){
   Object.entries(GLOSARIO).forEach(([k,[t,def]])=>poner("g", t, def.slice(0,110)+"…", def, {gl:k}));
   (SEMANAS||[]).forEach(w=>poner("w", w.titular, `Semana del ${rangoSemana(w)}`, "", {hash:"semana-"+w.id}));
   TEMAS.forEach(t=>poner("t", t.label, `${t.n} intervenciones`, "", {tema:t.k}));
-  IVS.forEach(i=>poner("iv", `${i.orador}: ${i.resumen.slice(0,90)}${i.resumen.length>90?"…":""}`, `${gname(i.g)} · ${(DATA.sesiones.find(s=>s.id===i.s)||{}).organo||""}`, `${i.cita||""} ${i.temas.join(" ")} ${i.item}`, {hash:"sesion-"+i.s}));
+  IVS.forEach(i=>poner("iv", `${i.orador}: ${(i.frase||i.resumen||"").slice(0,90)}${(i.frase||i.resumen||"").length>90?"…":""}`, `${gname(i.g)} · ${(DATA.sesiones.find(s=>s.id===i.s)||{}).organo||""}`, `${i.cita||""} ${i.temas.join(" ")} ${i.item}`, {hash:"sesion-"+i.s}));
   return INDICE_BUSCAR = e;
 }
 function casiIgual(a, b){ // distancia de edición ≤ 1
