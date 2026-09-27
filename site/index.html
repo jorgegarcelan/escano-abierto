@@ -740,6 +740,13 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 /* compartir */
 .compartir{appearance:none;font:600 12px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:3px 10px;cursor:pointer;white-space:nowrap}
 .compartir:hover{background:var(--ink);color:var(--bg)}
+.btn-img{appearance:none;display:inline-flex;align-items:center;gap:5px;font:600 12px var(--sans);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:var(--r-pill);padding:3px 10px;cursor:pointer;white-space:nowrap;vertical-align:middle}
+.btn-img:hover{color:var(--ink);border-color:var(--line-strong)}
+.btn-img[data-estado]{opacity:.55;cursor:progress}
+.compartir + .btn-img{margin-left:6px}
+.ficha-acc .compartir + .btn-img{margin-left:0}
+.vote-acc .compartir + .btn-img{margin-left:0;padding:3px 7px}
+.vote-acc .btn-img span{display:none}
 .btn-rss{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font:600 12px var(--sans);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:var(--r-pill);padding:3px 10px;white-space:nowrap;vertical-align:middle}
 .btn-rss:hover{color:var(--ink);border-color:var(--line-strong)}
 .rss-pie{color:inherit}
@@ -2780,7 +2787,34 @@ const ICONO_RSS = `<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="
 const RAIZ = location.origin + location.pathname.replace(/[^/]*$/, "");
 const urlCompartir = ruta => RAIZ + ruta + "/";
 const slugPy = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-const botonCompartir = (ruta, titulo) => `<button class="compartir" data-compartir="${esc(ruta)}" data-titulo="${esc(titulo)}" aria-label="Compartir">Compartir ↗</button>`;
+const botonCompartir = (ruta, titulo) => `<button class="compartir" data-compartir="${esc(ruta)}" data-titulo="${esc(titulo)}" aria-label="Compartir">Compartir ↗</button>${botonImagen(ruta)}`;
+const ICONO_DESCARGA = `<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 2.5v7.5M4.8 7 8 10.2 11.2 7M3 12.8h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const botonImagen = ruta => `<button class="btn-img" data-imagen="${esc(ruta)}" title="Descarga la tarjeta de esta página para compartirla" aria-label="Descargar imagen">${ICONO_DESCARGA}<span>Imagen</span></button>`;
+// La tarjeta es la og:image de la página para compartir. Se lee de ahí porque algunas llevan en el nombre un
+// resumen de lo que dibujan (una ley que avanza), y solo se toma su ruta: en los previews la URL absoluta
+// apunta al dominio de producción.
+async function descargarImagen(boton){
+  if (boton.dataset.estado) return;
+  boton.dataset.estado = "ocupado";
+  const ruta = boton.dataset.imagen;
+  try{
+    const pagina = await fetch(urlCompartir(ruta));
+    const og = (await pagina.text()).match(/<meta property="og:image" content="([^"]+)"/);
+    if (!pagina.ok || !og) throw new Error("sin tarjeta");
+    const r = await fetch(RAIZ + new URL(og[1], RAIZ).pathname.replace(/^\//, ""));
+    if (!r.ok) throw new Error("tarjeta " + r.status);
+    const blob = await r.blob();
+    const nombre = "escano-abierto-" + ruta.replace(/\//g, "-") + ".png";
+    const archivo = new File([blob], nombre, {type: "image/png"});
+    if (matchMedia("(pointer:coarse)").matches && navigator.canShare?.({files:[archivo]})){
+      try{ await navigator.share({files:[archivo]}); return; }catch(e){ if (e.name==="AbortError") return; }
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = nombre; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  }catch(e){ aviso("No se ha podido descargar la imagen"); }
+  finally{ delete boton.dataset.estado; }
+}
 function aviso(texto){ let t=document.getElementById("aviso"); if(!t){ t=document.createElement("div"); t.id="aviso"; t.setAttribute("role","status"); document.body.appendChild(t); }
   t.textContent=texto; t.classList.add("visible"); clearTimeout(aviso.t); aviso.t=setTimeout(()=>t.classList.remove("visible"), 2200); }
 async function compartir(ruta, titulo){
@@ -2841,6 +2875,8 @@ document.addEventListener("click", e=>{
   if (bu){ irResultado(buscaRes[+bu.dataset.bu]); return; }
   const cp = e.target.closest("[data-compartir]");
   if (cp){ compartir(cp.dataset.compartir, cp.dataset.titulo); return; }
+  const im = e.target.closest("[data-imagen]");
+  if (im){ descargarImagen(im); return; }
   const hm = e.target.closest("[data-hm]");
   if (hm){ mapaHemi.metrica=hm.dataset.hm; if (mapaHemi.metrica==="turnos" && !EXTRA){ cargarExtra().then(pintarHemiDatos); } pintarHemiDatos(); return; }
   const rp = e.target.closest("[data-repro]");
