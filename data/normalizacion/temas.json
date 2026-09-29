@@ -523,6 +523,10 @@
 "participación ciudadana",
 "social"
 ],
+"activos rusos": [
+"activos rusos",
+"exteriores"
+],
 "actos electorales": [
 "elecciones",
 "democracia"
@@ -1599,6 +1603,10 @@
 "Unión Europea",
 "exteriores"
 ],
+"amputaciones": [
+"amputaciones",
+"sanidad"
+],
 "américa latina": [
 "relaciones internacionales",
 "exteriores"
@@ -2306,6 +2314,10 @@
 "atención multidisciplinar": [
 "sanidad",
 "sanidad"
+],
+"atención presencial": [
+"atención presencial",
+"democracia"
 ],
 "atención presencial inss": [
 "seguridad social",
@@ -3555,6 +3567,10 @@
 "política fiscal",
 "impuestos"
 ],
+"bonificaciones laborales": [
+"bonificaciones laborales",
+"empleo"
+],
 "bonificaciones patronales": [
 "cotizaciones",
 "empleo"
@@ -4031,12 +4047,20 @@
 "financiación",
 "otro"
 ],
+"capitalismo": [
+"capitalismo",
+"otro"
+],
 "capitalización del desempleo": [
 "desempleo",
 "empleo"
 ],
 "capitanía marítima": [
 "sector marítimo",
+"transporte"
+],
+"capitanías marítimas": [
+"capitanías marítimas",
 "transporte"
 ],
 "captación de co2": [
@@ -4557,6 +4581,10 @@
 ],
 "centros especiales de empleo": [
 "discapacidad",
+"social"
+],
+"centros ocupacionales": [
+"centros ocupacionales",
 "social"
 ],
 "centros penitenciarios": [
@@ -5446,6 +5474,10 @@
 "comités de crisis": [
 "violencia machista",
 "igualdad"
+],
+"comités de empresa": [
+"comités de empresa",
+"empleo"
 ],
 "comparecencia": [
 "comparecencias",
@@ -7587,6 +7619,10 @@
 "cuidados",
 "social"
 ],
+"cuidados comunitarios": [
+"cuidados comunitarios",
+"social"
+],
 "cuidados familiares": [
 "cuidados",
 "social"
@@ -7734,6 +7770,10 @@
 "cuota de reserva": [
 "discapacidad",
 "empleo"
+],
+"cuota de solidaridad": [
+"cuota de solidaridad",
+"pensiones"
 ],
 "cuotas": [
 "igualdad",
@@ -9398,6 +9438,10 @@
 "dgt": [
 "DGT",
 "transporte"
+],
+"diabetes": [
+"diabetes",
+"sanidad"
 ],
 "diada": [
 "Cataluña",
@@ -11570,6 +11614,10 @@
 "estadísticas de criminalidad": [
 "criminalidad",
 "seguridad"
+],
+"estadísticas de empleo": [
+"estadísticas de empleo",
+"empleo"
 ],
 "estadísticas de paro": [
 "desempleo",
@@ -14919,6 +14967,10 @@
 "indemnizaciones",
 "justicia"
 ],
+"indemnizaciones de guerra": [
+"indemnizaciones de guerra",
+"exteriores"
+],
 "indemnizaciones laborales": [
 "derechos laborales",
 "empleo"
@@ -15594,6 +15646,10 @@
 "instituto geográfico nacional": [
 "instituto geográfico nacional",
 "otro"
+],
+"instituto social de la marina": [
+"instituto social de la marina",
+"social"
 ],
 "instrucciones previas": [
 "eutanasia",
@@ -17303,6 +17359,10 @@
 "energías renovables",
 "energia"
 ],
+"madres por la libertad": [
+"madres por la libertad",
+"social"
+],
 "madres protectoras": [
 "violencia vicaria",
 "igualdad"
@@ -18214,6 +18274,10 @@
 "ministro del interior": [
 "Ministerio del Interior",
 "seguridad"
+],
+"minorías": [
+"minorías",
+"social"
 ],
 "minorías vulnerables": [
 "minorías",
@@ -20163,6 +20227,10 @@
 "desempleo juvenil",
 "empleo"
 ],
+"paro registrado": [
+"desempleo",
+"empleo"
+],
 "parque de vehículos": [
 "parque móvil",
 "transporte"
@@ -20747,6 +20815,10 @@
 "administración pública",
 "democracia"
 ],
+"personal de rampa": [
+"personal de rampa",
+"transporte"
+],
 "personal del congreso": [
 "Congreso de los Diputados",
 "democracia"
@@ -20778,6 +20850,10 @@
 "personal sanitario": [
 "profesionales sanitarios",
 "sanidad"
+],
+"personas amputadas": [
+"personas amputadas",
+"social"
 ],
 "personas con discapacidad": [
 "discapacidad",
@@ -20969,6 +21045,10 @@
 ],
 "pistolas táser": [
 "fuerzas y cuerpos de seguridad",
+"seguridad"
+],
+"pkk": [
+"PKK",
 "seguridad"
 ],
 "plagas": [
@@ -21367,6 +21447,10 @@
 "separación de poderes",
 "democracia"
 ],
+"podología": [
+"podología",
+"sanidad"
+],
 "poesía": [
 "cultura",
 "cultura"
@@ -21429,6 +21513,10 @@
 ],
 "polio": [
 "salud pública",
+"sanidad"
+],
+"poliomielitis": [
+"poliomielitis",
 "sanidad"
 ],
 "politica autonomica": [
@@ -22093,6 +22181,10 @@
 ],
 "prestación farmacéutica": [
 "medicamentos",
+"sanidad"
+],
+"prestación ortoprotésica": [
+"prestación ortoprotésica",
 "sanidad"
 ],
 "prestación por crianza": [
@@ -26963,6 +27055,10 @@
 "discapacidad",
 "sanidad"
 ],
+"síndrome postpolio": [
+"síndrome postpolio",
+"sanidad"
+],
 "tabaco": [
 "tabaco",
 "sanidad"
@@ -28111,6 +28207,10 @@
 "fiscalidad",
 "impuestos"
 ],
+"tripulantes de cabina": [
+"tripulantes de cabina",
+"transporte"
+],
 "triángulos de emergencia": [
 "seguridad vial",
 "transporte"
@@ -28310,6 +28410,10 @@
 "técnica parlamentaria": [
 "procedimiento parlamentario",
 "democracia"
+],
+"tíbet": [
+"Tíbet",
+"exteriores"
 ],
 "tóxicos": [
 "salud pública",
