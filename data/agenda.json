@@ -1,5 +1,5 @@
 {
- "generado": "2026-09-29",
+ "generado": "2026-09-30",
  "plenos": [
   {
    "sesion": "201",
@@ -37,7 +37,7 @@
      "seccion": "Proposiciones no de Ley",
      "fecha": "2026-09-29",
      "hora": "15:00",
-     "texto": "Del Grupo Parlamentario Popular en el Congreso, para garantizar la correcta implementación del Pacto Europeo sobre Migración y Asilo en España. \"BOCG. Congreso de los Diputados\", serie D, número 569, de 17 de julio de 2026.  Procedimiento",
+     "texto": "Del Grupo Parlamentario Popular en el Congreso, para garantizar la correcta implementación del Pacto Europeo sobre Migración y Asilo en España. \"BOCG. Congreso de los Diputados\", serie D, número 569, de 17 de julio de 2026.  Procedimiento Enmiendas",
      "exp": [
       "162/000814"
      ],
@@ -49,7 +49,7 @@
      "seccion": "Proposiciones no de Ley",
      "fecha": "2026-09-29",
      "hora": "15:00",
-     "texto": "Del Grupo Parlamentario Socialista, para la puesta en marcha de un instrumento europeo excepcional de contribución sobre los beneficios extraordinarios de las empresas energéticas. \"BOCG. Congreso de los Diputados\", serie D, número 518, de 24 de abril de 2026.  Procedimiento",
+     "texto": "Del Grupo Parlamentario Socialista, para la puesta en marcha de un instrumento europeo excepcional de contribución sobre los beneficios extraordinarios de las empresas energéticas. \"BOCG. Congreso de los Diputados\", serie D, número 518, de 24 de abril de 2026.  Procedimiento Enmienda",
      "exp": [
       "162/000769"
      ],
@@ -61,11 +61,11 @@
      "seccion": "Mociones consecuencia de interpelaciones urgentes",
      "fecha": "2026-09-29",
      "hora": "15:00",
-     "texto": "Del Grupo Parlamentario Mixto (Sra. Belarra Urteaga), relativa a las medidas que va a adoptar el Gobierno para evitar las subidas desorbitadas de los precios de los productos energéticos y su impacto directo sobre el coste de la vida de las familias.  Texto",
+     "texto": "Del Grupo Parlamentario Mixto (Sra. Belarra Urteaga), relativa a las medidas que va a adoptar el Gobierno para evitar las subidas desorbitadas de los precios de los productos energéticos y su impacto directo sobre el coste de la vida de las familias.  Texto Enmienda",
      "exp": [
       "173/000194"
      ],
-     "titulo": "Relativa a las medidas que va a adoptar el Gobierno para evitar las subidas desorbitadas de los precios de los productos energéticos y su impacto directo sobre el coste de la vida de las familias.  Texto",
+     "titulo": "Relativa a las medidas que va a adoptar el Gobierno para evitar las subidas desorbitadas de los precios de los productos energéticos y su impacto directo sobre el coste de la vida de las familias.  Texto Enmienda",
      "grupo": "MIXTO"
     },
     {
@@ -73,149 +73,11 @@
      "seccion": "Mociones consecuencia de interpelaciones urgentes",
      "fecha": "2026-09-29",
      "hora": "15:00",
-     "texto": "Del Grupo Parlamentario VOX, sobre las medidas adoptadas en relación con la situación de interés para la seguridad nacional en la ciudad de Ceuta.  Texto",
+     "texto": "Del Grupo Parlamentario VOX, sobre las medidas adoptadas en relación con la situación de interés para la seguridad nacional en la ciudad de Ceuta.  Texto Enmiendas",
      "exp": [
       "173/000195"
      ],
-     "titulo": "Sobre las medidas adoptadas en relación con la situación de interés para la seguridad nacional en la ciudad de Ceuta.  Texto",
-     "grupo": "VOX"
-    },
-    {
-     "n": 7,
-     "seccion": "Mociones consecuencia de interpelaciones urgentes",
-     "fecha": "2026-09-29",
-     "hora": "15:00",
-     "texto": "Del Grupo Parlamentario Popular en el Congreso, sobre la gestión del Ministerio de Defensa durante la reciente crisis en la ciudad de Ceuta.  Texto",
-     "exp": [
-      "173/000196"
-     ],
-     "titulo": "Sobre la gestión del Ministerio de Defensa durante la reciente crisis en la ciudad de Ceuta.  Texto",
-     "grupo": "PP"
-    },
-    {
-     "n": 8,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª IONE BELARRA URTEAGA, del Grupo Parlamentario Mixto, que formula al Excmo. Sr. Vicepresidente Primero y Ministro de Economía, Comercio y Empresa: ¿Qué piensa el Gobierno de la profunda desigualdad social y económica que se vive en nuestro país?",
-     "exp": [
-      "180/001187"
-     ],
-     "titulo": "¿Qué piensa el Gobierno de la profunda desigualdad social y económica que se vive en nuestro país?",
-     "autor": "Ione Belarra Urteaga",
-     "a": "Ministro de Economía, Comercio y Empresa",
-     "grupo": "MIXTO"
-    },
-    {
-     "n": 9,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª MARIBEL VAQUERO MONTERO, del Grupo Parlamentario Vasco (EAJ-PNV), que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cómo va a superar el Gobierno los obstáculos para llegar a acuerdos en materia de vivienda?",
-     "exp": [
-      "180/001190"
-     ],
-     "titulo": "¿Cómo va a superar el Gobierno los obstáculos para llegar a acuerdos en materia de vivienda?",
-     "autor": "Maribel Vaquero Montero",
-     "a": "Ministra de Vivienda y Agenda Urbana",
-     "grupo": "PNV"
-    },
-    {
-     "n": 10,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. OSKAR MATUTE GARCÍA DE JALÓN, del Grupo Parlamentario Euskal Herria Bildu, que formula al Excmo. Sr. Ministro de Hacienda: ¿Quién debe pagar las medidas de protección a la ciudadanía frente a la carestía de la vida?",
-     "exp": [
-      "180/001191"
-     ],
-     "titulo": "¿Quién debe pagar las medidas de protección a la ciudadanía frente a la carestía de la vida?",
-     "autor": "Oskar Matute García de Jalón",
-     "a": "Ministro de Hacienda",
-     "grupo": "BILDU"
-    },
-    {
-     "n": 11,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª MARTA MADRENAS I MIR, del Grupo Parlamentario Junts per Catalunya, que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cree que rectificar las políticas de vivienda, condicionadas por sus socios, permitiría revertir la situación y recuperar la confianza ciudadana perdida?",
-     "exp": [
-      "180/001189"
-     ],
-     "titulo": "¿Cree que rectificar las políticas de vivienda, condicionadas por sus socios, permitiría revertir la situación y recuperar la confianza ciudadana perdida?",
-     "autor": "Marta Madrenas i Mir",
-     "a": "Ministra de Vivienda y Agenda Urbana",
-     "grupo": "JUNTS"
-    },
-    {
-     "n": 12,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª TERESA JORDÀ I ROURA, del Grupo Parlamentario Republicano, que formula al Excmo. Sr. Ministro de Hacienda: ¿Cómo va a garantizar la financiación del nuevo presupuesto europeo a los grupos de acción local?",
-     "exp": [
-      "180/001204"
-     ],
-     "titulo": "¿Cómo va a garantizar la financiación del nuevo presupuesto europeo a los grupos de acción local?",
-     "autor": "Teresa Jordà i Roura",
-     "a": "Ministro de Hacienda",
-     "grupo": "ERC"
-    },
-    {
-     "n": 13,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. ENRIQUE FERNANDO SANTIAGO ROMERO, del Grupo Parlamentario Plurinacional SUMAR, que formula a la Excma. Sra. Ministra de Defensa: ¿Qué medidas han tomado para acabar con los malos tratos y excesos de fuerza en que han incurrido algunos militares en Ceuta respecto a civiles y para sancionar a los responsables de estas vergonzosas prácticas?",
-     "exp": [
-      "180/001188"
-     ],
-     "titulo": "¿Qué medidas han tomado para acabar con los malos tratos y excesos de fuerza en que han incurrido algunos militares en Ceuta respecto a civiles y para sancionar a los responsables de estas vergonzosas prácticas?",
-     "autor": "Enrique Fernando Santiago Romero",
-     "a": "Ministra de Defensa",
-     "grupo": "SUMAR"
-    },
-    {
-     "n": 14,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. ALBERTO IBÁÑEZ MEZQUITA, del Grupo Parlamentario Plurinacional SUMAR, que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cree usted que deben tener derecho a comprar casas los fondos buitres?",
-     "exp": [
-      "180/001205"
-     ],
-     "titulo": "¿Cree usted que deben tener derecho a comprar casas los fondos buitres?",
-     "autor": "Alberto Ibáñez Mezquita",
-     "a": "Ministra de Vivienda y Agenda Urbana",
-     "grupo": "SUMAR"
-    },
-    {
-     "n": 15,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª MARÍA JOSÉ RODRÍGUEZ DE MILLÁN PARRO, del Grupo Parlamentario VOX, que formula al Excmo. Sr. Ministro de la Presidencia, Justicia y Relaciones con las Cortes: ¿Cree que los españoles están mejor que hace ocho años?",
-     "exp": [
-      "180/001192"
-     ],
-     "titulo": "¿Cree que los españoles están mejor que hace ocho años?",
-     "autor": "María José Rodríguez de Millán Parro",
-     "a": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
-     "grupo": "VOX"
-    },
-    {
-     "n": 16,
-     "seccion": "Preguntas",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. JOSÉ MARÍA FIGAREDO ÁLVAREZ-SALA, del Grupo Parlamentario VOX, que formula al Excmo. Sr. Vicepresidente Primero y Ministro de Economía, Comercio y Empresa: ¿Cómo va a combatir el Gobierno los efectos de la inflación constante que arrasa España?",
-     "exp": [
-      "180/001193"
-     ],
-     "titulo": "¿Cómo va a combatir el Gobierno los efectos de la inflación constante que arrasa España?",
-     "autor": "José María Figaredo Álvarez-Sala",
-     "a": "Ministro de Economía, Comercio y Empresa",
+     "titulo": "Sobre las medidas adoptadas en relación con la situación de interés para la seguridad nacional en la ciudad de Ceuta.  Texto Enmiendas",
      "grupo": "VOX"
     },
     {
@@ -261,15 +123,43 @@
      "grupo": "PP"
     },
     {
+     "n": 16,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA del Diputado D. JOSÉ MARÍA FIGAREDO ÁLVAREZ-SALA, del Grupo Parlamentario VOX, que formula al Excmo. Sr. Vicepresidente Primero y Ministro de Economía, Comercio y Empresa: ¿Cómo va a combatir el Gobierno los efectos de la inflación constante que arrasa España?",
+     "exp": [
+      "180/001193"
+     ],
+     "titulo": "¿Cómo va a combatir el Gobierno los efectos de la inflación constante que arrasa España?",
+     "autor": "José María Figaredo Álvarez-Sala",
+     "a": "Ministro de Economía, Comercio y Empresa",
+     "grupo": "VOX"
+    },
+    {
+     "n": 8,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA de la Diputada Dª IONE BELARRA URTEAGA, del Grupo Parlamentario Mixto, que formula al Excmo. Sr. Vicepresidente Primero y Ministro de Economía, Comercio y Empresa: ¿Qué piensa el Gobierno de la profunda desigualdad social y económica que se vive en nuestro país?  VICEPRESIDENTA SEGUNDA Y MINISTRA DE TRABAJO Y ECONOMÍA SOCIAL",
+     "exp": [
+      "180/001187"
+     ],
+     "titulo": "¿Qué piensa el Gobierno de la profunda desigualdad social y económica que se vive en nuestro país?  VICEPRESIDENTA SEGUNDA Y MINISTRA DE TRABAJO Y ECONOMÍA SOCIAL",
+     "autor": "Ione Belarra Urteaga",
+     "a": "Ministro de Economía, Comercio y Empresa",
+     "grupo": "MIXTO"
+    },
+    {
      "n": 20,
      "seccion": "Preguntas",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª MIRIAN GUARDIOLA SALMERÓN, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Vicepresidenta Segunda y Ministra de Trabajo y Economía Social: ¿Cuál es su prioridad, Vicepresidenta?",
+     "texto": "PREGUNTA de la Diputada Dª MIRIAN GUARDIOLA SALMERÓN, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Vicepresidenta Segunda y Ministra de Trabajo y Economía Social: ¿Cuál es su prioridad, Vicepresidenta?  MINISTRO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
      "exp": [
       "180/001197"
      ],
-     "titulo": "¿Cuál es su prioridad, Vicepresidenta?",
+     "titulo": "¿Cuál es su prioridad, Vicepresidenta?  MINISTRO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
      "autor": "Mirian Guardiola Salmerón",
      "a": "Ministra de Trabajo y Economía Social",
      "grupo": "PP"
@@ -303,6 +193,20 @@
      "grupo": "PP"
     },
     {
+     "n": 15,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA de la Diputada Dª MARÍA JOSÉ RODRÍGUEZ DE MILLÁN PARRO, del Grupo Parlamentario VOX, que formula al Excmo. Sr. Ministro de la Presidencia, Justicia y Relaciones con las Cortes: ¿Cree que los españoles están mejor que hace ocho años?  MINISTRA DE VIVIENDA Y AGENDA URBANA",
+     "exp": [
+      "180/001192"
+     ],
+     "titulo": "¿Cree que los españoles están mejor que hace ocho años?  MINISTRA DE VIVIENDA Y AGENDA URBANA",
+     "autor": "María José Rodríguez de Millán Parro",
+     "a": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "grupo": "VOX"
+    },
+    {
      "n": 23,
      "seccion": "Preguntas",
      "fecha": "2026-09-30",
@@ -317,15 +221,43 @@
      "grupo": "PP"
     },
     {
+     "n": 11,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA de la Diputada Dª MARTA MADRENAS I MIR, del Grupo Parlamentario Junts per Catalunya, que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cree que rectificar las políticas de vivienda, condicionadas por sus socios, permitiría revertir la situación y recuperar la confianza ciudadana perdida?",
+     "exp": [
+      "180/001189"
+     ],
+     "titulo": "¿Cree que rectificar las políticas de vivienda, condicionadas por sus socios, permitiría revertir la situación y recuperar la confianza ciudadana perdida?",
+     "autor": "Marta Madrenas i Mir",
+     "a": "Ministra de Vivienda y Agenda Urbana",
+     "grupo": "JUNTS"
+    },
+    {
+     "n": 9,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA de la Diputada Dª MARIBEL VAQUERO MONTERO, del Grupo Parlamentario Vasco (EAJ-PNV), que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cómo va a superar el Gobierno los obstáculos para llegar a acuerdos en materia de vivienda?  MINISTRO DE CULTURA",
+     "exp": [
+      "180/001190"
+     ],
+     "titulo": "¿Cómo va a superar el Gobierno los obstáculos para llegar a acuerdos en materia de vivienda?  MINISTRO DE CULTURA",
+     "autor": "Maribel Vaquero Montero",
+     "a": "Ministra de Vivienda y Agenda Urbana",
+     "grupo": "PNV"
+    },
+    {
      "n": 24,
      "seccion": "Preguntas",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. BORJA SÉMPER PASCUAL, del Grupo Parlamentario Popular en el Congreso, que formula al Excmo. Sr. Ministro de Cultura: ¿Tiene este Gobierno alguna política cultural?",
+     "texto": "PREGUNTA del Diputado D. BORJA SÉMPER PASCUAL, del Grupo Parlamentario Popular en el Congreso, que formula al Excmo. Sr. Ministro de Cultura: ¿Tiene este Gobierno alguna política cultural?  MINISTRA DE IGUALDAD",
      "exp": [
       "180/001201"
      ],
-     "titulo": "¿Tiene este Gobierno alguna política cultural?",
+     "titulo": "¿Tiene este Gobierno alguna política cultural?  MINISTRA DE IGUALDAD",
      "autor": "Borja Sémper Pascual",
      "a": "Ministro de Cultura",
      "grupo": "PP"
@@ -335,11 +267,11 @@
      "seccion": "Preguntas",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "PREGUNTA de la Diputada Dª PATRICIA RODRÍGUEZ CALLEJA, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Ministra de Igualdad: ¿Está orgullosa de los resultados de su trabajo, Ministra?",
+     "texto": "PREGUNTA de la Diputada Dª PATRICIA RODRÍGUEZ CALLEJA, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Ministra de Igualdad: ¿Está orgullosa de los resultados de su trabajo, Ministra?  MINISTRA DE INCLUSIÓN, SEGURIDAD SOCIAL Y MIGRACIONES",
      "exp": [
       "180/001202"
      ],
-     "titulo": "¿Está orgullosa de los resultados de su trabajo, Ministra?",
+     "titulo": "¿Está orgullosa de los resultados de su trabajo, Ministra?  MINISTRA DE INCLUSIÓN, SEGURIDAD SOCIAL Y MIGRACIONES",
      "autor": "Patricia Rodríguez Calleja",
      "a": "Ministra de Igualdad",
      "grupo": "PP"
@@ -349,13 +281,79 @@
      "seccion": "Preguntas",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "PREGUNTA del Diputado D. PEDRO MUÑOZ ABRINES, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Ministra de Inclusión, Seguridad Social y Migraciones: ¿Tiene el Gobierno algún criterio, Ministra?",
+     "texto": "PREGUNTA formulada por la Diputada Dª SILVIA FRANCO GONZÁLEZ, en sustitución del Diputado D. PEDRO MUÑOZ ABRINES, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Ministra de Inclusión, Seguridad Social y Migraciones: ¿Tiene el Gobierno algún criterio, Ministra?  MINISTRO DE HACIENDA",
      "exp": [
       "180/001203"
      ],
-     "titulo": "¿Tiene el Gobierno algún criterio, Ministra?",
-     "autor": "Pedro Muñoz Abrines",
-     "a": "Ministra de Inclusión, Seguridad Social y Migraciones",
+     "titulo": "PREGUNTA formulada por la Diputada Dª SILVIA FRANCO GONZÁLEZ, en sustitución del Diputado D. PEDRO MUÑOZ ABRINES, del Grupo Parlamentario Popular en el Congreso, que formula a la Excma. Sra. Ministra de Inclusión, Seguridad Social y Migraciones: ¿Tiene el Gobierno algún criterio, Ministra?  MINISTRO DE HACIENDA",
+     "grupo": "PP"
+    },
+    {
+     "n": 12,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA de la Diputada Dª TERESA JORDÀ I ROURA, del Grupo Parlamentario Republicano, que formula al Excmo. Sr. Ministro de Hacienda: ¿Cómo va a garantizar la financiación del nuevo presupuesto europeo a los grupos de acción local?",
+     "exp": [
+      "180/001204"
+     ],
+     "titulo": "¿Cómo va a garantizar la financiación del nuevo presupuesto europeo a los grupos de acción local?",
+     "autor": "Teresa Jordà i Roura",
+     "a": "Ministro de Hacienda",
+     "grupo": "ERC"
+    },
+    {
+     "n": 10,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA del Diputado D. OSKAR MATUTE GARCÍA DE JALÓN, del Grupo Parlamentario Euskal Herria Bildu, que formula al Excmo. Sr. Ministro de Hacienda: ¿Quién debe pagar las medidas de protección a la ciudadanía frente a la carestía de la vida?  PREGUNTA APLAZADA",
+     "exp": [
+      "180/001191"
+     ],
+     "titulo": "¿Quién debe pagar las medidas de protección a la ciudadanía frente a la carestía de la vida?  PREGUNTA APLAZADA",
+     "autor": "Oskar Matute García de Jalón",
+     "a": "Ministro de Hacienda",
+     "grupo": "BILDU"
+    },
+    {
+     "n": 13,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA del Diputado D. ENRIQUE FERNANDO SANTIAGO ROMERO, del Grupo Parlamentario Plurinacional SUMAR, que formula a la Excma. Sra. Ministra de Defensa: ¿Qué medidas han tomado para acabar con los malos tratos y excesos de fuerza en que han incurrido algunos militares en Ceuta respecto a civiles y para sancionar a los responsables de estas vergonzosas prácticas?  PREGUNTA RETIRADA",
+     "exp": [
+      "180/001188"
+     ],
+     "titulo": "¿Qué medidas han tomado para acabar con los malos tratos y excesos de fuerza en que han incurrido algunos militares en Ceuta respecto a civiles y para sancionar a los responsables de estas vergonzosas prácticas?  PREGUNTA RETIRADA",
+     "autor": "Enrique Fernando Santiago Romero",
+     "a": "Ministra de Defensa",
+     "grupo": "SUMAR"
+    },
+    {
+     "n": 14,
+     "seccion": "Preguntas",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "PREGUNTA del Diputado D. ALBERTO IBÁÑEZ MEZQUITA, del Grupo Parlamentario Plurinacional SUMAR, que formula a la Excma. Sra. Ministra de Vivienda y Agenda Urbana: ¿Cree usted que deben tener derecho a comprar casas los fondos buitres?",
+     "exp": [
+      "180/001205"
+     ],
+     "titulo": "¿Cree usted que deben tener derecho a comprar casas los fondos buitres?",
+     "autor": "Alberto Ibáñez Mezquita",
+     "a": "Ministra de Vivienda y Agenda Urbana",
+     "grupo": "SUMAR"
+    },
+    {
+     "n": 28,
+     "seccion": "Interpelaciones urgentes",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "Del Grupo Parlamentario Popular en el Congreso, al Ministro de la Presidencia, Justicia y Relaciones con las Cortes sobre las actuaciones del Gobierno de España y del principal partido que lo sustenta.  Texto MINISTRO DE HACIENDA",
+     "exp": [
+      "172/000231"
+     ],
+     "titulo": "Al Ministro de la Presidencia, Justicia y Relaciones con las Cortes sobre las actuaciones del Gobierno de España y del principal partido que lo sustenta.  Texto MINISTRO DE HACIENDA",
      "grupo": "PP"
     },
     {
@@ -363,24 +361,12 @@
      "seccion": "Interpelaciones urgentes",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "Del Grupo Parlamentario Junts per Catalunya, al Ministro de Hacienda sobre las dificultades económicas de la clase media y trabajadora y la necesidad de eliminar el impuesto de sucesiones.  Texto",
+     "texto": "Del Grupo Parlamentario Junts per Catalunya, al Ministro de Hacienda sobre las dificultades económicas de la clase media y trabajadora y la necesidad de eliminar el impuesto de sucesiones.  Texto MINISTRA DE VIVIENDA Y AGENDA URBANA",
      "exp": [
       "172/000228"
      ],
-     "titulo": "Al Ministro de Hacienda sobre las dificultades económicas de la clase media y trabajadora y la necesidad de eliminar el impuesto de sucesiones.  Texto",
+     "titulo": "Al Ministro de Hacienda sobre las dificultades económicas de la clase media y trabajadora y la necesidad de eliminar el impuesto de sucesiones.  Texto MINISTRA DE VIVIENDA Y AGENDA URBANA",
      "grupo": "JUNTS"
-    },
-    {
-     "n": 28,
-     "seccion": "Interpelaciones urgentes",
-     "fecha": "2026-09-30",
-     "hora": "09:00",
-     "texto": "Del Grupo Parlamentario Popular en el Congreso, al Ministro de la Presidencia, Justicia y Relaciones con las Cortes sobre las actuaciones del Gobierno de España y del principal partido que lo sustenta.  Texto",
-     "exp": [
-      "172/000231"
-     ],
-     "titulo": "Al Ministro de la Presidencia, Justicia y Relaciones con las Cortes sobre las actuaciones del Gobierno de España y del principal partido que lo sustenta.  Texto",
-     "grupo": "PP"
     },
     {
      "n": 29,
@@ -495,12 +481,24 @@
      "seccion": "Solicitud de prórroga de Subcomisiones",
      "fecha": "2026-09-30",
      "hora": "09:00",
-     "texto": "Solicitud de la Comisión de Igualdad, de prórroga de seis meses del plazo para la conclusión de los trabajos de la Subcomisión relativa a la lucha contra los discursos de odio, constituida en el seno de la citada Comisión. \"BOCG. Congreso de los Diputados\", serie D, número 198, de 19 de septiembre de 2024.  Texto",
+     "texto": "Solicitud de la Comisión de Igualdad, de prórroga de seis meses del plazo para la conclusión de los trabajos de la Subcomisión relativa a la lucha contra los discursos de odio, constituida en el seno de la citada Comisión. \"BOCG. Congreso de los Diputados\", serie D, número 198, de 19 de septiembre de 2024.  Texto NUEVO PUNTO. Avocación de iniciativas legislativas. Procedimiento --. Proyecto de Ley por la que se modifican la Ley Orgánica 2/2006, de 3 de mayo, de Educación, y la Ley 4/2019, de 7 de marzo, de mejora de las condiciones para el desempeño de la docencia y la enseñanza en el ámbito de la educación no universitaria, y se adoptan otras medidas para la mejora del sistema educativo. \"BOCG. Congreso de los Diputados\", serie A, número 93-1, de 4 de mayo de 2026.  Texto",
      "exp": [
       "154/000006"
      ],
      "titulo": "Solicitud de la Comisión de Igualdad, de prórroga de seis meses del plazo para la conclusión de los trabajos de la Subcomisión relativa a la lucha contra los discursos de odio, constituida en el seno de la citada Comisión",
      "grupo": null
+    },
+    {
+     "n": 7,
+     "seccion": "Mociones consecuencia de interpelaciones urgentes (Continuación)",
+     "fecha": "2026-09-30",
+     "hora": "09:00",
+     "texto": "Del Grupo Parlamentario Popular en el Congreso, sobre la gestión del Ministerio de Defensa durante la reciente crisis en la ciudad de Ceuta.  Texto Enmienda",
+     "exp": [
+      "173/000196"
+     ],
+     "titulo": "Sobre la gestión del Ministerio de Defensa durante la reciente crisis en la ciudad de Ceuta.  Texto Enmienda",
+     "grupo": "PP"
     },
     {
      "n": 39,

@@ -1028,7 +1028,7 @@
 }
 ],
 "tema": "campo",
-"total": 66,
+"total": 67,
 "total_sintesis": 63
 },
 "campo|PP": {
@@ -4034,7 +4034,7 @@
 }
 ],
 "tema": "cultura",
-"total": 79,
+"total": 82,
 "total_sintesis": 79
 },
 "cultura|GOB": {
@@ -5171,7 +5171,7 @@
 }
 ],
 "tema": "cultura",
-"total": 191,
+"total": 193,
 "total_sintesis": 191
 },
 "cultura|VOX": {
@@ -6395,7 +6395,7 @@
 }
 ],
 "tema": "defensa",
-"total": 203,
+"total": 206,
 "total_sintesis": 203
 },
 "defensa|PSOE": {
@@ -8894,7 +8894,7 @@
 }
 ],
 "tema": "democracia",
-"total": 181,
+"total": 182,
 "total_sintesis": 178
 },
 "educacion|BILDU": {
@@ -9254,7 +9254,7 @@
 }
 ],
 "tema": "educacion",
-"total": 72,
+"total": 76,
 "total_sintesis": 72
 },
 "educacion|GOB": {
@@ -9470,7 +9470,7 @@
 }
 ],
 "tema": "educacion",
-"total": 36,
+"total": 39,
 "total_sintesis": 36
 },
 "educacion|MIXTO": {
@@ -10061,7 +10061,7 @@
 }
 ],
 "tema": "educacion",
-"total": 304,
+"total": 306,
 "total_sintesis": 303
 },
 "educacion|PSOE": {
@@ -10463,7 +10463,7 @@
 }
 ],
 "tema": "educacion",
-"total": 249,
+"total": 251,
 "total_sintesis": 249
 },
 "educacion|VOX": {
@@ -12005,7 +12005,7 @@
 }
 ],
 "tema": "empleo",
-"total": 393,
+"total": 394,
 "total_sintesis": 383
 },
 "empleo|PSOE": {
@@ -12803,7 +12803,7 @@
 }
 ],
 "tema": "energia",
-"total": 61,
+"total": 64,
 "total_sintesis": 61
 },
 "energia|ERC": {
@@ -13367,7 +13367,7 @@
 }
 ],
 "tema": "energia",
-"total": 119,
+"total": 122,
 "total_sintesis": 119
 },
 "energia|PNV": {
@@ -14135,7 +14135,7 @@
 }
 ],
 "tema": "energia",
-"total": 133,
+"total": 134,
 "total_sintesis": 132
 },
 "energia|VOX": {
@@ -18269,7 +18269,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 131,
+"total": 132,
 "total_sintesis": 131
 },
 "impuestos|ERC": {
@@ -18854,7 +18854,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 176,
+"total": 177,
 "total_sintesis": 175
 },
 "impuestos|MIXTO": {
@@ -19055,7 +19055,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 383,
+"total": 388,
 "total_sintesis": 383
 },
 "impuestos|PNV": {
@@ -19256,7 +19256,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 217,
+"total": 218,
 "total_sintesis": 217
 },
 "impuestos|PP": {
@@ -19457,7 +19457,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 970,
+"total": 973,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -19859,7 +19859,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 547,
+"total": 549,
 "total_sintesis": 545
 },
 "impuestos|VOX": {
@@ -20060,7 +20060,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 587,
+"total": 588,
 "total_sintesis": 586
 },
 "inmigracion|BILDU": {
@@ -20636,7 +20636,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 71,
+"total": 72,
 "total_sintesis": 69
 },
 "inmigracion|MIXTO": {
@@ -21233,7 +21233,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 258,
+"total": 259,
 "total_sintesis": 256
 },
 "inmigracion|PSOE": {
@@ -21836,7 +21836,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 337,
+"total": 343,
 "total_sintesis": 332
 },
 "justicia|BILDU": {
@@ -23696,7 +23696,7 @@
 }
 ],
 "tema": "justicia",
-"total": 164,
+"total": 165,
 "total_sintesis": 164
 },
 "pensiones|BILDU": {
@@ -25280,7 +25280,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 88,
+"total": 89,
 "total_sintesis": 85
 },
 "sanidad|BILDU": {
@@ -26651,7 +26651,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 497,
+"total": 498,
 "total_sintesis": 491
 },
 "sanidad|PSOE": {
@@ -27965,7 +27965,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 155,
+"total": 157,
 "total_sintesis": 155
 },
 "seguridad|PNV": {
@@ -28406,7 +28406,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 41,
+"total": 42,
 "total_sintesis": 41
 },
 "seguridad|SUMAR": {
@@ -29864,7 +29864,7 @@
 }
 ],
 "tema": "social",
-"total": 113,
+"total": 114,
 "total_sintesis": 110
 },
 "social|PP": {
@@ -31679,7 +31679,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 219,
+"total": 222,
 "total_sintesis": 219
 },
 "tecnologia|PSOE": {
@@ -32798,7 +32798,7 @@
 }
 ],
 "tema": "territorial",
-"total": 130,
+"total": 131,
 "total_sintesis": 130
 },
 "territorial|MIXTO": {
@@ -32999,7 +32999,7 @@
 }
 ],
 "tema": "territorial",
-"total": 200,
+"total": 201,
 "total_sintesis": 200
 },
 "territorial|PNV": {
@@ -33347,7 +33347,7 @@
 }
 ],
 "tema": "territorial",
-"total": 167,
+"total": 170,
 "total_sintesis": 167
 },
 "territorial|PSOE": {
@@ -33506,7 +33506,7 @@
 }
 ],
 "tema": "territorial",
-"total": 60,
+"total": 62,
 "total_sintesis": 60
 },
 "territorial|SUMAR": {
@@ -33695,7 +33695,7 @@
 }
 ],
 "tema": "territorial",
-"total": 127,
+"total": 128,
 "total_sintesis": 127
 },
 "territorial|VOX": {
@@ -34274,7 +34274,7 @@
 }
 ],
 "tema": "transporte",
-"total": 180,
+"total": 182,
 "total_sintesis": 180
 },
 "transporte|GOB": {
@@ -35123,7 +35123,7 @@
 }
 ],
 "tema": "transporte",
-"total": 520,
+"total": 530,
 "total_sintesis": 520
 },
 "transporte|PSOE": {
@@ -35312,7 +35312,7 @@
 }
 ],
 "tema": "transporte",
-"total": 164,
+"total": 168,
 "total_sintesis": 164
 },
 "transporte|SUMAR": {
@@ -35513,7 +35513,7 @@
 }
 ],
 "tema": "transporte",
-"total": 374,
+"total": 383,
 "total_sintesis": 374
 },
 "transporte|VOX": {
@@ -35714,7 +35714,7 @@
 }
 ],
 "tema": "transporte",
-"total": 266,
+"total": 274,
 "total_sintesis": 265
 },
 "vivienda|BILDU": {
@@ -36116,7 +36116,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 185,
+"total": 190,
 "total_sintesis": 185
 },
 "vivienda|GOB": {
@@ -36518,7 +36518,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 132,
+"total": 133,
 "total_sintesis": 132
 },
 "vivienda|MIXTO": {
@@ -37523,7 +37523,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 527,
+"total": 528,
 "total_sintesis": 526
 },
 "vivienda|VOX": {

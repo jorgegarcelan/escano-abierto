@@ -675,6 +675,10 @@
 "pesca",
 "campo"
 ],
+"acuerdos pesqueros internacionales": [
+"pesca",
+"exteriores"
+],
 "acuerdos políticos": [
 "pactos políticos",
 "democracia"
@@ -1571,6 +1575,10 @@
 "cuidados",
 "social"
 ],
+"amenazas híbridas": [
+"seguridad nacional",
+"defensa"
+],
 "amianto": [
 "salud laboral",
 "sanidad"
@@ -2385,6 +2393,10 @@
 ],
 "atentados del 17-a": [
 "terrorismo",
+"seguridad"
+],
+"atestados": [
+"atestados",
 "seguridad"
 ],
 "atlántico": [
@@ -3587,6 +3599,10 @@
 "transporte público",
 "transporte"
 ],
+"bonificación irpf": [
+"IRPF",
+"impuestos"
+],
 "bono alquiler joven": [
 "alquiler",
 "vivienda"
@@ -4775,6 +4791,10 @@
 "delincuencia",
 "seguridad"
 ],
+"ciberespacio": [
+"entorno digital",
+"tecnologia"
+],
 "ciberfeminismo": [
 "feminismo",
 "igualdad"
@@ -5870,6 +5890,10 @@
 "concierto económico": [
 "concierto económico",
 "territorial"
+],
+"concierto económico vasco": [
+"concierto económico",
+"impuestos"
 ],
 "concierto vasco": [
 "concierto económico",
@@ -11315,6 +11339,10 @@
 "fuerzas de seguridad",
 "seguridad"
 ],
+"erupción de la palma": [
+"La Palma",
+"territorial"
+],
 "erupción volcánica": [
 "La Palma",
 "clima"
@@ -12863,6 +12891,10 @@
 "pesca",
 "campo"
 ],
+"flota de altura": [
+"pesca",
+"campo"
+],
 "flota de arrastre": [
 "pesca",
 "campo"
@@ -13623,6 +13655,10 @@
 "gastronomía",
 "cultura"
 ],
+"gasóleo pesquero": [
+"combustible",
+"campo"
+],
 "gasóleo profesional": [
 "combustible",
 "energia"
@@ -13818,6 +13854,10 @@
 "gestión laboral": [
 "derechos laborales",
 "empleo"
+],
+"gestión migratoria": [
+"política migratoria",
+"inmigracion"
 ],
 "gestión ministerial": [
 "control al gobierno",
@@ -19035,6 +19075,10 @@
 "carreteras",
 "transporte"
 ],
+"n-555": [
+"carreteras",
+"transporte"
+],
 "n-640": [
 "carreteras",
 "transporte"
@@ -19733,6 +19777,10 @@
 ],
 "orden del pleno": [
 "orden del día",
+"democracia"
+],
+"orden en el hemiciclo": [
+"convivencia parlamentaria",
 "democracia"
 ],
 "orden en el pleno": [
@@ -21043,6 +21091,10 @@
 "pisos turísticos",
 "vivienda"
 ],
+"pisos vacíos": [
+"vivienda",
+"vivienda"
+],
 "pistolas táser": [
 "fuerzas y cuerpos de seguridad",
 "seguridad"
@@ -21626,6 +21678,10 @@
 "política de defensa": [
 "defensa",
 "defensa"
+],
+"política de fronteras": [
+"control de fronteras",
+"seguridad"
 ],
 "política de género": [
 "igualdad de género",
@@ -23391,6 +23447,10 @@
 "Ucrania",
 "exteriores"
 ],
+"reconstrucción volcán": [
+"La Palma",
+"territorial"
+],
 "reconversión industrial": [
 "reindustrialización",
 "empleo"
@@ -23570,6 +23630,10 @@
 "redistribución fiscal": [
 "política fiscal",
 "impuestos"
+],
+"redondela": [
+"Redondela",
+"territorial"
 ],
 "reducción de jornada": [
 "jornada laboral",
@@ -26247,6 +26311,10 @@
 "seguridad vial",
 "transporte"
 ],
+"señalización viaria": [
+"seguridad vial",
+"transporte"
+],
 "sharía": [
 "derecho internacional",
 "justicia"
@@ -26971,6 +27039,10 @@
 "déficit público",
 "impuestos"
 ],
+"superávit autonómico": [
+"estabilidad presupuestaria",
+"territorial"
+],
 "superávit municipal": [
 "administración local",
 "territorial"
@@ -27586,6 +27658,10 @@
 "tono parlamentario": [
 "convivencia parlamentaria",
 "democracia"
+],
+"tope al gas": [
+"precios",
+"energia"
 ],
 "toponimia": [
 "lenguas oficiales",
