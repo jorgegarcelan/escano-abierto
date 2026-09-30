@@ -22,7 +22,7 @@ El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabr
 - Seguir cada **ley desde que se presenta hasta que se publica**, y las que llevan meses en «el congelador».
 - Ver cuántas **preguntas al Gobierno** siguen sin respuesta y cuánto tarda en contestar.
 - Leer las **declaraciones de actividades e intereses** de cada diputado.
-- Ver el **organigrama del Estado**: quién ocupa cada alto cargo, desde cuándo y con qué Real Decreto, con cada nombramiento y cese enlazado a su BOE y los cargos que ha tenido cada diputado.
+- Ver el **organigrama del Estado**: quién ocupa cada alto cargo, desde cuándo y con qué Real Decreto, con cada nombramiento y cese enlazado a su BOE y los cargos que ha tenido cada diputado. Inspirado en el [US Gov Graph](https://graph.civlab.org/us) de CivLab.
 
 Cada votación, sesión, ley, diputado, provincia, tema y semana tiene una página para compartir, con su tarjeta, y los más relevantes tienen RSS.
 

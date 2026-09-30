@@ -913,8 +913,8 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
 .org-sublista .linklike{font-size:13.5px;text-align:left;font-weight:400}
 .org-sublista span{color:var(--muted);font-size:13px}
 .org-dia{font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 2px}
-.org-cambio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:8px 0;border-top:1px solid var(--line)}
-.org-cambio .pill{align-self:start;margin-top:2px}
+.org-cambio{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.org-cambio .pill{align-self:start;justify-self:stretch;text-align:center;margin-top:2px}
 .org-cambio .org-t{display:grid;gap:1px;text-align:left;text-decoration:none;font-weight:400;font-size:14px}
 .org-cambio .org-t b{font-weight:600}
 .org-cambio .org-t:hover span{text-decoration:underline}
@@ -935,8 +935,7 @@ details.org-rama>summary span{color:var(--muted);font-size:13px}
 details.org-rama .dtable-wrap{margin:0 0 14px}
 .org-sc{color:var(--muted);font-size:12px;font-weight:400}
 @media (min-width:1100px){
-  .org-ancho{width:min(1360px,calc(100vw - 48px));margin-left:calc(50% - min(680px,calc(50vw - 24px)))}
-  .org-grid{grid-template-columns:minmax(0,1fr) 360px}
+  .org-grid{grid-template-columns:minmax(0,1fr) 340px}
   .org-panel{position:sticky;top:72px;max-height:calc(100vh - 90px);overflow:auto}
 }
 @media (max-width:700px){ #org-svg .org-etq{display:none} }
@@ -2734,6 +2733,7 @@ function renderMetodo(){
       <li>Cuando un ministerio cambia de nombre, a quien se nombró con el nombre antiguo y no tiene cese ni nombramiento nuevo se le coloca en el ministerio de hoy y se marca <b>sin confirmar</b>.</li>
       <li>Los anillos ordenan los cargos por rango (ministro, secretarías de Estado, subsecretaría y secretarías generales, direcciones generales y demás). El BOE no dice de qué secretaría de Estado depende cada dirección general, así que la dependencia interna no se dibuja.</li>
       <li>Un <b>cese sin sustituto publicado</b> puede ser una vacante o un cargo suprimido en una reestructuración.</li>
+      <li>La idea y el dibujo radial se inspiran en el <a href="https://graph.civlab.org/us" target="_blank" rel="noopener">US Gov Graph</a> de CivLab, que hace lo mismo con el Gobierno federal de Estados Unidos.</li>
     </ul>
     <h3>Análisis</h3>
     <ul>
@@ -2807,9 +2807,10 @@ async function renderOrganigrama(){
   if (orgSel && !ORG.cargos[orgSel]) orgSel = null;
   const c = ORG.cifras, M = ORG.por_mes, maxM = Math.max(...M.map(([,n,x])=>n+x));
   el.innerHTML = `<div class="view-intro"><div><div class="eyebrow">El Estado · BOE</div><h2>El organigrama del Estado</h2>
-      <p>Quién ocupa cada alto cargo, desde cuándo y con qué disposición del BOE. En el centro, el presidente del Gobierno, al que inviste el Congreso; alrededor, cada ministerio con sus secretarías de Estado, subsecretarías y direcciones generales. Se actualiza con el BOE de cada mañana.</p></div></div>
+      <p>Quién ocupa cada alto cargo, desde cuándo y con qué disposición del BOE. En el centro, el presidente del Gobierno, al que inviste el Congreso; alrededor, cada ministerio con sus secretarías de Estado, subsecretarías y direcciones generales. Se actualiza con el BOE de cada mañana.</p>
+      <p class="nota">Inspirado en el <a href="https://graph.civlab.org/us" target="_blank" rel="noopener">US Gov Graph</a> de CivLab, el mapa de cargos y personas del Gobierno federal de Estados Unidos.</p></div></div>
     <div class="kpis">${[[fmt(c.cargos_ocupados),"altos cargos con titular"],[c.ministerios,"ministerios"],[c.cambios_30,"nombramientos y ceses en 30 días"],[c.sin_sustituto_90,"ceses sin sustituto publicado (90 días)"]].map(([n,l])=>`<div class="kpi"><b>${n}</b><span>${l}</span></div>`).join("")}</div>
-    <div class="org-ancho"><div class="org-grid">
+    <div class="org-grid">
       <div class="org-graf">
         <div class="controls org-busca"><input id="org-q" type="search" placeholder="Busca un cargo o una persona" autocomplete="off" aria-label="Buscar un cargo o una persona en el organigrama"><div id="org-res" hidden></div></div>
         <svg id="org-svg" viewBox="-140 -140 1280 1280" role="img" aria-label="Organigrama radial del Estado: ${c.cargos_ocupados} altos cargos agrupados por ministerio"></svg>
@@ -2817,7 +2818,7 @@ async function renderOrganigrama(){
         <p class="nota">De dentro afuera: ministro · secretarías de Estado · subsecretaría y secretarías generales · direcciones generales, gabinetes y organismos. Abajo, órganos del Estado, delegaciones del Gobierno, presidencias autonómicas y embajadas.</p>
       </div>
       <aside class="org-panel" id="org-panel" aria-live="polite"></aside>
-    </div></div>
+    </div>
     <section class="sec"><div class="sec-h"><h2>Mes a mes</h2><p>Nombramientos y ceses de altos cargos que publica el BOE cada mes. Los picos son los cambios de Gobierno.</p></div>
       <div class="chart"><div class="pq-meses org-meses">${M.map(([m,n,x])=>`<span class="pq-m" data-tip="${esc(`<b>${nombreMes(m)}</b><br>${fmt(n)} nombramientos · ${fmt(x)} ceses`)}"><i style="height:${(n+x)/maxM*100}%"><b style="height:${n+x?x/(n+x)*100:0}%"></b></i></span>`).join("")}</div>
       <div class="pq-eje"><span>${nombreMes(M[0][0])}</span><span>${nombreMes(M.at(-1)[0])}</span></div>
@@ -2960,9 +2961,6 @@ const Org = (()=>{
       exterior = Math.max(exterior, r);
     }
     const RO = Math.min(exterior + 4, 400);
-    // En el móvil no caben las etiquetas (se ocultan): el dibujo se ciñe al círculo.
-    const m = RO + 8;
-    svg.setAttribute("viewBox", matchMedia("(max-width:700px)").matches ? `${CX-m} ${CY-m} ${2*m} ${2*m}` : "-140 -140 1280 1280");
     const guias = nodo("g", {}, svg);
     for (const r of [R.min, R.se, R.sg]) nodo("circle", {cx:CX, cy:CY, r, fill:"none", stroke:"var(--line)", "stroke-dasharray":"2 4"}, guias);
     const capaS = nodo("g", {}, svg), capaL = nodo("g", {}, svg);
@@ -3003,6 +3001,9 @@ const Org = (()=>{
     t(CY+23, partes[1]||"", "font-family:var(--display);font-size:17px;font-weight:600;fill:var(--ink)");
     const sp = SECT.find(s=>s.nombre==="Presidencia del Gobierno"), pc = pres && sp?.cargos.find(c=>c.id===pres.id);
     if (pc) Object.assign(pc, {x:CX, y:CY, sector:sp, p:disco, hub:true});
+    // El dibujo se ciñe a lo que ocupa: el círculo y sus etiquetas (en el móvil, sin ellas, que se ocultan).
+    const b = svg.getBBox();
+    if (b.width) svg.setAttribute("viewBox", `${b.x-8} ${b.y-8} ${b.width+16} ${b.height+16}`);
     svg.addEventListener("keydown", e=>{ const n = e.target.closest("[data-cargo]"); if (n && (e.key==="Enter" || e.key===" ")){ e.preventDefault(); irCargo(n.dataset.cargo); } });
   }
   function resaltar(){
