@@ -870,6 +870,76 @@ button.exp-min-h:hover,.exp-min.abierto>.exp-min-h{background:var(--sunk)}
 .exp-marcador{display:flex;justify-content:space-between;align-items:center;gap:10px}
 details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-decoration:underline;list-style:none}
 @media (max-width:640px){ .exp-min-h{grid-template-columns:1fr 124px} .exp-min-h .exp-stack{grid-column:1/-1;order:3} .exp-orden{margin-left:0} .exp-g{grid-template-columns:auto 60px 1fr auto} }
+/* organigrama del Estado */
+:root{--org:color-mix(in oklab,#7152A8 78%,var(--ink));--org-nuevo:color-mix(in oklab,#D2601F 85%,var(--ink))}
+.org-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.org-graf{position:relative;display:grid;gap:10px;min-width:0}
+#org-svg{width:100%;height:auto;max-height:calc(100vh - 110px);display:block;overflow:visible}
+#org-svg text{font-family:var(--sans);fill:var(--muted)}
+#org-svg .org-etq{font-size:17px;cursor:pointer}
+#org-svg .org-etq:hover,#org-svg .org-etq.activa{fill:var(--ink);font-weight:600}
+#org-svg .org-sec{cursor:pointer;transition:opacity .15s}
+#org-svg .org-n{cursor:pointer;transition:opacity .15s}
+#org-svg .org-n:focus{outline:none}
+#org-svg .org-n:focus-visible .p{stroke:var(--ink);stroke-width:3}
+#org-svg .apagado{opacity:.28}
+.org-busca{position:relative;max-width:440px}
+.org-busca input{width:100%}
+#org-res{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-card);max-height:340px;overflow:auto;box-shadow:0 10px 30px rgba(0,0,0,.14)}
+#org-res button{display:grid;gap:1px;width:100%;text-align:left;appearance:none;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 12px;cursor:pointer;font:500 14px var(--sans);color:var(--ink)}
+#org-res button:hover,#org-res button:focus{background:var(--sunk);outline:none}
+#org-res small{color:var(--muted);font-size:12.5px;font-weight:400}
+#org-res .nota{padding:10px 12px}
+.org-ley .org-i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--org)}
+.org-ley .org-i.nuevo{background:var(--org-nuevo)}
+.org-ley .org-i.tenue{opacity:.38}
+.org-ley .org-i.hueco{background:none;border:1.5px dashed var(--muted)}
+.org-panel{background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:16px 18px;min-width:0;box-shadow:var(--sombra)}
+.org-panel .back{display:block;margin-bottom:10px}
+.org-h{font-size:21px;line-height:1.2;margin:4px 0 0}
+.org-titular{border:1px solid var(--line);border-radius:var(--r-card);padding:12px 14px;margin-top:12px;background:var(--bg)}
+.org-titular.vacio{border-style:dashed}
+.org-nombre{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.2;margin-top:2px}
+.org-desde{font-size:13.5px;color:var(--muted);margin-top:4px}
+.org-sub{display:block;margin:20px 0 8px}
+.org-hist{list-style:none;margin:0 0 0 5px;padding:0 0 0 16px;border-left:2px solid var(--line);display:grid;gap:12px}
+.org-hist li{position:relative;display:grid;gap:2px;font-size:14px}
+.org-hist li::before{content:"";position:absolute;left:-23px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--surface);border:2px solid var(--line-strong)}
+.org-hist li.actual::before{background:var(--org);border-color:var(--org)}
+.org-hist span{color:var(--muted);font-size:13px}
+.org-hist small{font-size:12.5px;line-height:1.55}
+.org-sublista{list-style:none;margin:0;padding:0;display:grid}
+.org-sublista li{display:grid;gap:1px;padding:7px 0;border-top:1px solid var(--line)}
+.org-sublista .linklike{font-size:13.5px;text-align:left;font-weight:400}
+.org-sublista span{color:var(--muted);font-size:13px}
+.org-dia{font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 2px}
+.org-cambio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.org-cambio .pill{align-self:start;margin-top:2px}
+.org-cambio .org-t{display:grid;gap:1px;text-align:left;text-decoration:none;font-weight:400;font-size:14px}
+.org-cambio .org-t b{font-weight:600}
+.org-cambio .org-t:hover span{text-decoration:underline}
+.org-cambio small{font-size:12.5px}
+.pill.org-nom{color:var(--org)}
+.pill.org-cese{color:var(--muted)}
+.org-mas{margin-top:12px;font-size:13px}
+.org-meses .pq-m i{background:var(--org)}
+.org-meses .pq-m i b{background:color-mix(in srgb,var(--ink) 35%,var(--surface))}
+details.org-rama{border-top:1px solid var(--line)}
+details.org-rama:last-of-type{border-bottom:1px solid var(--line)}
+details.org-rama>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;padding:10px 0;list-style:none}
+details.org-rama>summary::-webkit-details-marker{display:none}
+details.org-rama>summary::before{content:"▸";color:var(--muted);font-size:12px}
+details.org-rama[open]>summary::before{content:"▾"}
+details.org-rama>summary b{font-family:var(--display);font-size:17px;font-weight:600}
+details.org-rama>summary span{color:var(--muted);font-size:13px}
+details.org-rama .dtable-wrap{margin:0 0 14px}
+.org-sc{color:var(--muted);font-size:12px;font-weight:400}
+@media (min-width:1100px){
+  .org-ancho{width:min(1360px,calc(100vw - 48px));margin-left:calc(50% - min(680px,calc(50vw - 24px)))}
+  .org-grid{grid-template-columns:minmax(0,1fr) 360px}
+  .org-panel{position:sticky;top:72px;max-height:calc(100vh - 90px);overflow:auto}
+}
+@media (max-width:700px){ #org-svg .org-etq{display:none} }
 </style>
 </head>
 <body>
@@ -888,6 +958,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
         <button role="tab" id="tab-explora" aria-controls="explora" aria-selected="false">Explora</button>
         <button role="tab" id="tab-diputados" aria-controls="diputados" aria-selected="false">Diputados</button>
         <button role="tab" id="tab-grupos" aria-controls="grupos" aria-selected="false">Grupos</button>
+        <button role="tab" id="tab-organigrama" aria-controls="organigrama" aria-selected="false">Organigrama</button>
         <button role="tab" id="tab-oradores" aria-controls="oradores" aria-selected="false">Por orador</button>
         <button role="tab" id="tab-metodo" aria-controls="metodo" aria-selected="false">Método</button>
       </nav>
@@ -902,6 +973,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
     <section class="view" id="explora" role="tabpanel" aria-labelledby="tab-explora" hidden></section>
     <section class="view" id="diputados" role="tabpanel" aria-labelledby="tab-diputados" hidden></section>
     <section class="view" id="grupos" role="tabpanel" aria-labelledby="tab-grupos" hidden></section>
+    <section class="view" id="organigrama" role="tabpanel" aria-labelledby="tab-organigrama" hidden></section>
     <section class="view" id="oradores" role="tabpanel" aria-labelledby="tab-oradores" hidden></section>
     <section class="view" id="votaciones" role="tabpanel" aria-labelledby="tab-votaciones" hidden></section>
     <section class="view" id="metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden></section>
@@ -916,7 +988,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados. Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave generados por IA a partir del texto oficial; las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
+  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados, y nombramientos y ceses del BOE. Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave generados por IA a partir del texto oficial; las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
 </div>
 
 <script>
@@ -1355,6 +1427,7 @@ function renderFicha(d){
     <section class="sec"><div class="sec-h"><h2>Perfil</h2></div><div id="perfil">${perfilFicha(d)}</div></section>
     ${comparacion(d)}
     ${s.ivs.length?`<section class="sec"><div class="sec-h"><h2>Sus intervenciones</h2></div><div class="iv-list">${s.ivs.map(ivCard).join("")}</div></section>`:""}
+    <section class="sec" id="ficha-cargos"></section>
     <section class="sec" id="ficha-preguntas"></section>
     <div id="ficha-intereses">${interesesFicha(d)}</div>
     <section class="sec"><div class="sec-h"><h2>Cómo votó</h2><p>${s.dis?`Las filas marcadas son las votaciones en las que se apartó de la mayoría de su grupo.`:`Votó siempre como la mayoría de su grupo.`}</p></div>
@@ -1364,6 +1437,7 @@ function renderFicha(d){
 function iniciarFicha(d){
   if (!EXTRA) cargarExtra().then(()=>{ const p=document.getElementById("perfil"); if (p && dipSel===d.slug){ p.innerHTML=perfilFicha(d); const i=document.getElementById("ficha-intereses"); if (i) i.innerHTML=interesesFicha(d); } });
   pintarPreguntasFicha(d);
+  pintarCargosFicha(d);
   document.getElementById("comp-q")?.addEventListener("change", e=>{ const q=sinTildes(e.target.value.trim()); const o=DIP.find(x=>sinTildes(legible(x.n))===q) || DIP.find(x=>q && sinTildes(legible(x.n)).includes(q));
     if (o){ dipComp=o.slug; const y=window.scrollY; renderFicha(d); window.scrollTo(0,y); } });
 }
@@ -2347,6 +2421,8 @@ function renderInicio(){
     ${TEMAS.length?`<section class="sec"><div class="sec-h"><h2>De qué se ha hablado</h2><button class="linklike" data-go="temas">Explorar los temas</button></div>
       <div class="temas-top"><div class="chart"><p class="sub" style="margin:0">Intervenciones que tocan cada tema. Los puntos son los grupos que hablaron de él.</p>${rankTemas(TEMAS.slice(0,8))}</div>
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
+  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec" id="home-boe"></section>`);
+  cargarOrgIdx().then(()=>{ const h=$("#home-boe"); if (!h) return; const t=tarjetaBoe(); if (t) h.innerHTML=t; else h.remove(); });
   $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec"><div class="chart sobre-franja"><p><b>Escaño Abierto</b> junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><button class="btn" data-go="sobre">Sobre el proyecto</button></div></section>`);
   if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
@@ -2648,6 +2724,16 @@ function renderMetodo(){
       <li><b>Declaraciones de actividades e intereses</b> de los diputados (datos abiertos), tal como las presentan.</li>
       <li><b>Datos abiertos de iniciativas</b> (proyectos y proposiciones de ley), para la tramitación de cada ley: autor, fases con sus fechas, situación actual, resultado y ampliaciones del plazo de enmiendas.</li>
       <li><b>Plano del hemiciclo y fichas de diputados</b> de la web del Congreso, para el escaño de cada diputado, su foto oficial y el enlace a su ficha.</li>
+      <li><b>Boletín Oficial del Estado</b> (sumarios en datos abiertos y el XML de cada disposición), para el organigrama del Estado: los nombramientos y ceses de altos cargos desde junio de 2018.</li>
+    </ul>
+    <h3>Organigrama del Estado</h3>
+    <ul>
+      <li>Cada mañana se lee la sección II.A del BOE (nombramientos, situaciones e incidencias) y se abren las disposiciones que el propio BOE etiqueta con la alerta «Nombramientos y ceses de altos cargos». De cada una se saca el cargo, la persona, la fecha y la disposición.</li>
+      <li>Un <b>nombramiento</b> abre un mandato y el <b>cese</b> de esa persona lo cierra. Si alguien pasa a otro cargo sin que se publique su cese, el anterior se da por terminado. Un nuevo nombramiento en el mismo cargo y a la misma persona (un nuevo Gobierno, un nuevo periodo) no abre otro mandato: se anota como renovación.</li>
+      <li>Al formarse un Gobierno tras una investidura el BOE no publica el cese de los ministros salientes: sus mandatos se cierran el día en que se nombra al nuevo Gobierno. Tras unas elecciones, el presidente cesa pero sigue <b>en funciones</b>, y así se anota.</li>
+      <li>Cuando un ministerio cambia de nombre, a quien se nombró con el nombre antiguo y no tiene cese ni nombramiento nuevo se le coloca en el ministerio de hoy y se marca <b>sin confirmar</b>.</li>
+      <li>Los anillos ordenan los cargos por rango (ministro, secretarías de Estado, subsecretaría y secretarías generales, direcciones generales y demás). El BOE no dice de qué secretaría de Estado depende cada dirección general, así que la dependencia interna no se dibuja.</li>
+      <li>Un <b>cese sin sustituto publicado</b> puede ser una vacante o un cargo suprimido en una reestructuración.</li>
     </ul>
     <h3>Análisis</h3>
     <ul>
@@ -2681,11 +2767,297 @@ function renderMetodo(){
   </div>`;
 }
 
+/* ---------- organigrama del Estado ---------- */
+// Quién ocupa cada alto cargo, desde cuándo y con qué disposición del BOE (python -m escano estado). El organigrama
+// entero se carga al abrir la pestaña; el índice ligero (quién tiene hoy cada cargo, los diputados con cargos y los
+// últimos cambios) lo usan el buscador, la portada y las fichas.
+let ORG = null, orgPromesa = null, ORG_IDX = null, orgIdxPromesa = null, orgSel = null;
+function cargarOrg(){
+  if (ORG) return Promise.resolve(ORG);
+  return orgPromesa ||= fetch("datos/organigrama.json").then(r=>r.ok?r.json():null).catch(()=>null).then(j=>ORG=j);
+}
+function cargarOrgIdx(){
+  if (ORG_IDX) return Promise.resolve(ORG_IDX);
+  return orgIdxPromesa ||= fetch("datos/organigrama-indice.json").then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{ INDICE_BUSCAR = null; return ORG_IDX=j; });
+}
+const urlBoe = id => `https://www.boe.es/diario_boe/txt.php?id=${encodeURIComponent(id)}`;
+const enlaceBoe = (id, disp) => id ? `<a href="${urlBoe(id)}" target="_blank" rel="noopener">${esc(disp||id)} ↗</a>` : "";
+const fechaOrg = iso => iso ? fechaCorta(iso) : "antes de jun. 2018";
+function ministerioCorto(nombre){
+  if (!nombre.startsWith("Ministerio")) return nombre;
+  let s = nombre.replace(/^Ministerio (de la |del |de |para la |para el |para )/, "").split(",")[0].split(" y ")[0];
+  if (s==="Presidencia") s = "Presidencia y Justicia";
+  return s.charAt(0).toUpperCase()+s.slice(1);
+}
+const panelEnVista = () => { const p=document.getElementById("org-panel"); if (!p) return; const b=p.getBoundingClientRect();
+  if (b.top < 60 || b.top > innerHeight*.5){ p.scrollIntoView({block:"start"}); window.scrollBy(0,-70); } };
+function irCargo(id){
+  if (!id) return;
+  orgSel = id; tip.hidden = true;
+  const res = document.getElementById("org-res"); if (res) res.hidden = true;
+  try{ history.replaceState(null,"","#cargo-"+id); }catch(e){}
+  if ($("#organigrama").hidden || !ORG || !document.getElementById("org-panel")){ rendered.organigrama=false; show("organigrama", false); window.scrollTo(0,0); return; }
+  pintarPanelOrg(); Org.resaltar(); panelEnVista();
+}
+
+async function renderOrganigrama(){
+  const el = $("#organigrama");
+  if (!ORG){ el.innerHTML = `<p class="nota">Cargando el organigrama…</p>`; await cargarOrg(); }
+  if (!ORG){ el.innerHTML = `<p class="nota">Aún no hay datos. Ejecuta <code>python -m escano estado --desde 2018-06-01</code> y vuelve a construir la web.</p>`; return; }
+  if (orgSel && !ORG.cargos[orgSel]) orgSel = null;
+  const c = ORG.cifras, M = ORG.por_mes, maxM = Math.max(...M.map(([,n,x])=>n+x));
+  el.innerHTML = `<div class="view-intro"><div><div class="eyebrow">El Estado · BOE</div><h2>El organigrama del Estado</h2>
+      <p>Quién ocupa cada alto cargo, desde cuándo y con qué disposición del BOE. En el centro, el presidente del Gobierno, al que inviste el Congreso; alrededor, cada ministerio con sus secretarías de Estado, subsecretarías y direcciones generales. Se actualiza con el BOE de cada mañana.</p></div></div>
+    <div class="kpis">${[[fmt(c.cargos_ocupados),"altos cargos con titular"],[c.ministerios,"ministerios"],[c.cambios_30,"nombramientos y ceses en 30 días"],[c.sin_sustituto_90,"ceses sin sustituto publicado (90 días)"]].map(([n,l])=>`<div class="kpi"><b>${n}</b><span>${l}</span></div>`).join("")}</div>
+    <div class="org-ancho"><div class="org-grid">
+      <div class="org-graf">
+        <div class="controls org-busca"><input id="org-q" type="search" placeholder="Busca un cargo o una persona" autocomplete="off" aria-label="Buscar un cargo o una persona en el organigrama"><div id="org-res" hidden></div></div>
+        <svg id="org-svg" viewBox="-140 -140 1280 1280" role="img" aria-label="Organigrama radial del Estado: ${c.cargos_ocupados} altos cargos agrupados por ministerio"></svg>
+        <div class="legend org-ley"><span><i class="org-i"></i>Alto cargo con titular</span><span><i class="org-i nuevo"></i>Nombrado en los últimos 90 días</span><span><i class="org-i tenue"></i>Sin confirmar tras una reestructuración</span><span><i class="org-i hueco"></i>Cesado sin sustituto publicado</span></div>
+        <p class="nota">De dentro afuera: ministro · secretarías de Estado · subsecretaría y secretarías generales · direcciones generales, gabinetes y organismos. Abajo, órganos del Estado, delegaciones del Gobierno, presidencias autonómicas y embajadas.</p>
+      </div>
+      <aside class="org-panel" id="org-panel" aria-live="polite"></aside>
+    </div></div>
+    <section class="sec"><div class="sec-h"><h2>Mes a mes</h2><p>Nombramientos y ceses de altos cargos que publica el BOE cada mes. Los picos son los cambios de Gobierno.</p></div>
+      <div class="chart"><div class="pq-meses org-meses">${M.map(([m,n,x])=>`<span class="pq-m" data-tip="${esc(`<b>${nombreMes(m)}</b><br>${fmt(n)} nombramientos · ${fmt(x)} ceses`)}"><i style="height:${(n+x)/maxM*100}%"><b style="height:${n+x?x/(n+x)*100:0}%"></b></i></span>`).join("")}</div>
+      <div class="pq-eje"><span>${nombreMes(M[0][0])}</span><span>${nombreMes(M.at(-1)[0])}</span></div>
+      <div class="key"><span><i style="background:var(--org)"></i>nombramientos</span><span><i style="background:color-mix(in srgb,var(--ink) 35%,var(--surface))"></i>ceses</span></div></div></section>
+    ${ORG.sin_sustituto.length?`<section class="sec"><div class="sec-h"><h2>Cesados sin sustituto publicado</h2><p>Altos cargos cuyo cese ha salido en el BOE en los últimos 90 días sin que se haya publicado quién los sustituye. Puede ser una vacante o un cargo que se suprime en una reestructuración: el BOE publica el cese, no siempre la supresión.</p></div>
+      <ul class="preg-list">${ORG.sin_sustituto.map(v=>`<li><span class="pq-f">${fechaCorta(v.desde)}</span><span class="pq-t"><button class="linklike" style="text-align:left;font-weight:400" data-cargo="${esc(v.id)}">${esc(v.cargo)}</button><small>Cesó ${esc(v.persona)}</small></span>${enlaceBoe(v.boe, "BOE")}</li>`).join("")}</ul></section>`:""}
+    <section class="sec" id="org-todos"><div class="sec-h"><h2>Todos los altos cargos</h2><p>Por ministerio, con quién lo ocupa y desde cuándo.</p></div><div>${listaOrg()}</div></section>
+    <p class="nota">Fuente: sumarios del BOE en datos abiertos. De la sección II.A (nombramientos, situaciones e incidencias) se leen las disposiciones que el propio BOE etiqueta como «Nombramientos y ceses de altos cargos», desde el ${fechaCorta(ORG.desde_serie)}: ${fmt(c.disposiciones)} disposiciones${c.sin_leer?`, ${c.sin_leer} de ellas sin interpretar`:""}. Datos hasta el BOE del ${fechaCorta(ORG.actualizado)}. Cada dato enlaza a su disposición, que es la que vale. <button class="linklike" data-go="metodo">Cómo se hace</button></p>`;
+  Org.dibujar(document.getElementById("org-svg"));
+  pintarPanelOrg(); Org.resaltar();
+  buscadorOrg();
+  if (orgSel && !matchMedia("(min-width:1100px)").matches) setTimeout(panelEnVista, 0);
+}
+
+function listaOrg(){
+  return ORG.ramas.map(r=>`<details class="org-rama" data-rama="${esc(r.nombre)}"><summary><b>${esc(r.nombre)}</b><span>${r.ministro?esc(r.ministro)+" · ":""}${r.cargos.length} ${r.cargos.length===1?"cargo":"cargos"}</span></summary>
+    ${r.grupo==="antiguos"?`<p class="nota" style="margin-bottom:8px">Nombrados en un ministerio que después cambió de nombre, sin cese publicado y sin sucesor claro.</p>`:""}
+    <div class="dtable-wrap"><table class="dt"><thead><tr><th>Cargo</th><th>Titular</th><th>Desde</th></tr></thead><tbody>${r.cargos.map(x=>`<tr data-cargo="${esc(x.id)}"><td>${esc(x.cargo)}${x.antiguo?` <span class="org-sc">· sin confirmar</span>`:""}</td><td>${esc(x.persona)}</td><td class="num" style="white-space:nowrap">${fechaOrg(x.desde)}</td></tr>`).join("")}</tbody></table></div></details>`).join("");
+}
+
+function pintarPanelOrg(){
+  const p = document.getElementById("org-panel"); if (!p) return;
+  p.innerHTML = orgSel && ORG.cargos[orgSel] ? fichaCargo(orgSel) : ultimosCambiosOrg(14);
+  p.scrollTop = 0;
+}
+function ultimosCambiosOrg(n){
+  let h = `<div class="eyebrow">Últimos cambios en el BOE</div>`, dia = "";
+  for (const e of ORG.cambios.slice(0, n)){
+    if (e.fecha !== dia){ dia = e.fecha; h += `<div class="org-dia">${fechaCorta(dia)}</div>`; }
+    h += `<div class="org-cambio"><span class="pill ${e.tipo==="cese"?"org-cese":"org-nom"}">${e.tipo==="cese"?"Cese":"Nombra"}</span><div><button class="linklike org-t" data-cargo="${esc(e.cargo_id)}"><b>${esc(e.persona)}</b><span>${esc(e.cargo)}</span></button><small>${enlaceBoe(e.boe, e.disposicion)}${e.motivo?` · ${esc(e.motivo)}`:""}</small></div></div>`;
+  }
+  if (ORG.cambios.length > n) h += `<button class="linklike org-mas" data-org-mas="${n+30}">Ver más cambios</button>`;
+  return h;
+}
+function fichaCargo(id){
+  const c = ORG.cargos[id], abiertos = c.mandatos.filter(m=>!m.hasta), ult = c.mandatos[0];
+  const visible = abiertos[0]?.cargo || ult?.cargo || c.cargo;
+  let h = `<button class="back" data-org-volver>← Últimos cambios</button><div class="eyebrow">${esc(c.ministerio||"")}</div><h3 class="org-h">${esc(visible)}</h3>`;
+  if (abiertos.length) h += abiertos.map(m=>`<div class="org-titular"><div class="eyebrow">Titular</div><div class="org-nombre">${esc(m.persona)}</div>
+      <div class="org-desde">${m.desde?`Desde el ${fechaCorta(m.desde)}`:"Desde antes de junio de 2018"}${m.boe?` · ${enlaceBoe(m.boe, m.disposicion)}`:""}</div>
+      ${c.antiguo?`<p class="nota" style="margin-top:8px">Sin confirmar: se le nombró en el antiguo ${esc(c.antiguo)} y, desde que el ministerio cambió, el BOE no ha publicado ni su cese ni un nombramiento nuevo. Lo más probable es que siga, quizá con el cargo renombrado.</p>`:""}
+      ${m.diputado?`<button class="chipbtn" data-dip="${esc(m.diputado)}" style="margin-top:10px">Su ficha de diputado →</button>`:""}</div>`).join("");
+  else h += `<div class="org-titular vacio"><div class="eyebrow">Sin titular publicado</div><div class="org-desde">Desde el cese de ${esc(ult.persona)} el ${fechaCorta(ult.hasta)} · ${enlaceBoe(ult.boe_cese, ult.disposicion_cese)}</div></div>`;
+  if (c.mandatos.length > 1 || c.mandatos.some(m=>m.renovaciones || m.en_funciones)){
+    h += `<span class="eyebrow org-sub">Quién lo ha ocupado</span><ol class="org-hist">${c.mandatos.map(m=>{
+      const lineas = [m.boe?`Nombramiento: ${enlaceBoe(m.boe, m.disposicion)}`:"",
+        ...(m.en_funciones||[]).map(r=>`En funciones desde el ${fechaCorta(r.fecha)}: ${enlaceBoe(r.boe, r.disposicion)}`),
+        ...(m.renovaciones||[]).map(r=>`Nombrado de nuevo el ${fechaCorta(r.fecha)}: ${enlaceBoe(r.boe, r.disposicion)}`),
+        m.boe_cese?`Cese: ${enlaceBoe(m.boe_cese, m.disposicion_cese)}`:""].filter(Boolean);
+      return `<li class="${m.hasta?"":"actual"}"><b>${esc(m.persona)}${m.diputado?` · <button class="linklike" data-dip="${esc(m.diputado)}">diputado</button>`:""}</b>
+        <span>${fechaOrg(m.desde)} – ${m.hasta?fechaCorta(m.hasta):"hoy"}${m.motivo?` · ${esc(m.motivo)}`:""}</span><small>${lineas.join("<br>")}</small></li>`; }).join("")}</ol>`;
+  }
+  const rama = ORG.ramas.find(r=>r.cargos.some(x=>x.id===id)), yo = rama?.cargos.find(x=>x.id===id);
+  if (rama && rama.cargos.length > 1 && (yo.rango <= 1 || rama.grupo !== "gobierno"))
+    h += `<span class="eyebrow org-sub">${rama.grupo==="gobierno"?"Altos cargos del ministerio":esc(rama.nombre)} · ${rama.cargos.length}</span><ul class="org-sublista">${rama.cargos.filter(x=>x.id!==id).map(x=>`<li><button class="linklike" data-cargo="${esc(x.id)}">${esc(x.cargo)}</button><span>${esc(x.persona)}</span></li>`).join("")}</ul>`;
+  return h;
+}
+
+function buscadorOrg(){
+  const q = document.getElementById("org-q"), caja = document.getElementById("org-res");
+  if (!q) return;
+  q.addEventListener("input", ()=>{
+    const t = sinTildes(q.value.trim());
+    if (t.length < 2){ caja.hidden = true; return; }
+    const res = [];
+    for (const [id, c] of Object.entries(ORG.cargos)) for (const m of c.mandatos){
+      const cargo = m.cargo || c.cargo;
+      if (sinTildes(m.persona).includes(t) || sinTildes(cargo).includes(t)) res.push({id, persona:m.persona, cargo, actual:!m.hasta, hasta:m.hasta});
+    }
+    res.sort((a,b)=>(b.actual-a.actual) || (b.hasta||"").localeCompare(a.hasta||""));
+    caja.innerHTML = res.slice(0,12).map(r=>`<button type="button" data-cargo="${esc(r.id)}">${esc(r.persona)}<small>${esc(r.cargo)}${r.actual?"":` · hasta el ${fechaCorta(r.hasta)}`}</small></button>`).join("")
+      || `<p class="nota">Nada coincide con «${esc(q.value)}».</p>`;
+    caja.hidden = false;
+  });
+  q.addEventListener("keydown", e=>{ if (e.key==="Escape") caja.hidden = true; });
+  q.addEventListener("blur", ()=>setTimeout(()=>{ caja.hidden = true; }, 200));
+}
+
+// El dibujo radial: el presidente en el centro, un sector por ministerio y un anillo por rango.
+const Org = (()=>{
+  const NS = "http://www.w3.org/2000/svg", CX = 500, CY = 500;
+  const R = {hub:62, min:112, se:162, sg:210, dg:256};
+  const TAM = r => [13, 6.5, 5, 4.2, 3.4, 3][Math.min(r, 5)];
+  const polar = (a, r) => [CX + r*Math.cos(a), CY + r*Math.sin(a)];
+  let SECT = [], lineas = null, hoy90 = "";
+  function nodo(tag, attrs, padre){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); padre?.appendChild(e); return e; }
+  function arco(a0, a1, r0, r1){
+    const [x0,y0]=polar(a0,r1), [x1,y1]=polar(a1,r1), [x2,y2]=polar(a1,r0), [x3,y3]=polar(a0,r0), g = a1-a0 > Math.PI ? 1 : 0;
+    return `M${x0},${y0} A${r1},${r1} 0 ${g} 1 ${x1},${y1} L${x2},${y2} A${r0},${r0} 0 ${g} 0 ${x3},${y3} Z`;
+  }
+  const rangoDe = c => /^(Vicepresident[ea] (Primer[oa] |Segund[oa] |Tercer[oa] |Cuart[oa] )?del Gobierno|Ministr)/.test(c) ? 1
+    : /^Secretari[oa] de Estado/.test(c) ? 2 : /^(Subsecretari|Secretari[oa] General)/.test(c) ? 3 : 4;
+  function sectores(){
+    const nombres = {organismos:"Órganos y organismos", territorio:"Delegaciones del Gobierno", comunidades:"Presidencias autonómicas", exterior:"Embajadas"};
+    const lista = [];
+    for (const r of ORG.ramas){
+      if (r.grupo === "antiguos") continue;
+      if (r.grupo === "gobierno"){ lista.push({nombre:r.nombre, grupo:r.grupo, ramas:[r.nombre], cargos:r.cargos.map(x=>({...x}))}); continue; }
+      let s = lista.find(x=>x.grupo===r.grupo);
+      if (!s) lista.push(s = {nombre:nombres[r.grupo]||r.nombre, grupo:r.grupo, ramas:[], cargos:[]});
+      s.cargos.push(...r.cargos.map(x=>({...x}))); s.ramas.push(r.nombre);
+    }
+    for (const v of ORG.sin_sustituto){  // un hueco en su ministerio
+      const s = lista.find(x=>x.nombre===ORG.cargos[v.id]?.ministerio);
+      if (s) s.cargos.push({id:v.id, cargo:v.cargo, persona:null, hueco:true, rango:rangoDe(v.cargo), desde:v.desde});
+    }
+    return lista;
+  }
+  function dibujar(svg){
+    svg.innerHTML = "";
+    const d = new Date(ORG.actualizado+"T12:00:00"); d.setDate(d.getDate()-90); hoy90 = d.toISOString().slice(0,10);
+    SECT = sectores();
+    const peso = s => Math.max(4, s.cargos.length) ** (s.grupo==="gobierno" ? .72 : .6);
+    const hueco = .012, huecoGrupo = .05;
+    const salto = i => i && SECT[i-1].grupo !== SECT[i].grupo ? huecoGrupo : hueco;
+    let saltos = SECT.reduce((a,_,i)=>a+salto(i), 0) + (SECT.at(-1).grupo !== SECT[0].grupo ? huecoGrupo : hueco);
+    const total = SECT.reduce((a,s)=>a+peso(s), 0), util = 2*Math.PI - saltos;
+    // El Gobierno arriba y centrado, en el sentido de las agujas del reloj por orden de precedencia; abajo, el resto.
+    const gob = SECT.filter(s=>s.grupo==="gobierno");
+    let a = -Math.PI/2 - (gob.reduce((x,s)=>x+peso(s), 0)/total*util + hueco*(gob.length-1))/2;
+    SECT.forEach((s,i)=>{ if (i) a += salto(i); s.a0 = a; s.a1 = a + peso(s)/total*util; a = s.a1; });
+    let exterior = 0;
+    for (const s of SECT){
+      const bandas = s.grupo==="gobierno"
+        ? [[c=>c.rango===1, R.min, 18], [c=>c.rango===2, R.se, 15], [c=>c.rango===3, R.sg, 12.5], [c=>c.rango>=4, R.dg, 10.5]]
+        : [[()=>true, R.sg+6, s.grupo==="exterior" ? 8.6 : 10.5]];
+      let r = 0;
+      for (const [f, r0, paso] of bandas){
+        const ns = s.cargos.filter(f).filter(c=>c.rango>0);
+        r = Math.max(r0, r);
+        let i = 0;
+        while (i < ns.length){
+          const ancho = (s.a1-s.a0)*r, caben = Math.max(1, Math.floor((ancho - paso*.6)/paso)), fila = ns.slice(i, i+caben);
+          fila.forEach((c,j)=>{ c.a = s.a0 + (s.a1-s.a0)*(fila.length===caben ? (j+.5)/fila.length : .5 + (j-(fila.length-1)/2)*paso/ancho); c.r = r; });
+          i += fila.length;
+          if (i < ns.length) r += paso*.95;
+        }
+        if (ns.length) r += paso*1.2;
+      }
+      exterior = Math.max(exterior, r);
+    }
+    const RO = Math.min(exterior + 4, 400);
+    // En el móvil no caben las etiquetas (se ocultan): el dibujo se ciñe al círculo.
+    const m = RO + 8;
+    svg.setAttribute("viewBox", matchMedia("(max-width:700px)").matches ? `${CX-m} ${CY-m} ${2*m} ${2*m}` : "-140 -140 1280 1280");
+    const guias = nodo("g", {}, svg);
+    for (const r of [R.min, R.se, R.sg]) nodo("circle", {cx:CX, cy:CY, r, fill:"none", stroke:"var(--line)", "stroke-dasharray":"2 4"}, guias);
+    const capaS = nodo("g", {}, svg), capaL = nodo("g", {}, svg);
+    lineas = nodo("g", {}, svg);
+    const capaN = nodo("g", {}, svg);
+    let par = 0;
+    for (const s of SECT){
+      const g = s.grupo === "gobierno", am = (s.a0+s.a1)/2;
+      const fondo = g ? `color-mix(in oklab,var(--org) ${par%2?14:9}%,var(--surface))` : `color-mix(in oklab,var(--ink) ${par%2?8:5}%,var(--surface))`;
+      par++;
+      s.fondo = nodo("path", {d:arco(s.a0, s.a1, g ? R.hub+20 : R.sg-50, RO), fill:fondo, class:"org-sec", "data-org-rama":s.nombre}, capaS);
+      const [x, y] = polar(am, RO+10), grados = am*180/Math.PI, izq = Math.cos(am) < 0;
+      s.etq = nodo("text", {x, y, class:"org-etq", "dominant-baseline":"middle", "text-anchor":izq?"end":"start", "data-org-rama":s.nombre,
+        transform:`rotate(${izq ? grados+180 : grados} ${x} ${y})`, ...(g ? {} : {"font-weight":600})}, capaL);
+      s.etq.textContent = g ? ministerioCorto(s.nombre) : s.nombre;
+      for (const c of s.cargos){
+        if (c.a === undefined) continue;
+        const [nx, ny] = polar(c.a, c.r), tam = TAM(c.rango), nuevo = !c.hueco && c.desde && c.desde >= hoy90;
+        const tipTxt = c.hueco ? `<b>${esc(c.cargo)}</b><br>Sin titular publicado desde el ${fechaCorta(c.desde)}`
+          : `<b>${esc(c.persona)}</b><br>${esc(c.cargo)}<br>Desde el ${fechaOrg(c.desde)}${c.antiguo?" · sin confirmar":""}`;
+        const gN = nodo("g", {class:"org-n", "data-cargo":c.id, "data-tip":tipTxt, tabindex:0, role:"button",
+          "aria-label":`${c.cargo}${c.persona ? ": "+c.persona : ", sin titular publicado"}`}, capaN);
+        nodo("circle", {cx:nx, cy:ny, r:tam+3.5, fill:"transparent"}, gN);  // zona de toque mayor que el punto
+        c.p = nodo("circle", {cx:nx, cy:ny, r:tam, class:"p", fill:c.hueco ? "var(--surface)" : nuevo ? "var(--org-nuevo)" : "var(--org)",
+          stroke:c.hueco ? "var(--muted)" : "var(--surface)", "stroke-width":c.hueco ? 1.3 : 1,
+          ...(c.hueco ? {"stroke-dasharray":"2 1.5"} : {}), ...(c.antiguo ? {"fill-opacity":.38} : {})}, gN);
+        c.x = nx; c.y = ny; c.sector = s;
+      }
+    }
+    // Centro: el presidente del Gobierno.
+    const pres = ORG.ramas.flatMap(r=>r.cargos).find(c=>c.rango===0);
+    const hub = nodo("g", {class:"org-n", tabindex:0, role:"button", ...(pres ? {"data-cargo":pres.id, "aria-label":`Presidente del Gobierno: ${pres.persona}`} : {})}, capaN);
+    const disco = nodo("circle", {cx:CX, cy:CY, r:R.hub, fill:"var(--surface)", stroke:"var(--line-strong)", class:"p"}, hub);
+    const partes = (pres?.persona||"").split(" ");
+    const t = (y, txt, estilo) => { const e = nodo("text", {x:CX, y, "text-anchor":"middle", style:estilo}, hub); e.textContent = txt; };
+    t(CY-16, "PRESIDENTE", "font-size:10px;letter-spacing:.12em;font-weight:600");
+    t(CY+4, partes[0]||"", "font-family:var(--display);font-size:17px;font-weight:600;fill:var(--ink)");
+    t(CY+23, partes[1]||"", "font-family:var(--display);font-size:17px;font-weight:600;fill:var(--ink)");
+    const sp = SECT.find(s=>s.nombre==="Presidencia del Gobierno"), pc = pres && sp?.cargos.find(c=>c.id===pres.id);
+    if (pc) Object.assign(pc, {x:CX, y:CY, sector:sp, p:disco, hub:true});
+    svg.addEventListener("keydown", e=>{ const n = e.target.closest("[data-cargo]"); if (n && (e.key==="Enter" || e.key===" ")){ e.preventDefault(); irCargo(n.dataset.cargo); } });
+  }
+  function resaltar(){
+    if (!lineas || !SECT.length) return;
+    lineas.innerHTML = "";
+    for (const s of SECT) for (const c of s.cargos) if (c.p){ c.p.setAttribute("stroke", c.hub ? "var(--line-strong)" : c.hueco ? "var(--muted)" : "var(--surface)"); c.p.setAttribute("stroke-width", c.hueco ? 1.3 : 1); }
+    const sel = SECT.flatMap(s=>s.cargos).filter(c=>c.id===orgSel && c.x !== undefined);
+    const sector = sel[0]?.sector;
+    for (const s of SECT){
+      const fuera = !!sector && s !== sector;
+      s.fondo.classList.toggle("apagado", fuera); s.etq.classList.toggle("activa", s === sector);
+      for (const c of s.cargos) c.p?.parentNode.classList.toggle("apagado", fuera);
+    }
+    for (const c of sel){
+      // Del presidente al ministro y del ministro al cargo: pertenece a ese ministerio (no es su dependencia interna).
+      const ministro = c.sector.cargos.find(x=>x.rango===1 && /^Ministr/.test(x.cargo));
+      const cadena = [[CX, CY]];
+      if (ministro && ministro !== c && ministro.x !== undefined) cadena.push([ministro.x, ministro.y]);
+      if (c.x !== CX || c.y !== CY) cadena.push([c.x, c.y]);
+      for (let i = 1; i < cadena.length; i++){
+        const [x0,y0] = cadena[i-1], [x1,y1] = cadena[i];
+        nodo("path", {d:`M${x0},${y0} Q${(x0+x1)/2+(y1-y0)*.12},${(y0+y1)/2-(x1-x0)*.12} ${x1},${y1}`, fill:"none", stroke:"var(--ink)", "stroke-width":1.6, "stroke-opacity":.55}, lineas);
+      }
+      c.p?.setAttribute("stroke", "var(--ink)"); c.p?.setAttribute("stroke-width", 2.4);
+    }
+  }
+  function enfocar(nombre){
+    const s = SECT.find(x=>x.nombre===nombre); if (!s) return;
+    if (s.grupo === "gobierno"){ const m = s.cargos.find(c=>c.rango===1 && /^Ministr/.test(c.cargo)) || s.cargos.find(c=>!c.hueco); if (m) irCargo(m.id); return; }
+    const d = [...document.querySelectorAll("#org-todos details")].find(x=>s.ramas.includes(x.dataset.rama));
+    if (d){ d.open = true; d.scrollIntoView({block:"start"}); window.scrollBy(0,-70); }
+  }
+  return {dibujar, resaltar, enfocar};
+})();
+
+/* ---------- el organigrama en la portada y en las fichas ---------- */
+function tarjetaBoe(){
+  const u = ORG_IDX?.ultimos; if (!u?.length) return "";
+  return `<div class="sec-h"><h2>En el BOE</h2><button class="linklike" data-go="organigrama">Ver el organigrama del Estado</button></div>
+    <ul class="preg-list">${u.slice(0,5).map(e=>`<li><span class="pq-f">${fechaCorta(e.fecha)}<small>${e.tipo==="cese"?"Cese":"Nombramiento"}</small></span><span class="pq-t"><button class="linklike" style="text-align:left" data-cargo="${esc(e.cargo_id)}">${esc(e.persona)}</button><small>${esc(e.cargo)}</small></span>${enlaceBoe(e.boe, "BOE")}</li>`).join("")}</ul>`;
+}
+async function pintarCargosFicha(d){
+  const cont = document.getElementById("ficha-cargos"); if (!cont) return;
+  const lista = (await cargarOrgIdx())?.diputados?.[d.slug];
+  if (!lista?.length || dipSel !== d.slug){ cont.remove(); return; }
+  lista.sort((a,b)=>(!!a[3]-!!b[3]) || (b[2]||"").localeCompare(a[2]||""));
+  cont.innerHTML = `<div class="sec-h"><h2>Sus cargos en el Estado</h2><p>Nombramientos publicados en el BOE desde junio de 2018. <button class="linklike" data-go="organigrama">El organigrama del Estado</button></p></div>
+    <ul class="preg-list">${lista.map(([id,cargo,desde,hasta])=>`<li><span class="pq-f">${desde?fechaCorta(desde):"antes de 2018"}<small>${hasta?"hasta el "+fechaCorta(hasta):"sigue hoy"}</small></span><span class="pq-t"><button class="linklike" style="text-align:left;font-weight:400" data-cargo="${esc(id)}">${esc(cargo)}</button></span></li>`).join("")}</ul>`;
+}
+
 /* ---------- buscador global ---------- */
 // Un índice en memoria con lo que ya ha cargado la web: diputados, votaciones, iniciativas, sesiones,
 // temas e intervenciones. Sin servidor. Ignora tildes y mayúsculas y tolera una errata por palabra larga.
 let INDICE_BUSCAR = null;
-const TIPOS_BUSCAR = [["d","Diputados"],["p","Tus diputados"],["tf","Temas para seguir"],["g","Glosario"],["l","Leyes"],["v","Votaciones"],["i","Iniciativas"],["w","Semanas"],["s","Sesiones"],["t","Temas"],["iv","Intervenciones"]];
+const TIPOS_BUSCAR = [["d","Diputados"],["c","Cargos del Estado"],["p","Tus diputados"],["tf","Temas para seguir"],["g","Glosario"],["l","Leyes"],["v","Votaciones"],["i","Iniciativas"],["w","Semanas"],["s","Sesiones"],["t","Temas"],["iv","Intervenciones"]];
 function indiceBuscar(){
   if (INDICE_BUSCAR) return INDICE_BUSCAR;
   const e = [];
@@ -2695,6 +3067,7 @@ function indiceBuscar(){
   Object.values(INICIATIVAS).forEach(x=>{ const t = x.votos[0] ? baseTitulo(x.votos[0].titulo) : x.debates[0]?.p.titulo || x.exp; poner("i", t, `${TIPO_EXP[x.exp.slice(0,3)]||"Iniciativa"} · ${x.exp}`, x.exp, {hash:"iniciativa-"+slugExp(x.exp)}); });
   DATA.sesiones.forEach(s=>{ const dd=dt(s.fecha); poner("s", `${s.organo}, ${dd.d} ${dd.m}`, s.titular || (s.resumen||"").slice(0,120) || s.sesion, `${s.resumen||""} ${(s.puntos||[]).map(p=>p.titulo).join(" ")}`, {hash:"sesion-"+s.id}); });
   (LEYES?.iniciativas||[]).forEach(l=>poner("l", tituloLey(l), `${l.tipo} · ${l.exp} · ${ESTADO_LEY[l.estado]?.[0]||l.estado}`, `${l.exp} ${l.comision} ${l.autores.map(autorNombre).join(" ")}`, {hash:"iniciativa-"+slugExp(l.exp)}));
+  (ORG_IDX?.actuales||[]).forEach(([id,persona,cargo,rama])=>poner("c", persona, cargo, rama, {hash:"cargo-"+id}));
   CIRCS().forEach(c=>poner("p", `Diputados de ${c}`, `${DIP.filter(d=>d.circ===c && !d.baja).length} diputados`, c, {hash:"provincia-"+slug(c)}));
   Object.entries(TEMAS_IDX||{}).forEach(([k,t])=>poner("tf", t.nombre, `Seguir el tema · ${t.votos.length} votaciones`, k, {hash:"tema-"+k}));
   Object.entries(GLOSARIO).forEach(([k,[t,def]])=>poner("g", t, def.slice(0,110)+"…", def, {gl:k}));
@@ -2731,13 +3104,13 @@ let buscaSel = 0, buscaRes = [];
 function abrirBuscador(){
   let dlg = document.getElementById("buscador");
   if (!dlg){ dlg = document.createElement("div"); dlg.id="buscador"; dlg.setAttribute("role","dialog"); dlg.setAttribute("aria-modal","true"); dlg.setAttribute("aria-label","Buscar en Escaño Abierto");
-    dlg.innerHTML = `<div class="bu-caja"><div class="bu-cab"><input id="bu-q" type="search" placeholder="Busca un diputado, una votación, un tema…" aria-label="Buscar" autocomplete="off" aria-controls="bu-res"><kbd>Esc</kbd></div><div id="bu-res" role="listbox"></div></div>`;
+    dlg.innerHTML = `<div class="bu-caja"><div class="bu-cab"><input id="bu-q" type="search" placeholder="Busca un diputado, un ministro, una votación, un tema…" aria-label="Buscar" autocomplete="off" aria-controls="bu-res"><kbd>Esc</kbd></div><div id="bu-res" role="listbox"></div></div>`;
     document.body.appendChild(dlg);
     dlg.addEventListener("click", e=>{ if (e.target===dlg) cerrarBuscador(); });
     document.getElementById("bu-q").addEventListener("input", e=>pintarBusqueda(e.target.value));
   }
   dlg.hidden = false; document.body.classList.add("con-buscador");
-  if (!LEYES || !SEMANAS || !TEMAS_IDX) Promise.all([cargarLeyes(), cargarSemanas(), cargarTemasIdx()]).then(()=>{ const q=document.getElementById("bu-q"); if (q.value.trim()) pintarBusqueda(q.value); });
+  if (!LEYES || !SEMANAS || !TEMAS_IDX || !ORG_IDX) Promise.all([cargarLeyes(), cargarSemanas(), cargarTemasIdx(), cargarOrgIdx()]).then(()=>{ const q=document.getElementById("bu-q"); if (q.value.trim()) pintarBusqueda(q.value); });
   const q = document.getElementById("bu-q"); q.value = ""; pintarBusqueda(""); setTimeout(()=>q.focus(), 0);
 }
 function cerrarBuscador(){ const d=document.getElementById("buscador"); if (d) d.hidden=true; document.body.classList.remove("con-buscador"); }
@@ -2749,7 +3122,7 @@ function pintarBusqueda(q){
   let k = 0; const orden = [];
   cont.innerHTML = TIPOS_BUSCAR.map(([t,l])=>{ const g = buscaRes.filter(e=>e.tipo===t).slice(0,t==="d"?6:5); if(!g.length) return "";
     return `<div class="bu-grupo"><div class="bu-tit">${l}</div>${g.map(e=>{ orden.push(e); const i=k++;
-      return `<button class="bu-item" role="option" data-bu="${i}" aria-selected="${i===0}">${e.ir.foto?imgFoto(e.ir.foto,"mini-foto",` style="--grupo:${G[e.ir.foto.g]?.color}"`):`<span class="bu-ico">${{v:"◉",i:"§",l:"§",w:"◷",s:"▦",t:"#",tf:"#",p:"⌂",g:"?",iv:"❝"}[e.tipo]||"·"}</span>`}<span class="bu-txt"><b>${esc(e.titulo)}</b><small>${esc(e.sub)}</small></span></button>`; }).join("")}</div>`; }).join("");
+      return `<button class="bu-item" role="option" data-bu="${i}" aria-selected="${i===0}">${e.ir.foto?imgFoto(e.ir.foto,"mini-foto",` style="--grupo:${G[e.ir.foto.g]?.color}"`):`<span class="bu-ico">${{v:"◉",i:"§",l:"§",w:"◷",s:"▦",t:"#",tf:"#",p:"⌂",g:"?",iv:"❝",c:"◇"}[e.tipo]||"·"}</span>`}<span class="bu-txt"><b>${esc(e.titulo)}</b><small>${esc(e.sub)}</small></span></button>`; }).join("")}</div>`; }).join("");
   buscaRes = orden;
 }
 function irResultado(e){
@@ -2824,10 +3197,10 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","leyes","temas","explora","diputados","grupos","oradores","metodo"];
+const TABS = ["inicio","dias","votaciones","leyes","temas","explora","diputados","grupos","organigrama","oradores","metodo"];
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
 // la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
 let ultimaVista = null;
@@ -2848,12 +3221,15 @@ function show(id, push){
   else if (id==="diputados" && push && dipSel){ dipSel=null; rendered.diputados=false; }
   if (id && id.startsWith("iniciativa-")){ const x=id.slice(11).replace("-","/"); if (INICIATIVAS[x] || /^\d{3}\/\d{6}$/.test(x)){ INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]}; if (iniSel!==x){ iniSel=x; rendered.votaciones=false; } id="votaciones"; push=false; } }
   if (id==="aviso-legal"){ setTimeout(()=>{ document.getElementById("aviso-legal")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); }, 0); id="sobre"; push=false; }
+  if (id && id.startsWith("cargo-")){ const c=id.slice(6); if (orgSel!==c){ orgSel=c; rendered.organigrama=false; } id="organigrama"; push=false; }
+  else if (id==="organigrama" && push && orgSel){ orgSel=null; rendered.organigrama=false; }
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }
   if (id && id.startsWith("tema-")){ if (temaFijo!==id.slice(5)){ temaFijo=id.slice(5); rendered.tema=false; } id="tema"; push=false; }
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
   else if (id==="votaciones" && push && iniSel){ iniSel=null; rendered.votaciones=false; }
   if(!VISTAS.includes(id)) id="inicio";
   VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; $("#tab-"+t)?.setAttribute("aria-selected", t===id); });
+  $(".periodo-bar").hidden = id==="organigrama";   // el periodo es del Congreso; el organigrama va con el BOE de hoy
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   contarVista(id, hashOriginal);
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
@@ -2870,6 +3246,13 @@ TABS.forEach(t=>$("#tab-"+t).addEventListener("click",()=>{ show(t,true); window
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
+  const cg = e.target.closest("[data-cargo]");
+  if (cg){ irCargo(cg.dataset.cargo); return; }
+  const orr = e.target.closest("[data-org-rama]");
+  if (orr){ Org.enfocar(orr.dataset.orgRama); return; }
+  const om = e.target.closest("[data-org-mas]");
+  if (om){ document.getElementById("org-panel").innerHTML = ultimosCambiosOrg(+om.dataset.orgMas); return; }
+  if (e.target.closest("[data-org-volver]")){ orgSel=null; pintarPanelOrg(); Org.resaltar(); try{ history.replaceState(null,"","#organigrama"); }catch(e){} return; }
   if (e.target.closest("#btn-buscar")){ abrirBuscador(); return; }
   const bu = e.target.closest("[data-bu]");
   if (bu){ irResultado(buscaRes[+bu.dataset.bu]); return; }
