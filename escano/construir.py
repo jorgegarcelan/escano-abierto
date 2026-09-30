@@ -602,4 +602,7 @@ def escribir_web(salida: dict) -> None:
         "aprobadas": leyes["aprobadas"]}, ensure_ascii=False))
     (carpeta / "diputados-extra.json").write_text(
         json.dumps(extras_diputados([x[0] for x in d["diputados"]]), ensure_ascii=False))
+    if (DATOS / "boe.json").exists():  # organigrama del Estado: sale de los nombramientos y ceses del BOE
+        from . import estado
+        estado.escribir(carpeta)
     (SITIO / "data.json").unlink(missing_ok=True)   # formato anterior, en un solo fichero

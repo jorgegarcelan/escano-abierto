@@ -10,6 +10,7 @@
     python -m escano preguntas [--completo]     # preguntas escritas al Gobierno (la primera vez, --completo)
     python -m escano lote [--estado | --ver]    # analiza con IA todo lo pendiente por la Batch API de Gemini
     python -m escano explora [--solo temas]     # unifica temas, lugares y propuestas para la pestaña Explora
+    python -m escano estado [--desde 2018-06-01] # solo los nombramientos y ceses del BOE (organigrama del Estado)
 """
 from __future__ import annotations
 
@@ -19,7 +20,7 @@ from datetime import date, timedelta
 
 import json
 
-from . import agenda, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
+from . import agenda, boe, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
 from .config import CRUDOS, PROVEEDOR, VOTACIONES
 from .construir import construir
 
@@ -48,6 +49,10 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
     print(f"· Preguntas escritas: {len(pr)}, {sum(p['estado'] == 'pendiente' for p in pr)} sin contestar")
     ag = agenda.actualizar()
     print(f"· Agenda: {len(ag['plenos'])} plenos convocados, {len(ag['comisiones'])} sesiones de comisión")
+    try:  # el BOE es otra fuente: si falla, el resto de la actualización sigue
+        boe.actualizar(avisar=lambda t: print("  " + t.strip()))
+    except Exception as e:
+        print(f"· BOE: no se ha podido actualizar ({e})")
 
     mapa = votaciones.mapa_diputados()
     estado = diario.leer_estado()
@@ -140,6 +145,9 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("agenda", help="descarga el orden del día de los próximos plenos y la tramitación de leyes")
     ex = sub.add_parser("explora", help="unifica con IA temas, lugares y propuestas (solo lo que falte)")
     ex.add_argument("--solo", choices=["temas", "lugares", "propuestas"])
+    es = sub.add_parser("estado", help="nombramientos y ceses de altos cargos en el BOE y organigrama del Estado")
+    es.add_argument("--desde", type=date.fromisoformat, help="por defecto, lo que falte desde la última vez")
+    es.add_argument("--hasta", type=date.fromisoformat)
     lt = sub.add_parser("lote", help="analiza con IA todo lo pendiente por la Batch API de Gemini (se puede relanzar)")
     lt.add_argument("--estado", action="store_true", help="solo muestra cómo va")
     lt.add_argument("--ver", action="store_true", help="progreso en directo (Ctrl+C para salir; no para el lote)")
@@ -172,6 +180,12 @@ def main(argv: list[str] | None = None) -> None:
     elif args.orden == "explora":
         from . import normalizar
         normalizar.ejecutar(args.solo)
+    elif args.orden == "estado":
+        from . import boe, estado
+        boe.actualizar(args.desde, args.hasta)
+        e = estado.escribir()
+        print(f"· Organigrama: {e['cifras']['cargos_ocupados']} altos cargos con titular en {e['cifras']['ministerios']} "
+              f"ministerios; {e['cifras']['cambios_30']} cambios en 30 días")
     elif args.orden == "lote":
         from . import lotes
         if args.ver:
