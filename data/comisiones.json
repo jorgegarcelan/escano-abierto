@@ -12795,14 +12795,6 @@
    "codigo": 300
   },
   {
-   "nombre": "Catalán Higueras, Alberto",
-   "cargo": "Vocales",
-   "siglas": "GMx",
-   "alta": "01/07/2026",
-   "baja": "",
-   "codigo": 149
-  },
-  {
    "nombre": "López Álvarez, Patxi",
    "cargo": "Vocales",
    "siglas": "GS",
@@ -12825,6 +12817,14 @@
    "alta": "16/07/2024",
    "baja": "",
    "codigo": 241
+  },
+  {
+   "nombre": "Rego Candamil, Néstor",
+   "cargo": "Vocales",
+   "siglas": "GMx",
+   "alta": "01/10/2026",
+   "baja": "",
+   "codigo": 238
   },
   {
    "nombre": "Rodríguez de Millán Parro, María José",

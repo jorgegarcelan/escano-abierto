@@ -1,5 +1,5 @@
 {
- "generado": "2026-09-30",
+ "generado": "2026-10-01",
  "plenos": [
   {
    "sesion": "201",
@@ -526,6 +526,39 @@
     }
    ],
    "pdf": "https://www.congreso.es/backoffice_doc/atp/orden_dia/pleno_201_29092026.pdf"
+  },
+  {
+   "sesion": "203",
+   "dias": [
+    "2026-10-02"
+   ],
+   "puntos": [
+    {
+     "n": 1,
+     "seccion": "",
+     "fecha": "2026-10-02",
+     "hora": "11:00",
+     "texto": "Real Decreto-ley 26/2026, de 29 de septiembre, por el que se adoptan medidas urgentes para la protección de la función social de la vivienda y la ampliación de la oferta de vivienda asequible. (B.O.E. núm. 241, de 30 de septiembre de 2026).  Texto",
+     "exp": [
+      "130/000055"
+     ],
+     "titulo": "Real Decreto-ley 26/2026, de 29 de septiembre, por el que se adoptan medidas urgentes para la protección de la función social de la vivienda y la ampliación de la oferta de vivienda asequible. (B.O.E. núm. 241, de 30 de septiembre de 2026).  Texto",
+     "grupo": "GOB"
+    },
+    {
+     "n": 2,
+     "seccion": "",
+     "fecha": "2026-10-02",
+     "hora": "11:00",
+     "texto": "Real Decreto-ley 27/2026, de 29 de septiembre, por el que se adoptan medidas urgentes para reforzar la estabilidad de los contratos de arrendamiento de vivienda habitual. (B.O.E. núm. 243, de 1 de octubre de 2026).  Texto",
+     "exp": [
+      "130/000056"
+     ],
+     "titulo": "Real Decreto-ley 27/2026, de 29 de septiembre, por el que se adoptan medidas urgentes para reforzar la estabilidad de los contratos de arrendamiento de vivienda habitual. (B.O.E. núm. 243, de 1 de octubre de 2026).  Texto",
+     "grupo": "GOB"
+    }
+   ],
+   "pdf": "https://www.congreso.es/backoffice_doc/atp/orden_dia/pleno_203_02102026.pdf"
   }
  ],
  "comisiones": [
@@ -618,6 +651,12 @@
    "hora": "16:00 h.",
    "organo": "Comisión Mixta para la Unión Europea",
    "asunto": "Comparecencia del vicepresidente primero del Gobierno y ministro de Economía, Comercio y Empresa, para informar sobre los progresos y avances del Plan de Recuperación, Transformación y Resiliencia de la economía española, cumpliendo con el artículo 22 del Real Decreto-ley 36/2020 por el que se aprueban medidas urgentes para la modernización de la Administración Pública y para la ejecución del Plan de Recuperación, Transformación y Resiliencia"
+  },
+  {
+   "fecha": "2026-10-06",
+   "hora": "11:30 h.",
+   "organo": "Comisión de control de los créditos destinados a gastos reservados",
+   "asunto": "Comparecencia de la ministra de Defensa para informar acerca de la aplicación y uso de estos fondos, conforme a lo previsto en el artículo 7 de la Ley 11/1995, de 11 de mayo, reguladora de la utilización y control de los créditos destinados a gastos reservados, entre otros asuntos. Esta sesión es a puerta cerrada"
   }
  ]
 }
