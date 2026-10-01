@@ -55,3 +55,36 @@ def test_radar_unifica_etiquetas():
     canon = {"dana": ["DANA", "clima"], "gota fría": ["DANA", "clima"]}
     r = explora.radar(SESIONES, ivs, canon, minimo=1)
     assert r["temas"]["DANA"]["n"] == 3 and r["temas"]["DANA"]["grupos"] == {"PP": 1, "PSOE": 1, "VOX": 1}
+
+
+def test_retos_del_dia_fijados():
+    """Cada día tiene su reto, y uno ya calculado no cambia aunque cambien las citas."""
+    from datetime import date
+    from escano import explora
+    dips = [[f"Apellido{i} Uno, Nombre{i}", g] for i, g in enumerate(explora.GRUPOS_JUEGO * 4)]
+    citas = [[f"Frase {i} de {d[0]}", d[0].partition(",")[0], d[1], "DSCD-15-PL-1", "2025-01-01"]
+             for i, d in enumerate(dips)]
+    todos, ventana = explora.retos(citas, dips, {}, date(2026, 10, 1), antes=1, despues=2)
+    assert list(ventana) == ["2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03"]
+    hoy = todos["2026-10-01"]
+    assert len(hoy) == 10 and hoy != todos["2026-10-02"]
+    assert len({r["c"][1] for r in hoy}) == 10
+    assert all(r["c"][2] in r["grupos"] and len(set(r["grupos"])) == 4 for r in hoy)
+    assert all(r["c"][1] in r["personas"] and len(set(r["personas"])) == len(r["personas"]) for r in hoy)
+    # Mañana entran frases nuevas: lo ya fijado se queda igual y solo se añade el día que falta.
+    otras = citas + [["Una frase nueva", "Apellido0 Uno", "PSOE", "DSCD-15-PL-2", "2026-10-02"]]
+    todos2, _ = explora.retos(otras, dips, todos, date(2026, 10, 2), antes=1, despues=2)
+    assert all(todos2[f] == todos[f] for f in todos)
+    assert set(todos2) - set(todos) == {"2026-10-04"}
+
+
+def test_reto_una_persona_aunque_se_escriba_distinto():
+    from escano import explora
+    dips = [["Vidal Uno, Álvaro", "ERC"], ["Otro Dos, Ana", "ERC"], ["Otra Tres, Eva", "ERC"]]
+    citas = [["a", "Álvaro Vidal", "ERC", "s", "f"], ["b", "Alvaro Vidal", "ERC", "s", "f"],
+             ["c", "Vidal Uno", "ERC", "s", "f"], ["d", "Otro Dos", "ERC", "s", "f"], ["e", "Otra Tres", "ERC", "s", "f"]]
+    for f in ("2026-01-01", "2026-01-02", "2026-01-03"):
+        r = explora.reto(citas, explora.nombres_oradores(citas, dips), f)
+        claves = [explora._sin_tildes(o) for x in r for o in x["personas"]]
+        assert all(len(set(map(explora._sin_tildes, x["personas"]))) == len(x["personas"]) for x in r)
+        assert len({explora._sin_tildes(x["c"][1]) for x in r}) == len(r) and claves

@@ -129,6 +129,78 @@ def citas_juego(sesiones: list[dict], ivs: list[dict], por_grupo: int = 300) -> 
     return salida
 
 
+def _sin_tildes(t: str) -> str:
+    import unicodedata
+    t = "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn")
+    return " ".join(t.lower().split())
+
+
+def nombres_oradores(citas: list[list], diputados: list[list]) -> dict:
+    """Orador del Diario -> nombre completo, cuando sus apellidos identifican a un solo diputado (como en la web)."""
+    por_apellidos = defaultdict(list)
+    for d in diputados:
+        por_apellidos[_sin_tildes(d[0].partition(", ")[0])].append(d[0])
+    nombres = {}
+    for o in {c[1] for c in citas}:
+        ds = por_apellidos.get(_sin_tildes(o), [])
+        if len(ds) == 1:
+            apellidos, _, nombre = ds[0].partition(", ")
+            nombres[o] = f"{nombre} {apellidos}".strip()
+    return nombres
+
+
+def reto(citas: list[list], nombres: dict, fecha: str, n: int = 10) -> list[dict]:
+    """El reto de «¿Quién lo dijo?» de un día: n citas de n personas distintas (dos como mucho por grupo), con las
+    cuatro opciones de grupo y las tres de persona. La misma fecha da siempre el mismo reto con las mismas citas."""
+    import random
+    az = random.Random(f"qld-{fecha}")
+    # Una persona, una clave: el Diario a veces escribe el mismo nombre de dos formas («Álvaro Vidal» y «Alvaro
+    # Vidal», «Madrenas i Mir» y «Marta Madrenas i Mir»).
+    clave = lambda o: _sin_tildes(nombres.get(o, o))
+    personas = defaultdict(dict)
+    for c in citas:
+        personas[c[2]].setdefault(clave(c[1]), c[1])
+    orden = list(citas)
+    az.shuffle(orden)
+    rondas, vistos, por_grupo = [], set(), Counter()
+    for c in orden:
+        if len(rondas) == n:
+            break
+        if clave(c[1]) in vistos or por_grupo[c[2]] >= 2:
+            continue
+        vistos.add(clave(c[1]))
+        por_grupo[c[2]] += 1
+        grupos = [c[2], *az.sample([g for g in GRUPOS_JUEGO if g != c[2]], 3)]
+        otros = [o for k, o in personas[c[2]].items() if k != clave(c[1])]
+        quienes = [c[1], *az.sample(otros, min(2, len(otros)))]
+        az.shuffle(grupos)
+        az.shuffle(quienes)
+        rondas.append({"c": c, "grupos": grupos, "personas": quienes})
+    return rondas
+
+
+def retos(citas: list[list], diputados: list[list], previos: dict, hoy, antes: int = 2,
+          despues: int = 14) -> tuple[dict, dict]:
+    """Fija los retos del día de antemano: (todos, ventana).
+
+    Un reto ya calculado no se vuelve a tocar, aunque cambien las citas (cada mañana entran frases nuevas): así es
+    el mismo para quien juega de madrugada y para quien juega después de la actualización. Solo se calculan los
+    días que faltan. La ventana (de `antes` días atrás a `despues` días adelante) es lo que se publica en la web:
+    cubre a quien tiene otra hora en su dispositivo y los días sin actualización.
+    """
+    from datetime import timedelta
+    nombres = nombres_oradores(citas, diputados)
+    todos = dict(previos)
+    ventana = {}
+    for k in range(-antes, despues + 1):
+        fecha = (hoy + timedelta(days=k)).isoformat()
+        if fecha not in todos and citas:
+            todos[fecha] = reto(citas, nombres, fecha)
+        if fecha in todos:
+            ventana[fecha] = todos[fecha]
+    return dict(sorted(todos.items())), ventana
+
+
 # ---------------------------------------------------------------- radar de temas
 
 def _lunes(fecha: str) -> str:

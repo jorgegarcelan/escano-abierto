@@ -33,3 +33,24 @@ def test_escena_del_hemiciclo(tmp_path):
     assert len(e["escanos"]) == 350
     assert e["montaje"] and all(len(m["v"]) == 350 and set(m["v"]) <= set("SNAX-") for m in e["montaje"])
     assert e["cinta"] and e["docs"] and e["cifras"]["votaciones"] > 0
+
+
+def test_juego_quien_lo_dijo(tmp_path):
+    """El juego completo de la web, en su propia página, con las mismas citas (el reto del día sale igual)."""
+    teaser.construir(tmp_path)
+    portada = (tmp_path / "index.html").read_text()
+    assert 'id="juego"' in portada and portada.count('href="/quien-lo-dijo/') >= 3
+    e = json.loads(re.search(r'<script type="application/json" id="escena">(.*?)</script>', portada, re.S).group(1))
+    assert e["muestra"]["cita"] and len(e["muestra"]["grupos"]) == 4
+    assert not teaser.TRAMITE.search(e["muestra"]["cita"])
+    juego = (tmp_path / "quien-lo-dijo" / "index.html").read_text()
+    assert "{{" not in juego and 'id="quien-lo-dijo"' in juego and "og-quien-lo-dijo.png" in juego
+    assert '"escano-qld"' in juego and "QLD_N = 10" in juego   # el mismo registro y las mismas reglas que la web
+    assert (tmp_path / "og-quien-lo-dijo.png").stat().st_size > 0
+    citas = json.loads((tmp_path / "datos" / "explora-citas.json").read_text())
+    assert citas == json.loads((teaser.SITIO / "datos" / "explora-citas.json").read_text())
+    if (teaser.SITIO / "datos" / "explora-retos.json").exists():
+        assert (tmp_path / "datos" / "explora-retos.json").read_text() == (teaser.SITIO / "datos" / "explora-retos.json").read_text()
+    d = json.loads(re.search(r'<script type="application/json" id="datos">(.*?)</script>', juego, re.S).group(1))
+    assert set(d["grupos"]) == set(teaser.GRUPOS_JUEGO)
+    assert d["oradores"] and all(o in {c[1] for c in citas} for o in d["oradores"])

@@ -2626,9 +2626,11 @@ $("#explora").addEventListener("change", e=>{ const i=e.target.closest("[data-ex
 const GRUPOS_JUEGO = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","GOB"];
 const QLD_N = 10, QLD_CLAVE = "escano-qld";
 const qld = {fase:"inicio", modo:null, rondas:[], k:0, efecto:""};
-let QLD_CITAS = null;
+let QLD_CITAS = null, QLD_RETOS = {};
 const cargarCitas = () => QLD_CITAS ? Promise.resolve(QLD_CITAS)
-  : fetch("datos/explora-citas.json").then(r=>r.ok?r.json():[]).catch(()=>[]).then(c=>QLD_CITAS=c||[]);
+  : Promise.all([fetch("datos/explora-citas.json").then(r=>r.ok?r.json():[]).catch(()=>[]),
+                 fetch("datos/explora-retos.json").then(r=>r.ok?r.json():{}).catch(()=>({}))])
+    .then(([c, retos])=>{ QLD_RETOS = retos||{}; return QLD_CITAS = c||[]; });
 const qldGrupo = g => g==="GOB" ? "Gobierno" : G[g]?.nombre || g;
 const ayerISO = () => { const d=new Date(); d.setDate(d.getDate()-1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 const diaMes = iso => { const [,m,d]=iso.split("-").map(Number); return `${d} de ${MESES_LARGOS[m-1]}`; };
@@ -2656,16 +2658,23 @@ const QLD_TITULOS = [
 
 function qldPartida(modo){ Object.assign(qld, {fase:"grupo", modo, rondas:qldRondas(modo), k:0, efecto:""}); }
 function qldRondas(modo){
+  // El reto del día viene fijado desde el build (explora-retos.json) y no cambia aunque entren frases nuevas; si
+  // falta, se calcula aquí con la fecha como semilla.
+  const fijo = modo==="dia" && QLD_RETOS[hoyISO()];
+  if (fijo) return fijo.map(x=>({c:x.c, grupos:x.grupos, personas:x.personas, g:null, p:null}));
   const C = QLD_CITAS || [], r = modo==="dia" ? azar("qld-"+hoyISO()) : Math.random;
+  // Una persona, una clave: el Diario a veces escribe el mismo nombre de dos formas («Álvaro Vidal» y «Alvaro
+  // Vidal», «Madrenas i Mir» y «Marta Madrenas i Mir»). La web y la teaser lo hacen igual: el reto sale idéntico.
+  const clave = o => sinTildes(qldNombre(o)).replace(/\s+/g," ").trim();
   const oradores = {};
-  C.forEach(c=>(oradores[c[2]] ||= new Set()).add(c[1]));
+  C.forEach(c=>{ const m = oradores[c[2]] ||= new Map(); if (!m.has(clave(c[1]))) m.set(clave(c[1]), c[1]); });
   const rondas = [], vistos = new Set(), porGrupo = {};
   for (const c of barajar(C, r)){
     if (rondas.length===QLD_N) break;
-    if (vistos.has(c[1]) || (porGrupo[c[2]]||0)>=2) continue;   // variedad: nadie repite y como mucho dos por grupo
-    vistos.add(c[1]); porGrupo[c[2]] = (porGrupo[c[2]]||0)+1;
+    if (vistos.has(clave(c[1])) || (porGrupo[c[2]]||0)>=2) continue;   // variedad: nadie repite y como mucho dos por grupo
+    vistos.add(clave(c[1])); porGrupo[c[2]] = (porGrupo[c[2]]||0)+1;
     const grupos = barajar([c[2], ...barajar(GRUPOS_JUEGO.filter(g=>g!==c[2]), r).slice(0,3)], r);
-    const personas = barajar([c[1], ...barajar([...oradores[c[2]]].filter(o=>o!==c[1]), r).slice(0,2)], r);
+    const personas = barajar([c[1], ...barajar([...oradores[c[2]]].filter(([k])=>k!==clave(c[1])).map(([,o])=>o), r).slice(0,2)], r);
     rondas.push({c, grupos, personas, g:null, p:null});
   }
   return rondas;
@@ -3023,7 +3032,7 @@ function renderMetodo(){
       <li><b>La semana en el Congreso</b> se escribe con reglas fijas, sin IA: el titular es, por este orden, un decreto derogado, una ley que termina su tramitación, una votación decidida por diez votos o menos, o el balance de votaciones.</li>
       <li><b>Por qué votó así cada grupo</b>: el motivo de cada grupo sale del debate de esa misma iniciativa (el mismo día o, si se votó otro, por su número de expediente) y solo se muestra si la postura que expresó en el debate coincide con lo que votó.</li>
       <li><b>Explora</b> junta toda la legislatura. En <b>de qué se habla</b>, la IA unifica las etiquetas de tema que son la misma cosa (plurales, tildes, sinónimos exactos; nunca las cambia por una categoría más general) y un tema se destaca cuando una semana dobla con creces su media de las ocho anteriores. En <b>¿contesta el Gobierno?</b> cada respuesta del control lleva la valoración de la IA (sí, en parte, no) y se asocia a la última intervención de otro grupo en ese asunto; solo salen quienes tienen 20 respuestas o más. En <b>qué propone cada grupo</b>, la IA agrupa las propuestas concretas que piden lo mismo a partir de las 500 más recientes de cada grupo y tema.</li>
-      <li><b>¿Quién lo dijo?</b> es un juego con citas comprobadas literalmente en el Diario de Sesiones: el mismo número de cada grupo y del Gobierno (300), de 60 a 220 caracteres y sin las que nombran al propio partido o a su líder. Cada partida tiene 10 frases de 10 personas distintas, con dos como mucho de cada grupo; las opciones de grupo se sortean entre los demás, y las de persona entre quienes tienen citas en ese mismo grupo. El reto del día usa la fecha como semilla, así que es igual para todos; si aún no lo has jugado, la pestaña lleva un punto y en la esquina aparece un botón para jugarlo, que se puede ocultar hasta el día siguiente. Las estadísticas y el aviso se guardan solo en tu navegador.</li>
+      <li><b>¿Quién lo dijo?</b> es un juego con citas comprobadas literalmente en el Diario de Sesiones: el mismo número de cada grupo y del Gobierno (300), de 60 a 220 caracteres y sin las que nombran al propio partido o a su líder. Cada partida tiene 10 frases de 10 personas distintas, con dos como mucho de cada grupo; las opciones de grupo se sortean entre los demás, y las de persona entre quienes tienen citas en ese mismo grupo. El reto de cada día se calcula una vez, con la fecha como semilla, y se guarda: es igual para todos y no cambia aunque a lo largo del día entren frases nuevas; si aún no lo has jugado, la pestaña lleva un punto y en la esquina aparece un botón para jugarlo, que se puede ocultar hasta el día siguiente. Las estadísticas y el aviso se guardan solo en tu navegador.</li>
       <li><b>Lo que se dice de tu provincia</b>: la IA sitúa cada lugar mencionado en su provincia y comunidad. Las cifras cuentan solo las intervenciones cuyo resumen trata del lugar; las que lo citan de pasada se listan aparte.</li>
       <li>Los <b>temas para seguir</b> (vivienda, sanidad, pensiones…) se asignan con una lista fija de palabras clave sobre el texto oficial, igual para votaciones, leyes, orden del día y preguntas. Un asunto puede tener varios temas o ninguno.</li>
       <li><b>«¿Qué significa?»</b> es una frase fija según el tipo de votación y su resultado; no depende de quién presenta la iniciativa.</li>

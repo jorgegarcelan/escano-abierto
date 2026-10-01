@@ -17,6 +17,7 @@ from . import explora as mod_explora, semanas as mod_semanas, temas as mod_temas
 from .analisis import analizar, resumir_sesion, solo_cache
 from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
 
+RETOS = DATOS / "retos.json"  # el reto de cada día de «¿Quién lo dijo?»: se calcula una vez y no se toca
 MVP = DATOS / "mvp.json"  # análisis del prototipo; solo rellenan lo que el pipeline aún no ha analizado
 
 PARLAMENTARIOS = ["PSOE", "PP", "VOX", "SUMAR", "ERC", "JUNTS", "BILDU", "PNV", "MIXTO"]
@@ -362,6 +363,13 @@ def construir(con_ia: bool = True) -> dict:
                "radar": mod_explora.radar(sesiones_web, ivs_web, canon),
                "propuestas": mod_explora.propuestas(leer_normalizacion("propuestas"))}
     por_provincia = mod_explora.lugares(sesiones_web, ivs_web, leer_normalizacion("lugares"), canon)
+    # Los retos del día de «¿Quién lo dijo?», fijados de antemano en data/ (versionado) para que no cambien.
+    previos = json.loads(RETOS.read_text()) if RETOS.exists() else {}
+    todos, explora["retos"] = mod_explora.retos(explora["citas"], lista_diputados, previos, date.today())
+    if todos != previos:
+        # Un día por línea: cada actualización añade líneas al final y el historial se lee bien en git.
+        RETOS.write_text("{\n" + ",\n".join(f"{json.dumps(f)}: {json.dumps(r, ensure_ascii=False)}"
+                                             for f, r in todos.items()) + "\n}\n")
 
     fechas = sorted({s["fecha"] for s in sesiones_web})
     grupos = {g: {**INFO_GRUPOS[g], "codigo": g, "escanos": escanos.get(g, 0)} for g in INFO_GRUPOS}

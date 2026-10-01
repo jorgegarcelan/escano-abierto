@@ -20,6 +20,7 @@
 <meta property="og:video:width" content="1920">
 <meta property="og:video:height" content="1080">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@escanoabierto">
 <script>
 // Animación solo con JS y sin «reducir movimiento». ?quieto fuerza la versión estática (para revisarla).
 (function(){
@@ -194,6 +195,28 @@ html:not(.js) .panel{display:none}
 .boton span{display:inline-flex;align-items:center;gap:10px;pointer-events:none}
 .aviso{font-size:13.5px;color:var(--muted);min-height:1.3em;margin-top:-14px}
 .chispa{position:fixed;z-index:70;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;pointer-events:none}
+/* 6 · adelanto: la invitación al juego (el juego vive en /quien-lo-dijo/) */
+.juega{display:inline-flex;align-items:center;gap:8px;font:600 12.5px var(--sans);color:var(--ink);text-decoration:none;white-space:nowrap;
+  border:1px solid var(--line-strong);border-radius:999px;padding:6px 12px;background:rgba(16,18,22,.7);transition:border-color .2s,box-shadow .2s}
+.juega:hover{border-color:var(--si);box-shadow:0 0 18px -4px rgba(57,217,138,.6)}
+.juega::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--no);box-shadow:0 0 8px var(--no);animation:latido 1.6s ease-in-out infinite}
+.top-der{display:flex;align-items:center;gap:16px}
+.juego{position:relative;padding:16vh 0 10vh;background:radial-gradient(820px 520px at 50% 22%, rgba(113,82,168,.14), transparent 70%)}
+.juego .wrap{display:grid;gap:24px;justify-items:center;text-align:center}
+.juego-h{margin:0;font:900 clamp(46px,10vw,150px)/.88 var(--led);letter-spacing:.01em;text-transform:uppercase;text-shadow:0 0 40px rgba(238,238,232,.3)}
+.juego-h .q{color:var(--si);text-shadow:0 0 44px rgba(57,217,138,.45)}
+.juego .lead{text-align:center;max-width:46ch}
+.muestra{display:grid;gap:18px;width:min(100%,720px);padding:clamp(20px,4vw,30px);text-align:left;text-decoration:none;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:18px;box-shadow:0 30px 90px -30px rgba(0,0,0,.85),0 0 60px -30px rgba(57,217,138,.35);transition:border-color .2s,transform .2s}
+.muestra:hover{border-color:var(--ink);transform:translateY(-2px)}
+.muestra blockquote{margin:0;font-weight:600;font-size:clamp(20px,2.8vw,28px);line-height:1.28;letter-spacing:-.025em;text-wrap:pretty}
+.muestra-ops{display:flex;flex-wrap:wrap;gap:8px}
+.muestra-ops span{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);border:1px solid var(--line-strong);border-radius:10px;padding:9px 13px;background:#0B0D10}
+.muestra-ops i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+.juego .boton{text-decoration:none}
+.juego-hecho{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--si);margin-top:-8px}
+@media (max-width:560px){ .top-der .estado{display:none} }
+
 /* 7 · quién está detrás (discreto) */
 .autor{padding:44px 0;border-top:1px solid var(--line)}
 .autor .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 40px}
@@ -260,7 +283,7 @@ html:not(.anima) .marco{--iris:75%}
       <svg viewBox="0 0 64 64" aria-hidden="true">{{SIMBOLO}}</svg>
       <span aria-hidden="true">Escaño Abierto</span>
     </a>
-    <span class="estado">Muy pronto</span>
+    <div class="top-der"><a class="juega" href="/quien-lo-dijo/">Juega a ¿Quién lo dijo?</a><span class="estado">Muy pronto</span></div>
   </div>
 </header>
 
@@ -362,7 +385,23 @@ html:not(.anima) .marco{--iris:75%}
     </div>
   </section>
 
-  <!-- 6 · cierre -->
+  <!-- 6 · adelanto: ¿Quién lo dijo? (el juego está en /quien-lo-dijo/) -->
+  <section class="juego" id="juego" aria-label="Adelanto: el juego ¿Quién lo dijo?">
+    <div class="wrap">
+      <span class="ojo">Adelanto exclusivo · el juego</span>
+      <h2 class="juego-h">¿Quién lo <span class="q">dijo?</span></h2>
+      <a class="muestra" href="/quien-lo-dijo/?jugar" aria-label="Jugar a ¿Quién lo dijo?">
+        <blockquote id="muestra-cita"></blockquote>
+        <span class="muestra-ops" id="muestra-ops" aria-hidden="true"></span>
+      </a>
+      <p class="lead">Frases literales dichas en el Congreso esta legislatura. ¿Sabrías decir de qué grupo es quien habla, y quién es? Diez nuevas cada día, las mismas para todo el mundo.</p>
+      <a class="boton" href="/quien-lo-dijo/?jugar"><span>Jugar el reto de hoy
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+      <span class="juego-hecho" id="juego-hecho" hidden></span>
+    </div>
+  </section>
+
+  <!-- 7 · cierre -->
   <section class="final">
     <span class="ojo">Escaño Abierto</span>
     <p class="pronto"><span class="sr">Muy pronto</span><span aria-hidden="true"><span class="pal">MUY</span> <span class="pal">PRONTO</span></span></p>
@@ -376,11 +415,11 @@ html:not(.anima) .marco{--iris:75%}
 
 <section class="autor" aria-label="Quién está detrás">
   <div class="wrap">
-    <p>Un proyecto independiente de <b>Jorge Garcelán</b>, investigador en inteligencia artificial. Aviso del lanzamiento en mis redes.</p>
+    <p>Un proyecto independiente de <b>Jorge Garcelán</b> (<a href="https://x.com/jgarcelan" target="_blank" rel="noopener">@jgarcelan</a>), investigador en inteligencia artificial. Sigue el proyecto en X, en <a href="https://x.com/escanoabierto" target="_blank" rel="noopener">@escanoabierto</a>: ahí avisaremos del lanzamiento.</p>
     <ul class="redes">
+      <li><a href="https://x.com/escanoabierto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@escanoabierto</a></li>
+      <li><a href="https://x.com/jgarcelan" target="_blank" rel="noopener me"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@jgarcelan</a></li>
       <li><a href="https://jorgegarcelan.com" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.7 1.8 2.5 3.9 2.5 6.2S9.7 12.4 8 14.2C6.3 12.4 5.5 10.3 5.5 8S6.3 3.6 8 1.8z"/></svg>jorgegarcelan.com</a></li>
-      <li><a href="https://www.instagram.com/jorge.garcelan/" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6"/><circle cx="8" cy="8" r="2.8"/><circle cx="11.7" cy="4.3" r=".5" fill="currentColor"/></svg>Instagram</a></li>
-      <li><a href="https://www.tiktok.com/@jorge.garcelan" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 1.8v8.4a2.7 2.7 0 1 1-2.7-2.7"/><path d="M9.2 1.8c.3 1.9 1.6 3.2 3.6 3.4"/></svg>TikTok</a></li>
       <li><a href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2.4"/><path d="M5.2 7v4.3M5.2 4.9v.01M7.8 11.3V7M7.8 9c0-1.3.8-2 1.8-2s1.7.7 1.7 2v2.3"/></svg>LinkedIn</a></li>
     </ul>
   </div>
@@ -671,6 +710,18 @@ boton.addEventListener("click", function(){
   copiar.then(function(){ aviso.textContent = "Enlace copiado. Gracias por pasarlo."; }, function(){ aviso.textContent = datos.url; });
 });
 
+// ---------- 6 · adelanto: una frase de muestra que lleva al juego ----------
+(function(){
+  var M = E.muestra; if (!M) { document.getElementById("juego").hidden = true; document.querySelector(".juega").hidden = true; return; }
+  document.getElementById("muestra-cita").textContent = "«" + M.cita + "»";
+  document.getElementById("muestra-ops").innerHTML = M.grupos.map(function(g){ return '<span style="--c:' + g[1] + '"><i></i>¿' + esc(g[0]) + '?</span>'; }).join("");
+  try {
+    var d = new Date(), hoy = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0"+d.getDate()).slice(-2);
+    var r = (JSON.parse(localStorage.getItem("escano-qld")) || {}).dia || {};   // el mismo registro que el juego
+    if (r.fecha === hoy) { var h = document.getElementById("juego-hecho"); h.textContent = "Hoy has acertado " + r.ok + " de 10 · mañana, diez nuevas"; h.hidden = false; }
+  } catch(e) {}
+})();
+
 // ---------- estático: se queda aquí ----------
 if (!ANIMA) {
   R.classList.add("listo");
@@ -809,6 +860,9 @@ window.addEventListener("pointermove", function(e){
   if (d < 150) { imanX(dx*0.35); imanY(dy*0.35); etX(dx*0.12); etY(dy*0.12); }
   else { imanX(0); imanY(0); etX(0); etY(0); }
 });
+
+// El adelanto: entra al llegar
+gsap.from(".juego .ojo, .juego-h, .muestra, .juego .lead, .juego .boton", {y:34, opacity:0, duration:0.85, ease:"expo.out", stagger:0.09, scrollTrigger:{trigger:".juego", start:"top 75%"}});
 
 // Quién está detrás: entra discreto
 gsap.from(".autor p, .redes li", {y:14, opacity:0, duration:0.7, ease:"power3.out", stagger:0.06, scrollTrigger:{trigger:".autor", start:"top 90%"}});
