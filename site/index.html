@@ -874,17 +874,20 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
 /* ¿Quién lo dijo? */
 .tab-punto{position:relative;display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--no);margin-left:5px;vertical-align:super}
 .tab-punto[hidden]{display:none}
-#qld-aviso{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line-strong);border-radius:var(--r-card-lg);padding:clamp(22px,4vw,32px);box-shadow:0 24px 80px rgb(0 0 0 / .5)}
-#qld-aviso[open]{display:grid;gap:12px}
-#qld-aviso::backdrop{background:rgb(0 0 0 / .6);backdrop-filter:blur(3px)}
-#qld-aviso h2{font-size:clamp(30px,6vw,42px);line-height:1;letter-spacing:-.02em}
-#qld-aviso .qld-cita{font-size:clamp(18px,3vw,22px)}
-#qld-aviso .qld-ctx{margin:-6px 0 0}
-#qld-aviso p:not(.qld-ctx){margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
-#qld-aviso .qld-cta{margin-top:6px}
-.qld-aviso-x{position:absolute;top:10px;right:12px;appearance:none;background:none;border:0;color:var(--muted);font-size:24px;line-height:1;cursor:pointer;padding:4px}
-.qld-aviso-x:hover{color:var(--ink)}
-@media (prefers-reduced-motion:no-preference){ #qld-aviso[open]{animation:qld-entra .35s ease} #qld-aviso[open]::backdrop{animation:qld-fondo .35s ease} @keyframes qld-entra{from{opacity:0;transform:translateY(16px) scale(.98)}} @keyframes qld-fondo{from{opacity:0}} }
+#qld-aviso{position:fixed;right:18px;bottom:18px;z-index:55;display:flex;align-items:center;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-pill);box-shadow:0 10px 30px -12px rgb(0 0 0 / .55);padding:3px}
+.qld-aviso-ir{appearance:none;display:flex;align-items:center;gap:8px;background:none;border:0;border-radius:var(--r-pill);padding:7px 6px 7px 12px;color:var(--ink);font:600 13px var(--sans);cursor:pointer;white-space:nowrap}
+.qld-aviso-ir span{font-weight:500;color:var(--muted)}
+.qld-aviso-ir i{width:8px;height:8px;border-radius:50%;background:var(--no);flex:none}
+.qld-aviso-ir:hover{background:var(--sunk)}
+.qld-aviso-x{appearance:none;background:none;border:0;border-radius:var(--r-pill);color:var(--muted);font-size:17px;line-height:1;width:28px;height:28px;cursor:pointer}
+.qld-aviso-x:hover{color:var(--ink);background:var(--sunk)}
+@media (max-width:560px){ #qld-aviso{right:12px;bottom:12px} .qld-aviso-ir span{display:none} }
+@media (prefers-reduced-motion:no-preference){
+  #qld-aviso{animation:qld-entra .4s ease 1.2s backwards}
+  .qld-aviso-ir i{animation:qld-latido 2s ease-in-out 1.6s 3}
+  @keyframes qld-entra{from{opacity:0;transform:translateY(14px)}}
+  @keyframes qld-latido{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--no) 25%,transparent)}}
+}
 .qld{display:grid;gap:18px;max-width:820px;margin:0 auto;min-width:0}
 .qld-hero{display:grid;gap:14px;padding:18px 0 4px}
 .qld-h{font-size:clamp(42px,8vw,76px);line-height:.95;letter-spacing:-.02em}
@@ -2777,38 +2780,26 @@ async function renderQuienLoDijo(){
 const franjaJuego = () => { const st=qldLeer(), hecho=st.dia?.fecha===hoyISO();
   return `<div class="chart qld-franja"><div><div class="eyebrow">El juego</div><h3>¿Quién lo dijo?</h3><p>${hecho?`Hoy has acertado ${st.dia.ok} de ${QLD_N}. Mañana hay un reto nuevo.`:`${QLD_N} frases literales del Congreso. ¿Sabrías decir de qué grupo es quien habla?`}</p></div><button class="btn${hecho?"":" primary"}" data-go="quien-lo-dijo">${hecho?"Ver mi resultado":"Jugar el reto de hoy"}</button></div>`; };
 
-// Aviso del reto diario: si hoy no se ha jugado, un punto en la pestaña y, al entrar en la web, un pop-up con la
-// primera frase del reto. Si se cierra, no vuelve a salir hasta el día siguiente. Sin servidor no hay notificaciones push.
+// Aviso del reto diario: mientras no se haya jugado hoy, un punto en la pestaña y un botón discreto en la esquina
+// (fuera del juego). La ✕ lo quita hasta el día siguiente. Sin servidor no hay notificaciones push.
 const retoPendiente = () => qldLeer().dia?.fecha!==hoyISO();
 function puntoReto(){ const p=$("#tab-quien-lo-dijo .tab-punto"); if (p) p.hidden = !retoPendiente(); }
-function marcarAvisado(){ const st=qldLeer(); st.avisado=hoyISO(); qldGuardar(st); }
-function quitarAvisoReto(){ const a=document.getElementById("qld-aviso"); if (a?.open) a.close(); }
-async function avisoReto(){
-  const libre = () => retoPendiente() && qldLeer().avisado!==hoyISO() && $("#quien-lo-dijo").hidden && !document.getElementById("qld-aviso") && !document.querySelector("dialog[open]");
-  if (!libre()) return;
-  await cargarCitas();
-  if (!libre()) return;   // mientras cargaba, puede haber entrado en el juego
-  const st = qldLeer(), hoy = hoyISO(), racha = st.dia?.fecha===ayerISO() ? st.racha||0 : 0;
-  const primera = QLD_CITAS.length ? qldRondas("dia")[0]?.c : null;
-  const d = document.createElement("dialog");
-  d.id = "qld-aviso"; d.setAttribute("aria-labelledby", "qld-aviso-t");
-  d.innerHTML = `<button class="qld-aviso-x" data-qld-aviso="cerrar" aria-label="Cerrar">×</button>
-    <div class="eyebrow">Reto del ${diaMes(hoy)}</div>
-    <h2 id="qld-aviso-t">¿Quién lo dijo?</h2>
-    ${primera ? `<blockquote class="qld-cita">«${esc(primera[0])}»</blockquote><p class="qld-ctx">${qldDonde(primera[3], primera[4])}</p>` : ""}
-    <p>${racha ? `Llevas ${racha} ${racha===1?"día":"días"} seguidos: no pierdas la racha. ` : ""}${primera ? `¿De qué grupo es? Es la primera de las ${QLD_N} frases de hoy, las mismas para todos.` : `${QLD_N} frases literales del Congreso, las mismas para todos. ¿De qué grupo es quien habla?`}</p>
-    <div class="qld-cta"><button class="btn primary" data-qld-aviso="jugar">Jugar el reto</button><button class="btn" data-qld-aviso="cerrar">Hoy no</button></div>`;
-  d.addEventListener("cancel", marcarAvisado);   // Esc
-  d.addEventListener("close", ()=>d.remove());
-  d.addEventListener("click", e=>{ if (e.target===d){ marcarAvisado(); d.close(); } });   // clic fuera
-  document.body.appendChild(d);
-  d.showModal();
-  d.querySelector("[data-qld-aviso=jugar]").focus();
+function avisoReto(vista){
+  const a = document.getElementById("qld-aviso");
+  const toca = vista!=="quien-lo-dijo" && retoPendiente() && qldLeer().avisado!==hoyISO();
+  if (!toca){ a?.remove(); return; }
+  if (a) return;
+  const racha = (st => st.dia?.fecha===ayerISO() ? st.racha||0 : 0)(qldLeer());
+  document.body.insertAdjacentHTML("beforeend", `<div id="qld-aviso" role="complementary" aria-label="Reto del día">
+    <button class="qld-aviso-ir" data-qld-aviso="jugar"><i aria-hidden="true"></i>Reto del día<span> · ${racha>1?`racha de ${racha}`:"¿Quién lo dijo?"}</span></button>
+    <button class="qld-aviso-x" data-qld-aviso="cerrar" aria-label="Ocultar hasta mañana" title="Ocultar hasta mañana">×</button></div>`);
 }
 document.addEventListener("click", e=>{
   const b = e.target.closest("[data-qld-aviso]"); if (!b) return;
-  marcarAvisado(); quitarAvisoReto();
-  if (b.dataset.qldAviso==="jugar"){ show("quien-lo-dijo", true); window.scrollTo(0,0); if (qld.fase==="inicio" && QLD_CITAS?.length){ qldPartida("dia"); pintarQld(true); } else if (qld.fase==="inicio") cargarCitas().then(()=>{ if (QLD_CITAS.length && qld.fase==="inicio"){ qldPartida("dia"); pintarQld(true); } }); }
+  if (b.dataset.qldAviso==="cerrar"){ const st=qldLeer(); st.avisado=hoyISO(); qldGuardar(st); avisoReto(); return; }
+  show("quien-lo-dijo", true); window.scrollTo(0,0);
+  const empezar = () => { if (QLD_CITAS.length && qld.fase==="inicio" && retoPendiente()){ qldPartida("dia"); pintarQld(true); } };
+  QLD_CITAS ? empezar() : cargarCitas().then(empezar);
 }, SIG);
 $("#quien-lo-dijo").addEventListener("click", e=>{
   const x = e.target.closest("[data-qld],[data-qld-g],[data-qld-p]"); if (!x || x.disabled) return;
@@ -3032,7 +3023,7 @@ function renderMetodo(){
       <li><b>La semana en el Congreso</b> se escribe con reglas fijas, sin IA: el titular es, por este orden, un decreto derogado, una ley que termina su tramitación, una votación decidida por diez votos o menos, o el balance de votaciones.</li>
       <li><b>Por qué votó así cada grupo</b>: el motivo de cada grupo sale del debate de esa misma iniciativa (el mismo día o, si se votó otro, por su número de expediente) y solo se muestra si la postura que expresó en el debate coincide con lo que votó.</li>
       <li><b>Explora</b> junta toda la legislatura. En <b>de qué se habla</b>, la IA unifica las etiquetas de tema que son la misma cosa (plurales, tildes, sinónimos exactos; nunca las cambia por una categoría más general) y un tema se destaca cuando una semana dobla con creces su media de las ocho anteriores. En <b>¿contesta el Gobierno?</b> cada respuesta del control lleva la valoración de la IA (sí, en parte, no) y se asocia a la última intervención de otro grupo en ese asunto; solo salen quienes tienen 20 respuestas o más. En <b>qué propone cada grupo</b>, la IA agrupa las propuestas concretas que piden lo mismo a partir de las 500 más recientes de cada grupo y tema.</li>
-      <li><b>¿Quién lo dijo?</b> es un juego con citas comprobadas literalmente en el Diario de Sesiones: el mismo número de cada grupo y del Gobierno (300), de 60 a 220 caracteres y sin las que nombran al propio partido o a su líder. Cada partida tiene 10 frases de 10 personas distintas, con dos como mucho de cada grupo; las opciones de grupo se sortean entre los demás, y las de persona entre quienes tienen citas en ese mismo grupo. El reto del día usa la fecha como semilla, así que es igual para todos; si aún no lo has jugado, la pestaña lleva un punto y, al entrar, un pop-up te enseña su primera frase una vez al día. Las estadísticas y el aviso se guardan solo en tu navegador.</li>
+      <li><b>¿Quién lo dijo?</b> es un juego con citas comprobadas literalmente en el Diario de Sesiones: el mismo número de cada grupo y del Gobierno (300), de 60 a 220 caracteres y sin las que nombran al propio partido o a su líder. Cada partida tiene 10 frases de 10 personas distintas, con dos como mucho de cada grupo; las opciones de grupo se sortean entre los demás, y las de persona entre quienes tienen citas en ese mismo grupo. El reto del día usa la fecha como semilla, así que es igual para todos; si aún no lo has jugado, la pestaña lleva un punto y en la esquina aparece un botón para jugarlo, que se puede ocultar hasta el día siguiente. Las estadísticas y el aviso se guardan solo en tu navegador.</li>
       <li><b>Lo que se dice de tu provincia</b>: la IA sitúa cada lugar mencionado en su provincia y comunidad. Las cifras cuentan solo las intervenciones cuyo resumen trata del lugar; las que lo citan de pasada se listan aparte.</li>
       <li>Los <b>temas para seguir</b> (vivienda, sanidad, pensiones…) se asignan con una lista fija de palabras clave sobre el texto oficial, igual para votaciones, leyes, orden del día y preguntas. Un asunto puede tener varios temas o ninguno.</li>
       <li><b>«¿Qué significa?»</b> es una frase fija según el tipo de votación y su resultado; no depende de quién presenta la iniciativa.</li>
@@ -3513,7 +3504,7 @@ function show(id, push){
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
   else if (id==="votaciones" && push && iniSel){ iniSel=null; rendered.votaciones=false; }
   if(!VISTAS.includes(id)) id="inicio";
-  if (id==="quien-lo-dijo") quitarAvisoReto();
+  avisoReto(id);
   VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; const b=$("#tab-"+t); if (b){ b.classList.toggle("activa", t===id); if (t===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); } });
   document.querySelectorAll(".tab-menu").forEach(m=>m.classList.toggle("activa", !!$("#"+m.getAttribute("aria-controls")+" .activa")));
   cerrarMenus();
@@ -3626,7 +3617,6 @@ document.addEventListener("click", e=>{
 document.addEventListener("change", e=>{ const ps=e.target.closest(".prov-sel"); if (ps && ps.value) irProvincia(ps.value); }, SIG);
 show((location.hash||"").slice(1), false);
 puntoReto();
-setTimeout(avisoReto, 1500);
 window.addEventListener("hashchange", ()=>{ show(location.hash.slice(1), false); window.scrollTo(0,0); }, SIG);
 // Hemiciclos perezosos: se dibujan al acercarse a la pantalla.
 const vigia = new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; vigia.unobserve(el); const v=VOTES[el.dataset.hemi]; if (v) el.outerHTML = hemiciclo(v); }), {rootMargin:"600px 0px"});
