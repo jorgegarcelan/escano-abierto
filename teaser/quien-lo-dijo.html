@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Quién lo dijo? · El adelanto de Escaño Abierto</title>
+<meta name="description" content="{{DESCRIPCION_JUEGO}}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#08090B">
+<link rel="canonical" href="{{URL}}/quien-lo-dijo/">
+<meta property="og:title" content="¿Quién lo dijo? · El adelanto de Escaño Abierto">
+<meta property="og:description" content="{{DESCRIPCION_JUEGO}}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{URL}}/quien-lo-dijo/">
+<meta property="og:image" content="{{URL}}/og-quien-lo-dijo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@escanoabierto">
+<meta name="twitter:creator" content="@jgarcelan">
+<script>
+// Sin «reducir movimiento», con animaciones; ?quieto las quita (para revisarla).
+(function(){ var q = /[?&]quieto\b/.test(location.search); try { q = q || matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e) {}
+  if (q) document.documentElement.classList.add("quieto"); })();
+window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
+if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+  var sc = document.createElement("script"); sc.defer = true; sc.src = "/_vercel/insights/script.js"; document.head.appendChild(sc);
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@900&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#08090B; --surface:#101216; --sunk:#0B0D10; --ink:#EEEEE8; --muted:#8B929C; --line:#1F232A; --line-strong:#3A404A;
+  --si:#39D98A; --no:#FF5D52; --abst:#F5C542;
+  --sans:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --led:"Doto","Geist Mono",monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:radial-gradient(900px 520px at 50% 0, rgba(113,82,168,.13), transparent 70%),var(--bg);color:var(--ink);font:15px/1.55 var(--sans);letter-spacing:-.003em;-webkit-font-smoothing:antialiased;overflow-x:clip}
+::selection{background:var(--ink);color:var(--bg)}
+a{color:var(--ink);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--si);outline-offset:3px;border-radius:6px}
+button{font:inherit;color:inherit}
+h1,h2,h3{margin:0;letter-spacing:-.03em;text-wrap:balance}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left)) max(16px,env(safe-area-inset-right))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ojo,.eyebrow{font:500 11.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:9px}
+.ojo::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--si);box-shadow:0 0 10px var(--si)}
+.nota{font-size:13px;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+body::after{content:"";position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.05;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grano .9s steps(5) infinite}
+@keyframes grano{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
+@keyframes latido{50%{opacity:.3;box-shadow:0 0 2px var(--si)}}
+.quieto body::after,.quieto .estado::before{animation:none}
+
+/* cabecera */
+.top{position:sticky;top:0;z-index:50;padding-top:env(safe-area-inset-top,0);background:rgba(8,9,11,.72);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px}
+.marca{display:flex;align-items:center;gap:10px;font:900 16px var(--led);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--ink);text-decoration:none}
+.marca svg{width:26px;height:26px;flex:none}
+.estado{display:inline-flex;align-items:center;gap:9px;font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.estado::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--si);box-shadow:0 0 10px var(--si);animation:latido 2.2s ease-in-out infinite}
+.estado:hover{color:var(--ink)}
+
+/* piezas */
+main{padding:28px 0 72px}
+.btn{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:999px;padding:10px 18px;text-decoration:none;transition:border-color .2s,box-shadow .2s}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700}
+.btn.primary:hover{box-shadow:0 0 0 5px rgba(238,238,232,.12),0 0 30px rgba(238,238,232,.2)}
+.linklike{appearance:none;background:none;border:0;padding:0;font:500 14px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.chart{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:clamp(18px,3.5vw,28px);display:grid;gap:14px;align-content:start;min-width:0;
+  box-shadow:0 30px 90px -40px rgba(0,0,0,.85)}
+.chart h3{font-size:19px}
+.sec{display:grid;gap:14px;padding-top:36px}
+.sec-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.sec-h h2{font-size:24px}
+.sec-h p{margin:0;color:var(--muted);font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none;box-shadow:0 0 10px currentColor}
+.avatar{position:relative;width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font:600 13px var(--sans);color:#fff;overflow:hidden}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;background:var(--sunk)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.kpi b{font:900 40px/.9 var(--led);font-variant-numeric:tabular-nums}
+.kpi span{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.exp-grupos{display:grid;gap:8px}
+.exp-g{display:grid;grid-template-columns:auto 170px 1fr auto;align-items:center;gap:10px;font-size:14px}
+.trk{height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.trk i{display:block;height:100%;border-radius:4px}
+
+/* ¿Quién lo dijo? */
+.qld{display:grid;gap:18px;max-width:820px;margin:0 auto;min-width:0}
+.qld-hero{display:grid;gap:16px;padding:36px 0 6px}
+.qld-h{font:900 clamp(46px,9.5vw,112px)/.9 var(--led);letter-spacing:.01em;text-transform:uppercase;text-shadow:0 0 40px rgba(238,238,232,.3)}
+.qld-h .q{color:var(--si);text-shadow:0 0 44px rgba(57,217,138,.45)}
+.qld-hero>p{margin:0;color:color-mix(in srgb,var(--ink) 84%,var(--muted));max-width:56ch;font-size:clamp(16px,1.6vw,18px);line-height:1.5}
+.qld-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.qld-top{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.qld-pips{display:flex;gap:5px}
+.qld-pips i{width:clamp(14px,4vw,26px);height:6px;border-radius:3px;background:var(--line-strong)}
+.qld-pips i.act{background:var(--ink);box-shadow:0 0 10px rgba(238,238,232,.5)}
+.qld-pips i.verde,.qld-cuadros i.verde,.qld-lista i.verde{background:var(--si);box-shadow:0 0 12px var(--si)}
+.qld-pips i.ambar,.qld-cuadros i.ambar,.qld-lista i.ambar{background:var(--abst);box-shadow:0 0 12px var(--abst)}
+.qld-pips i.rojo,.qld-cuadros i.rojo,.qld-lista i.rojo{background:var(--no);box-shadow:0 0 12px var(--no)}
+.qld-pts{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.qld-pts b{font:900 22px var(--led);color:var(--ink);letter-spacing:0}
+.qld-card{gap:20px;box-shadow:0 30px 90px -30px rgba(0,0,0,.85),0 0 60px -30px rgba(57,217,138,.35)}
+.qld-cita{margin:0;font-weight:600;font-size:clamp(21px,3vw,30px);line-height:1.28;letter-spacing:-.025em;text-wrap:pretty}
+.qld-ctx{margin:-10px 0 0;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.qld-ops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.qld-ops.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.qld-op{appearance:none;cursor:pointer;display:flex;align-items:center;gap:11px;text-align:left;font:600 15.5px var(--sans);color:var(--ink);background:var(--sunk);min-width:0;
+  border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;min-height:58px;transition:border-color .15s,transform .15s,box-shadow .15s}
+.qld-op>span:not(.dot):not(.avatar){min-width:0;overflow-wrap:anywhere}
+.qld-op:hover:not([disabled]){border-color:var(--ink);transform:translateY(-1px)}
+.qld-op kbd{margin-left:auto;font:500 11px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.qld-op.ok{border-color:var(--si);box-shadow:inset 0 0 0 2px var(--si),0 0 26px -6px var(--si)}
+.qld-op.ko{border-color:var(--no);box-shadow:inset 0 0 0 2px var(--no)}
+.qld-op[disabled]{cursor:default}
+.qld-op[disabled]:not(.ok):not(.ko){opacity:.32}
+.qld-op .avatar{width:38px;height:38px;font-size:12px}
+.qld-msg{margin:0;font-size:16px;line-height:1.5}
+.qld-msg .ok{color:var(--si)} .qld-msg .ko{color:var(--no)}
+.qld-quien{display:flex;gap:14px;align-items:center}
+.qld-quien .avatar{width:58px;height:58px;font-size:16px}
+.qld-sig{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.qld-fin{justify-items:center;text-align:center;padding:32px 20px;gap:12px}
+.qld-fin h2{font-size:clamp(24px,4vw,32px)}
+.qld-fin>p{margin:0;color:var(--muted);max-width:46ch}
+.qld-num{font:900 clamp(84px,15vw,150px)/.82 var(--led);font-variant-numeric:tabular-nums;text-shadow:-.03em 0 rgba(255,0,80,.5),.03em 0 rgba(0,229,255,.5),0 0 34px rgba(255,255,255,.3)}
+.qld-num small{font-size:.38em;color:var(--muted);text-shadow:none}
+.qld-cuadros{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.qld-cuadros i{width:26px;height:26px;border-radius:6px;background:var(--line-strong)}
+.qld-hecho{display:grid;gap:12px;justify-items:start}
+.qld-hecho .qld-cuadros{justify-content:flex-start}
+.qld-reglas{margin:0;padding-left:18px;font-size:14.5px;display:grid;gap:7px;line-height:1.45;color:color-mix(in srgb,var(--ink) 86%,var(--muted))}
+.qld-reglas kbd{font:500 11px var(--mono);border:1px solid var(--line-strong);border-radius:4px;padding:0 5px}
+.qld-lista{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.qld-lista li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start}
+.qld-lista li>i{width:14px;height:14px;border-radius:3px;margin-top:6px;background:var(--line-strong);grid-row:span 2}
+.qld-lista blockquote{margin:0;font-weight:600;font-size:16.5px;line-height:1.4;letter-spacing:-.015em}
+.qld-lista .nota .dot{width:8px;height:8px;margin-right:6px;vertical-align:1px}
+.qld-mas{width:100%;margin-top:8px;border-top:1px solid var(--line);padding-top:20px;text-align:left;display:grid;gap:10px}
+.qld-mas b{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--si)}
+.qld-mas ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:14.5px;color:color-mix(in srgb,var(--ink) 84%,var(--muted))}
+.qld-mas li{display:flex;gap:10px}
+.qld-mas li::before{content:"";flex:none;width:7px;height:7px;margin-top:8px;border-radius:2px;background:var(--si);box-shadow:0 0 8px var(--si)}
+.qld-mas p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.qld-mas p a{font-weight:600}
+#aviso{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:600;
+  transition:opacity .2s,transform .2s;pointer-events:none;z-index:70;max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#aviso.visible{opacity:1;transform:translate(-50%,0)}
+html:not(.quieto) .qld-card.bien{animation:qld-bien .5s ease}
+html:not(.quieto) .qld-card.mal{animation:qld-mal .4s ease}
+html:not(.quieto) .qld-fin .qld-cuadros i{animation:qld-cuadro .4s cubic-bezier(.2,1.6,.4,1) backwards}
+html:not(.quieto) .qld-hero>*{animation:entra .8s cubic-bezier(.2,.8,.2,1) backwards}
+html:not(.quieto) .qld-hero>:nth-child(2){animation-delay:.07s} html:not(.quieto) .qld-hero>:nth-child(3){animation-delay:.14s} html:not(.quieto) .qld-hero>:nth-child(4){animation-delay:.21s}
+@keyframes qld-bien{35%{transform:scale(1.012)}}
+@keyframes qld-mal{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes qld-cuadro{from{transform:scale(.2);opacity:0}}
+@keyframes entra{from{opacity:0;transform:translateY(22px)}}
+
+/* quién está detrás */
+.autor{padding:44px 0;border-top:1px solid var(--line)}
+.autor .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 40px}
+.autor p{margin:0;max-width:52ch;font-size:14px;line-height:1.5;color:var(--muted)}
+.autor p b{color:var(--ink);font-weight:600}
+.redes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.redes a{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;
+  font:500 12.5px var(--sans);color:var(--muted);text-decoration:none;transition:color .2s,border-color .2s,box-shadow .2s}
+.redes a:hover,.redes a:focus-visible{color:var(--ink);border-color:var(--line-strong);box-shadow:0 0 18px -6px rgba(57,217,138,.5)}
+.redes svg{width:15px;height:15px;flex:none}
+footer{padding:28px 0 32px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--ink)}
+@media (max-width:640px){ .exp-g{grid-template-columns:auto 1fr auto;} .exp-g .trk{grid-column:1/-1;order:3} }
+@media (max-width:560px){ .qld-ops,.qld-ops.tres{grid-template-columns:minmax(0,1fr)} .qld-op kbd{display:none} .top .wrap{min-height:54px} .marca{font-size:13px} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="/" aria-label="Escaño Abierto, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true">{{SIMBOLO}}</svg>
+      <span aria-hidden="true">Escaño Abierto</span>
+    </a>
+    <a class="estado" href="/">Muy pronto</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="quien-lo-dijo" aria-live="polite"><p class="nota" style="text-align:center;padding:30vh 0">Cargando las frases…</p></div>
+</main>
+
+<section class="autor" aria-label="Quién está detrás">
+  <div class="wrap">
+    <p>Un proyecto independiente de <b>Jorge Garcelán</b> (<a href="https://x.com/jgarcelan" target="_blank" rel="noopener">@jgarcelan</a>), investigador en inteligencia artificial. Sigue el proyecto en X, en <a href="https://x.com/escanoabierto" target="_blank" rel="noopener">@escanoabierto</a>: ahí avisaremos del lanzamiento.</p>
+    <ul class="redes">
+      <li><a href="https://x.com/escanoabierto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@escanoabierto</a></li>
+      <li><a href="https://x.com/jgarcelan" target="_blank" rel="noopener me"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@jgarcelan</a></li>
+      <li><a href="https://jorgegarcelan.com" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.7 1.8 2.5 3.9 2.5 6.2S9.7 12.4 8 14.2C6.3 12.4 5.5 10.3 5.5 8S6.3 3.6 8 1.8z"/></svg>jorgegarcelan.com</a></li>
+      <li><a href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener me"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2.4"/><path d="M5.2 7v4.3M5.2 4.9v.01M7.8 11.3V7M7.8 9c0-1.3.8-2 1.8-2s1.7.7 1.7 2v2.3"/></svg>LinkedIn</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Jorge Garcelán · No está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.</span>
+    <a href="/aviso-legal/">Aviso legal y privacidad</a>
+  </div>
+</footer>
+
+<script type="application/json" id="datos">{{DATOS}}</script>
+<script>
+// El juego de la web completa, tal cual: las mismas citas, el mismo reto del día (fijado en el build) y las
+// mismas estadísticas en este navegador (escano-qld), que seguirán ahí cuando se abra la web.
+(function(){
+"use strict";
+const D = JSON.parse(document.getElementById("datos").textContent);
+const $ = s => document.querySelector(s);
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_LARGOS = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const hoyISO = () => iso(new Date());
+const ayerISO = () => { const d=new Date(); d.setDate(d.getDate()-1); return iso(d); };
+const fechaCorta = f => { const [y,m,d]=f.split("-").map(Number); return `${d} ${MESES[m-1]} ${y}`; };
+const diaMes = f => { const [,m,d]=f.split("-").map(Number); return `${d} de ${MESES_LARGOS[m-1]}`; };
+const expPct = (a,n) => n ? Math.round(a/n*100) : 0;
+const sinTildes = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const color = g => D.grupos[g]?.[1] || "#8A8F98";
+const gdot = g => `<span class="dot" style="background:${color(g)};color:${color(g)}"></span>`;
+const iniciales = n => n.split(/[\s-]+/).filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+const urlDiario = s => { const t = s.split("-")[2]; return `https://www.congreso.es/public_oficiales/L15/CONG/DS/${t}/${s}.PDF`; };
+function aviso(texto){ let t=document.getElementById("aviso"); if(!t){ t=document.createElement("div"); t.id="aviso"; t.setAttribute("role","status"); document.body.appendChild(t); }
+  t.textContent=texto; t.classList.add("visible"); clearTimeout(aviso.t); aviso.t=setTimeout(()=>t.classList.remove("visible"), 2400); }
+
+const GRUPOS_JUEGO = ["PSOE","PP","VOX","SUMAR","ERC","JUNTS","BILDU","PNV","GOB"];
+const QLD_N = 10, QLD_CLAVE = "escano-qld";
+const qld = {fase:"inicio", modo:null, rondas:[], k:0, efecto:""};
+let QLD_CITAS = null, QLD_RETOS = {};
+const qldGrupo = g => g==="GOB" ? "Gobierno" : D.grupos[g]?.[0] || g;
+function azar(semilla){   // mulberry32: el mismo reto en todos los navegadores (y en la web)
+  let a = 2166136261;
+  for (const ch of String(semilla)) a = Math.imul(a ^ ch.charCodeAt(0), 16777619);
+  return () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+const barajar = (xs, r) => { const a=xs.slice(); for (let i=a.length-1; i>0; i--){ const j=Math.floor(r()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+function qldLeer(){ try{ return JSON.parse(localStorage.getItem(QLD_CLAVE)) || {}; }catch(e){ return {}; } }
+function qldGuardar(x){ try{ localStorage.setItem(QLD_CLAVE, JSON.stringify(x)); }catch(e){} }
+const qldColor = r => r.g==null ? "" : r.g!==r.c[2] ? "rojo" : r.p===r.c[1] ? "verde" : "ambar";
+const qldAciertos = rs => rs.filter(r=>r.g===r.c[2]).length;
+const qldExtra = rs => rs.filter(r=>r.p===r.c[1]).length;
+const qldNombre = o => D.oradores[o]?.[0] || o;
+const qldCara = (o, g) => { const x = D.oradores[o];
+  return `<span class="avatar" style="background:${color(g)}">${esc(iniciales(qldNombre(o)))}${x?.[1] ? `<img src="https://www.congreso.es/docu/imgweb/diputados/${x[1]}_15.jpg" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}</span>`; };
+const qldDonde = (s, f) => `${/-PL-/.test(s) ? "En el Pleno" : "En una comisión"} · ${MESES_LARGOS[+f.slice(5,7)-1]} de ${f.slice(0,4)}`;
+const QLD_TITULOS = [
+  [10, "Oído de taquígrafo", "No se te escapa una: como quien escribe el Diario de Sesiones."],
+  [8, "Abonado a la tribuna", "Reconoces a casi todos por cómo hablan."],
+  [6, "Sigues los plenos", "Distingues bien a los grupos, aunque alguno te despista."],
+  [3, "Te suena el hemiciclo", "Más difícil de lo que parece, ¿verdad? Se parecen más de lo que dicen."],
+  [0, "Primer día en el Congreso", "Todos los grupos dicen cosas que podría decir otro."],
+];
+const MAS = `<div class="qld-mas"><b>Un adelanto de Escaño Abierto</b><ul>
+    <li>La web que cuenta lo que se hace en el Congreso con sus propios datos: qué se vota, quién lo decide y cómo vota cada diputado.</li>
+    <li>Cada frase, con su sesión entera: el debate, las votaciones y el voto de los 350 escaños.</li>
+    <li>Tus estadísticas y tu racha de este juego te esperarán allí.</li></ul>
+    <p>Avisaremos del lanzamiento en <a href="https://x.com/escanoabierto" target="_blank" rel="noopener">@escanoabierto</a>. <a href="/">Ver el tráiler →</a></p></div>`;
+
+function qldPartida(modo){ Object.assign(qld, {fase:"grupo", modo, rondas:qldRondas(modo), k:0, efecto:""}); }
+function qldRondas(modo){
+  // El reto del día viene fijado desde el build (explora-retos.json) y no cambia aunque entren frases nuevas; si
+  // falta, se calcula aquí con la fecha como semilla.
+  const fijo = modo==="dia" && QLD_RETOS[hoyISO()];
+  if (fijo) return fijo.map(x=>({c:x.c, grupos:x.grupos, personas:x.personas, g:null, p:null}));
+  const C = QLD_CITAS || [], r = modo==="dia" ? azar("qld-"+hoyISO()) : Math.random;
+  // Una persona, una clave: el Diario a veces escribe el mismo nombre de dos formas («Álvaro Vidal» y «Alvaro
+  // Vidal», «Madrenas i Mir» y «Marta Madrenas i Mir»). La web y la teaser lo hacen igual: el reto sale idéntico.
+  const clave = o => sinTildes(qldNombre(o)).replace(/\s+/g," ").trim();
+  const oradores = {};
+  C.forEach(c=>{ const m = oradores[c[2]] ||= new Map(); if (!m.has(clave(c[1]))) m.set(clave(c[1]), c[1]); });
+  const rondas = [], vistos = new Set(), porGrupo = {};
+  for (const c of barajar(C, r)){
+    if (rondas.length===QLD_N) break;
+    if (vistos.has(clave(c[1])) || (porGrupo[c[2]]||0)>=2) continue;   // variedad: nadie repite y como mucho dos por grupo
+    vistos.add(clave(c[1])); porGrupo[c[2]] = (porGrupo[c[2]]||0)+1;
+    const grupos = barajar([c[2], ...barajar(GRUPOS_JUEGO.filter(g=>g!==c[2]), r).slice(0,3)], r);
+    const personas = barajar([c[1], ...barajar([...oradores[c[2]]].filter(([k])=>k!==clave(c[1])).map(([,o])=>o), r).slice(0,2)], r);
+    rondas.push({c, grupos, personas, g:null, p:null});
+  }
+  return rondas;
+}
+function qldCerrar(){
+  const st = qldLeer(), rs = qld.rondas, ok = qldAciertos(rs), extra = qldExtra(rs);
+  st.partidas = (st.partidas||0)+1;
+  st.mejor = Math.max(st.mejor||0, ok+extra);
+  st.grupos ||= {};
+  rs.forEach(r=>{ const x = st.grupos[r.c[2]] ||= [0,0]; x[1]++; if (r.g===r.c[2]) x[0]++; });
+  if (qld.modo==="dia" && st.dia?.fecha!==hoyISO()){
+    st.racha = st.dia?.fecha===ayerISO() ? (st.racha||0)+1 : 1;
+    st.rachaMax = Math.max(st.rachaMax||0, st.racha);
+    st.dia = {fecha:hoyISO(), colores:rs.map(qldColor), ok, extra};
+  }
+  qldGuardar(st);
+  window.va?.("event", {name:"quien-lo-dijo", data:{modo:qld.modo, aciertos:ok}});
+}
+function qldTextoCompartir(colores, ok, extra, modo, fecha){
+  const emoji = {verde:"🟩", ambar:"🟨", rojo:"🟥"};
+  return `¿Quién lo dijo? · ${modo==="dia" ? `Reto del ${diaMes(fecha)}` : "Partida libre"}\n${colores.map(c=>emoji[c]||"⬜").join("")}\n${ok}/${QLD_N} grupos · ${extra} ${extra===1?"persona":"personas"}\n¿Tú cuántas aciertas? @escanoabierto ${location.origin}/quien-lo-dijo/`;
+}
+async function qldCompartir(texto){
+  if (navigator.share && matchMedia("(pointer:coarse)").matches){ try{ await navigator.share({text:texto}); return; }catch(e){ if (e.name==="AbortError") return; } }
+  try{ await navigator.clipboard.writeText(texto); aviso("Resultado copiado: pégalo donde quieras"); }catch(e){ aviso(texto); }
+}
+const cuadros = colores => `<div class="qld-cuadros" role="img" aria-label="${colores.filter(c=>c!=="rojo").length} de ${colores.length} acertadas">${colores.map((c,i)=>`<i class="${c}" style="animation-delay:${i*70}ms"></i>`).join("")}</div>`;
+
+function qldInicio(){
+  const st = qldLeer(), hoy = hoyISO(), hecho = st.dia?.fecha===hoy ? st.dia : null;
+  const racha = st.dia && [hoy, ayerISO()].includes(st.dia.fecha) ? st.racha||0 : 0;
+  const grupos = Object.entries(st.grupos||{}).filter(([g,[,n]])=>D.grupos[g] && n).sort((a,b)=>b[1][0]/b[1][1]-a[1][0]/a[1][1]);
+  const stats = st.partidas ? `<section class="sec"><div class="sec-h"><h2>Tus partidas</h2><p>Se guardan solo en este navegador.</p></div>
+      <div class="kpis"><div class="kpi"><b>${st.partidas}</b><span>${st.partidas===1?"partida":"partidas"}</span></div><div class="kpi"><b>${racha}</b><span>${racha===1?"día seguido":"días seguidos"} con el reto</span></div><div class="kpi"><b>${st.rachaMax||0}</b><span>mejor racha</span></div><div class="kpi"><b>${st.mejor||0}</b><span>mejor puntuación (de ${QLD_N*2})</span></div></div>
+      ${grupos.length?`<div class="chart"><h3>A quién reconoces mejor</h3><div class="exp-grupos">${grupos.map(([g,[a,n]])=>`<div class="exp-g">${gdot(g)}<span>${esc(qldGrupo(g))}</span><span class="trk"><i style="width:${(a/n*100).toFixed(1)}%;background:${color(g)}"></i></span><span class="num">${expPct(a,n)} %<small class="nota"> de ${n}</small></span></div>`).join("")}</div></div>`:""}</section>` : "";
+  return `<div class="qld">
+    <div class="qld-hero">
+      <span class="ojo">El juego de Escaño Abierto · adelanto</span>
+      <h1 class="qld-h">¿Quién lo <span class="q">dijo?</span></h1>
+      <p>${QLD_N} frases dichas en el Congreso esta legislatura, copiadas tal cual del Diario de Sesiones. Adivina de qué grupo es quien habla y, si aciertas, gana un punto extra diciendo quién es.</p>
+      ${hecho ? `<div class="chart qld-hecho"><span class="eyebrow">Reto del ${diaMes(hoy)} · hecho</span>${cuadros(hecho.colores)}
+          <p class="qld-msg"><b>${hecho.ok}/${QLD_N}</b> grupos y <b>${hecho.extra}</b> ${hecho.extra===1?"persona":"personas"}.${racha>1?` Llevas ${racha} días seguidos.`:""} Mañana hay un reto nuevo.</p>
+          <div class="qld-cta"><button class="btn primary" data-qld="compartir-dia">Compartir resultado</button><button class="btn" data-qld="libre">Partida libre</button></div></div>`
+        : `<div class="qld-cta"><button class="btn primary" data-qld="dia">Jugar el reto de hoy</button><button class="btn" data-qld="libre">Partida libre</button>${racha?`<span class="nota">Racha: ${racha} ${racha===1?"día":"días"}</span>`:""}</div>`}
+    </div>
+    <div class="chart"><h3>Cómo se juega</h3><ul class="qld-reglas">
+      <li>Lee la frase y elige el grupo de quien la dijo entre cuatro. El Gobierno cuenta como un grupo más.</li>
+      <li>Si aciertas el grupo, elige quién la dijo entre tres personas de ese grupo: <b>punto extra</b>.</li>
+      <li>🟩 grupo y persona · 🟨 solo el grupo · 🟥 fallo. El <b>reto del día</b> es igual para todos: compara tu resultado.</li>
+      <li>Con teclado: <kbd>1</kbd>–<kbd>4</kbd> para responder e <kbd>Intro</kbd> para seguir.</li>
+    </ul><p class="nota">Las frases salen de las intervenciones analizadas y solo se usan si aparecen literalmente en el Diario de Sesiones. Se quitan las que nombran al propio partido, para que no sea trivial.</p></div>
+    ${stats}</div>`;
+}
+function qldRonda(){
+  const R = qld.rondas[qld.k], [cita, orador, g, s, f] = R.c, fase = qld.fase;
+  const pips = qld.rondas.map((r,i)=>`<i class="${i===qld.k && fase==="grupo" ? "act" : qldColor(r)}"></i>`).join("");
+  const pts = qldAciertos(qld.rondas) + qldExtra(qld.rondas);
+  let cuerpo;
+  if (fase==="grupo") cuerpo = `<div class="qld-ops" role="group" aria-label="¿De qué grupo es?">${R.grupos.map((o,i)=>`<button class="qld-op" data-qld-g="${o}">${gdot(o)}<span>${esc(qldGrupo(o))}</span><kbd>${i+1}</kbd></button>`).join("")}</div>`;
+  else {
+    const ops = R.grupos.map(o=>`<button class="qld-op${o===g?" ok":o===R.g?" ko":""}" disabled>${gdot(o)}<span>${esc(qldGrupo(o))}</span></button>`).join("");
+    if (fase==="persona") cuerpo = `<p class="qld-msg" role="status"><b class="ok">¡Bien!</b> Es ${g==="GOB"?"del Gobierno":`de ${esc(qldGrupo(g))}`}. Punto extra: <b>¿quién lo dijo?</b></p>
+      <div class="qld-ops tres" role="group" aria-label="¿Quién lo dijo?">${R.personas.map((o,i)=>`<button class="qld-op" data-qld-p="${esc(o)}">${qldCara(o,g)}<span>${esc(qldNombre(o))}</span><kbd>${i+1}</kbd></button>`).join("")}</div>
+      <div class="qld-sig"><span></span><button class="linklike" data-qld-p="">No lo sé</button></div>`;
+    else {
+      const bienG = R.g===g, bienP = R.p===orador;
+      const titulo = !bienG ? `<b class="ko">No.</b> ` : bienP ? `<b class="ok">¡Pleno!</b> ` : R.p ? `<b class="ok">Grupo, sí.</b> La persona, no. ` : `<b class="ok">Grupo, sí.</b> `;
+      cuerpo = `<div class="qld-ops">${ops}</div>
+        <div class="qld-quien" role="status">${qldCara(orador,g)}<p class="qld-msg">${titulo}Lo dijo <b>${esc(qldNombre(orador))}</b> (${esc(qldGrupo(g))}) el ${fechaCorta(f)}.</p></div>
+        <div class="qld-sig"><a class="linklike" href="${urlDiario(s)}" target="_blank" rel="noopener">Diario de Sesiones ↗</a><button class="btn primary" data-qld="sig">${qld.k===QLD_N-1?"Ver resultado":"Siguiente"} →</button></div>`;
+    }
+  }
+  return `<div class="qld" style="padding-top:24px">
+    <div class="qld-top"><span class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}`:"Partida libre"} · frase ${qld.k+1} de ${QLD_N}</span>
+      <span class="qld-pips" aria-hidden="true">${pips}</span><span class="qld-pts"><b>${pts}</b> ${pts===1?"punto":"puntos"}</span></div>
+    <div class="chart qld-card ${qld.efecto}"><blockquote class="qld-cita">«${esc(cita)}»</blockquote><p class="qld-ctx">${qldDonde(s,f)}</p>${cuerpo}</div>
+    <div class="qld-sig"><button class="linklike" data-qld="salir">Salir de la partida</button></div></div>`;
+}
+function qldFin(){
+  const rs = qld.rondas, ok = qldAciertos(rs), extra = qldExtra(rs);
+  const [, titulo, frase] = QLD_TITULOS.find(([min])=>ok>=min);
+  const lista = rs.map(r=>{ const [cita,orador,g,s,f]=r.c;
+    return `<li><i class="${qldColor(r)}"></i><blockquote>«${esc(cita)}»</blockquote>
+      <span class="nota">${gdot(g)}${esc(qldNombre(orador))} · ${esc(qldGrupo(g))} · ${fechaCorta(f)}${r.g!==g?` · dijiste ${esc(qldGrupo(r.g))}`:""} · <a href="${urlDiario(s)}" target="_blank" rel="noopener">Diario de Sesiones ↗</a></span></li>`; }).join("");
+  return `<div class="qld" style="padding-top:24px">
+    <div class="chart qld-fin"><span class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}`:"Partida libre"}</span>
+      <div class="qld-num">${ok}<small>/${QLD_N}</small></div>
+      <p>grupos acertados${extra?`, y ${extra} ${extra===1?"persona":"personas"} de punto extra`:""}</p>
+      ${cuadros(rs.map(qldColor))}
+      <h2>${titulo}</h2><p>${frase}</p>
+      <div class="qld-cta" style="justify-content:center"><button class="btn primary" data-qld="compartir">Compartir resultado</button><button class="btn" data-qld="libre">Otra partida</button><button class="btn" data-qld="inicio">Tus estadísticas</button></div>
+      ${MAS}</div>
+    <section class="sec"><div class="sec-h"><h2>Las ${QLD_N} frases</h2><p>Cada una enlaza a su Diario de Sesiones oficial.</p></div><div class="chart"><ol class="qld-lista">${lista}</ol></div></section></div>`;
+}
+function pintarQld(foco){
+  const el = $("#quien-lo-dijo");
+  el.innerHTML = qld.fase==="inicio" ? qldInicio() : qld.fase==="fin" ? qldFin() : qldRonda();
+  qld.efecto = "";
+  if (foco) el.querySelector(".qld-op:not([disabled]),[data-qld=sig],.qld-fin .btn.primary")?.focus({preventScroll:true});
+}
+
+$("#quien-lo-dijo").addEventListener("click", e=>{
+  const x = e.target.closest("[data-qld],[data-qld-g],[data-qld-p]"); if (!x || x.disabled) return;
+  const d = x.dataset, R = qld.rondas[qld.k];
+  if (d.qldG && qld.fase==="grupo"){ R.g = d.qldG; const bien = R.g===R.c[2]; qld.fase = bien ? "persona" : "visto"; qld.efecto = bien ? "bien" : "mal"; }
+  else if ("qldP" in d && qld.fase==="persona"){ R.p = d.qldP; qld.fase = "visto"; qld.efecto = R.p===R.c[1] ? "bien" : R.p ? "mal" : ""; }
+  else if (d.qld==="sig"){ if (qld.k<QLD_N-1){ qld.k++; qld.fase="grupo"; } else { qld.fase="fin"; qldCerrar(); } window.scrollTo({top:0}); }
+  else if (d.qld==="dia" || d.qld==="libre"){
+    if (d.qld==="dia" && qldLeer().dia?.fecha===hoyISO()) qld.fase="inicio";
+    else qldPartida(d.qld);
+    window.scrollTo({top:0});
+  }
+  else if (d.qld==="salir" || d.qld==="inicio"){ qld.fase="inicio"; }
+  else if (d.qld==="compartir"){ const rs=qld.rondas; qldCompartir(qldTextoCompartir(rs.map(qldColor), qldAciertos(rs), qldExtra(rs), qld.modo, hoyISO())); return; }
+  else if (d.qld==="compartir-dia"){ const h=qldLeer().dia; if (h) qldCompartir(qldTextoCompartir(h.colores, h.ok, h.extra, "dia", h.fecha)); return; }
+  else return;
+  pintarQld(true);
+});
+document.addEventListener("keydown", e=>{
+  if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest("input,select,textarea,[contenteditable]")) return;
+  if (/^[1-4]$/.test(e.key)){ const b = $("#quien-lo-dijo").querySelectorAll(".qld-op:not([disabled])")[+e.key-1]; if (b){ e.preventDefault(); b.click(); } }
+  else if (e.key==="Enter" && qld.fase==="visto" && !e.target.closest("button,a")){ e.preventDefault(); $("#quien-lo-dijo [data-qld=sig]")?.click(); }
+});
+
+Promise.all([fetch("/datos/explora-citas.json").then(r=>r.ok?r.json():[]).catch(()=>[]),
+             fetch("/datos/explora-retos.json").then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([c, retos])=>{
+  QLD_CITAS = (c||[]).filter(x=>GRUPOS_JUEGO.includes(x[2]));
+  QLD_RETOS = retos||{};
+  if (!QLD_CITAS.length){ $("#quien-lo-dijo").innerHTML = `<p class="nota" style="text-align:center;padding:30vh 0">No se han podido cargar las frases. Prueba a recargar la página.</p>`; return; }
+  // ?jugar (desde la portada o el aviso): empieza el reto del día directamente si aún no se ha jugado.
+  if (/[?&]jugar\b/.test(location.search) && qldLeer().dia?.fecha!==hoyISO()) qldPartida("dia");
+  pintarQld(false);
+});
+})();
+</script>
+</body>
+</html>

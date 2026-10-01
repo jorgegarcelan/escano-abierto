@@ -2,7 +2,7 @@
 
 Con ESCANO_MODO=teaser, scripts/vercel-build.sh publica esto en lugar de la web: una sola página con el
 vídeo de presentación, el hemiciclo real (los 350 escaños con su sitio y el voto nominal de una selección de
-votaciones) y cifras de la legislatura, todo sacado de site/datos (versionado). Solo usa la biblioteca estándar. Las URLs que no existen (/votacion/…, /diputado/…) caen en la misma página (404.html).
+votaciones) y cifras de la legislatura, todo sacado de site/datos (versionado), y en /quien-lo-dijo/ el juego completo, como adelanto de la web. Solo usa la biblioteca estándar. Las URLs que no existen (/votacion/…, /diputado/…) caen en la misma página (404.html).
 
     python -m escano.teaser                 # escribe dist-teaser/
     python -m escano.teaser --salida DIR
@@ -26,9 +26,17 @@ MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto
 MESES_CORTOS = [m[:3] for m in MESES]
 AMPLIACIONES_CONGELADOR = 8  # el mismo umbral que «El congelador» en la web
 DESCRIPCION = "¿Quién votó qué? Muy pronto, el Congreso de los Diputados explicado con sus propios datos."
+DESCRIPCION_JUEGO = ("Diez frases literales del Congreso cada día. ¿Sabes de qué grupo es quien habla, y quién es? "
+                     "El juego de Escaño Abierto, como adelanto de la web.")
 N_MONTAJE = 14  # votaciones que pasan por el hemiciclo de la portada
 N_CINTA = 28    # votaciones de la cinta
 N_DOCS = 36     # nombres de fichero que flotan en «miles de PDF»
+# Frases de trámite (cómo se vota, enmiendas, turnos): son literales, pero no enganchan como muestra en la portada.
+TRAMITE = re.compile(r"\bvot(o|a|ar|amos|aremos|ará|aría|ado)\b|enmienda|tramitaci|proposición|moción|iniciativa|señor presidente|"
+                     r"señora presidenta|muchas gracias|\bturno\b|\bdictamen", re.I)
+# Los grupos del juego (los mismos que en la web) y su nombre corto para la muestra de la portada.
+GRUPOS_JUEGO = {"PSOE": "PSOE", "PP": "PP", "VOX": "VOX", "SUMAR": "Sumar", "ERC": "ERC", "JUNTS": "Junts",
+                "BILDU": "EH Bildu", "PNV": "PNV", "GOB": "Gobierno"}
 
 
 def _url_sitio() -> str:
@@ -114,6 +122,48 @@ def escena() -> dict:
             "docs": docs}
 
 
+def _sin_tildes(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn").lower().strip()
+
+
+def _citas() -> list:
+    ruta = SITIO / "datos" / "explora-citas.json"
+    return json.loads(ruta.read_text()) if ruta.exists() else []
+
+
+def datos_juego(citas: list) -> dict:
+    """Lo que el juego necesita además de las citas: el nombre y el color de cada grupo, y el nombre completo y la
+    foto oficial de cada orador cuando sus apellidos identifican a un solo diputado (como en la web)."""
+    indice = json.loads((SITIO / "datos" / "indice.json").read_text())
+    por_apellidos: dict[str, list] = {}
+    for d in indice["diputados"]:
+        por_apellidos.setdefault(_sin_tildes(d[0].partition(", ")[0]), []).append(d)
+    oradores = {}
+    for o in {c[1] for c in citas}:
+        ds = por_apellidos.get(_sin_tildes(o), [])
+        if len(ds) == 1:
+            oradores[o] = [_nombre(ds[0][0]), ds[0][7] if len(ds[0]) > 7 else None]
+    grupos = {g: [indice["grupos"].get(g, {}).get("nombre", g), indice["grupos"].get(g, {}).get("color", "#8A8F98")]
+              for g in GRUPOS_JUEGO}
+    return {"grupos": grupos, "oradores": oradores}
+
+
+def muestra(citas: list, grupos: dict, hoy: date | None = None) -> dict | None:
+    """Una frase para invitar al juego desde la portada, con su grupo y otros tres. Cambia cada día y deja fuera
+    las de trámite (cómo se vota, enmiendas…), que son literales pero no enganchan."""
+    import random
+    hoy = hoy or date.today()
+    buenas = [c for c in citas if c[2] in grupos and 80 <= len(c[0]) <= 170 and not TRAMITE.search(c[0])]
+    if not buenas:
+        return None
+    az = random.Random(hoy.toordinal())
+    cita = buenas[az.randrange(len(buenas))]
+    elegidos = [cita[2], *az.sample([g for g in grupos if g != cita[2]], 3)]
+    az.shuffle(elegidos)
+    return {"cita": cita[0], "grupos": [[GRUPOS_JUEGO[g], grupos[g][1]] for g in elegidos]}
+
+
 def _simbolo() -> str:
     """Los escaños del favicon de la marca, sin el fondo, para la cabecera."""
     svg = (SITIO / "marcas" / "marcador-favicon.svg").read_text()
@@ -122,6 +172,8 @@ def _simbolo() -> str:
 
 def construir(salida: Path) -> dict:
     c = cifras()
+    citas = _citas()
+    juego_datos = datos_juego(citas)
     html = (FUENTE / "index.html").read_text()
     for clave, valor in {
         "URL": _url_sitio(), "DESCRIPCION": DESCRIPCION, "SIMBOLO": _simbolo(), "FECHA": c["fecha"],
@@ -130,7 +182,7 @@ def construir(salida: Path) -> dict:
         "APROBADAS": str(c["aprobadas"]), "APROBADAS_TXT": _numero(c["aprobadas"]),
         "INICIATIVAS_TXT": _numero(c["iniciativas"]), "INICIATIVAS": str(c["iniciativas"]),
         # Dentro de <script>: «</» cortaría el bloque.
-        "ESCENA": json.dumps({**escena(), "cifras": c}, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"),
+        "ESCENA": json.dumps({**escena(), "cifras": c, "muestra": muestra(citas, juego_datos["grupos"])}, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/"),
     }.items():
         html = html.replace("{{" + clave + "}}", valor)
     if "{{" in html:
@@ -140,13 +192,28 @@ def construir(salida: Path) -> dict:
     if "{{" in aviso:
         raise SystemExit("teaser: marcador sin rellenar en aviso-legal.html")
 
+    # El juego, en su propia página (la misma dirección que tendrá en la web completa).
+    juego = (FUENTE / "quien-lo-dijo.html").read_text()
+    for clave, valor in {"URL": _url_sitio(), "SIMBOLO": _simbolo(), "DESCRIPCION_JUEGO": DESCRIPCION_JUEGO,
+                         "DATOS": json.dumps(juego_datos, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")}.items():
+        juego = juego.replace("{{" + clave + "}}", valor)
+    if "{{" in juego:
+        raise SystemExit("teaser: marcador sin rellenar en quien-lo-dijo.html")
+
     if salida.exists():
         shutil.rmtree(salida)
     (salida / "aviso-legal").mkdir(parents=True)
+    (salida / "quien-lo-dijo").mkdir()
+    (salida / "quien-lo-dijo" / "index.html").write_text(juego)
+    # Las citas, en la misma ruta que en la web: el reto del día sale igual en las dos.
+    (salida / "datos").mkdir()
+    for nombre in ("explora-citas.json", "explora-retos.json"):
+        if (SITIO / "datos" / nombre).exists():
+            shutil.copy2(SITIO / "datos" / nombre, salida / "datos" / nombre)
     (salida / "index.html").write_text(html)
     (salida / "404.html").write_text(html)
     (salida / "aviso-legal" / "index.html").write_text(aviso)
-    for nombre in ("teaser.mp4", "poster.jpg", "og.png"):
+    for nombre in ("teaser.mp4", "poster.jpg", "og.png", "og-quien-lo-dijo.png"):
         shutil.copy2(FUENTE / nombre, salida / nombre)
     shutil.copy2(SITIO / "marcas" / "marcador-favicon.svg", salida / "favicon.svg")
     (salida / "robots.txt").write_text("User-agent: *\nAllow: /\n")
