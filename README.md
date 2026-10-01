@@ -14,6 +14,7 @@ El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabr
 
 **Acercarte**
 - Encontrar a **tus diputados** por provincia: cómo votan, cuándo se apartan de su grupo, qué preguntan al Gobierno y en qué comisiones están.
+- Jugar a **¿Quién lo dijo?**: diez frases literales del Diario de Sesiones para adivinar de qué grupo es quien habla, con un reto nuevo cada día.
 - **Seguir un tema** (vivienda, sanidad, pensiones…) por RSS, incluido lo que se votará en el próximo pleno.
 - Leer **la semana en el Congreso** y ver el **orden del día del próximo pleno**.
 
@@ -22,12 +23,13 @@ El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabr
 - Seguir cada **ley desde que se presenta hasta que se publica**, y las que llevan meses en «el congelador».
 - Ver cuántas **preguntas al Gobierno** siguen sin respuesta y cuánto tarda en contestar.
 - Leer las **declaraciones de actividades e intereses** de cada diputado.
+- Ver el **organigrama del Estado**: quién ocupa cada alto cargo, desde cuándo y con qué Real Decreto, con cada nombramiento y cese enlazado a su BOE y los cargos que ha tenido cada diputado. Inspirado en el [US Gov Graph](https://graph.civlab.org/us) de CivLab.
 
 Cada votación, sesión, ley, diputado, provincia, tema y semana tiene una página para compartir, con su tarjeta, y los más relevantes tienen RSS.
 
 ## Principios
 
-- **Datos oficiales, siempre enlazados.** Todo sale de fuentes públicas del Congreso y cada dato lleva a su documento original.
+- **Datos oficiales, siempre enlazados.** Todo sale de fuentes públicas del Congreso y del BOE, y cada dato lleva a su documento original.
 - **Las mismas reglas para todos.** Los títulos, explicaciones y resúmenes semanales se generan con reglas fijas, iguales para todos los grupos.
 - **IA con garantías.** Cuando interviene un modelo de lenguaje (resúmenes, tono), se indica, y las citas solo se publican si aparecen literalmente en el Diario de Sesiones.
 - **Independiente.** No está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.
@@ -42,7 +44,8 @@ Diarios de Sesiones (PDF)      ─┤
 Tramitación de iniciativas     ─┼─▶  descarga ─▶ data/ ─▶ construir ─▶  datos por mes, páginas para
 Orden del día de los plenos    ─┤    y parser     (versionado)           compartir, RSS y tarjetas
 Preguntas escritas             ─┤
-Declaraciones de intereses     ─┘
+Declaraciones de intereses     ─┤
+BOE: nombramientos y ceses     ─┘
 ```
 
 - Cada mañana, un workflow de GitHub Actions descarga lo nuevo, actualiza `data/` y hace push.
@@ -71,6 +74,7 @@ El repositorio ya incluye los datos de la legislatura, así que no hace falta de
 python -m escano actualizar --sin-ia      # últimos 10 días, agenda, leyes, preguntas y declaraciones
 python -m escano actualizar --desde 2023-08-17 --sin-ia   # toda la XV Legislatura
 python -m escano preguntas --completo     # todas las preguntas escritas (la primera vez)
+python -m escano estado --desde 2018-06-01   # nombramientos y ceses de altos cargos en el BOE (organigrama)
 python -m escano reprocesar --sin-ia      # rehace sesiones y votaciones desde data/raw, sin red
 python -m escano calidad                  # indicadores de calidad del parser
 python -m pytest                          # tests, sin red ni API

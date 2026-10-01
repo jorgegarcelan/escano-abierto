@@ -45,9 +45,9 @@ html[data-marca="bento"] .topbar-in{min-height:68px}
 html[data-marca="bento"] .brand .logo{-webkit-mask:none;mask:none;background:url(bento.svg) center/contain no-repeat;height:32px;aspect-ratio:1}
 html[data-marca="bento"] .brand .nombre{display:inline;font-weight:800;font-size:19px;letter-spacing:-.035em}
 html[data-marca="bento"] nav.tabs{align-self:center;background:var(--surface);border-radius:999px;padding:4px;gap:2px;box-shadow:var(--sombra)}
-html[data-marca="bento"] nav.tabs button{border:0;border-radius:999px;padding:7px 14px;font-weight:600;font-size:13.5px;color:var(--muted);transition:background .15s,color .15s}
-html[data-marca="bento"] nav.tabs button:hover{color:var(--ink)}
-html[data-marca="bento"] nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+html[data-marca="bento"] nav.tabs>button{border:0;border-radius:999px;padding:7px 14px;font-weight:600;font-size:13.5px;color:var(--muted);transition:background .15s,color .15s}
+html[data-marca="bento"] nav.tabs>button:hover{color:var(--ink)}
+html[data-marca="bento"] nav.tabs>button.activa{background:var(--ink);color:var(--bg)}
 html[data-marca="bento"] .periodo-bar{padding-top:18px}
 html[data-marca="bento"] .periodo-bar label{text-transform:none;letter-spacing:0;font-weight:700;font-size:13px}
 html[data-marca="bento"] .periodo-bar select{border:0;border-radius:999px;background:var(--surface);padding:7px 14px;font-weight:600;box-shadow:var(--sombra)}

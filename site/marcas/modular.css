@@ -47,8 +47,8 @@ html[data-marca="modular"] .brand .logo{-webkit-mask:none;mask:none;background:u
 @media (prefers-color-scheme: dark){ html[data-marca="modular"]:not([data-theme="light"]) .brand .logo{filter:invert(1) hue-rotate(180deg)} }
 html[data-marca="modular"][data-theme="dark"] .brand .logo{filter:invert(1) hue-rotate(180deg)}
 html[data-marca="modular"] .brand .nombre{display:inline;font-weight:900;font-size:20px;letter-spacing:-.05em}
-html[data-marca="modular"] nav.tabs button{border:0;font-weight:600;font-size:14px;padding:0 10px;display:inline-flex;align-items:center;gap:7px}
-html[data-marca="modular"] nav.tabs button[aria-selected="true"]::before{content:"";width:8px;height:8px;background:var(--modulo)}
+html[data-marca="modular"] nav.tabs>button{border:0;font-weight:600;font-size:14px;padding:0 10px;display:inline-flex;align-items:center;gap:7px}
+html[data-marca="modular"] nav.tabs>button.activa::before{content:"";width:8px;height:8px;background:var(--modulo)}
 html[data-marca="modular"] .periodo-bar{padding-top:18px;font-family:var(--mono);font-size:11.5px}
 html[data-marca="modular"] .periodo-bar label{font-weight:600}
 html[data-marca="modular"] .periodo-bar select{border:1.5px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:12px}

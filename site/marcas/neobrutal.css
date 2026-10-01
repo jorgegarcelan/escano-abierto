@@ -42,9 +42,9 @@ html[data-marca="neobrutal"] .topbar-in{min-height:70px}
 html[data-marca="neobrutal"] .brand .logo{-webkit-mask:none;mask:none;background:url(neobrutal.svg) center/contain no-repeat;height:34px;aspect-ratio:100/60}
 html[data-marca="neobrutal"] .brand .nombre{display:inline;font-weight:900;font-size:19px;letter-spacing:-.03em}
 html[data-marca="neobrutal"] nav.tabs{gap:6px;align-self:center;padding:4px}
-html[data-marca="neobrutal"] nav.tabs button{border:2.5px solid transparent;border-radius:10px;padding:6px 11px;font-weight:700;color:var(--ink);font-size:14px}
-html[data-marca="neobrutal"] nav.tabs button:hover{border-color:var(--line)}
-html[data-marca="neobrutal"] nav.tabs button[aria-selected="true"]{background:var(--acento);color:#0A0A0A;border-color:#0A0A0A;box-shadow:3px 3px 0 #0A0A0A}
+html[data-marca="neobrutal"] nav.tabs>button{border:2.5px solid transparent;border-radius:10px;padding:6px 11px;font-weight:700;color:var(--ink);font-size:14px}
+html[data-marca="neobrutal"] nav.tabs>button:hover{border-color:var(--line)}
+html[data-marca="neobrutal"] nav.tabs>button.activa{background:var(--acento);color:#0A0A0A;border-color:#0A0A0A;box-shadow:3px 3px 0 #0A0A0A}
 html[data-marca="neobrutal"] .periodo-bar{padding-top:22px}
 html[data-marca="neobrutal"] .periodo-bar label{font-family:var(--mono);letter-spacing:0}
 html[data-marca="neobrutal"] .periodo-bar select{border:2.5px solid var(--line);border-radius:10px;font-weight:700;box-shadow:3px 3px 0 var(--sombra-dura);padding:5px 10px}

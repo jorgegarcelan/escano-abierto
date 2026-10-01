@@ -46,9 +46,9 @@ html[data-marca="senaletica"] .topbar-in{min-height:66px}
 html[data-marca="senaletica"] .brand .logo{-webkit-mask:none;mask:none;background:url(senaletica.svg) center/contain no-repeat;height:34px;aspect-ratio:1}
 html[data-marca="senaletica"] .brand .nombre{display:inline;font-weight:900;font-size:21px;letter-spacing:-.02em}
 html[data-marca="senaletica"] nav.tabs{gap:4px;align-self:center}
-html[data-marca="senaletica"] nav.tabs button{border:0;padding:8px 12px 7px;border-radius:8px;font-weight:700;font-size:14px;color:var(--ink)}
-html[data-marca="senaletica"] nav.tabs button:hover{background:var(--sunk)}
-html[data-marca="senaletica"] nav.tabs button[aria-selected="true"]{background:var(--placa);color:var(--sobre-placa)}
+html[data-marca="senaletica"] nav.tabs>button{border:0;padding:8px 12px 7px;border-radius:8px;font-weight:700;font-size:14px;color:var(--ink)}
+html[data-marca="senaletica"] nav.tabs>button:hover{background:var(--sunk)}
+html[data-marca="senaletica"] nav.tabs>button.activa{background:var(--placa);color:var(--sobre-placa)}
 html[data-marca="senaletica"] .periodo-bar{padding-top:20px;font-weight:600}
 html[data-marca="senaletica"] .periodo-bar label{background:var(--placa);color:var(--sobre-placa);padding:3px 8px 2px;border-radius:5px}
 html[data-marca="senaletica"] .periodo-bar select{border:2px solid var(--line-strong);font-weight:700;border-radius:8px}
