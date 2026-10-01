@@ -42,9 +42,9 @@ html[data-marca="tenebrismo"] .topbar{background:linear-gradient(180deg,rgba(7,6
 html[data-marca="tenebrismo"] .topbar-in{min-height:70px}
 html[data-marca="tenebrismo"] .brand .logo{-webkit-mask:none;mask:none;background:url(tenebrismo.svg) center/contain no-repeat;height:32px;aspect-ratio:100/56}
 html[data-marca="tenebrismo"] .brand .nombre{display:inline;font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;letter-spacing:-.01em}
-html[data-marca="tenebrismo"] nav.tabs button{border-bottom:1px solid transparent;font-weight:500;font-size:13.5px;color:var(--muted)}
-html[data-marca="tenebrismo"] nav.tabs button:hover{color:var(--ink)}
-html[data-marca="tenebrismo"] nav.tabs button[aria-selected="true"]{color:var(--vela);border-bottom-color:var(--vela);text-shadow:0 0 18px rgba(232,194,138,.45)}
+html[data-marca="tenebrismo"] nav.tabs>button{border-bottom:1px solid transparent;font-weight:500;font-size:13.5px;color:var(--muted)}
+html[data-marca="tenebrismo"] nav.tabs>button:hover{color:var(--ink)}
+html[data-marca="tenebrismo"] nav.tabs>button.activa{color:var(--vela);border-bottom-color:var(--vela);text-shadow:0 0 18px rgba(232,194,138,.45)}
 html[data-marca="tenebrismo"] .periodo-bar{padding-top:22px;font-family:var(--mono);font-size:12px}
 html[data-marca="tenebrismo"] .periodo-bar label{color:var(--vela);letter-spacing:.16em}
 html[data-marca="tenebrismo"] .periodo-bar select{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}

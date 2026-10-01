@@ -50,9 +50,9 @@ html[data-marca="marcador"] .topbar-in{min-height:64px}
 html[data-marca="marcador"] .brand .logo{-webkit-mask:none;mask:none;background:url(marcador.svg) center/contain no-repeat;height:36px;aspect-ratio:96/52}
 html[data-marca="marcador"] .brand .nombre{display:inline;font-family:var(--led);font-weight:900;text-transform:uppercase;font-size:19px;letter-spacing:.03em}
 html[data-marca="marcador"] nav.tabs{align-self:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-html[data-marca="marcador"] nav.tabs button{border:0;border-radius:7px;padding:7px 12px;font-size:13.5px;color:var(--muted);transition:background .15s,color .15s}
-html[data-marca="marcador"] nav.tabs button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
-html[data-marca="marcador"] nav.tabs button[aria-selected="true"]{color:var(--bg);background:var(--ink);box-shadow:0 0 16px rgba(238,238,232,.18)}
+html[data-marca="marcador"] nav.tabs>button{border:0;border-radius:7px;padding:7px 12px;font-size:13.5px;color:var(--muted);transition:background .15s,color .15s}
+html[data-marca="marcador"] nav.tabs>button:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+html[data-marca="marcador"] nav.tabs>button.activa{color:var(--bg);background:var(--ink);box-shadow:0 0 16px rgba(238,238,232,.18)}
 html[data-marca="marcador"] .periodo-bar{padding-top:22px;font-family:var(--mono);font-size:12px}
 html[data-marca="marcador"] .periodo-bar select{background:var(--surface);border-color:var(--line-strong);font-family:var(--mono);font-size:12.5px;border-radius:8px;padding:5px 10px}
 

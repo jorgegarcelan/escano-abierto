@@ -43,8 +43,8 @@ html[data-marca="neoclasico"] .topbar::after{content:"";position:absolute;left:0
 html[data-marca="neoclasico"] .topbar-in{min-height:72px}
 html[data-marca="neoclasico"] .brand .logo{-webkit-mask:url(neoclasico.svg) center/contain no-repeat;mask:url(neoclasico.svg) center/contain no-repeat;background:var(--ink);height:34px;aspect-ratio:100/76}
 html[data-marca="neoclasico"] .brand .nombre{display:inline;font-family:var(--display);font-size:17px;letter-spacing:.2em;text-transform:uppercase;font-weight:400}
-html[data-marca="neoclasico"] nav.tabs button{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600;padding:0 9px;border-bottom-width:1px}
-html[data-marca="neoclasico"] nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--bronce)}
+html[data-marca="neoclasico"] nav.tabs>button{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:600;padding:0 9px;border-bottom-width:1px}
+html[data-marca="neoclasico"] nav.tabs>button.activa{color:var(--ink);border-bottom-color:var(--bronce)}
 html[data-marca="neoclasico"] .periodo-bar{justify-content:center;padding-top:22px}
 html[data-marca="neoclasico"] .periodo-bar label{letter-spacing:.24em;color:var(--bronce)}
 html[data-marca="neoclasico"] .periodo-bar select{border-color:var(--line);background:var(--surface)}

@@ -383,6 +383,30 @@ def tarjeta_portada(plano: dict, dips: list) -> "Tarjeta":
     return t
 
 
+def tarjeta_juego(grupos: dict) -> "Tarjeta":
+    """¿Quién lo dijo?: una cita tachada y cuatro grupos para elegir."""
+    t = Tarjeta()
+    t.d.text((64, 170), "¿QUIÉN", font=t.doto(112), fill=TINTA)
+    t.d.text((64, 282), "LO DIJO?", font=t.doto(112), fill=TINTA)
+    t.texto((68, 430), "Frases literales del Congreso. Adivina de qué grupo es quien habla.", t.geist(28, 500),
+            APAGADO, 540, 2, 1.3)
+    x0, x1 = 680, W - 64
+    t.d.text((x0 - 6, 150), "«", font=t.geist(96, 600), fill=TENUE)
+    for k, ancho in enumerate((1, .92, .64)):
+        y = 262 + k * 34
+        t.d.rounded_rectangle([x0, y, x0 + (x1 - x0) * ancho, y + 16], radius=8, fill=LINEA)
+    f = t.geist(22, 600)
+    for k, g in enumerate(("PSOE", "PP", "VOX", "SUMAR")):
+        cx, cy = x0 + (k % 2) * ((x1 - x0) // 2 + 6), 388 + (k // 2) * 72
+        w = (x1 - x0) // 2 - 6
+        t.d.rounded_rectangle([cx, cy, cx + w, cy + 58], radius=10, outline=(58, 63, 72), width=2,
+                              fill=(16, 18, 22))
+        color = _hex(grupos.get(g, {}).get("color", "#888888"))
+        t.d.ellipse([cx + 20, cy + 22, cx + 34, cy + 36], fill=color)
+        t.d.text((cx + 46, cy + 29), g, font=f, fill=TINTA, anchor="lm")
+    return t
+
+
 # ---------------------------------------------------------------- páginas
 
 def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: bool = False) -> bytes:
@@ -584,6 +608,11 @@ def generar(salida: dict, plano: dict) -> dict:
         "Entender lo que se hace en el Congreso: qué se vota, quién lo decide y cómo, con datos oficiales. "
         "Un proyecto independiente de Jorge Garcelán.", "og/portada.png"))
     urls.append("sobre/")
+
+    # ---- el juego
+    poner("quien-lo-dijo", "quien-lo-dijo", "¿Quién lo dijo?",
+          "Diez frases literales dichas en el Congreso esta legislatura. Adivina de qué grupo es quien habla, "
+          "y quién es. Un reto nuevo cada día.", lambda: tarjeta_juego(grupos))
 
     # ---- provincias: los diputados de cada circunscripción
     por_circ: dict[str, list[int]] = {}

@@ -43,8 +43,8 @@ html[data-marca="vineta"] .brand .logo{-webkit-mask:none;mask:none;background:ur
 @media (prefers-color-scheme: dark){ html[data-marca="vineta"]:not([data-theme="light"]) .brand .logo{filter:invert(1)} }
 html[data-marca="vineta"][data-theme="dark"] .brand .logo{filter:invert(1)}
 html[data-marca="vineta"] .brand .nombre{display:inline;font-family:var(--display);font-size:28px;letter-spacing:.03em;text-transform:uppercase;font-weight:400}
-html[data-marca="vineta"] nav.tabs button{font-family:var(--display);font-size:19px;letter-spacing:.05em;text-transform:uppercase;font-weight:400;border-bottom-width:4px;padding:0 10px}
-html[data-marca="vineta"] nav.tabs button[aria-selected="true"]{border-bottom-color:var(--cartela);color:var(--ink)}
+html[data-marca="vineta"] nav.tabs>button{font-family:var(--display);font-size:19px;letter-spacing:.05em;text-transform:uppercase;font-weight:400;border-bottom-width:4px;padding:0 10px}
+html[data-marca="vineta"] nav.tabs>button.activa{border-bottom-color:var(--cartela);color:var(--ink)}
 html[data-marca="vineta"] .periodo-bar{padding-top:22px}
 html[data-marca="vineta"] .periodo-bar label{font-family:var(--serif);font-weight:700;letter-spacing:.04em}
 html[data-marca="vineta"] .periodo-bar select{border:2.5px solid var(--line);font-weight:700}
@@ -126,5 +126,5 @@ html[data-marca="vineta"] footer{border-top:3px solid var(--line)}
 @media (max-width:720px){
   html[data-marca="vineta"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   html[data-marca="vineta"] .brand .nombre{display:none}
-  html[data-marca="vineta"] nav.tabs button{font-size:16px}
+  html[data-marca="vineta"] nav.tabs>button{font-size:16px}
 }

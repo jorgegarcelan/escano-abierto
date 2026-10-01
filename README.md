@@ -14,6 +14,7 @@ El Congreso publica casi todo lo que hace: el voto de cada diputado, cada palabr
 
 **Acercarte**
 - Encontrar a **tus diputados** por provincia: cómo votan, cuándo se apartan de su grupo, qué preguntan al Gobierno y en qué comisiones están.
+- Jugar a **¿Quién lo dijo?**: diez frases literales del Diario de Sesiones para adivinar de qué grupo es quien habla, con un reto nuevo cada día.
 - **Seguir un tema** (vivienda, sanidad, pensiones…) por RSS, incluido lo que se votará en el próximo pleno.
 - Leer **la semana en el Congreso** y ver el **orden del día del próximo pleno**.
 

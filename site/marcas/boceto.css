@@ -47,8 +47,8 @@ html[data-marca="boceto"] .topbar::after{content:"";position:absolute;left:0;rig
 html[data-marca="boceto"] .topbar-in{min-height:66px}
 html[data-marca="boceto"] .brand .logo{-webkit-mask:none;mask:none;background:url(boceto.svg) center/contain no-repeat;height:34px;aspect-ratio:100/58}
 html[data-marca="boceto"] .brand .nombre{display:inline;font-size:30px;font-weight:700}
-html[data-marca="boceto"] nav.tabs button{font-family:"Caveat",cursive;font-size:22px;font-weight:600;border:0;padding:0 10px;position:relative}
-html[data-marca="boceto"] nav.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:6px;right:6px;bottom:10px;height:7px;background:var(--garabato-anota) center/100% 100% no-repeat}
+html[data-marca="boceto"] nav.tabs>button{font-family:"Caveat",cursive;font-size:22px;font-weight:600;border:0;padding:0 10px;position:relative}
+html[data-marca="boceto"] nav.tabs>button.activa::after{content:"";position:absolute;left:6px;right:6px;bottom:10px;height:7px;background:var(--garabato-anota) center/100% 100% no-repeat}
 html[data-marca="boceto"] .periodo-bar{padding-top:22px}
 html[data-marca="boceto"] .periodo-bar label{font-family:"Caveat",cursive;font-size:19px;text-transform:none;letter-spacing:0;color:var(--anota)}
 html[data-marca="boceto"] .periodo-bar select{border:1.6px solid var(--line-strong);border-radius:var(--a-mano);background:var(--surface);padding:5px 10px}
@@ -127,7 +127,7 @@ html[data-marca="boceto"] #tip{background:var(--ink);color:var(--bg);border-radi
 html[data-marca="boceto"] footer{border-top:1.5px dashed var(--line)}
 @media (max-width:720px){
   html[data-marca="boceto"] .brand .nombre{display:none}
-  html[data-marca="boceto"] nav.tabs button{font-size:19px}
+  html[data-marca="boceto"] nav.tabs>button{font-size:19px}
   html[data-marca="boceto"] :is(.view-intro h2,.sec-h h2){font-size:38px}
 }
 /* El logotipo está dibujado a lápiz oscuro: en la pizarra se invierte (el rotulador naranja se conserva). */
