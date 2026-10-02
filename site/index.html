@@ -931,6 +931,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
 .qld-cuadros i{width:24px;height:24px;border-radius:5px;background:var(--line-strong)}
 .qld-hecho{display:grid;gap:10px;justify-items:start}
 .qld-hecho .qld-cuadros{justify-content:flex-start}
+.qld-especial{margin:0!important;color:var(--ink)!important;font-size:15.5px!important}
 .qld-reglas{margin:0;padding-left:18px;font-size:14px;display:grid;gap:6px;line-height:1.45}
 .qld-reglas kbd{font:600 11px var(--sans);border:1px solid var(--line-strong);border-radius:4px;padding:0 5px}
 .qld-lista{list-style:none;margin:0;padding:0;display:grid;gap:16px}
@@ -2632,6 +2633,7 @@ const cargarCitas = () => QLD_CITAS ? Promise.resolve(QLD_CITAS)
                  fetch("datos/explora-retos.json").then(r=>r.ok?r.json():{}).catch(()=>({}))])
     .then(([c, retos])=>{ QLD_RETOS = retos||{}; return QLD_CITAS = c||[]; });
 const qldGrupo = g => g==="GOB" ? "Gobierno" : G[g]?.nombre || g;
+const qldTema = () => { const f = QLD_RETOS[hoyISO()]; return f && !Array.isArray(f) ? f.nombre : null; };   // reto especial del día
 const ayerISO = () => { const d=new Date(); d.setDate(d.getDate()-1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 const diaMes = iso => { const [,m,d]=iso.split("-").map(Number); return `${d} de ${MESES_LARGOS[m-1]}`; };
 function azar(semilla){   // mulberry32: el mismo reto en todos los navegadores
@@ -2661,7 +2663,7 @@ function qldRondas(modo){
   // El reto del día viene fijado desde el build (explora-retos.json) y no cambia aunque entren frases nuevas; si
   // falta, se calcula aquí con la fecha como semilla.
   const fijo = modo==="dia" && QLD_RETOS[hoyISO()];
-  if (fijo) return fijo.map(x=>({c:x.c, grupos:x.grupos, personas:x.personas, g:null, p:null}));
+  if (fijo) return (Array.isArray(fijo) ? fijo : fijo.rondas).map(x=>({c:x.c, grupos:x.grupos, personas:x.personas, g:null, p:null}));
   const C = QLD_CITAS || [], r = modo==="dia" ? azar("qld-"+hoyISO()) : Math.random;
   // Una persona, una clave: el Diario a veces escribe el mismo nombre de dos formas («Álvaro Vidal» y «Alvaro
   // Vidal», «Madrenas i Mir» y «Marta Madrenas i Mir»). La web y la teaser lo hacen igual: el reto sale idéntico.
@@ -2689,15 +2691,15 @@ function qldCerrar(){
   if (qld.modo==="dia" && st.dia?.fecha!==hoyISO()){
     st.racha = st.dia?.fecha===ayerISO() ? (st.racha||0)+1 : 1;
     st.rachaMax = Math.max(st.rachaMax||0, st.racha);
-    st.dia = {fecha:hoyISO(), colores:rs.map(qldColor), ok, extra};
+    st.dia = {fecha:hoyISO(), colores:rs.map(qldColor), ok, extra, tema:qldTema()};
   }
   qldGuardar(st);
   puntoReto();
 }
 
-function qldTextoCompartir(colores, ok, extra, modo, fecha){
+function qldTextoCompartir(colores, ok, extra, modo, fecha, tema){
   const emoji = {verde:"🟩", ambar:"🟨", rojo:"🟥"};
-  return `¿Quién lo dijo? · ${modo==="dia" ? `Reto del ${diaMes(fecha)}` : "Partida libre"}\n${colores.map(c=>emoji[c]||"⬜").join("")}\n${ok}/${QLD_N} grupos · ${extra} ${extra===1?"persona":"personas"}\n${urlCompartir("quien-lo-dijo")}`;
+  return `¿Quién lo dijo? · ${modo==="dia" ? `Reto del ${diaMes(fecha)}${tema ? ` · Especial ${tema.toLowerCase()}` : ""}` : "Partida libre"}\n${colores.map(c=>emoji[c]||"⬜").join("")}\n${ok}/${QLD_N} grupos · ${extra} ${extra===1?"persona":"personas"}\n${urlCompartir("quien-lo-dijo")}`;
 }
 async function qldCompartir(texto){
   if (navigator.share && matchMedia("(pointer:coarse)").matches){ try{ await navigator.share({text:texto}); return; }catch(e){ if (e.name==="AbortError") return; } }
@@ -2718,6 +2720,7 @@ function qldInicio(){
       <div class="eyebrow">El juego de Escaño Abierto</div>
       <h2 class="qld-h">¿Quién lo dijo?</h2>
       <p>${QLD_N} frases dichas en el Congreso esta legislatura, copiadas tal cual del Diario de Sesiones. Adivina de qué grupo es quien habla y, si aciertas, gana un punto extra diciendo quién es.</p>
+      ${qldTema() && !hecho ? `<p class="qld-especial"><b>Hoy, especial ${esc(qldTema().toLowerCase())}:</b> las diez frases del reto hablan de ${esc(qldTema().toLowerCase())}.</p>` : ""}
       ${hecho ? `<div class="chart qld-hecho"><div class="eyebrow">Reto del ${diaMes(hoy)} · hecho</div>${cuadros(hecho.colores)}
           <p class="qld-msg"><b>${hecho.ok}/${QLD_N}</b> grupos y <b>${hecho.extra}</b> ${hecho.extra===1?"persona":"personas"}.${racha>1?` Llevas ${racha} días seguidos.`:""} Mañana hay un reto nuevo.</p>
           <div class="qld-cta"><button class="btn primary" data-qld="compartir-dia">Compartir resultado</button><button class="btn" data-qld="libre">Partida libre</button></div></div>`
@@ -2752,7 +2755,7 @@ function qldRonda(){
     }
   }
   return `<div class="qld">
-    <div class="qld-top"><span class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}`:"Partida libre"} · frase ${qld.k+1} de ${QLD_N}</span>
+    <div class="qld-top"><span class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}${qldTema()?` · Especial ${esc(qldTema().toLowerCase())}`:""}`:"Partida libre"} · frase ${qld.k+1} de ${QLD_N}</span>
       <span class="qld-pips" aria-hidden="true">${pips}</span><span class="qld-pts"><b class="num">${pts}</b> ${pts===1?"punto":"puntos"}</span></div>
     <div class="chart qld-card ${qld.efecto}"><blockquote class="qld-cita">«${esc(cita)}»</blockquote><p class="qld-ctx">${qldDonde(s,f)}</p>${cuerpo}</div>
     <div class="qld-sig"><button class="linklike" data-qld="salir">Salir de la partida</button></div></div>`;
@@ -2765,7 +2768,7 @@ function qldFin(){
     return `<li><i class="${qldColor(r)}"></i><blockquote>«${esc(cita)}»</blockquote>
       <span class="nota">${gdot(g)}${d?`<button class="linklike" data-dip="${d.slug}">${esc(legible(d.n))}</button>`:esc(orador)} · ${esc(qldGrupo(g))} · ${fechaCorta(f)}${r.g!==g?` · dijiste ${esc(qldGrupo(r.g))}`:""} · <button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver la sesión</button></span></li>`; }).join("");
   return `<div class="qld">
-    <div class="chart qld-fin"><div class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}`:"Partida libre"}</div>
+    <div class="chart qld-fin"><div class="eyebrow">${qld.modo==="dia"?`Reto del ${diaMes(hoyISO())}${qldTema()?` · Especial ${esc(qldTema().toLowerCase())}`:""}`:"Partida libre"}</div>
       <div class="qld-num">${ok}<small>/${QLD_N}</small></div>
       <p>grupos acertados${extra?`, y ${extra} ${extra===1?"persona":"personas"} de punto extra`:""}</p>
       ${cuadros(rs.map(qldColor))}
@@ -2822,8 +2825,8 @@ $("#quien-lo-dijo").addEventListener("click", e=>{
     window.scrollTo({top:0});
   }
   else if (d.qld==="salir" || d.qld==="inicio"){ qld.fase="inicio"; }
-  else if (d.qld==="compartir"){ const rs=qld.rondas; qldCompartir(qldTextoCompartir(rs.map(qldColor), qldAciertos(rs), qldExtra(rs), qld.modo, hoyISO())); return; }
-  else if (d.qld==="compartir-dia"){ const h=qldLeer().dia; if (h) qldCompartir(qldTextoCompartir(h.colores, h.ok, h.extra, "dia", h.fecha)); return; }
+  else if (d.qld==="compartir"){ const rs=qld.rondas; qldCompartir(qldTextoCompartir(rs.map(qldColor), qldAciertos(rs), qldExtra(rs), qld.modo, hoyISO(), qld.modo==="dia" ? qldTema() : null)); return; }
+  else if (d.qld==="compartir-dia"){ const h=qldLeer().dia; if (h) qldCompartir(qldTextoCompartir(h.colores, h.ok, h.extra, "dia", h.fecha, h.tema)); return; }
   else return;
   pintarQld(true);
 }, SIG);

@@ -714,6 +714,7 @@ boton.addEventListener("click", function(){
 (function(){
   var M = E.muestra; if (!M) { document.getElementById("juego").hidden = true; document.querySelector(".juega").hidden = true; return; }
   document.getElementById("muestra-cita").textContent = "«" + M.cita + "»";
+  if (M.tema) document.querySelector("#juego .ojo").textContent = "Hoy, especial " + M.tema.toLowerCase() + " · el juego";
   document.getElementById("muestra-ops").innerHTML = M.grupos.map(function(g){ return '<span style="--c:' + g[1] + '"><i></i>¿' + esc(g[0]) + '?</span>'; }).join("");
   try {
     var d = new Date(), hoy = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0"+d.getDate()).slice(-2);

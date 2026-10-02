@@ -149,18 +149,21 @@ def nombres_oradores(citas: list[list], diputados: list[list]) -> dict:
     return nombres
 
 
-def reto(citas: list[list], nombres: dict, fecha: str, n: int = 10) -> list[dict]:
+def reto(citas: list[list], nombres: dict, fecha: str, n: int = 10, pool: list[list] | None = None) -> list[dict]:
     """El reto de «¿Quién lo dijo?» de un día: n citas de n personas distintas (dos como mucho por grupo), con las
-    cuatro opciones de grupo y las tres de persona. La misma fecha da siempre el mismo reto con las mismas citas."""
+    cuatro opciones de grupo y las tres de persona. La misma fecha da siempre el mismo reto con las mismas citas.
+
+    pool: las citas de las que se sacan las frases, si no son todas (un reto temático); las opciones de persona
+    salen siempre de todas."""
     import random
     az = random.Random(f"qld-{fecha}")
     # Una persona, una clave: el Diario a veces escribe el mismo nombre de dos formas («Álvaro Vidal» y «Alvaro
     # Vidal», «Madrenas i Mir» y «Marta Madrenas i Mir»).
     clave = lambda o: _sin_tildes(nombres.get(o, o))
     personas = defaultdict(dict)
-    for c in citas:
+    for c in citas + (pool or []):
         personas[c[2]].setdefault(clave(c[1]), c[1])
-    orden = list(citas)
+    orden = list(pool if pool is not None else citas)
     az.shuffle(orden)
     rondas, vistos, por_grupo = [], set(), Counter()
     for c in orden:
@@ -177,6 +180,38 @@ def reto(citas: list[list], nombres: dict, fecha: str, n: int = 10) -> list[dict
         az.shuffle(quienes)
         rondas.append({"c": c, "grupos": grupos, "personas": quienes})
     return rondas
+
+
+def citas_de_tema(tema: str, carpeta) -> list[list]:
+    """Las citas comprobadas de toda la legislatura que tratan de un tema fijo (temas.py, por palabras clave sobre
+    la propia frase), con los mismos filtros que las del juego: [cita, orador, grupo, sesión, fecha]."""
+    import json
+    from .temas import temas_de
+    salida, vistas = [], set()
+    for f in sorted(carpeta.glob("20[0-9][0-9]-[0-9][0-9].json")):
+        mes = json.loads(f.read_text())
+        fecha = {x["id"]: x["fecha"] for x in mes["sesiones"]}
+        for i in mes["intervenciones"]:
+            c, g = i.get("cita"), i["g"]
+            if not c or c in vistas or g not in GRUPOS_JUEGO or not 60 <= len(c) <= 220:
+                continue
+            if any(p in c.lower() for p in DELATAN.get(g, ())) or tema not in temas_de(c):
+                continue
+            vistas.add(c)
+            salida.append([c, i["orador"], g, i["s"], fecha.get(i["s"], "")])
+    return salida
+
+
+def reto_tematico(fecha: str, tema: str, citas: list[list], diputados: list[list], carpeta) -> dict:
+    """Un reto especial: las diez frases de un tema (vivienda, sanidad…). Se guarda como {"tema", "nombre",
+    "rondas"} en lugar de la lista de rondas; la web enseña «Especial vivienda»."""
+    from .temas import NOMBRE
+    pool = citas_de_tema(tema, carpeta)
+    nombres = nombres_oradores(citas + pool, diputados)
+    rondas = reto(citas, nombres, f"{fecha}-{tema}", pool=pool)
+    if len(rondas) < 10:
+        raise SystemExit(f"Solo hay frases para {len(rondas)} rondas sobre {tema}.")
+    return {"tema": tema, "nombre": NOMBRE[tema], "rondas": rondas}
 
 
 def retos(citas: list[list], diputados: list[list], previos: dict, hoy, antes: int = 2,
