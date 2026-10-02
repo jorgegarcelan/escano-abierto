@@ -255,6 +255,27 @@ def votos_por_fecha(votaciones: list[dict] | None = None) -> dict[str, list[dict
     return por_fecha
 
 
+def escribir_retos(todos: dict) -> None:
+    """Un día por línea: cada actualización añade líneas al final y el historial se lee bien en git."""
+    RETOS.write_text("{\n" + ",\n".join(f"{json.dumps(f)}: {json.dumps(r, ensure_ascii=False)}"
+                                         for f, r in sorted(todos.items())) + "\n}\n")
+
+
+def fijar_reto_tematico(fecha: str, tema: str) -> dict:
+    """Sustituye el reto de un día por uno temático y lo publica ya en site/datos, sin reconstruir la web."""
+    citas = json.loads((SITIO / "datos" / "explora-citas.json").read_text())
+    diputados = json.loads((SITIO / "datos" / "indice.json").read_text())["diputados"]
+    nuevo = mod_explora.reto_tematico(fecha, tema, citas, diputados, SITIO / "datos")
+    todos = json.loads(RETOS.read_text()) if RETOS.exists() else {}
+    todos[fecha] = nuevo
+    escribir_retos(todos)
+    publicado = SITIO / "datos" / "explora-retos.json"
+    ventana = json.loads(publicado.read_text()) if publicado.exists() else {}
+    ventana[fecha] = nuevo
+    publicado.write_text(json.dumps(dict(sorted(ventana.items())), ensure_ascii=False))
+    return nuevo
+
+
 def construir(con_ia: bool = True) -> dict:
     votaciones = mod_votaciones.leer_todas()
     lista_diputados = diputados(votaciones)
@@ -367,9 +388,7 @@ def construir(con_ia: bool = True) -> dict:
     previos = json.loads(RETOS.read_text()) if RETOS.exists() else {}
     todos, explora["retos"] = mod_explora.retos(explora["citas"], lista_diputados, previos, date.today())
     if todos != previos:
-        # Un día por línea: cada actualización añade líneas al final y el historial se lee bien en git.
-        RETOS.write_text("{\n" + ",\n".join(f"{json.dumps(f)}: {json.dumps(r, ensure_ascii=False)}"
-                                             for f, r in todos.items()) + "\n}\n")
+        escribir_retos(todos)
 
     fechas = sorted({s["fecha"] for s in sesiones_web})
     grupos = {g: {**INFO_GRUPOS[g], "codigo": g, "escanos": escanos.get(g, 0)} for g in INFO_GRUPOS}

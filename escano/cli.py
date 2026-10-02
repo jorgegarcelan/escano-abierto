@@ -148,6 +148,9 @@ def main(argv: list[str] | None = None) -> None:
     es = sub.add_parser("estado", help="nombramientos y ceses de altos cargos en el BOE y organigrama del Estado")
     es.add_argument("--desde", type=date.fromisoformat, help="por defecto, lo que falte desde la última vez")
     es.add_argument("--hasta", type=date.fromisoformat)
+    rt = sub.add_parser("reto", help="fija un reto temático de «¿Quién lo dijo?» para un día (p. ej. vivienda)")
+    rt.add_argument("fecha", type=date.fromisoformat)
+    rt.add_argument("--tema", required=True, help="un tema fijo de temas.py: vivienda, sanidad, pensiones…")
     lt = sub.add_parser("lote", help="analiza con IA todo lo pendiente por la Batch API de Gemini (se puede relanzar)")
     lt.add_argument("--estado", action="store_true", help="solo muestra cómo va")
     lt.add_argument("--ver", action="store_true", help="progreso en directo (Ctrl+C para salir; no para el lote)")
@@ -186,6 +189,12 @@ def main(argv: list[str] | None = None) -> None:
         e = estado.escribir()
         print(f"· Organigrama: {e['cifras']['cargos_ocupados']} altos cargos con titular en {e['cifras']['ministerios']} "
               f"ministerios; {e['cifras']['cambios_30']} cambios en 30 días")
+    elif args.orden == "reto":
+        from .construir import fijar_reto_tematico
+        r = fijar_reto_tematico(args.fecha.isoformat(), args.tema)
+        print(f"Reto del {args.fecha}: especial {r['nombre'].lower()}")
+        for x in r["rondas"]:
+            print(f"  {x['c'][2]:6} {x['c'][1]}: «{x['c'][0][:90]}»")
     elif args.orden == "lote":
         from . import lotes
         if args.ver:

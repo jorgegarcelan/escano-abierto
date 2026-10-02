@@ -151,9 +151,15 @@ def datos_juego(citas: list) -> dict:
 
 def muestra(citas: list, grupos: dict, hoy: date | None = None) -> dict | None:
     """Una frase para invitar al juego desde la portada, con su grupo y otros tres. Cambia cada día y deja fuera
-    las de trámite (cómo se vota, enmiendas…), que son literales pero no enganchan."""
+    las de trámite (cómo se vota, enmiendas…), que son literales pero no enganchan. Si el reto de hoy es especial
+    (vivienda…), es su primera frase, con sus cuatro opciones."""
     import random
     hoy = hoy or date.today()
+    ruta = SITIO / "datos" / "explora-retos.json"
+    especial = json.loads(ruta.read_text()).get(hoy.isoformat()) if ruta.exists() else None
+    if isinstance(especial, dict) and especial.get("rondas"):
+        r = especial["rondas"][0]
+        return {"cita": r["c"][0], "grupos": [[GRUPOS_JUEGO[g], grupos[g][1]] for g in r["grupos"]], "tema": especial["nombre"]}
     buenas = [c for c in citas if c[2] in grupos and 80 <= len(c[0]) <= 170 and not TRAMITE.search(c[0])]
     if not buenas:
         return None

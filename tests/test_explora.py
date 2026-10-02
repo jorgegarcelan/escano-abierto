@@ -88,3 +88,18 @@ def test_reto_una_persona_aunque_se_escriba_distinto():
         claves = [explora._sin_tildes(o) for x in r for o in x["personas"]]
         assert all(len(set(map(explora._sin_tildes, x["personas"]))) == len(x["personas"]) for x in r)
         assert len({explora._sin_tildes(x["c"][1]) for x in r}) == len(r) and claves
+
+
+def test_reto_tematico(tmp_path):
+    """Un reto especial saca las diez frases del tema y guarda su nombre para la web."""
+    import json
+    from escano import explora
+    grupos = list(explora.GRUPOS_JUEGO)
+    ivs = [{"s": "S1", "orador": f"Apellido{i} Uno", "g": grupos[i % 9],
+            "cita": f"Frase {i}: el precio de la vivienda y del alquiler no deja de subir para la gente joven."} for i in range(30)]
+    ivs += [{"s": "S1", "orador": "Otro Dos", "g": "PP", "cita": "Una frase que habla de otra cosa, de carreteras y de trenes regionales."}]
+    (tmp_path / "2026-01.json").write_text(json.dumps({"sesiones": [{"id": "S1", "fecha": "2026-01-10"}], "intervenciones": ivs}))
+    dips = [[f"Apellido{i} Uno, Nombre{i}", grupos[i % 9]] for i in range(30)]
+    r = explora.reto_tematico("2026-10-02", "vivienda", [], dips, tmp_path)
+    assert r["tema"] == "vivienda" and r["nombre"] == "Vivienda" and len(r["rondas"]) == 10
+    assert all("vivienda" in x["c"][0] for x in r["rondas"])
