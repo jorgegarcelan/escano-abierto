@@ -3307,6 +3307,10 @@
 "becas",
 "educacion"
 ],
+"becas y salarios": [
+"becas",
+"educacion"
+],
 "begoña gómez": [
 "Begoña Gómez",
 "justicia"
@@ -3441,6 +3445,10 @@
 ],
 "biodiversidad marina": [
 "medio ambiente",
+"clima"
+],
+"bioeconomía circular": [
+"economía circular",
 "clima"
 ],
 "biogás": [
@@ -3766,6 +3774,10 @@
 "burriana": [
 "Castellón",
 "territorial"
+],
+"buzos profesionales": [
+"buceo profesional",
+"empleo"
 ],
 "caballa": [
 "pesca",
@@ -4631,6 +4643,14 @@
 "cercanías",
 "transporte"
 ],
+"cereal": [
+"cereales",
+"campo"
+],
+"cereales": [
+"cereales",
+"campo"
+],
 "cereza de calatayud": [
 "fruta",
 "campo"
@@ -4714,6 +4734,10 @@
 "cetedex": [
 "industria de defensa",
 "defensa"
+],
+"cetáceos": [
+"cetáceos",
+"clima"
 ],
 "ceuta": [
 "Ceuta",
@@ -5825,6 +5849,10 @@
 ],
 "comunidades autónomas": [
 "comunidades autónomas",
+"territorial"
+],
+"comunidades costeras": [
+"costas",
 "territorial"
 ],
 "comunidades de propietarios": [
@@ -9027,6 +9055,10 @@
 "derechos humanos",
 "social"
 ],
+"desarrollo local": [
+"desarrollo local",
+"territorial"
+],
 "desarrollo normativo": [
 "procedimiento parlamentario",
 "democracia"
@@ -10118,6 +10150,10 @@
 "ecorregímenes": [
 "PAC",
 "campo"
+],
+"ecosistemas marinos": [
+"ecosistemas marinos",
+"clima"
 ],
 "ecotasa": [
 "ecotasa",
@@ -13107,6 +13143,10 @@
 "poder judicial",
 "justicia"
 ],
+"formación jurídica": [
+"formación jurídica",
+"justicia"
+],
 "formación laboral": [
 "formación profesional",
 "empleo"
@@ -13531,11 +13571,19 @@
 "Galicia",
 "territorial"
 ],
+"galp": [
+"GALP",
+"campo"
+],
 "gamba roja": [
 "pesca",
 "campo"
 ],
 "ganadería": [
+"ganadería",
+"campo"
+],
+"ganadería caprina": [
 "ganadería",
 "campo"
 ],
@@ -16011,6 +16059,10 @@
 "investigación",
 "tecnologia"
 ],
+"investigación agraria": [
+"investigación agraria",
+"campo"
+],
 "investigación biomédica": [
 "investigación",
 "sanidad"
@@ -16043,6 +16095,10 @@
 "tribunales",
 "justicia"
 ],
+"investigación marina": [
+"investigación marina",
+"tecnologia"
+],
 "investigación médica": [
 "ciencia",
 "sanidad"
@@ -16050,6 +16106,10 @@
 "investigación oncológica": [
 "cáncer",
 "sanidad"
+],
+"investigación pesquera": [
+"pesca",
+"campo"
 ],
 "investigación pública": [
 "investigación",
@@ -17262,6 +17322,10 @@
 "litoral": [
 "costas",
 "clima"
+],
+"litoral catalán": [
+"costas",
+"territorial"
 ],
 "llamadas spam": [
 "consumo",
@@ -20155,6 +20219,10 @@
 "patrimonio histórico",
 "cultura"
 ],
+"palangre de fondo": [
+"pesca",
+"campo"
+],
 "palas de rei": [
 "Altri",
 "territorial"
@@ -22867,6 +22935,10 @@
 "diplomacia",
 "exteriores"
 ],
+"protección de animales": [
+"bienestar animal",
+"clima"
+],
 "protección de consumidores": [
 "consumo",
 "otro"
@@ -25539,6 +25611,10 @@
 "ganadería",
 "campo"
 ],
+"sector cerealista": [
+"cereales",
+"campo"
+],
 "sector cerquero": [
 "pesca",
 "campo"
@@ -26434,6 +26510,10 @@
 "sistema bancario": [
 "banca",
 "otro"
+],
+"sistema barnahus": [
+"protección de menores",
+"social"
 ],
 "sistema cometa": [
 "sistema Cometa",
@@ -27495,6 +27575,10 @@
 "telecomunicaciones",
 "tecnologia"
 ],
+"temperatura marina": [
+"cambio climático",
+"clima"
+],
 "temperaturas": [
 "cambio climático",
 "clima"
@@ -27587,6 +27671,10 @@
 "terrorismo",
 "seguridad"
 ],
+"terrorismo machista": [
+"violencia machista",
+"igualdad"
+],
 "terrorismo yihadista": [
 "terrorismo",
 "seguridad"
@@ -27666,6 +27754,10 @@
 "tmt": [
 "Telescopio de Treinta Metros",
 "otro"
+],
+"tomate": [
+"tomate",
+"campo"
 ],
 "tono del debate político": [
 "convivencia parlamentaria",
@@ -29142,6 +29234,10 @@
 "violencia sexual": [
 "violencia sexual",
 "igualdad"
+],
+"violencia sexual infantil": [
+"violencia sexual",
+"justicia"
 ],
 "violencia sobre la mujer": [
 "violencia machista",

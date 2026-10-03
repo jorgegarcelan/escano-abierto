@@ -362,7 +362,7 @@
 }
 ],
 "tema": "campo",
-"total": 149,
+"total": 154,
 "total_sintesis": 149
 },
 "campo|GOB": {
@@ -686,7 +686,7 @@
 }
 ],
 "tema": "campo",
-"total": 110,
+"total": 117,
 "total_sintesis": 110
 },
 "campo|MIXTO": {
@@ -887,7 +887,7 @@
 }
 ],
 "tema": "campo",
-"total": 165,
+"total": 167,
 "total_sintesis": 163
 },
 "campo|PNV": {
@@ -1229,7 +1229,7 @@
 }
 ],
 "tema": "campo",
-"total": 358,
+"total": 378,
 "total_sintesis": 356
 },
 "campo|PSOE": {
@@ -1430,84 +1430,36 @@
 }
 ],
 "tema": "campo",
-"total": 178,
+"total": 188,
 "total_sintesis": 176
 },
 "campo|SUMAR": {
-"firma": "a9e0a8936b82c9e54fd05f0b0702af6fd8109727",
+"firma": "070ce883d2e73b2ab9dcaf9da41e7c9fff10de32",
 "grupo": "SUMAR",
 "lineas": [
 {
 "ejemplos": [
 [
-"Cumplir la ley de cadena alimentaria para evitar ventas por debajo de los costes de producción",
+"Equilibrar el poder de negociación en la cadena alimentaria frente a las grandes distribuidoras",
 "Valero Morales",
-"DSCD-15-CO-468",
-"2025-11-25"
+"DSCD-15-CO-627",
+"2026-09-23"
 ],
 [
-"Sancionar a las distribuidoras que paguen por debajo de los costes de producción.",
+"Hacer bandera y cumplir la ley de la cadena alimentaria para cubrir los costes de producción",
 "Valero Morales",
-"DSCD-15-PL-142",
-"2025-10-14"
+"DSCD-15-CO-627",
+"2026-09-23"
 ],
 [
-"Cumplir la ley de cadena alimentaria.",
+"Garantizar precios justos en la directiva europea sobre prácticas desleales",
 "Valero Morales",
-"DSCD-15-PL-98",
-"2025-02-25"
+"DSCD-15-CO-627",
+"2026-09-23"
 ]
 ],
-"n": 10,
-"titulo": "Hacer cumplir y reforzar la ley de la cadena alimentaria para garantizar precios justos"
-},
-{
-"ejemplos": [
-[
-"No ratificar el acuerdo comercial con Mercosur",
-"Valero Morales",
-"DSCD-15-CO-602",
-"2026-06-30"
-],
-[
-"Rechazar el acuerdo de Mercosur",
-"Valero Morales",
-"DSCD-15-PL-196",
-"2026-06-24"
-],
-[
-"frenar el acuerdo Mercosur",
-"Valero Morales",
-"DSCD-15-PL-166",
-"2026-02-17"
-]
-],
-"n": 5,
-"titulo": "Rechazar o no ratificar el acuerdo comercial con Mercosur"
-},
-{
-"ejemplos": [
-[
-"Promover bancos de tierras gestionados con criterios agroecológicos para facilitar el relevo generacional",
-"Boada Danés",
-"DSCD-15-CO-574",
-"2026-05-27"
-],
-[
-"Crear un banco público de tierras estatal coordinado con autonomías y ayuntamientos.",
-"Valero Morales",
-"DSCD-15-CO-541",
-"2026-04-15"
-],
-[
-"Priorizar la agroecología, ganadería extensiva y un banco de tierras",
-"Badia Casas",
-"DSCD-15-PL-141",
-"2025-10-08"
-]
-],
-"n": 5,
-"titulo": "Fomentar la creación y gestión pública de bancos de tierras para el relevo generacional"
+"n": 18,
+"titulo": "Hacer cumplir la ley de la cadena alimentaria y frenar abusos de las distribuidoras"
 },
 {
 "ejemplos": [
@@ -1530,103 +1482,157 @@
 "2026-06-24"
 ]
 ],
-"n": 5,
-"titulo": "Reorientar y topar las ayudas de la PAC beneficiando a pequeñas y medianas explotaciones"
+"n": 12,
+"titulo": "Reorientar y redistribuir las ayudas de la PAC priorizando a pequeñas y medianas explotaciones"
 },
 {
 "ejemplos": [
 [
-"Iniciar la tramitación de la ley de agricultura familiar anunciada por el ministerio",
+"fomentar un modelo de agricultura y ganadería social y profesional",
 "Valero Morales",
-"DSCD-15-CO-408",
-"2025-10-07"
+"DSCD-15-CO-627",
+"2026-09-23"
 ],
 [
-"impulsar una ley de agricultura social y familiar",
-"Martínez Barbero",
-"DSCD-15-CO-101",
-"2024-04-24"
+"Apoyar la agricultura social y profesional frente a la especulación",
+"Valero Morales",
+"DSCD-15-PL-196",
+"2026-06-24"
 ],
 [
-"Impulsar una ley de agricultura familiar",
-"Gil de Reboleño Lastortres",
-"DSCD-15-CO-95",
-"2024-04-11"
+"Proteger la agricultura familiar y territorial y la transición agroecológica",
+"Valero Morales",
+"DSCD-15-CO-541",
+"2026-04-15"
 ]
 ],
-"n": 4,
-"titulo": "Aprobar e impulsar una ley de agricultura familiar y social"
+"n": 11,
+"titulo": "Aprobar una ley de agricultura familiar y apoyar el modelo social"
 },
 {
 "ejemplos": [
 [
-"Adaptar la prestación por cese de actividad a las particularidades del marisqueo a pie",
-"Martínez Barbero",
-"DSCD-15-CO-190",
-"2024-10-16"
+"defender la ganadería ligada al territorio y extensiva",
+"Valero Morales",
+"DSCD-15-CO-574",
+"2026-05-27"
 ],
 [
-"Modificar las condiciones y agilizar el cobro de la prestación por cese de actividad en el marisqueo.",
-"Martínez Barbero",
-"DSCD-15-CO-47",
-"2024-01-25"
+"Fomentar la ganadería extensiva y el pastoreo como herramienta para reducir la biomasa",
+"Valero Morales",
+"DSCD-15-CO-541",
+"2026-04-15"
 ],
 [
-"Revisar la normativa de los fondos FEMPA flexibilizando requisitos de días trabajados e incapacidad temporal.",
-"Martínez Barbero",
-"DSCD-15-CO-47",
-"2024-01-25"
+"Limitar y regular la ganadería intensiva",
+"Guijarro García",
+"DSCD-15-CO-500",
+"2026-02-25"
 ]
 ],
-"n": 4,
-"titulo": "Adaptar y flexibilizar la prestación por cese de actividad en el sector del marisqueo"
+"n": 9,
+"titulo": "Fomentar la ganadería extensiva frente a la intensiva"
 },
 {
 "ejemplos": [
 [
-"Garantizar un 'Estado en treinta minutos' con servicios básicos a menos de media hora de cada hogar",
-"Pueyo Sanz",
-"DSCD-15-CO-61",
-"2024-02-21"
+"No ratificar el acuerdo comercial con Mercosur",
+"Valero Morales",
+"DSCD-15-CO-602",
+"2026-06-30"
 ],
 [
-"Definir mediante enmienda el catálogo de servicios básicos que deben acercarse al medio rural",
-"Pueyo Sanz",
-"DSCD-15-CO-61",
-"2024-02-21"
+"Rechazar el acuerdo de Mercosur",
+"Valero Morales",
+"DSCD-15-PL-196",
+"2026-06-24"
 ],
 [
-"Garantizar servicios mínimos a treinta minutos en el medio rural",
-"Pueyo Sanz",
-"DSCD-15-PL-10",
-"2023-11-28"
+"frenar el acuerdo Mercosur",
+"Valero Morales",
+"DSCD-15-PL-166",
+"2026-02-17"
 ]
 ],
-"n": 3,
-"titulo": "Garantizar servicios públicos básicos a menos de treinta minutos en el medio rural"
+"n": 8,
+"titulo": "Rechazar o revisar tratados de libre comercio como el de Mercosur"
 },
 {
 "ejemplos": [
 [
-"Pacto de Estado por el mundo rural vivo, el reto demográfico y la cohesión territorial",
-"Pueyo Sanz",
-"DSCD-15-CO-61",
-"2024-02-21"
+"reforzar los servicios públicos en el mundo rural",
+"Valero Morales",
+"DSCD-15-CO-627",
+"2026-09-23"
 ],
 [
-"Promover un pacto de Estado por el mundo rural vivo",
-"Pueyo Sanz",
-"DSCD-15-PL-10",
-"2023-11-28"
+"Refuerzo de los servicios públicos de bienestar y cuidados en el medio rural",
+"Rivera Arias",
+"DSCD-15-CO-498",
+"2026-02-26"
+],
+[
+"Fortalecer los servicios públicos universales",
+"Martínez Hierro",
+"DSCD-15-CO-246",
+"2024-12-17"
 ]
 ],
-"n": 2,
-"titulo": "Promover un pacto de Estado por el mundo rural vivo y el reto demográfico"
+"n": 7,
+"titulo": "Garantizar servicios públicos y básicos a menos de treinta minutos en el medio rural"
+},
+{
+"ejemplos": [
+[
+"Adaptar las reglas del cese de actividad a la naturaleza intermitente del marisqueo",
+"Martínez Barbero",
+"DSCD-15-CO-621",
+"2026-09-22"
+],
+[
+"Reducir el tiempo de espera para volver a percibir la prestación por cese debido a causas ambientales",
+"Martínez Barbero",
+"DSCD-15-CO-621",
+"2026-09-22"
+],
+[
+"Permitir la compatibilidad limitada del cese de actividad con otros ingresos ajenos al mar",
+"Martínez Barbero",
+"DSCD-15-CO-621",
+"2026-09-22"
+]
+],
+"n": 6,
+"titulo": "Reformar la prestación por cese de actividad en el marisqueo"
+},
+{
+"ejemplos": [
+[
+"Promover bancos de tierras gestionados con criterios agroecológicos para facilitar el relevo generacional",
+"Boada Danés",
+"DSCD-15-CO-574",
+"2026-05-27"
+],
+[
+"Crear un banco público de tierras estatal coordinado con autonomías y ayuntamientos.",
+"Valero Morales",
+"DSCD-15-CO-541",
+"2026-04-15"
+],
+[
+"Limitar el acaparamiento de tierras y reforzar la protección y derechos de los arrendatarios.",
+"Valero Morales",
+"DSCD-15-CO-541",
+"2026-04-15"
+]
+],
+"n": 6,
+"titulo": "Impulsar bancos públicos de tierras para favorecer el relevo generacional"
 }
 ],
 "tema": "campo",
-"total": 222,
-"total_sintesis": 218
+"total": 242,
+"total_sintesis": 242
 },
 "campo|VOX": {
 "firma": "daf13f0d1646f5d676c4b8eb68ad2cd911155e85",
@@ -1826,7 +1832,7 @@
 }
 ],
 "tema": "campo",
-"total": 333,
+"total": 352,
 "total_sintesis": 333
 },
 "clima|BILDU": {
@@ -2321,7 +2327,7 @@
 }
 ],
 "tema": "clima",
-"total": 36,
+"total": 37,
 "total_sintesis": 36
 },
 "clima|JUNTS": {
@@ -2492,7 +2498,7 @@
 }
 ],
 "tema": "clima",
-"total": 37,
+"total": 38,
 "total_sintesis": 37
 },
 "clima|MIXTO": {
@@ -3071,7 +3077,7 @@
 }
 ],
 "tema": "clima",
-"total": 202,
+"total": 204,
 "total_sintesis": 200
 },
 "clima|PSOE": {
@@ -3266,7 +3272,7 @@
 }
 ],
 "tema": "clima",
-"total": 147,
+"total": 148,
 "total_sintesis": 147
 },
 "clima|SUMAR": {
@@ -3467,7 +3473,7 @@
 }
 ],
 "tema": "clima",
-"total": 202,
+"total": 206,
 "total_sintesis": 202
 },
 "clima|VOX": {
@@ -3668,7 +3674,7 @@
 }
 ],
 "tema": "clima",
-"total": 210,
+"total": 214,
 "total_sintesis": 209
 },
 "cultura|BILDU": {
@@ -3833,7 +3839,7 @@
 }
 ],
 "tema": "cultura",
-"total": 40,
+"total": 39,
 "total_sintesis": 40
 },
 "cultura|ERC": {
@@ -4034,7 +4040,7 @@
 }
 ],
 "tema": "cultura",
-"total": 82,
+"total": 81,
 "total_sintesis": 79
 },
 "cultura|GOB": {
@@ -4121,7 +4127,7 @@
 }
 ],
 "tema": "cultura",
-"total": 33,
+"total": 32,
 "total_sintesis": 33
 },
 "cultura|JUNTS": {
@@ -4244,7 +4250,7 @@
 }
 ],
 "tema": "cultura",
-"total": 45,
+"total": 44,
 "total_sintesis": 42
 },
 "cultura|MIXTO": {
@@ -4781,7 +4787,7 @@
 }
 ],
 "tema": "cultura",
-"total": 203,
+"total": 201,
 "total_sintesis": 202
 },
 "cultura|PSOE": {
@@ -4970,7 +4976,7 @@
 }
 ],
 "tema": "cultura",
-"total": 169,
+"total": 171,
 "total_sintesis": 167
 },
 "cultura|SUMAR": {
@@ -5726,7 +5732,7 @@
 }
 ],
 "tema": "defensa",
-"total": 54,
+"total": 52,
 "total_sintesis": 53
 },
 "defensa|GOB": {
@@ -5777,7 +5783,7 @@
 }
 ],
 "tema": "defensa",
-"total": 14,
+"total": 11,
 "total_sintesis": 14
 },
 "defensa|JUNTS": {
@@ -5906,7 +5912,7 @@
 }
 ],
 "tema": "defensa",
-"total": 28,
+"total": 24,
 "total_sintesis": 28
 },
 "defensa|MIXTO": {
@@ -6107,7 +6113,7 @@
 }
 ],
 "tema": "defensa",
-"total": 147,
+"total": 142,
 "total_sintesis": 147
 },
 "defensa|PNV": {
@@ -6194,7 +6200,7 @@
 }
 ],
 "tema": "defensa",
-"total": 16,
+"total": 15,
 "total_sintesis": 16
 },
 "defensa|PP": {
@@ -6395,7 +6401,7 @@
 }
 ],
 "tema": "defensa",
-"total": 206,
+"total": 199,
 "total_sintesis": 203
 },
 "defensa|PSOE": {
@@ -6572,7 +6578,7 @@
 }
 ],
 "tema": "defensa",
-"total": 66,
+"total": 62,
 "total_sintesis": 66
 },
 "defensa|SUMAR": {
@@ -6767,7 +6773,7 @@
 }
 ],
 "tema": "defensa",
-"total": 123,
+"total": 113,
 "total_sintesis": 123
 },
 "defensa|VOX": {
@@ -6968,7 +6974,7 @@
 }
 ],
 "tema": "defensa",
-"total": 146,
+"total": 141,
 "total_sintesis": 146
 },
 "democracia|BILDU": {
@@ -7169,7 +7175,7 @@
 }
 ],
 "tema": "democracia",
-"total": 77,
+"total": 78,
 "total_sintesis": 77
 },
 "democracia|ERC": {
@@ -7358,7 +7364,7 @@
 }
 ],
 "tema": "democracia",
-"total": 129,
+"total": 130,
 "total_sintesis": 127
 },
 "democracia|GOB": {
@@ -7529,7 +7535,7 @@
 }
 ],
 "tema": "democracia",
-"total": 37,
+"total": 38,
 "total_sintesis": 37
 },
 "democracia|JUNTS": {
@@ -7718,7 +7724,7 @@
 }
 ],
 "tema": "democracia",
-"total": 73,
+"total": 75,
 "total_sintesis": 71
 },
 "democracia|MIXTO": {
@@ -7919,7 +7925,7 @@
 }
 ],
 "tema": "democracia",
-"total": 155,
+"total": 159,
 "total_sintesis": 155
 },
 "democracia|PNV": {
@@ -8297,7 +8303,7 @@
 }
 ],
 "tema": "democracia",
-"total": 301,
+"total": 303,
 "total_sintesis": 297
 },
 "democracia|PSOE": {
@@ -8492,7 +8498,7 @@
 }
 ],
 "tema": "democracia",
-"total": 152,
+"total": 157,
 "total_sintesis": 150
 },
 "democracia|SUMAR": {
@@ -8693,7 +8699,7 @@
 }
 ],
 "tema": "democracia",
-"total": 243,
+"total": 249,
 "total_sintesis": 240
 },
 "democracia|VOX": {
@@ -8894,7 +8900,7 @@
 }
 ],
 "tema": "democracia",
-"total": 182,
+"total": 183,
 "total_sintesis": 178
 },
 "educacion|BILDU": {
@@ -10262,7 +10268,7 @@
 }
 ],
 "tema": "educacion",
-"total": 199,
+"total": 200,
 "total_sintesis": 199
 },
 "educacion|SUMAR": {
@@ -11060,7 +11066,7 @@
 }
 ],
 "tema": "empleo",
-"total": 149,
+"total": 150,
 "total_sintesis": 148
 },
 "empleo|GOB": {
@@ -11225,7 +11231,7 @@
 }
 ],
 "tema": "empleo",
-"total": 58,
+"total": 59,
 "total_sintesis": 58
 },
 "empleo|JUNTS": {
@@ -11804,7 +11810,7 @@
 }
 ],
 "tema": "empleo",
-"total": 91,
+"total": 92,
 "total_sintesis": 88
 },
 "empleo|PP": {
@@ -12005,7 +12011,7 @@
 }
 ],
 "tema": "empleo",
-"total": 394,
+"total": 395,
 "total_sintesis": 383
 },
 "empleo|PSOE": {
@@ -12206,7 +12212,7 @@
 }
 ],
 "tema": "empleo",
-"total": 189,
+"total": 191,
 "total_sintesis": 186
 },
 "empleo|SUMAR": {
@@ -12407,7 +12413,7 @@
 }
 ],
 "tema": "empleo",
-"total": 393,
+"total": 391,
 "total_sintesis": 388
 },
 "empleo|VOX": {
@@ -12608,7 +12614,7 @@
 }
 ],
 "tema": "empleo",
-"total": 237,
+"total": 235,
 "total_sintesis": 229
 },
 "energia|BILDU": {
@@ -13166,7 +13172,7 @@
 }
 ],
 "tema": "energia",
-"total": 42,
+"total": 43,
 "total_sintesis": 42
 },
 "energia|MIXTO": {
@@ -13367,7 +13373,7 @@
 }
 ],
 "tema": "energia",
-"total": 122,
+"total": 121,
 "total_sintesis": 119
 },
 "energia|PNV": {
@@ -13751,7 +13757,7 @@
 }
 ],
 "tema": "energia",
-"total": 215,
+"total": 216,
 "total_sintesis": 215
 },
 "energia|PSOE": {
@@ -13934,7 +13940,7 @@
 }
 ],
 "tema": "energia",
-"total": 63,
+"total": 62,
 "total_sintesis": 63
 },
 "energia|SUMAR": {
@@ -14135,7 +14141,7 @@
 }
 ],
 "tema": "energia",
-"total": 135,
+"total": 133,
 "total_sintesis": 132
 },
 "energia|VOX": {
@@ -14336,7 +14342,7 @@
 }
 ],
 "tema": "energia",
-"total": 168,
+"total": 166,
 "total_sintesis": 168
 },
 "exteriores|BILDU": {
@@ -14897,7 +14903,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 48,
+"total": 49,
 "total_sintesis": 48
 },
 "exteriores|JUNTS": {
@@ -15074,7 +15080,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 61,
+"total": 63,
 "total_sintesis": 59
 },
 "exteriores|MIXTO": {
@@ -15275,7 +15281,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 212,
+"total": 217,
 "total_sintesis": 212
 },
 "exteriores|PNV": {
@@ -15665,7 +15671,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 384,
+"total": 391,
 "total_sintesis": 371
 },
 "exteriores|PSOE": {
@@ -15866,7 +15872,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 194,
+"total": 197,
 "total_sintesis": 189
 },
 "exteriores|SUMAR": {
@@ -16067,7 +16073,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 336,
+"total": 340,
 "total_sintesis": 326
 },
 "exteriores|VOX": {
@@ -16268,7 +16274,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 249,
+"total": 253,
 "total_sintesis": 244
 },
 "igualdad|BILDU": {
@@ -16610,7 +16616,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 67,
+"total": 72,
 "total_sintesis": 66
 },
 "igualdad|GOB": {
@@ -16928,7 +16934,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 36,
+"total": 38,
 "total_sintesis": 36
 },
 "igualdad|MIXTO": {
@@ -17111,7 +17117,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 109,
+"total": 112,
 "total_sintesis": 109
 },
 "igualdad|PNV": {
@@ -17495,7 +17501,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 165,
+"total": 171,
 "total_sintesis": 164
 },
 "igualdad|PSOE": {
@@ -17678,7 +17684,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 138,
+"total": 142,
 "total_sintesis": 136
 },
 "igualdad|SUMAR": {
@@ -17867,7 +17873,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 146,
+"total": 152,
 "total_sintesis": 145
 },
 "igualdad|VOX": {
@@ -18068,7 +18074,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 116,
+"total": 119,
 "total_sintesis": 113
 },
 "impuestos|BILDU": {
@@ -18470,7 +18476,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 367,
+"total": 366,
 "total_sintesis": 365
 },
 "impuestos|GOB": {
@@ -18854,7 +18860,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 177,
+"total": 173,
 "total_sintesis": 175
 },
 "impuestos|MIXTO": {
@@ -19055,7 +19061,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 388,
+"total": 379,
 "total_sintesis": 383
 },
 "impuestos|PNV": {
@@ -19256,7 +19262,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 220,
+"total": 219,
 "total_sintesis": 217
 },
 "impuestos|PP": {
@@ -19457,7 +19463,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 974,
+"total": 942,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -19658,7 +19664,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 228,
+"total": 226,
 "total_sintesis": 227
 },
 "impuestos|SUMAR": {
@@ -19859,7 +19865,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 550,
+"total": 544,
 "total_sintesis": 545
 },
 "impuestos|VOX": {
@@ -20060,7 +20066,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 588,
+"total": 578,
 "total_sintesis": 586
 },
 "inmigracion|BILDU": {
@@ -21233,7 +21239,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 259,
+"total": 258,
 "total_sintesis": 256
 },
 "inmigracion|PSOE": {
@@ -21836,7 +21842,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 343,
+"total": 345,
 "total_sintesis": 332
 },
 "justicia|BILDU": {
@@ -22202,7 +22208,7 @@
 }
 ],
 "tema": "justicia",
-"total": 92,
+"total": 93,
 "total_sintesis": 91
 },
 "justicia|GOB": {
@@ -22331,7 +22337,7 @@
 }
 ],
 "tema": "justicia",
-"total": 43,
+"total": 46,
 "total_sintesis": 43
 },
 "justicia|JUNTS": {
@@ -22526,7 +22532,7 @@
 }
 ],
 "tema": "justicia",
-"total": 100,
+"total": 103,
 "total_sintesis": 100
 },
 "justicia|MIXTO": {
@@ -22727,7 +22733,7 @@
 }
 ],
 "tema": "justicia",
-"total": 153,
+"total": 165,
 "total_sintesis": 153
 },
 "justicia|PNV": {
@@ -22916,7 +22922,7 @@
 }
 ],
 "tema": "justicia",
-"total": 71,
+"total": 72,
 "total_sintesis": 71
 },
 "justicia|PP": {
@@ -23117,7 +23123,7 @@
 }
 ],
 "tema": "justicia",
-"total": 354,
+"total": 385,
 "total_sintesis": 353
 },
 "justicia|PSOE": {
@@ -23294,7 +23300,7 @@
 }
 ],
 "tema": "justicia",
-"total": 101,
+"total": 106,
 "total_sintesis": 100
 },
 "justicia|SUMAR": {
@@ -23495,36 +23501,36 @@
 }
 ],
 "tema": "justicia",
-"total": 180,
+"total": 190,
 "total_sintesis": 176
 },
 "justicia|VOX": {
-"firma": "1d298b201700bb25805983733cb985b5bc5a99d3",
+"firma": "6ff5af55a24d68e5f0ca3934b1ac83b895727132",
 "grupo": "VOX",
 "lineas": [
 {
 "ejemplos": [
 [
-"Activar el artículo 102 de la Constitución para juzgar al Gobierno ante el Tribunal Supremo",
-"Hoces Íñiguez",
-"DSCD-15-CO-614",
-"2026-08-28"
+"Reforma de la LOPJ para que los jueces elijan directamente a los 12 vocales judiciales del CGPJ",
+"Gil Lázaro",
+"DSCD-15-PL-158",
+"2025-12-10"
 ],
 [
-"Activar el artículo 102 de la Constitución para acusar penalmente a miembros del Gobierno ante el Tribunal Supremo",
-"Hoces Íñiguez",
-"DSCD-15-CO-614",
-"2026-08-28"
+"acabar con el sistema de cuotas de partidos en el Consejo General del Poder Judicial",
+"Rodríguez Almeida",
+"DSCD-15-PL-153",
+"2025-11-19"
 ],
 [
-"dimisión del Gobierno y comparecencia ante la justicia",
-"Figaredo Álvarez-Sala",
-"DSCD-15-PL-199",
-"2026-07-23"
+"Consejo General del Poder Judicial elegido directamente por y entre los jueces",
+"Rodríguez de Millán Parro",
+"DSCD-15-PL-122",
+"2025-06-12"
 ]
 ],
-"n": 19,
-"titulo": "Dimisión del Gobierno o de sus miembros y puesta a disposición judicial"
+"n": 11,
+"titulo": "Reforma del CGPJ para que los jueces elijan a sus vocales"
 },
 {
 "ejemplos": [
@@ -23548,31 +23554,79 @@
 ]
 ],
 "n": 11,
-"titulo": "Disolución de las Cortes y convocatoria inmediata de elecciones generales"
+"titulo": "Convocatoria inmediata de elecciones generales"
 },
 {
 "ejemplos": [
 [
-"Reforma de la LOPJ para que los jueces elijan directamente a los 12 vocales judiciales del CGPJ",
-"Gil Lázaro",
-"DSCD-15-PL-158",
-"2025-12-10"
+"dimisión del Gobierno y comparecencia ante la justicia",
+"Figaredo Álvarez-Sala",
+"DSCD-15-PL-199",
+"2026-07-23"
 ],
 [
-"acabar con el sistema de cuotas de partidos en el Consejo General del Poder Judicial",
-"Rodríguez Almeida",
-"DSCD-15-PL-153",
-"2025-11-19"
+"dejar el Gobierno y ponerse a disposición judicial",
+"Figaredo Álvarez-Sala",
+"DSCD-15-PL-144",
+"2025-10-16"
 ],
 [
-"Consejo General del Poder Judicial elegido directamente por y entre los jueces",
-"Rodríguez de Millán Parro",
-"DSCD-15-PL-122",
-"2025-06-12"
+"Dimisión del presidente del Gobierno y su puesta a disposición judicial",
+"Abascal Conde",
+"DSCD-15-PL-130",
+"2025-07-09"
 ]
 ],
-"n": 11,
-"titulo": "Elección directa de los vocales judiciales del CGPJ por los propios jueces sin cuotas partidistas"
+"n": 9,
+"titulo": "Dimisión del Gobierno y puesta a disposición judicial"
+},
+{
+"ejemplos": [
+[
+"Dimisión o cese del fiscal general del Estado",
+"Sáez Alonso-Muñumer",
+"DSCD-15-CO-354",
+"2025-06-09"
+],
+[
+"Destituir de forma inmediata al fiscal general del Estado Álvaro García Ortiz",
+"Fernández Hernández",
+"DSCD-15-CO-291",
+"2025-03-18"
+],
+[
+"Destituir de forma inmediata al fiscal general del Estado Álvaro García Ortiz.",
+"Rodríguez Almeida",
+"DSCD-15-PL-98",
+"2025-02-25"
+]
+],
+"n": 8,
+"titulo": "Dimisión o cese del fiscal general del Estado"
+},
+{
+"ejemplos": [
+[
+"Dotar al Poder Judicial de más medios materiales y humanos",
+"Aguirre Gil de Biedma",
+"DSCD-15-CO-628",
+"2026-09-24"
+],
+[
+"dotar de todos los medios humanos, materiales y tecnológicos al Poder Judicial",
+"Hoces Íñiguez",
+"DSCD-15-PL-189",
+"2026-05-28"
+],
+[
+"Dotar al Poder Judicial de todos los medios humanos, materiales y tecnológicos necesarios.",
+"Hoces Íñiguez",
+"DSCD-15-PL-188",
+"2026-05-27"
+]
+],
+"n": 7,
+"titulo": "Dotar a la Justicia y al Poder Judicial de más medios humanos y materiales"
 },
 {
 "ejemplos": [
@@ -23595,32 +23649,8 @@
 "2025-02-28"
 ]
 ],
-"n": 7,
-"titulo": "Atribuir el control de constitucionalidad a una sala del Tribunal Supremo y reformar el Tribunal Constitucional"
-},
-{
-"ejemplos": [
-[
-"dotar de todos los medios humanos, materiales y tecnológicos al Poder Judicial",
-"Hoces Íñiguez",
-"DSCD-15-PL-189",
-"2026-05-28"
-],
-[
-"Dotar al Poder Judicial de todos los medios humanos, materiales y tecnológicos necesarios.",
-"Hoces Íñiguez",
-"DSCD-15-PL-188",
-"2026-05-27"
-],
-[
-"dotar de más medios y financiación sostenida a la justicia",
-"Aizcorbe Torra",
-"DSCD-15-PL-162",
-"2026-01-27"
-]
-],
-"n": 6,
-"titulo": "Dotar a la Justicia y al Poder Judicial de más medios humanos, materiales y tecnológicos"
+"n": 5,
+"titulo": "Asignar el control de constitucionalidad a una sala del Tribunal Supremo"
 },
 {
 "ejemplos": [
@@ -23644,31 +23674,7 @@
 ]
 ],
 "n": 5,
-"titulo": "Fijar la antigüedad en el escalafón como criterio reglado para nombramientos en el Tribunal Supremo y presidencias"
-},
-{
-"ejemplos": [
-[
-"Endurecimiento de penas en el Código Penal",
-"Chamorro Delmo",
-"DSCD-15-CO-389",
-"2025-09-05"
-],
-[
-"Reforma integral del Código Penal",
-"Mejías Sánchez",
-"DSCD-15-PL-77",
-"2024-11-12"
-],
-[
-"reforma del Código Penal con informes técnicos",
-"López Maraver",
-"DSCD-15-PL-67",
-"2024-10-08"
-]
-],
-"n": 4,
-"titulo": "Endurecer de forma general las penas del Código Penal"
+"titulo": "Basar los nombramientos del Tribunal Supremo en la antigüedad"
 },
 {
 "ejemplos": [
@@ -23692,12 +23698,12 @@
 ]
 ],
 "n": 4,
-"titulo": "Frenar e impedir la tramitación de la ley de amnistía en el Senado"
+"titulo": "Frenar la tramitación de la ley de amnistía en el Senado"
 }
 ],
 "tema": "justicia",
-"total": 165,
-"total_sintesis": 164
+"total": 180,
+"total_sintesis": 180
 },
 "pensiones|BILDU": {
 "firma": "adf851495ae6cbc278f5f96c2173c4400b3984b1",
@@ -24056,7 +24062,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 69,
+"total": 70,
 "total_sintesis": 69
 },
 "pensiones|GOB": {
@@ -24413,7 +24419,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 124,
+"total": 125,
 "total_sintesis": 123
 },
 "pensiones|PNV": {
@@ -24878,7 +24884,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 49,
+"total": 52,
 "total_sintesis": 47
 },
 "pensiones|SUMAR": {
@@ -25079,7 +25085,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 106,
+"total": 108,
 "total_sintesis": 105
 },
 "pensiones|VOX": {
@@ -25280,7 +25286,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 89,
+"total": 90,
 "total_sintesis": 85
 },
 "sanidad|BILDU": {
@@ -25682,7 +25688,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 141,
+"total": 143,
 "total_sintesis": 141
 },
 "sanidad|GOB": {
@@ -26048,7 +26054,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 107,
+"total": 109,
 "total_sintesis": 106
 },
 "sanidad|MIXTO": {
@@ -26249,7 +26255,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 176,
+"total": 178,
 "total_sintesis": 175
 },
 "sanidad|PNV": {
@@ -26651,7 +26657,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 498,
+"total": 499,
 "total_sintesis": 491
 },
 "sanidad|PSOE": {
@@ -26852,7 +26858,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 332,
+"total": 335,
 "total_sintesis": 329
 },
 "sanidad|SUMAR": {
@@ -27053,7 +27059,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 403,
+"total": 406,
 "total_sintesis": 397
 },
 "sanidad|VOX": {
@@ -27254,7 +27260,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 383,
+"total": 384,
 "total_sintesis": 378
 },
 "seguridad|BILDU": {
@@ -27449,7 +27455,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 57,
+"total": 58,
 "total_sintesis": 57
 },
 "seguridad|ERC": {
@@ -27584,7 +27590,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 54,
+"total": 55,
 "total_sintesis": 54
 },
 "seguridad|GOB": {
@@ -27764,7 +27770,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 50,
+"total": 55,
 "total_sintesis": 50
 },
 "seguridad|MIXTO": {
@@ -27965,7 +27971,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 157,
+"total": 159,
 "total_sintesis": 155
 },
 "seguridad|PNV": {
@@ -28283,7 +28289,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 323,
+"total": 325,
 "total_sintesis": 322
 },
 "seguridad|PSOE": {
@@ -28406,7 +28412,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 42,
+"total": 43,
 "total_sintesis": 41
 },
 "seguridad|SUMAR": {
@@ -28583,7 +28589,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 112,
+"total": 115,
 "total_sintesis": 111
 },
 "seguridad|VOX": {
@@ -29663,7 +29669,7 @@
 }
 ],
 "tema": "social",
-"total": 183,
+"total": 182,
 "total_sintesis": 180
 },
 "social|PNV": {
@@ -29864,7 +29870,7 @@
 }
 ],
 "tema": "social",
-"total": 114,
+"total": 113,
 "total_sintesis": 110
 },
 "social|PP": {
@@ -30266,7 +30272,7 @@
 }
 ],
 "tema": "social",
-"total": 265,
+"total": 263,
 "total_sintesis": 260
 },
 "social|SUMAR": {
@@ -30467,7 +30473,7 @@
 }
 ],
 "tema": "social",
-"total": 311,
+"total": 310,
 "total_sintesis": 307
 },
 "social|VOX": {
@@ -30668,7 +30674,7 @@
 }
 ],
 "tema": "social",
-"total": 240,
+"total": 238,
 "total_sintesis": 233
 },
 "tecnologia|BILDU": {
@@ -30761,7 +30767,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 23,
+"total": 22,
 "total_sintesis": 23
 },
 "tecnologia|ERC": {
@@ -30902,7 +30908,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 47,
+"total": 46,
 "total_sintesis": 47
 },
 "tecnologia|GOB": {
@@ -31025,7 +31031,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 21,
+"total": 18,
 "total_sintesis": 21
 },
 "tecnologia|JUNTS": {
@@ -31172,7 +31178,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 34,
+"total": 31,
 "total_sintesis": 34
 },
 "tecnologia|MIXTO": {
@@ -31331,7 +31337,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 38,
+"total": 33,
 "total_sintesis": 38
 },
 "tecnologia|PNV": {
@@ -31490,7 +31496,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 36,
+"total": 37,
 "total_sintesis": 36
 },
 "tecnologia|PP": {
@@ -31868,7 +31874,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 137,
+"total": 132,
 "total_sintesis": 136
 },
 "tecnologia|SUMAR": {
@@ -32069,7 +32075,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 196,
+"total": 189,
 "total_sintesis": 195
 },
 "tecnologia|VOX": {
@@ -32540,7 +32546,7 @@
 }
 ],
 "tema": "territorial",
-"total": 138,
+"total": 141,
 "total_sintesis": 138
 },
 "territorial|GOB": {
@@ -32798,7 +32804,7 @@
 }
 ],
 "tema": "territorial",
-"total": 131,
+"total": 133,
 "total_sintesis": 130
 },
 "territorial|MIXTO": {
@@ -33695,7 +33701,7 @@
 }
 ],
 "tema": "territorial",
-"total": 128,
+"total": 129,
 "total_sintesis": 127
 },
 "territorial|VOX": {
@@ -33878,7 +33884,7 @@
 }
 ],
 "tema": "territorial",
-"total": 87,
+"total": 88,
 "total_sintesis": 86
 },
 "transporte|BILDU": {
@@ -34721,7 +34727,7 @@
 }
 ],
 "tema": "transporte",
-"total": 261,
+"total": 262,
 "total_sintesis": 261
 },
 "transporte|PNV": {
@@ -35123,7 +35129,7 @@
 }
 ],
 "tema": "transporte",
-"total": 530,
+"total": 531,
 "total_sintesis": 520
 },
 "transporte|PSOE": {
@@ -35312,7 +35318,7 @@
 }
 ],
 "tema": "transporte",
-"total": 168,
+"total": 169,
 "total_sintesis": 164
 },
 "transporte|SUMAR": {
@@ -35513,7 +35519,7 @@
 }
 ],
 "tema": "transporte",
-"total": 383,
+"total": 384,
 "total_sintesis": 374
 },
 "transporte|VOX": {
@@ -35714,7 +35720,7 @@
 }
 ],
 "tema": "transporte",
-"total": 274,
+"total": 276,
 "total_sintesis": 265
 },
 "vivienda|BILDU": {
@@ -36518,7 +36524,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 133,
+"total": 131,
 "total_sintesis": 132
 },
 "vivienda|MIXTO": {
@@ -37121,7 +37127,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 543,
+"total": 544,
 "total_sintesis": 543
 },
 "vivienda|PSOE": {
@@ -37322,7 +37328,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 297,
+"total": 298,
 "total_sintesis": 296
 },
 "vivienda|SUMAR": {
@@ -37523,7 +37529,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 530,
+"total": 531,
 "total_sintesis": 526
 },
 "vivienda|VOX": {

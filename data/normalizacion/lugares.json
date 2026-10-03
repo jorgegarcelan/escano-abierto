@@ -509,6 +509,11 @@
 "Navarra",
 "Navarra"
 ],
+"Ansó": [
+"municipio",
+"Aragón",
+"Huesca"
+],
 "Antequera": [
 "municipio",
 "Andalucía",
@@ -853,6 +858,11 @@
 "municipio",
 "Cataluña",
 "Barcelona"
+],
+"Barcarrota": [
+"municipio",
+"Extremadura",
+"Badajoz"
 ],
 "Barcelona": [
 "municipio",
@@ -1363,6 +1373,11 @@
 "comunidad",
 "Cantabria",
 "Cantabria"
+],
+"Cantavieja": [
+"municipio",
+"Aragón",
+"Teruel"
 ],
 "Cantillana": [
 "municipio",
@@ -2143,6 +2158,11 @@
 "municipio",
 "Aragón",
 "Zaragoza"
+],
+"Ejulve": [
+"municipio",
+"Aragón",
+"Teruel"
 ],
 "El Altet": [
 "otro",
@@ -5783,6 +5803,11 @@
 "otro",
 "",
 ""
+],
+"Tablas de Daimiel": [
+"otro",
+"Castilla-La Mancha",
+"Ciudad Real"
 ],
 "Taboadela": [
 "municipio",
