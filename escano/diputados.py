@@ -11,6 +11,7 @@ URL_PAGINA = BASE + "/es/opendata/diputados"
 RE_ACTIVOS = re.compile(r"/webpublica/opendata/diputados/DiputadosActivos__\d+\.json")
 RE_BAJAS = re.compile(r"/webpublica/opendata/diputados/DiputadosDeBaja__\d+\.json")
 FICHERO = DATOS / "diputados.json"
+MINIMO_ACTIVOS = 300   # el Congreso tiene 350; por debajo de esto, los datos abiertos no son de una cámara en funciones
 
 
 def _iso(f: str | None) -> str:
@@ -48,6 +49,11 @@ def actualizar() -> dict[str, dict]:
     if bajas:
         todos.update(leer_activos(json.loads(descargar(BASE + bajas[-1], cache=False).decode("utf-8-sig"))))
     activos = leer_activos(json.loads(descargar(BASE + enlaces[-1], cache=False).decode("utf-8-sig")))
+    if len(activos) < MINIMO_ACTIVOS:
+        # Tras la disolución de las Cortes solo siguen los diputados de la Diputación Permanente: la web conserva
+        # la composición de la legislatura que termina en lugar de quedarse casi sin diputados.
+        print(f"  Diputados: solo {len(activos)} en activo en los datos abiertos; se conserva la lista anterior")
+        return leer()
     todos.update({n: {k: x for k, x in d.items() if k != "baja"} for n, d in activos.items()})  # quien vuelve, manda el alta
     FICHERO.parent.mkdir(parents=True, exist_ok=True)
     FICHERO.write_text(json.dumps(todos, ensure_ascii=False, indent=1))

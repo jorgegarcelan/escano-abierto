@@ -55,3 +55,29 @@ def test_path_compacto_y_centroide():
     assert d == "M0 0l10 0 0 10-10 0z"
     area, cx, cy = geo._area_centroide([(0, 0), (10, 0), (10, 10), (0, 10)])
     assert (abs(area), cx, cy) == (100, 5, 5)
+
+
+def test_disolucion_no_vacia_diputados_ni_hemiciclo(tmp_path, monkeypatch):
+    """Tras la disolución, los datos abiertos traen solo a la Diputación Permanente: se conserva lo anterior."""
+    import json
+    from escano import diputados, hemiciclo
+
+    previos = {f"Apellido{i}, Nombre": {"circunscripcion": "Madrid", "formacion": "X", "alta": "2023-08-17"} for i in range(350)}
+    f = tmp_path / "diputados.json"
+    f.write_text(json.dumps(previos))
+    monkeypatch.setattr(diputados, "FICHERO", f)
+    pocos = [{"NOMBRE": f"Apellido{i}, Nombre", "CIRCUNSCRIPCION": "Madrid", "FORMACIONELECTORAL": "X",
+              "FECHAALTA": "17/08/2023"} for i in range(60)]
+    pagina = b"/webpublica/opendata/diputados/DiputadosActivos__20261007.json"
+    monkeypatch.setattr(diputados, "descargar", lambda url, *a, **k: pagina if "opendata/diputados" in url and not url.endswith(".json")
+                        else json.dumps(pocos).encode())
+    assert len(diputados.actualizar()) == 350
+    assert len(json.loads(f.read_text())) == 350
+
+    plano = {"escanos": {f"D{i}": {"x": i, "y": i, "codigo": i} for i in range(350)}, "gobierno": [], "ancho": 540, "alto": 395}
+    h = tmp_path / "hemiciclo.json"
+    h.write_text(json.dumps(plano))
+    monkeypatch.setattr(hemiciclo, "FICHERO", h)
+    monkeypatch.setattr(hemiciclo, "descargar", lambda *a, **k: b"<html>sin plano</html>")
+    assert len(hemiciclo.actualizar()["escanos"]) == 350
+    assert len(json.loads(h.read_text())["escanos"]) == 350
