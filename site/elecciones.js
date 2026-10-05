@@ -96,7 +96,7 @@ export async function render(el, c, sub){
       <h2>Antes de votar, mira lo que votaron</h2>
       <p>La XV legislatura se cierra con la disolución de las Cortes. Aquí está lo que dejó hecho y sin hacer, quién vuelve a presentarse, qué se prometió en 2023 y qué se votó después, cómo se reparten los 350 escaños y cuarenta y nueve años de elecciones. Todo con datos oficiales.</p></div>
       <div class="el-cuenta">${cuenta}</div></div>
-    <nav class="el-nav" aria-label="Apartados de las elecciones">${[["el-calendario","Calendario"],["el-350","Los 350"],["el-caducan","Lo que caduca"],["el-balance","La legislatura en cifras"],["el-repite","¿Repite?"],["el-proximamente","Próximamente"]]
+    <nav class="el-nav" aria-label="Apartados de las elecciones">${[["el-calendario","Calendario"],["el-350","Los 350"],["el-caducan","Lo que caduca"],["el-balance","La legislatura en cifras"],["el-repite","¿Repite?"],["el-escano","El precio de un escaño"],["el-historico","Desde 1977"],["el-mapa","Mapa municipal"],["el-proximamente","Próximamente"]]
       .map(([a,l])=>`<a href="#${a}" data-el-ir="${a}">${l}</a>`).join("")}</nav>
     <section class="sec" id="el-calendario"><div class="sec-h"><h2>Calendario</h2><p>Los plazos los fija la Ley Orgánica del Régimen Electoral General (LOREG) y se cuentan desde la publicación del decreto de convocatoria.</p></div>
       ${calendario()}</section>
@@ -106,11 +106,12 @@ export async function render(el, c, sub){
     ${convalidar()}
     <section class="sec" id="el-balance">${balance()}</section>
     <section class="sec" id="el-repite"><div class="sec-h"><h2>¿Repite?</h2><p>Quién de los 350 diputados que terminan la legislatura vuelve a ir en las listas al Congreso, en qué puesto y por qué provincia.</p></div><p class="nota">Cargando…</p></section>
+    <section class="sec" id="el-escano" data-perezosa="escano"><div class="sec-h"><h2>El precio de un escaño</h2><p>Cuántos votos cuesta un diputado en cada provincia, cuántos votos se quedan sin representación y por cuánto se decidió el último escaño de cada una. Con un simulador de la ley D'Hondt.</p></div><p class="nota">Cargando…</p></section>
+    <section class="sec" id="el-historico" data-perezosa="historico"><div class="sec-h"><h2>Cuarenta y nueve años de elecciones</h2><p>Las dieciséis elecciones generales desde 1977: cómo se repartieron los 350 escaños, quién votó y dónde.</p></div><p class="nota">Cargando…</p></section>
+    <section class="sec" id="el-mapa" data-perezosa="municipios"><div class="sec-h"><h2>Municipio a municipio</h2><p>El voto de 2023 y 2019 en los 8.131 municipios, y cuánto cambió de una elección a otra.</p></div><p class="nota">Cargando…</p></section>
     <section class="sec" id="el-proximamente"><div class="sec-h"><h2>Próximamente</h2><p>Lo que irá apareciendo en esta sección hasta el 29N.</p></div>
       <div class="el-pronto">${[
         ["Qué prometieron y qué votaron","Las promesas de los programas de 2023, una a una, frente a lo que cada grupo votó en el Congreso.","En preparación"],
-        ["El precio de un escaño","Cuántos votos cuesta un escaño en cada provincia y cuántos se quedan sin representación.","En preparación"],
-        ["Cuarenta y nueve años de elecciones","Todas las generales desde 1977: escaños, participación y el mapa de cada una.","En preparación"],
         ["La noche electoral","Los resultados del escrutinio en directo, provincia a provincia, y el nuevo hemiciclo escaño a escaño.","29 de noviembre, desde las 20.00"],
       ].map(([t,p,s])=>`<div class="chart"><b>${esc(t)}</b><p>${esc(p)}</p><small>${esc(s)}</small></div>`).join("")}</div></section>`;
   el.querySelectorAll("[data-el-ir]").forEach(a => a.addEventListener("click", e => {
@@ -119,6 +120,7 @@ export async function render(el, c, sub){
   montar350(el.querySelector(".el-350"));
   montarWaffle(el.querySelector(".el-waffle"));
   pintarRepite(el.querySelector("#el-repite"));
+  perezosas(el);
   if (sub){ const t = document.getElementById("el-"+sub); if (t){ t.scrollIntoView({block:"start"}); window.scrollBy(0,-70); } }
 }
 
@@ -275,7 +277,7 @@ function balance(){
 
 /* ---------- ¿Repite? ---------- */
 let CAND = undefined;
-const cargarCand = () => CAND !== undefined ? Promise.resolve(CAND)
+const cargarCand = () => CAND !== undefined ? Promise.resolve(CAND) : !DATOS.hay?.candidaturas ? Promise.resolve(CAND = null)
   : fetch("datos/elecciones/candidaturas.json").then(r=>r.ok?r.json():null).catch(()=>null).then(j=>CAND=j);
 const tokensSiglas = s => new Set(String(s||"").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(/[^A-Z0-9]+/).filter(t=>t.length>1));
 let repiteProv = null;
@@ -325,4 +327,15 @@ function listaCambios(xs, titulo, detalle){
   if (!xs.length) return "";
   const {esc, G} = ctx;
   return `<div class="chart"><h3>${esc(titulo)} <small class="nota">(${xs.length})</small></h3><ul class="el-lista">${xs.map(x=>`<li><button class="linklike t" data-dip="${esc(ctx.slug(x.d[0]))}"><span class="dot" style="background:${G[x.d[1]]?.color}"></span>${esc(ctx.legible(x.d[0]))}</button><span class="m">${esc(x.d[2])}</span><span class="s">${detalle(x)}</span></li>`).join("")}</ul></div>`;
+}
+
+/* ---------- secciones que se cargan al acercarse (histórico, precio del escaño y mapa municipal) ---------- */
+function perezosas(el){
+  const cargar = sec => { if (sec.dataset.cargada) return; sec.dataset.cargada = "1";
+    import("./elecciones-historico.js").then(m=>({historico:m.pintarHistorico, escano:m.pintarEscano, municipios:m.pintarMunicipios})[sec.dataset.perezosa](sec, ctx))
+      .catch(()=>{ const n = sec.querySelector(".nota"); if (n) n.textContent = "No se ha podido cargar esta sección."; }); };
+  const secs = [...el.querySelectorAll("[data-perezosa]")];
+  if (!("IntersectionObserver" in window)){ secs.forEach(cargar); return; }
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ io.unobserve(e.target); cargar(e.target); } }), {rootMargin:"600px 0px"});
+  secs.forEach(s=>io.observe(s));
 }

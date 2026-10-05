@@ -150,6 +150,8 @@ def escribir(salida: dict) -> None:
         "caducan": caducan(leyes),
         "convalidar": pendientes_de_convalidar(leyes, salida["datos"]["votaciones"]),
         "balance": balance(salida),
+        # Qué piezas que llegan más tarde ya están (la web no pide lo que no existe).
+        "hay": {n: (CARPETA / f"{n}.json").exists() for n in ("candidaturas", "promesas", "resultados")},
     }
     (SALIDA / "elecciones.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
     for f in sorted(CARPETA.glob("*.json")):
