@@ -23,6 +23,7 @@ ficheros de municipios: el mapa municipal es el voto de los residentes en Españ
 from __future__ import annotations
 
 import json
+import math
 import re
 import unicodedata
 import zipfile
@@ -39,6 +40,54 @@ ELECCIONES = [("197706", "1977-06-15"), ("197903", "1979-03-01"), ("198210", "19
               ("200403", "2004-03-14"), ("200803", "2008-03-09"), ("201111", "2011-11-20"), ("201512", "2015-12-20"),
               ("201606", "2016-06-26"), ("201904", "2019-04-28"), ("201911", "2019-11-10"), ("202307", "2023-07-23")]
 MAPAS_MUNICIPALES = ("201911", "202307")   # las que casan al 100 % con los municipios de es-atlas
+
+# Legislatura que salió de cada elección y presidentes del Gobierno investidos en ella.
+LEGISLATURAS = {
+    "197706": ("Constituyente", ["Adolfo Suárez (UCD)"]),
+    "197903": ("I", ["Adolfo Suárez (UCD)", "Leopoldo Calvo-Sotelo (UCD), 1981"]),
+    "198210": ("II", ["Felipe González (PSOE)"]),
+    "198606": ("III", ["Felipe González (PSOE)"]),
+    "198910": ("IV", ["Felipe González (PSOE)"]),
+    "199306": ("V", ["Felipe González (PSOE)"]),
+    "199603": ("VI", ["José María Aznar (PP)"]),
+    "200003": ("VII", ["José María Aznar (PP)"]),
+    "200403": ("VIII", ["José Luis Rodríguez Zapatero (PSOE)"]),
+    "200803": ("IX", ["José Luis Rodríguez Zapatero (PSOE)"]),
+    "201111": ("X", ["Mariano Rajoy (PP)"]),
+    "201512": ("XI", []),   # ninguna investidura: nuevas elecciones
+    "201606": ("XII", ["Mariano Rajoy (PP)", "Pedro Sánchez (PSOE), por moción de censura, 2018"]),
+    "201904": ("XIII", []),   # ninguna investidura: nuevas elecciones
+    "201911": ("XIV", ["Pedro Sánchez (PSOE)"]),
+    "202307": ("XV", ["Pedro Sánchez (PSOE)"]),
+}
+
+
+def metricas(nacional: dict, validos: int, anterior: dict | None) -> dict:
+    """Indicadores clásicos del sistema de partidos, por familias (y por candidatura dentro de «Otros»).
+
+    - Número efectivo de partidos (Laakso-Taagepera): 1 / Σ p², con p la parte de votos (o de escaños).
+    - Índice de desproporcionalidad de Gallagher: √(½ Σ (v − e)²), en puntos porcentuales.
+    - Volatilidad de Pedersen: ½ Σ |Δ votos| entre familias de partidos respecto a la elección anterior.
+    """
+    # Las confluencias (En Comú, Compromís-Podemos…) van con su familia; los partidos pequeños, cada uno por su lado.
+    unidades: dict[str, dict] = {}
+    for cod, x in nacional.items():
+        u = unidades.setdefault(x["familia"] if x["familia"] != "OTROS" else cod, {"votos": 0, "escanos": 0, "familia": x["familia"]})
+        u["votos"] += x["votos"]
+        u["escanos"] += x["escanos"]
+    xs = list(unidades.values())
+    total_v = sum(x["votos"] for x in xs) or 1
+    nep_v = 1 / sum((x["votos"] / total_v) ** 2 for x in xs)
+    nep_e = 1 / sum((x["escanos"] / 350) ** 2 for x in xs if x["escanos"])
+    gallagher = math.sqrt(0.5 * sum((100 * x["votos"] / validos - 100 * x["escanos"] / 350) ** 2 for x in xs))
+    fam = Counter()
+    for x in xs:
+        fam[x["familia"]] += x["votos"]
+    out = {"nep_votos": round(nep_v, 2), "nep_escanos": round(nep_e, 2), "gallagher": round(gallagher, 2)}
+    if anterior:
+        ta, tb = sum(anterior.values()) or 1, sum(fam.values()) or 1
+        out["pedersen"] = round(50 * sum(abs(fam.get(f, 0) / tb - anterior.get(f, 0) / ta) for f in set(fam) | set(anterior)), 2)
+    return out, dict(fam)
 
 # Familias, de izquierda a derecha en el hemiciclo (como ORDEN_HEMI en la web) y con los nacionalistas y regionalistas
 # al final. Cada regla se busca en las siglas y la denominación de la cabecera nacional, sin tildes y en mayúsculas.
@@ -214,13 +263,29 @@ def municipios_web(id_: str) -> dict:
 
 def escribir() -> dict:
     SALIDA.mkdir(parents=True, exist_ok=True)
-    elecciones = []
+    elecciones, por_provincia, anterior = [], defaultdict(dict), None
     for id_, fecha in ELECCIONES:
         e = leer_eleccion(id_)
-        elecciones.append(resumen(id_, fecha, e))
-        dump(SALIDA / f"historico-{id_}.json", {"id": id_, "fecha": fecha, "prov": detalle(e)})
+        r = resumen(id_, fecha, e)
+        validos = r["validos"]
+        r["metricas"], anterior = metricas(e["nacional"], validos, anterior)
+        leg, presidentes = LEGISLATURAS[id_]
+        r["legislatura"], r["presidentes"] = leg, presidentes
+        elecciones.append(r)
+        d = detalle(e)
+        r["metricas"]["sin_escano"] = sum(p["sin_escano"] for p in d.values())
+        dump(SALIDA / f"historico-{id_}.json", {"id": id_, "fecha": fecha, "prov": d})
+        for cod, p in d.items():
+            por_provincia[cod][id_] = {**p, "censo": e["prov"][cod]["censo"], "nulos": e["prov"][cod]["nulos"]}
+    # La duración de cada legislatura: hasta la elección siguiente (la XV, hasta la disolución de 2026).
+    for a, b in zip(elecciones, elecciones[1:] + [{"fecha": "2026-10-06"}]):
+        a["hasta"] = b["fecha"]
     historico = {"familias": [{"id": f, "nombre": n, "color": c} for f, n, c, _ in FAMILIAS], "elecciones": elecciones}
     dump(SALIDA / "historico.json", historico)
+    carpeta = SALIDA / "provincias"
+    carpeta.mkdir(exist_ok=True)
+    for cod, porid in por_provincia.items():   # todo el histórico de una provincia, para su ficha
+        dump(carpeta / f"{cod}.json", porid)
     for id_ in MAPAS_MUNICIPALES:
         dump(SALIDA / f"municipios-{id_}.json", municipios_web(id_))
     return historico

@@ -421,7 +421,7 @@ def construir(con_ia: bool = True) -> dict:
     salida["preguntas"] = mod_preguntas.leer_todo()["preguntas"]
     escribir_web(salida)
     from . import elecciones   # sección «Elecciones» (29N): calendario, lo que caduca, mapas e histórico
-    elecciones.escribir(salida)
+    elecciones.escribir(salida, SITIO / "datos" / "elecciones")
     try:
         from .paginas import generar
         generar(salida, mod_hemiciclo.leer())

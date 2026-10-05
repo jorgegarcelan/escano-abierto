@@ -198,8 +198,11 @@ def _capa(topo: dict, objeto: str, tol: float, decimales: int, proj: Proyeccion 
         anillos = [_anillo_puntos(anillo, arcos) for pol in _anillos(g) for anillo in pol]
         exteriores = [_anillo_puntos(pol[0], arcos) for pol in _anillos(g)]
         area, cx, cy = max((_area_centroide(a) for a in exteriores), key=lambda t: abs(t[0]))
+        xs = [x for a in exteriores for x, _ in a]
+        ys = [y for a in exteriores for _, y in a]
         salida[cod] = {"n": g.get("properties", {}).get("name", ""), "d": _path(anillos, decimales),
                        "c": [round(cx, 1), round(cy, 1)],
+                       "bb": [round(min(xs), 1), round(min(ys), 1), round(max(xs), 1), round(max(ys), 1)] if xs else None,
                        "a": round(sum(abs(_area_centroide(a)[0]) for a in exteriores), 1)}
     return salida, proj
 
@@ -231,6 +234,7 @@ def escribir() -> dict:
     (SALIDA / "geo-provincias.json").write_text(json.dumps(geo_prov, ensure_ascii=False, separators=(",", ":")))
     geo_muni = {"ancho": ANCHO, "alto": ALTO,
                 "municipios": {c: [m["n"], m["d"]] for c, m in sorted(municipios.items())}}
+    # Las comunidades de tierras (53…) no son municipios: no tienen resultados propios.
     (SALIDA / "geo-municipios.json").write_text(json.dumps(geo_muni, ensure_ascii=False, separators=(",", ":")))
     return geo_prov
 

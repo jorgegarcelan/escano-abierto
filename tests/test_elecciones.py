@@ -215,3 +215,10 @@ def test_promesas_actos_agrupa_por_iniciativa():
     assert A["121/9"]["claves"] == ["1-2"] and A["121/9"]["vinculante"]
     assert A["130/1"]["claves"] == ["3-1"]
     assert {"122/5", "122/5·2"} <= set(A)                      # dos iniciativas con el mismo expediente por error
+
+
+def test_caducan_no_cuenta_las_concluidas():
+    from escano import elecciones
+    ley = {"exp": "121/64", "titulo": "Ley", "tipo": "Proyecto de ley", "origen": "GOB", "autores": ["GOB"], "presentada": "2025-07-17",
+           "estado": "en trámite", "etapa": 4, "ampliaciones": 0, "situacion": "Concluido - (Aprobado con modificaciones)"}
+    assert elecciones.caducan({"iniciativas": [ley]})["total"] == 0

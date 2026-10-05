@@ -64,8 +64,9 @@ def caducan(leyes: dict, disolucion: date = CONVOCATORIA) -> dict:
 
     Antes de que el Congreso actualice sus datos abiertos aparecen como «en trámite»; después, como «caducada».
     """
+    # Las «concluidas» (aprobadas por las Cortes, a la espera del BOE) no caducan aunque aún no tengan resultado.
     vivas = [i for i in leyes.get("iniciativas", []) if i["estado"] in ("en trámite", "caducada")
-             and "popular" not in i.get("titulo", "").lower()[:60]]
+             and "popular" not in i.get("titulo", "").lower()[:60] and not i.get("situacion", "").startswith("Concluido")]
     dias = lambda i: (disolucion - date.fromisoformat(i["presentada"])).days if i.get("presentada") else None
     lista = sorted(vivas, key=lambda i: (-i["etapa"], -(i.get("ampliaciones") or 0), i["exp"]))
     return {
@@ -140,9 +141,10 @@ def balance(salida: dict) -> dict:
     }
 
 
-def escribir(salida: dict) -> None:
-    """Escribe los datos de la sección y copia las geometrías versionadas."""
-    SALIDA.mkdir(parents=True, exist_ok=True)
+def escribir(salida: dict, carpeta=None) -> None:
+    """Escribe los datos de la sección y copia lo versionado (geometrías, histórico, candidaturas)."""
+    carpeta = carpeta or SALIDA
+    carpeta.mkdir(parents=True, exist_ok=True)
     leyes = salida.get("leyes") or {"iniciativas": [], "aprobadas": []}
     datos = {
         "convocatoria": CONVOCATORIA.isoformat(), "votacion": VOTACION.isoformat(),
@@ -153,9 +155,11 @@ def escribir(salida: dict) -> None:
         # Qué piezas que llegan más tarde ya están (la web no pide lo que no existe).
         "hay": {n: (CARPETA / f"{n}.json").exists() for n in ("candidaturas", "promesas", "resultados")},
     }
-    (SALIDA / "elecciones.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
-    for f in sorted(CARPETA.glob("*.json")):
-        shutil.copyfile(f, SALIDA / f.name)
+    (carpeta / "elecciones.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
+    for f in sorted(CARPETA.rglob("*.json")):   # con las subcarpetas (provincias/)
+        destino = carpeta / f.relative_to(CARPETA)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(f, destino)
 
 
 # ---------- reparto de escaños (art. 163 de la LOREG) ----------
