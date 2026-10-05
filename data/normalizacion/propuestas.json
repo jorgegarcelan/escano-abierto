@@ -10268,7 +10268,7 @@
 }
 ],
 "tema": "educacion",
-"total": 200,
+"total": 201,
 "total_sintesis": 199
 },
 "educacion|SUMAR": {
@@ -16616,7 +16616,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 72,
+"total": 73,
 "total_sintesis": 66
 },
 "igualdad|GOB": {
@@ -17684,7 +17684,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 142,
+"total": 143,
 "total_sintesis": 136
 },
 "igualdad|SUMAR": {
@@ -19463,7 +19463,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 942,
+"total": 943,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -28961,7 +28961,7 @@
 }
 ],
 "tema": "social",
-"total": 72,
+"total": 74,
 "total_sintesis": 72
 },
 "social|ERC": {
@@ -30071,7 +30071,7 @@
 }
 ],
 "tema": "social",
-"total": 375,
+"total": 376,
 "total_sintesis": 368
 },
 "social|PSOE": {
@@ -32546,7 +32546,7 @@
 }
 ],
 "tema": "territorial",
-"total": 141,
+"total": 142,
 "total_sintesis": 138
 },
 "territorial|GOB": {
@@ -37328,7 +37328,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 298,
+"total": 299,
 "total_sintesis": 296
 },
 "vivienda|SUMAR": {
