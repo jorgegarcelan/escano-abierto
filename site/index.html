@@ -1234,6 +1234,7 @@ const ORDEN_HEMI = ["SUMAR","BILDU","ERC","PSOE","MIXTO","PNV","JUNTS","PP","VOX
 const ORDEN_VOTO = {S:0,A:1,N:2,X:3};
 const FORMA_ASIENTO = getComputedStyle(document.documentElement).getPropertyValue("--asiento").trim();
 const DIPS = DATA.diputados || [];
+const LEG = INDICE?.meta?.legislatura || "XV";   // legislatura de los datos (enlaces a las fichas del Congreso)
 const _layouts = {};
 function asientos(N){
   if (_layouts[N]) return _layouts[N];
@@ -1438,7 +1439,7 @@ const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", a
 const DIP_NOMBRE = Object.fromEntries(DIP.map(d=>[d.n,d]));
 // Foto y ficha oficiales del Congreso, a partir del código del diputado (vienen del plano del hemiciclo).
 const fotoDip = d => d?.cod ? `https://www.congreso.es/docu/imgweb/diputados/${d.cod}_15.jpg` : null;
-const fichaOficial = d => `https://www.congreso.es/es/hemiciclo?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_diputadomodule_mostrarFicha=true&codParlamentario=${d.cod}&idLegislatura=XV`;
+const fichaOficial = d => `https://www.congreso.es/es/hemiciclo?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_diputadomodule_mostrarFicha=true&codParlamentario=${d.cod}&idLegislatura=${LEG}`;
 // «lazy» solo en listados largos; las fotos que se ven siempre se piden en el momento.
 const imgFoto = (d, cls, extra="", lazy=false) => fotoDip(d) ? `<img class="${cls}" src="${fotoDip(d)}" alt=""${lazy?' loading="lazy"':""} referrerpolicy="no-referrer" onerror="this.remove()"${extra}>` : "";
 const DIP_SLUG = Object.fromEntries(DIP.map(d=>[d.slug,d]));
@@ -1702,7 +1703,7 @@ const INICIATIVAS = (()=>{
 })();
 const slugExp = x => x.replace("/","-");
 let iniSel = null;
-const urlIniciativa = x => `https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=${encodeURIComponent(x)}`;
+const urlIniciativa = x => `https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=${LEG}&_iniciativas_id=${encodeURIComponent(x)}`;
 function renderIniciativa(x){
   const ini = INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]};
   const ley = LEYES?.porExp[x];
