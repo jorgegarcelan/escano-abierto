@@ -418,6 +418,8 @@ def construir(con_ia: bool = True) -> dict:
             x["tm"] = mod_temas.temas_de(x["titulo"], x["texto"])
     salida["preguntas"] = mod_preguntas.leer_todo()["preguntas"]
     escribir_web(salida)
+    from . import elecciones   # sección «Elecciones» (29N): calendario, lo que caduca, mapas e histórico
+    elecciones.escribir(salida)
     try:
         from .paginas import generar
         generar(salida, mod_hemiciclo.leer())

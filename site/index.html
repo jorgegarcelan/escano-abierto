@@ -874,6 +874,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
 /* ¿Quién lo dijo? */
 .tab-punto{position:relative;display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--no);margin-left:5px;vertical-align:super}
 .tab-punto[hidden]{display:none}
+.tab-29n{font:600 10px var(--mono);letter-spacing:.04em;margin-left:6px;padding:1px 5px;border-radius:var(--r-chip);background:var(--ink);color:var(--bg);vertical-align:1px}
 #qld-aviso{position:fixed;right:18px;bottom:18px;z-index:55;display:flex;align-items:center;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-pill);box-shadow:0 10px 30px -12px rgb(0 0 0 / .55);padding:3px}
 .qld-aviso-ir{appearance:none;display:flex;align-items:center;gap:8px;background:none;border:0;border-radius:var(--r-pill);padding:7px 6px 7px 12px;color:var(--ink);font:600 13px var(--sans);cursor:pointer;white-space:nowrap}
 .qld-aviso-ir span{font-weight:500;color:var(--muted)}
@@ -1032,6 +1033,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
       <button class="btn-buscar" id="btn-buscar" type="button" aria-label="Buscar (tecla /)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Buscar</span><kbd>/</kbd></button>
       <nav class="tabs" aria-label="Secciones">
         <button id="tab-inicio" data-vista="inicio">Inicio</button>
+        <button id="tab-elecciones" data-vista="elecciones">Elecciones<span class="tab-29n">29N</span></button>
         <button class="tab-menu" id="menu-actividad" aria-haspopup="menu" aria-expanded="false" aria-controls="m-actividad">Actividad<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="tab-menu" id="menu-quien" aria-haspopup="menu" aria-expanded="false" aria-controls="m-quien">Quién es quién<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
@@ -1057,6 +1059,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
   <div class="periodo-bar"><label for="periodo">Periodo</label><select id="periodo" aria-label="Periodo que se muestra"></select><span id="periodo-info"></span></div>
   <main>
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
+    <section class="view" id="elecciones" role="tabpanel" aria-labelledby="tab-elecciones" hidden></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
     <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
     <section class="view" id="explora" role="tabpanel" aria-labelledby="tab-explora" hidden></section>
@@ -3087,6 +3090,14 @@ function irCargo(id){
   pintarPanelOrg(); Org.resaltar(); panelEnVista();
 }
 
+/* ---------- elecciones del 29N (site/elecciones.js, se carga al abrir la pestaña) ---------- */
+let elSub = null;
+function renderElecciones(){
+  const ctxEl = {G, DIPS, PLANO, ORDEN_HEMI, esc, fmt, slug, legible, fechaCorta, autorNombre, irDiputado, glosa};
+  const sub = elSub; elSub = null;
+  import("./elecciones.js").then(m=>m.render($("#elecciones"), ctxEl, sub))
+    .catch(()=>{ $("#elecciones").innerHTML = `<p class="nota">No se ha podido cargar la sección de elecciones.</p>`; });
+}
 async function renderOrganigrama(){
   const el = $("#organigrama");
   if (!ORG){ el.innerHTML = `<p class="nota">Cargando el organigrama…</p>`; await cargarOrg(); }
@@ -3485,10 +3496,10 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
+const TABS = ["inicio","elecciones","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {"quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {elecciones:renderElecciones, "quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
 // la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
 let ultimaVista = null;
@@ -3511,6 +3522,7 @@ function show(id, push){
   if (id==="aviso-legal"){ setTimeout(()=>{ document.getElementById("aviso-legal")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); }, 0); id="sobre"; push=false; }
   if (id && id.startsWith("cargo-")){ const c=id.slice(6); if (orgSel!==c){ orgSel=c; rendered.organigrama=false; } id="organigrama"; push=false; }
   else if (id==="organigrama" && push && orgSel){ orgSel=null; rendered.organigrama=false; }
+  if (id && id.startsWith("elecciones-")){ elSub = id.slice(11); rendered.elecciones=false; id="elecciones"; push=false; }
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }
   if (id && id.startsWith("tema-")){ if (temaFijo!==id.slice(5)){ temaFijo=id.slice(5); rendered.tema=false; } id="tema"; push=false; }
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
@@ -3522,7 +3534,7 @@ function show(id, push){
   cerrarMenus();
   const nav = $("nav.tabs"), act = $("nav.tabs>button.activa");   // en el móvil la barra se desplaza: que se vea la sección actual
   if (act && (act.offsetLeft < nav.scrollLeft || act.offsetLeft + act.offsetWidth > nav.scrollLeft + nav.clientWidth)) nav.scrollLeft = act.offsetLeft - 8;
-  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
+  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo" || id==="elecciones";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   contarVista(id, hashOriginal);
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }

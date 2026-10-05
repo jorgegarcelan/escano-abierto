@@ -22,7 +22,7 @@ AUTORES = [(r"socialista", "PSOE"), (r"popular", "PP"), (r"\bvox\b", "VOX"), (r"
            (r"mixto", "MIXTO"), (r"^gobierno", "GOB"), (r"^senado", "SEN"), (r"comunidad|ciudad aut", "CCAA"),
            (r"diputad", "DIP")]
 RESULTADOS = [("aprobad", "aprobada"), ("rechazad", "rechazada"), ("retirad", "retirada"), ("decaíd", "decaída"),
-              ("subsumid", "subsumida"), ("inadmitid", "inadmitida")]
+              ("subsumid", "subsumida"), ("inadmitid", "inadmitida"), ("caducad", "caducada")]
 # Etapas del embudo, de la presentación a la publicación como ley.
 ETAPAS = ["Presentadas", "Admitidas a debate", "Con informe en comisión", "Aprobadas en el Congreso",
           "Pasaron por el Senado", "Leyes"]
