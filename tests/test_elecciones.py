@@ -81,3 +81,54 @@ def test_disolucion_no_vacia_diputados_ni_hemiciclo(tmp_path, monkeypatch):
     monkeypatch.setattr(hemiciclo, "descargar", lambda *a, **k: b"<html>sin plano</html>")
     assert len(hemiciclo.actualizar()["escanos"]) == 350
     assert len(json.loads(h.read_text())["escanos"]) == 350
+
+
+def test_candidaturas_soria_2023():
+    from pathlib import Path
+    from escano import candidaturas as C
+    filas = C.leer(Path(__file__).parent / "fixtures" / "boe_candidaturas_soria_2023.xml")
+    assert {f["provincia"] for f in filas} == {"SORIA"}
+    assert C.circunscripcion("SORIA") == "Soria"
+    pp = [f for f in filas if f["siglas"] == "PP" and f["tipo"] == "titular"]
+    assert [(f["orden"], f["nombre"]) for f in pp] == [(1, "Tomás Cabezón Casas"), (2, "Elena del Vado López")]
+    assert any(f["tipo"] == "no_proclamada" for f in filas)          # Escaños en Blanco, en Soria
+    for f in filas:
+        f["circ"] = "Soria"
+    r = C.repite(filas, [["Cabezón Casas, Tomás", "PP", "Soria"], ["Rey de las Heras, Luis Alfonso", "PSOE", "Soria"],
+                         ["Pérez López, Nadie", "PP", "Soria"]])
+    assert r["Cabezón Casas, Tomás"]["orden"] == 1 and r["Cabezón Casas, Tomás"]["nivel"] == 1
+    assert r["Rey de las Heras, Luis Alfonso"]["siglas"] == "PSOE"
+    assert "Pérez López, Nadie" not in r
+
+
+def test_casar_nombres_dificiles():
+    from escano import candidaturas as C
+    assert C.casar("Guijarro García, Txema", [{"nombre": "José María Guijarro García"}])[0] == 2
+    assert C.casar("García Gurrutxaga, Ana", [{"nombre": "Ana García Gurruchaga"}])[0] == 3
+    assert C.casar("Rufián Romero, Gabriel", [{"nombre": "Gabriel Rufián i Romero"}])[0] == 1
+    # Mismos apellidos, otro nombre de pila: no casa.
+    assert C.casar("Rodríguez García, Isabel", [{"nombre": "Pablo Rodríguez García"}])[0] == 0
+    assert C.circunscripcion("ILLES BALEARS") == "Balears (Illes)"
+    assert C.circunscripcion("SANTA CRUZ DE TENERIFE") == "S/C Tenerife"
+    assert C.circunscripcion("A CORUÑA") == "Coruña (A)"
+    assert C.circunscripcion("ARABA/ÁLAVA") == "Araba/Álava"
+
+
+def test_candidaturas_correcciones(tmp_path):
+    from escano import candidaturas as C
+    xml = """<documento><texto>
+      <p class="centro_negrita">JUNTA ELECTORAL DE TERUEL</p><p class="centro_cursiva">CONGRESO DE LOS DIPUTADOS</p>
+      <p class="parrafo_2">En la página 90214:</p><p class="parrafo_2">Donde dice:</p>
+      <p class="centro_redonda">«Candidatura núm.: 13. PARTIDO ANIMALISTA (PACMA)</p><p class="parrafo_2">No proclamada.»</p>
+      <p class="parrafo_2">Debe decir:</p><p class="centro_redonda">«Candidatura núm.: 13. PARTIDO ANIMALISTA (PACMA)</p>
+      <p class="parrafo_2">1. Elena Campón de Miguel.</p><p class="parrafo_2">Suplentes:</p><p class="parrafo_2">1. Javier Baldoví Jachán.»</p>
+      <p class="centro_negrita">JUNTA ELECTORAL DE BIZKAIA</p><p class="centro_cursiva">CONGRESO DE LOS DIPUTADOS</p>
+      <p class="centro_redonda">5. VOX (VOX)</p><p class="parrafo_2">Donde dice:</p><p class="parrafo_2">«3. Maria de la O Cordero Garcia.»</p>
+      <p class="parrafo_2">Debe decir:</p><p class="parrafo_2">«3. María De La O Cordero García.»</p>
+    </texto></documento>"""
+    (tmp_path / "x.xml").write_text(xml)
+    filas = C.leer(tmp_path / "x.xml")
+    assert [(f["siglas"], f["tipo"], f["orden"], f["nombre"]) for f in filas] == [
+        ("PACMA", "titular", 1, "Elena Campón de Miguel"), ("PACMA", "suplente", 1, "Javier Baldoví Jachán"),
+        ("VOX", "correccion", 3, "María De La O Cordero García")]
+    assert filas[2]["antes"] == "Maria de la O Cordero Garcia"
