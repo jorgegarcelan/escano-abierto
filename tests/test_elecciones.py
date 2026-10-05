@@ -132,3 +132,28 @@ def test_candidaturas_correcciones(tmp_path):
         ("PACMA", "titular", 1, "Elena Campón de Miguel"), ("PACMA", "suplente", 1, "Javier Baldoví Jachán"),
         ("VOX", "correccion", 3, "María De La O Cordero García")]
     assert filas[2]["antes"] == "Maria de la O Cordero Garcia"
+
+
+def test_familias_de_partidos():
+    from escano.historico import familia
+    casos = {("PSOE", ""): "PSOE", ("P.S.O.E.", ""): "PSOE", ("AP-PDP", ""): "PP", ("CD", "COALICION DEMOCRATICA"): "PP", ("P.P.", ""): "PP",
+             ("UCD", ""): "UCD", ("CDS", ""): "UCD", ("PCE", ""): "IZQ", ("PODEMOS-IU-EQUO", ""): "IZQ",
+             ("EN COMÚ", ""): "IZQ", ("SUMAR", ""): "IZQ", ("COMPROMÍS 2", ""): "IZQ", ("COMPROMÍS-Q", ""): "OTROS",
+             ("PSP-US", "PARTIDO SOCIALISTA POPULAR-UNIDAD SOCIALISTA"): "OTROS", ("JxCAT - JUNTS", ""): "CIU",
+             ("PDPC", ""): "CIU", ("ERC-CATSÍ", ""): "ERC", ("EAJ-PNV", ""): "PNV", ("AMAIUR", ""): "BILDU",
+             ("EH Bildu", ""): "BILDU", ("B.N.G.", ""): "BNG", ("CCa-PNC", ""): "CC", ("C's", ""): "CS", ("VOX", ""): "VOX",
+             ("NA+", "NAVARRA SUMA"): "OTROS", ("U.P.N.", ""): "OTROS", ("PRC", ""): "OTROS"}
+    for (siglas, nombre), esperada in casos.items():
+        assert familia(siglas, nombre) == esperada, siglas
+
+
+def test_dhondt_reproduce_el_reparto_oficial_de_2023():
+    import json
+    from pathlib import Path
+    from escano import elecciones
+    prov = json.loads((Path(__file__).parent.parent / "data" / "elecciones" / "historico-202307.json").read_text())["prov"]
+    assert len(prov) == 52 and sum(p["e"] for p in prov.values()) == 350
+    for cod, p in prov.items():
+        votos = {f"{s}|{k}": v for k, (s, _, v, _) in enumerate(p["c"])}
+        oficial = {f"{s}|{k}": e for k, (s, _, _, e) in enumerate(p["c"]) if e}
+        assert elecciones.dhondt(votos, p["e"], p["validos"])["escanos"] == oficial, cod
