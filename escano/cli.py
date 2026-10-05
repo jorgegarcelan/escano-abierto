@@ -12,6 +12,7 @@
     python -m escano explora [--solo temas]     # unifica temas, lugares y propuestas para la pestaña Explora
     python -m escano estado [--desde 2018-06-01] # solo los nombramientos y ceses del BOE (organigrama del Estado)
     python -m escano candidaturas               # listas al Congreso del BOE y quién de los diputados repite (29N)
+    python -m escano promesas [--solo PP]       # promesas de los programas de 2023 frente a lo que se votó (Gemini)
 """
 from __future__ import annotations
 
@@ -171,6 +172,9 @@ def main(argv: list[str] | None = None) -> None:
     ca.add_argument("--desde", type=date.fromisoformat, help="por defecto, el día 21 tras la convocatoria")
     ca.add_argument("--hasta", type=date.fromisoformat, help="por defecto, hoy")
     ca.add_argument("--boe", nargs="+", help="identificadores BOE-A-… concretos (el principal y sus correcciones)")
+    pm = sub.add_parser("promesas", help="promesas de los programas de 2023 frente a lo votado (necesita GEMINI_API_KEY)")
+    pm.add_argument("--solo", help="solo un programa: PP, PSOE, VOX, SUMAR, ERC, JUNTS, BILDU, PNV, BNG o UPN")
+    pm.add_argument("--limite", type=int, help="como mucho estas tandas de texto por programa (para probar)")
     rt = sub.add_parser("reto", help="fija un reto temático de «¿Quién lo dijo?» para un día (p. ej. vivienda)")
     rt.add_argument("fecha", type=date.fromisoformat)
     rt.add_argument("--tema", required=True, help="un tema fijo de temas.py: vivienda, sanidad, pensiones…")
@@ -224,6 +228,12 @@ def main(argv: list[str] | None = None) -> None:
             raise SystemExit("El BOE aún no ha publicado las candidaturas.")
         print(f"{c['fase']}: {sum(len(v) for v in c['listas'].values())} listas en {len(c['listas'])} circunscripciones; "
               f"{len(c['repite'])} de {len(dips)} diputados van en alguna")
+        print("Vuelve a construir la web para publicarlo: python -m escano construir --sin-ia")
+    elif args.orden == "promesas":
+        from . import promesas
+        r = promesas.ejecutar(args.solo, args.limite)
+        for sigla, p in r["programas"].items():
+            print(f"  {sigla}: {len(p['promesas'])} promesas")
         print("Vuelve a construir la web para publicarlo: python -m escano construir --sin-ia")
     elif args.orden == "reto":
         from .construir import fijar_reto_tematico

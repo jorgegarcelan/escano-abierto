@@ -157,3 +157,61 @@ def test_dhondt_reproduce_el_reparto_oficial_de_2023():
         votos = {f"{s}|{k}": v for k, (s, _, v, _) in enumerate(p["c"])}
         oficial = {f"{s}|{k}": e for k, (s, _, _, e) in enumerate(p["c"]) if e}
         assert elecciones.dhondt(votos, p["e"], p["validos"])["escanos"] == oficial, cod
+
+
+def test_promesas_unidades_y_citas():
+    from escano import promesas as P
+    pags = ["PROGRAMA 2023\nIntroducción general del partido sobre lo que pensamos hacer\n\n1. Aprobaremos una ley de vivien-\nda asequible con un parque público de 100.000 pisos.\n• Bajaremos el IVA de la luz al 5 % de forma permanente para todos.\n3\n",
+            "PROGRAMA 2023\nÍndice de contenidos del programa electoral completo ........ 12\n\nCrearemos una agencia estatal de evaluación de políticas públicas independiente.\n",
+            "PROGRAMA 2023\nOtra página con un párrafo largo que no dice nada concreto sobre nada en particular.\n"] * 2
+    us = P.unidades(pags, "X")
+    textos = [u["texto"] for u in us]
+    assert "Aprobaremos una ley de vivienda asequible con un parque público de 100.000 pisos." in textos
+    assert any(t.startswith("Bajaremos el IVA") for t in textos)
+    assert not any("PROGRAMA 2023" in t or "Índice" in t for t in textos)
+    assert us[0]["pagina"] == 1
+    assert P.cita_literal("una ley de vivienda asequible con un parque público", textos[1])
+    assert not P.cita_literal("una ley de vivienda barata con un parque público", textos[1])
+
+
+def test_promesas_juicio_a_ciegas_y_posicion():
+    from escano import promesas as P
+    assert P.anonimo("Proposición no de Ley del Grupo Parlamentario Popular en el Congreso, sobre X") == "Proposición no de Ley del [GRUPO], sobre X"
+    assert "[GRUPO]" in P.anonimo("Proposición de los Grupos Parlamentarios Socialista, Plurinacional SUMAR y Vasco (EAJ-PNV)")
+    assert "Socialista" not in P.anonimo("Grupos Parlamentarios Socialista y Plurinacional SUMAR")
+    assert P.posicion("SSSNA-", [0, 1, 2]) == "S"
+    assert P.posicion("SSNNA-", [0, 1, 2, 3]) == "D"        # 50 % distinto: dividido
+    assert P.posicion("SSSN--", [4, 5]) is None             # no eran diputados o no votaron
+
+
+def test_promesas_regla_de_resultado():
+    from escano import promesas as P
+    ley = {"id": "121/1", "tipo": "Proyecto de ley", "titulo": "Ley de X", "fecha": "2025-01-01"}
+    pnl = {"id": "162/1", "tipo": "Proposición no de ley", "titulo": "Sobre X", "fecha": "2024-01-01"}
+    p = {"competencia": "directa"}
+    assert P.resultado({"competencia": "ninguna"}, [])[0] == "sin_competencia"
+    assert P.resultado(p, [])[0] == "no_votada"
+    assert P.resultado(p, [(ley, "cumple", "S")])[0] == "a_favor_cumple"
+    assert P.resultado(p, [(ley, "cumple", "N")])[0] == "en_contra_cumple"
+    assert P.resultado(p, [(ley, "contradice", "N")])[0] == "en_contra_contradice"
+    assert P.resultado(p, [(ley, "contradice", "S")])[0] == "a_favor_contradice"
+    assert P.resultado(p, [(ley, "avanza", "N")])[0] == "en_contra_avanza"
+    assert P.resultado(p, [(ley, "cumple", "A")])[0] == "abstencion"
+    # A favor de una ley que la cumple y en contra de una PNL que también: distinto sentido.
+    assert P.resultado(p, [(ley, "cumple", "S"), (pnl, "cumple", "N")])[0] == "distinto_sentido"
+    # La ley pesa más que la PNL cuando las dos van en el mismo sentido.
+    r, utiles = P.resultado(p, [(pnl, "cumple", "S"), (ley, "cumple", "S")])
+    assert r == "a_favor_cumple" and utiles[0][0] is ley
+
+
+def test_promesas_actos_agrupa_por_iniciativa():
+    from escano import promesas as P
+    v = lambda i, tipo, titulo, exp, fecha="2025-01-01": {"id": i, "tipo": tipo, "titulo": titulo, "texto": titulo, "exp": exp, "fecha": fecha, "v": ""}
+    A = {a["id"]: a for a in P.actos([
+        v("1-1", "Proyecto de ley", "Movilidad (enmienda 3)", "121/9"), v("1-2", "Proyecto de ley", "Movilidad", "121/9"),
+        v("2-1", "Enmiendas del Senado", "Movilidad", "121/9", "2025-02-01"),
+        v("3-1", "Convalidación RDL", "RDL 1/2025 de medidas", "130/1"), v("3-2", "Convalidación RDL", "Tramitar el RDL 1/2025 como proyecto de ley", "130/1"),
+        v("4-1", "Toma en consideración", "Proposición de los Grupos A y B", "122/5"), v("4-2", "Toma en consideración", "Ley de otra cosa", "122/5")])}
+    assert A["121/9"]["claves"] == ["1-2"] and A["121/9"]["vinculante"]
+    assert A["130/1"]["claves"] == ["3-1"]
+    assert {"122/5", "122/5·2"} <= set(A)                      # dos iniciativas con el mismo expediente por error
