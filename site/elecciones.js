@@ -52,9 +52,12 @@ const CSS = `
 .el-lista{display:grid;gap:0;margin:0;padding:0;list-style:none}
 .el-lista li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
 .el-lista li:first-child{border-top:0}
-.el-lista .t{font-size:14px;line-height:1.35}
+.el-lista .t{font-size:14px;line-height:1.35;text-align:left}
 .el-lista .m{font-size:12px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
 .el-lista .s{grid-column:1/-1;font-size:12.5px;color:var(--muted)}
+.el-hemi{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+.el-hemi circle{cursor:pointer;stroke:var(--surface);stroke-width:.6}
+.el-lista .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:1px}
 .el-pronto{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .el-pronto .chart{gap:6px}
 .el-pronto .chart b{font-size:15px}
@@ -93,7 +96,7 @@ export async function render(el, c, sub){
       <h2>Antes de votar, mira lo que votaron</h2>
       <p>La XV legislatura se cierra con la disolución de las Cortes. Aquí está lo que dejó hecho y sin hacer, quién vuelve a presentarse, qué se prometió en 2023 y qué se votó después, cómo se reparten los 350 escaños y cuarenta y nueve años de elecciones. Todo con datos oficiales.</p></div>
       <div class="el-cuenta">${cuenta}</div></div>
-    <nav class="el-nav" aria-label="Apartados de las elecciones">${[["el-calendario","Calendario"],["el-350","Los 350"],["el-caducan","Lo que caduca"],["el-balance","La legislatura en cifras"],["el-proximamente","Próximamente"]]
+    <nav class="el-nav" aria-label="Apartados de las elecciones">${[["el-calendario","Calendario"],["el-350","Los 350"],["el-caducan","Lo que caduca"],["el-balance","La legislatura en cifras"],["el-repite","¿Repite?"],["el-proximamente","Próximamente"]]
       .map(([a,l])=>`<a href="#${a}" data-el-ir="${a}">${l}</a>`).join("")}</nav>
     <section class="sec" id="el-calendario"><div class="sec-h"><h2>Calendario</h2><p>Los plazos los fija la Ley Orgánica del Régimen Electoral General (LOREG) y se cuentan desde la publicación del decreto de convocatoria.</p></div>
       ${calendario()}</section>
@@ -102,9 +105,9 @@ export async function render(el, c, sub){
     <section class="sec" id="el-caducan">${caducan()}</section>
     ${convalidar()}
     <section class="sec" id="el-balance">${balance()}</section>
+    <section class="sec" id="el-repite"><div class="sec-h"><h2>¿Repite?</h2><p>Quién de los 350 diputados que terminan la legislatura vuelve a ir en las listas al Congreso, en qué puesto y por qué provincia.</p></div><p class="nota">Cargando…</p></section>
     <section class="sec" id="el-proximamente"><div class="sec-h"><h2>Próximamente</h2><p>Lo que irá apareciendo en esta sección hasta el 29N.</p></div>
       <div class="el-pronto">${[
-        ["¿Repite?","Quién de los 350 vuelve a ir en las listas, en qué puesto y con qué historial de votos.","Desde el 28 de octubre, cuando el BOE publique las candidaturas"],
         ["Qué prometieron y qué votaron","Las promesas de los programas de 2023, una a una, frente a lo que cada grupo votó en el Congreso.","En preparación"],
         ["El precio de un escaño","Cuántos votos cuesta un escaño en cada provincia y cuántos se quedan sin representación.","En preparación"],
         ["Cuarenta y nueve años de elecciones","Todas las generales desde 1977: escaños, participación y el mapa de cada una.","En preparación"],
@@ -115,6 +118,7 @@ export async function render(el, c, sub){
   }));
   montar350(el.querySelector(".el-350"));
   montarWaffle(el.querySelector(".el-waffle"));
+  pintarRepite(el.querySelector("#el-repite"));
   if (sub){ const t = document.getElementById("el-"+sub); if (t){ t.scrollIntoView({block:"start"}); window.scrollBy(0,-70); } }
 }
 
@@ -222,7 +226,6 @@ function montar350(caja){
     const io = new IntersectionObserver(es=>{ if (es.some(e=>e.isIntersecting && e.intersectionRatio>0.6)){ io.disconnect(); setTimeout(()=>ir(1), 700); } }, {threshold:[0.6]});
     io.observe(svg);
   }
-  svg.addEventListener("click", e=>{ const c = e.target.closest("circle[data-dip]"); if (c) ctx.irDiputado(c.dataset.dip); });
 }
 
 /* ---------- lo que caduca ---------- */
@@ -268,4 +271,58 @@ function balance(){
   return `<div class="sec-h"><h2>La legislatura en cifras</h2><p>De la sesión constitutiva del 17 de agosto de 2023 a la disolución del 6 de octubre de 2026.</p></div>
     <div class="kpis">${k.map(([x,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${x}</b><span>${esc(l)}</span></div>`).join("")}</div>
     ${aj?`<div class="chart"><h3>La votación más ajustada</h3><p class="sub">${esc(ctx.fechaCorta(aj.fecha))}: ${aj.si} a favor y ${aj.no} en contra.</p><p><button class="linklike" data-irv="${esc(aj.id)}" data-f="${esc(aj.fecha)}">${esc(aj.titulo)} →</button></p></div>`:""}`;
+}
+
+/* ---------- ¿Repite? ---------- */
+let CAND = undefined;
+const cargarCand = () => CAND !== undefined ? Promise.resolve(CAND)
+  : fetch("datos/elecciones/candidaturas.json").then(r=>r.ok?r.json():null).catch(()=>null).then(j=>CAND=j);
+const tokensSiglas = s => new Set(String(s||"").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"").split(/[^A-Z0-9]+/).filter(t=>t.length>1));
+let repiteProv = null;
+async function pintarRepite(sec){
+  if (!sec) return;
+  const {esc, G, DIPS, ORDEN_HEMI} = ctx;
+  const C = await cargarCand();
+  const cuerpo = sec.querySelector(".nota");
+  if (!C){
+    cuerpo.outerHTML = `<div class="chart"><p class="sub" style="margin:0">Las candidaturas presentadas se publican en el BOE el <b>28 de octubre</b> y las proclamadas, el <b>3 de noviembre</b>. Ese día, esta sección cruzará cada lista con los diputados de la legislatura: quién vuelve, en qué puesto, quién cambia de provincia o de siglas y quién no se presenta.</p></div>`;
+    return;
+  }
+  const vivos = DIPS.map((d,i)=>({d,i})).filter(({d})=>!d[8]);
+  const R = C.repite || {};
+  // Escaños que sacó cada grupo en cada provincia en 2023 (los diputados que tiene hoy allí): un puesto igual o
+  // inferior es un puesto «de salida» si su partido repitiera el resultado.
+  const escGrupo = {}; vivos.forEach(({d})=>{ const k=d[2]+"|"+d[1]; escGrupo[k]=(escGrupo[k]||0)+1; });
+  const info = vivos.map(({d,i})=>{ const r=R[d[0]]; const salida = r && r.tipo==="titular" && !r.otra_provincia && r.orden <= (escGrupo[d[2]+"|"+d[1]]||0);
+    const otrasSiglas = r && ![...tokensSiglas(r.siglas)].some(t=>tokensSiglas(d[3]).has(t));
+    return {d, i, r, salida, otrasSiglas}; });
+  const repiten = info.filter(x=>x.r), titulares = repiten.filter(x=>x.r.tipo==="titular");
+  const fase = C.fase==="proclamadas" ? "proclamadas" : "presentadas";
+  const k = [[repiten.length, `de ${vivos.length} diputados van en alguna lista`],[titulares.length,"como titulares"],[info.filter(x=>x.salida).length,"en un puesto que su grupo ganó en 2023"],
+    [repiten.filter(x=>x.r.otra_provincia).length,"cambian de provincia"],[repiten.filter(x=>x.otrasSiglas).length,"van con otras siglas"],[vivos.length-repiten.length,"no se presentan al Congreso",true]];
+  // Hemiciclo real: encendido quien repite (más tenue si va de suplente).
+  const P = ctx.PLANO;
+  const hemi = P ? `<svg class="el-hemi" viewBox="-4 -4 ${P.ancho+8} ${P.alto+4}" role="img" aria-label="Hemiciclo: en color, los diputados que vuelven a ir en las listas">${info.filter(x=>x.d[5]!=null).map(x=>
+    `<circle cx="${x.d[5]}" cy="${x.d[6]}" r="5.3" fill="${x.r?G[x.d[1]]?.color:"var(--line)"}" ${x.r&&x.r.tipo!=="titular"?'fill-opacity=".45"':""} data-dip="${esc(ctx.slug(x.d[0]))}" data-tip="${esc(`<b>${esc(ctx.legible(x.d[0]))}</b> (${esc(x.d[1])}, ${esc(x.d[2])})<br>${x.r?`${esc(x.r.siglas)} · ${x.r.tipo==="titular"?"nº "+x.r.orden:"suplente "+x.r.orden} por ${esc(x.r.circ)}`:"No va en las listas al Congreso"}`)}"></circle>`).join("")}</svg>` : "";
+  const provs = [...new Set(vivos.map(({d})=>d[2]))].sort((a,b)=>a.localeCompare(b,"es"));
+  repiteProv ||= (()=>{ try{ const sl=localStorage.getItem("provincia"); return provs.find(c=>ctx.slug(c)===sl); }catch(e){ return null; } })() || "Madrid";
+  cuerpo.outerHTML = `<div class="kpis">${k.map(([x,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${x}</b><span>${esc(l)}</span></div>`).join("")}</div>
+    <div class="chart"><h3>Quién vuelve</h3><p class="sub">En color, los diputados que van en alguna lista al Congreso (más tenue, de suplentes); en gris, los que no. Según las candidaturas ${fase} en el BOE.</p>${hemi}</div>
+    <div class="chart"><div class="controls"><label for="el-rep-prov">Provincia</label><select id="el-rep-prov">${provs.map(c=>`<option${c===repiteProv?" selected":""}>${esc(c)}</option>`).join("")}</select></div><div id="el-rep-tabla"></div></div>
+    ${listaCambios(repiten.filter(x=>x.r.otra_provincia), "Cambian de provincia", x=>`ahora por ${esc(x.r.circ)}`)}
+    ${listaCambios(repiten.filter(x=>x.otrasSiglas), "Con otras siglas", x=>`en 2023 por ${esc(x.d[3])}; ahora, ${esc(x.r.candidatura)} (${esc(x.r.siglas)})`)}
+    <p class="nota">Fuente: candidaturas ${fase} al Congreso de los Diputados (BOE ${(C.boe||[]).map(esc).join(", ")}). Los nombres se casan con los del Congreso de forma automática; un homónimo se desempata por provincia.</p>`;
+  const tabla = () => { const t = sec.querySelector("#el-rep-tabla"); if (!t) return;
+    const suyos = info.filter(x=>x.d[2]===repiteProv).sort((a,b)=>ORDEN_HEMI.indexOf(a.d[1])-ORDEN_HEMI.indexOf(b.d[1]) || a.d[0].localeCompare(b.d[0],"es"));
+    const listas = (C.listas||{})[repiteProv] || [];
+    t.innerHTML = `<ul class="el-lista">${suyos.map(x=>`<li><button class="linklike t" data-dip="${esc(ctx.slug(x.d[0]))}"><span class="dot" style="background:${G[x.d[1]]?.color}"></span>${esc(ctx.legible(x.d[0]))}</button>
+        <span class="m">${x.r ? `${esc(x.r.siglas)} · ${x.r.tipo==="titular"?"nº "+x.r.orden:"supl. "+x.r.orden}${x.r.otra_provincia?" · "+esc(x.r.circ):""}` : "no se presenta"}</span></li>`).join("")}</ul>
+      ${listas.length?`<details><summary>Las ${listas.filter(l=>l.proclamada).length} listas de ${esc(repiteProv)}</summary><ul class="el-lista">${listas.filter(l=>l.proclamada).map(l=>`<li><span class="t"><b>${esc(l.siglas||l.nombre)}</b> · ${esc(l.titulares.slice(0,6).map(x=>x[0]).join(", "))}${l.titulares.length>6?"…":""}</span><span class="m">${l.titulares.length} + ${l.suplentes.length}</span></li>`).join("")}</ul></details>`:""}`; };
+  tabla();
+  sec.querySelector("#el-rep-prov").addEventListener("change", e=>{ repiteProv = e.target.value; tabla(); });
+}
+function listaCambios(xs, titulo, detalle){
+  if (!xs.length) return "";
+  const {esc, G} = ctx;
+  return `<div class="chart"><h3>${esc(titulo)} <small class="nota">(${xs.length})</small></h3><ul class="el-lista">${xs.map(x=>`<li><button class="linklike t" data-dip="${esc(ctx.slug(x.d[0]))}"><span class="dot" style="background:${G[x.d[1]]?.color}"></span>${esc(ctx.legible(x.d[0]))}</button><span class="m">${esc(x.d[2])}</span><span class="s">${detalle(x)}</span></li>`).join("")}</ul></div>`;
 }
