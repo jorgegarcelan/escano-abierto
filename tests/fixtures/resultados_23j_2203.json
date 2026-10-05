@@ -1,0 +1,667 @@
+{
+ "scope": {
+  "codigo": "1",
+  "nombre": "España",
+  "nivel": 1,
+  "numMesas": 60314,
+  "censoINE": 35140881,
+  "censoNoche": 35145487,
+  "padres": null,
+  "escrutinio": {
+   "envio": 43,
+   "fecha": "2023-07-23T20:03:13.004+00:00",
+   "censoNocheEscrutado": {
+    "pro": 22852049,
+    "def": 22852049
+   },
+   "mesasEscrutadas": {
+    "pro": 41711,
+    "def": 41711
+   },
+   "votosValidos": {
+    "pro": 15730241,
+    "def": 15730241
+   },
+   "votosBlancos": {
+    "pro": 126711,
+    "def": 126711
+   },
+   "votosNulos": {
+    "pro": 172565,
+    "def": 172565
+   },
+   "votosPartidos": {
+    "pro": 15603530,
+    "def": 15603530
+   },
+   "votosTotales": {
+    "pro": 15902806,
+    "def": 15902806
+   },
+   "abstencion": {
+    "pro": 6949243,
+    "def": 6949243
+   },
+   "porcMesasEscrutadas": {
+    "pro": 69.15,
+    "def": 69.15
+   },
+   "porcCensoEscrutado": {
+    "pro": 65.01,
+    "def": 65.01
+   },
+   "porcCensoNocheEscrutado": {
+    "pro": 65.02,
+    "def": 65.02
+   },
+   "porcVotosBlancos": {
+    "pro": 0.8,
+    "def": 0.8
+   },
+   "porcVotosPartidos": {
+    "pro": 99.19,
+    "def": 99.19
+   },
+   "porcVotosNulos": {
+    "pro": 1.08,
+    "def": 1.08
+   },
+   "porcVotosValidos": {
+    "pro": 98.91,
+    "def": 98.91
+   },
+   "porcAbstencion": {
+    "pro": 30.4,
+    "def": 30.4
+   },
+   "participacion": {
+    "pro": 69.59,
+    "def": 69.59
+   },
+   "partidos": [
+    {
+     "siglas": "PP",
+     "codigo": "5",
+     "cargos": {
+      "pro": 131,
+      "def": 131
+     },
+     "nombre": "PARTIDO POPULAR",
+     "votos": {
+      "pro": 4935370,
+      "def": 4935370
+     },
+     "porcentaje": {
+      "pro": 31.37,
+      "def": 31.37
+     },
+     "enfrentamiento": null,
+     "orden": 5
+    },
+    {
+     "siglas": "PSOE",
+     "codigo": "2",
+     "cargos": {
+      "pro": 128,
+      "def": 128
+     },
+     "nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+     "votos": {
+      "pro": 5140262,
+      "def": 5140262
+     },
+     "porcentaje": {
+      "pro": 32.67,
+      "def": 32.67
+     },
+     "enfrentamiento": null,
+     "orden": 3
+    },
+    {
+     "siglas": "VOX",
+     "codigo": "6",
+     "cargos": {
+      "pro": 33,
+      "def": 33
+     },
+     "nombre": "VOX",
+     "votos": {
+      "pro": 1945752,
+      "def": 1945752
+     },
+     "porcentaje": {
+      "pro": 12.36,
+      "def": 12.36
+     },
+     "enfrentamiento": null,
+     "orden": 8
+    },
+    {
+     "siglas": "SUMAR",
+     "codigo": "10",
+     "cargos": {
+      "pro": 30,
+      "def": 30
+     },
+     "nombre": "SUMAR",
+     "votos": {
+      "pro": 1887772,
+      "def": 1887772
+     },
+     "porcentaje": {
+      "pro": 12.0,
+      "def": 12.0
+     },
+     "enfrentamiento": null,
+     "orden": 9
+    },
+    {
+     "siglas": "ERC",
+     "codigo": "50",
+     "cargos": {
+      "pro": 7,
+      "def": 7
+     },
+     "nombre": "ESQUERRA REPUBLICANA DE CATALUNYA",
+     "votos": {
+      "pro": 327544,
+      "def": 327544
+     },
+     "porcentaje": {
+      "pro": 2.08,
+      "def": 2.08
+     },
+     "enfrentamiento": null,
+     "orden": 5
+    },
+    {
+     "siglas": "JxCAT - JUNTS",
+     "codigo": "57",
+     "cargos": {
+      "pro": 7,
+      "def": 7
+     },
+     "nombre": "JUNTS PER CATALUNYA - JUNTS",
+     "votos": {
+      "pro": 276961,
+      "def": 276961
+     },
+     "porcentaje": {
+      "pro": 1.76,
+      "def": 1.76
+     },
+     "enfrentamiento": null,
+     "orden": 8
+    },
+    {
+     "siglas": "EH Bildu",
+     "codigo": "71",
+     "cargos": {
+      "pro": 6,
+      "def": 6
+     },
+     "nombre": "EUSKAL HERRIA BILDU",
+     "votos": {
+      "pro": 297587,
+      "def": 297587
+     },
+     "porcentaje": {
+      "pro": 1.89,
+      "def": 1.89
+     },
+     "enfrentamiento": null,
+     "orden": 1
+    },
+    {
+     "siglas": "EAJ-PNV",
+     "codigo": "75",
+     "cargos": {
+      "pro": 5,
+      "def": 5
+     },
+     "nombre": "EUZKO ALDERDI JELTZALEA-PARTIDO NACIONALISTA VASCO",
+     "votos": {
+      "pro": 255780,
+      "def": 255780
+     },
+     "porcentaje": {
+      "pro": 1.62,
+      "def": 1.62
+     },
+     "enfrentamiento": null,
+     "orden": 2
+    }
+   ],
+   "hayEmpate": null,
+   "candidaturas": null,
+   "cargos": 350,
+   "cargosEleccion": null,
+   "convocatoria": null,
+   "partidoGanador": {
+    "siglas": "PP",
+    "codigo": "5",
+    "cargos": {
+     "pro": 131,
+     "def": 131
+    },
+    "nombre": "PARTIDO POPULAR",
+    "votos": {
+     "pro": 4935370,
+     "def": 4935370
+    },
+    "porcentaje": {
+     "pro": 31.37,
+     "def": 31.37
+    },
+    "enfrentamiento": null,
+    "orden": 5
+   },
+   "partidoUltimoEscano": null,
+   "partidoCercano": null
+  },
+  "envio": 147,
+  "isCircuns": 2,
+  "mapa": null,
+  "flagVotaCandidato": false,
+  "id": {
+   "scopeId": "00000000000000000000000b",
+   "eleccion": 2
+  },
+  "showEscrutinio": true
+ },
+ "mapa": [
+  {
+   "id": {
+    "scopeId": "000000000000000000000078",
+    "eleccion": 2
+   },
+   "nombre": "Andalucía",
+   "codigo": "01",
+   "envio": 147,
+   "isCircuns": 2,
+   "escrutinio": {
+    "partidos": [
+     {
+      "siglas": "PP",
+      "nombre": "PARTIDO POPULAR",
+      "codigo": "5",
+      "votos": {
+       "pro": 1043713,
+       "def": 1043713
+      },
+      "cargos": {
+       "pro": 24,
+       "def": 24
+      },
+      "porcentaje": {
+       "pro": 35.34,
+       "def": 35.34
+      }
+     },
+     {
+      "siglas": "PSOE",
+      "nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+      "codigo": "2",
+      "votos": {
+       "pro": 1020463,
+       "def": 1020463
+      },
+      "cargos": {
+       "pro": 23,
+       "def": 23
+      },
+      "porcentaje": {
+       "pro": 34.55,
+       "def": 34.55
+      }
+     },
+     {
+      "siglas": "VOX",
+      "nombre": "VOX",
+      "codigo": "6",
+      "votos": {
+       "pro": 457804,
+       "def": 457804
+      },
+      "cargos": {
+       "pro": 9,
+       "def": 9
+      },
+      "porcentaje": {
+       "pro": 15.5,
+       "def": 15.5
+      }
+     },
+     {
+      "siglas": "SUMAR",
+      "nombre": "SUMAR ANDALUCÍA",
+      "codigo": "11",
+      "votos": {
+       "pro": 348640,
+       "def": 348640
+      },
+      "cargos": {
+       "pro": 5,
+       "def": 5
+      },
+      "porcentaje": {
+       "pro": 11.8,
+       "def": 11.8
+      }
+     },
+     {
+      "siglas": "PACMA",
+      "nombre": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+      "codigo": "7",
+      "votos": {
+       "pro": 23561,
+       "def": 23561
+      },
+      "cargos": {
+       "pro": 0,
+       "def": 0
+      },
+      "porcentaje": {
+       "pro": 0.79,
+       "def": 0.79
+      }
+     }
+    ],
+    "votosTotales": {
+     "pro": 2994022,
+     "def": 2994022
+    },
+    "porcCensoNocheEscrutado": {
+     "pro": 68.81,
+     "def": 68.81
+    },
+    "participacion": {
+     "pro": 67.96,
+     "def": 67.96
+    },
+    "convocatoria": null,
+    "partidoGanador": {
+     "siglas": "PP",
+     "codigo": "5",
+     "cargos": {
+      "pro": 24,
+      "def": 24
+     },
+     "nombre": "PARTIDO POPULAR",
+     "votos": {
+      "pro": 1043713,
+      "def": 1043713
+     },
+     "porcentaje": {
+      "pro": 35.34,
+      "def": 35.34
+     },
+     "enfrentamiento": null,
+     "orden": 5
+    }
+   }
+  },
+  {
+   "id": {
+    "scopeId": "0000000000000000000000dc",
+    "eleccion": 2
+   },
+   "nombre": "Aragón",
+   "codigo": "02",
+   "envio": 147,
+   "isCircuns": 2,
+   "escrutinio": {
+    "partidos": [
+     {
+      "siglas": "PP",
+      "nombre": "PARTIDO POPULAR",
+      "codigo": "5",
+      "votos": {
+       "pro": 199722,
+       "def": 199722
+      },
+      "cargos": {
+       "pro": 7,
+       "def": 7
+      },
+      "porcentaje": {
+       "pro": 35.91,
+       "def": 35.91
+      }
+     },
+     {
+      "siglas": "PSOE",
+      "nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+      "codigo": "2",
+      "votos": {
+       "pro": 176697,
+       "def": 176697
+      },
+      "cargos": {
+       "pro": 4,
+       "def": 4
+      },
+      "porcentaje": {
+       "pro": 31.77,
+       "def": 31.77
+      }
+     },
+     {
+      "siglas": "VOX",
+      "nombre": "VOX",
+      "codigo": "6",
+      "votos": {
+       "pro": 80758,
+       "def": 80758
+      },
+      "cargos": {
+       "pro": 1,
+       "def": 1
+      },
+      "porcentaje": {
+       "pro": 14.52,
+       "def": 14.52
+      }
+     },
+     {
+      "siglas": "SUMAR ARAGÓN",
+      "nombre": "SUMAR ARAGÓN",
+      "codigo": "21",
+      "votos": {
+       "pro": 67655,
+       "def": 67655
+      },
+      "cargos": {
+       "pro": 1,
+       "def": 1
+      },
+      "porcentaje": {
+       "pro": 12.16,
+       "def": 12.16
+      }
+     },
+     {
+      "siglas": "EXISTE",
+      "nombre": "ARAGÓN EXISTE - COALICIÓN EXISTE",
+      "codigo": "23",
+      "votos": {
+       "pro": 15513,
+       "def": 15513
+      },
+      "cargos": {
+       "pro": 0,
+       "def": 0
+      },
+      "porcentaje": {
+       "pro": 2.78,
+       "def": 2.78
+      }
+     }
+    ],
+    "votosTotales": {
+     "pro": 561262,
+     "def": 561262
+    },
+    "porcCensoNocheEscrutado": {
+     "pro": 78.88,
+     "def": 78.88
+    },
+    "participacion": {
+     "pro": 72.59,
+     "def": 72.59
+    },
+    "convocatoria": null,
+    "partidoGanador": {
+     "siglas": "PP",
+     "codigo": "5",
+     "cargos": {
+      "pro": 7,
+      "def": 7
+     },
+     "nombre": "PARTIDO POPULAR",
+     "votos": {
+      "pro": 199722,
+      "def": 199722
+     },
+     "porcentaje": {
+      "pro": 35.91,
+      "def": 35.91
+     },
+     "enfrentamiento": null,
+     "orden": 4
+    }
+   }
+  },
+  {
+   "id": {
+    "scopeId": "000000000000000000000208",
+    "eleccion": 2
+   },
+   "nombre": "Canarias",
+   "codigo": "05",
+   "envio": 147,
+   "isCircuns": 2,
+   "escrutinio": {
+    "partidos": [
+     {
+      "siglas": "PSOE",
+      "nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+      "codigo": "2",
+      "votos": {
+       "pro": 67010,
+       "def": 67010
+      },
+      "cargos": {
+       "pro": 7,
+       "def": 7
+      },
+      "porcentaje": {
+       "pro": 34.82,
+       "def": 34.82
+      }
+     },
+     {
+      "siglas": "PP",
+      "nombre": "PARTIDO POPULAR",
+      "codigo": "5",
+      "votos": {
+       "pro": 54331,
+       "def": 54331
+      },
+      "cargos": {
+       "pro": 5,
+       "def": 5
+      },
+      "porcentaje": {
+       "pro": 28.23,
+       "def": 28.23
+      }
+     },
+     {
+      "siglas": "CCa",
+      "nombre": "COALICIÓN CANARIA",
+      "codigo": "31",
+      "votos": {
+       "pro": 22967,
+       "def": 22967
+      },
+      "cargos": {
+       "pro": 1,
+       "def": 1
+      },
+      "porcentaje": {
+       "pro": 11.93,
+       "def": 11.93
+      }
+     },
+     {
+      "siglas": "SUMAR",
+      "nombre": "SUMAR CANARIAS",
+      "codigo": "33",
+      "votos": {
+       "pro": 18616,
+       "def": 18616
+      },
+      "cargos": {
+       "pro": 1,
+       "def": 1
+      },
+      "porcentaje": {
+       "pro": 9.67,
+       "def": 9.67
+      }
+     },
+     {
+      "siglas": "VOX",
+      "nombre": "VOX",
+      "codigo": "6",
+      "votos": {
+       "pro": 15929,
+       "def": 15929
+      },
+      "cargos": {
+       "pro": 1,
+       "def": 1
+      },
+      "porcentaje": {
+       "pro": 8.27,
+       "def": 8.27
+      }
+     }
+    ],
+    "votosTotales": {
+     "pro": 194677,
+     "def": 194677
+    },
+    "porcCensoNocheEscrutado": {
+     "pro": 19.38,
+     "def": 19.38
+    },
+    "participacion": {
+     "pro": 62.1,
+     "def": 62.1
+    },
+    "convocatoria": null,
+    "partidoGanador": {
+     "siglas": "PSOE",
+     "codigo": "2",
+     "cargos": {
+      "pro": 7,
+      "def": 7
+     },
+     "nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+     "votos": {
+      "pro": 67010,
+      "def": 67010
+     },
+     "porcentaje": {
+      "pro": 34.82,
+      "def": 34.82
+     },
+     "enfrentamiento": null,
+     "orden": 2
+    }
+   }
+  }
+ ]
+}

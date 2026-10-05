@@ -862,3 +862,175 @@ async function pintarMapaMunicipal(caja, {prov=null}={}){
     return `<b>${esc(geoM.municipios[cod][0])}</b><br>Participación ${pct(fila[1]/fila[0])} · censo ${fmt(fila[0])}${fams.map(([g,n])=>filaTip(g.color, g.nombre, pct(n/tot))).join("")}`; });
   pintar();
 }
+
+/* =====================================================================================================
+   LA NOCHE ELECTORAL: escrutinio en directo (api/resultados.js) o ensayo con el 23J
+   ===================================================================================================== */
+// Las mismas reglas de familias que escano/historico.py, para colorear las candidaturas del directo.
+const REGLAS_FAMILIA = [
+  ["IZQ", /^(PCE|PSUC|IU|I\.U\.|IC-V|ICV|PODEMOS|EN COMU|ECP|SUMAR|MAS PAIS|MES COMPROM|COMPROMIS(?!-Q)|EN MAREA|UP\b)|IZQUIERDA UNIDA|UNIDAS PODEMOS|UNIDOS PODEMOS/],
+  ["BILDU", /^(HB|AMAIUR|EH BILDU)\b|HERRI BATASUNA/], ["ERC", /^(ERC|ESQUERRA)|ESQUERRA REPUBLICANA/], ["BNG", /^(BNG|B\.N\.G\.)|BLOQUE NACIONALISTA GALEGO/],
+  ["PSOE", /^(PSOE|P\.S\.O\.E\.|PSC|PSDEG|PSE-EE|PSIB|PSN)|PARTIDO SOCIALISTA OBRERO ESPANOL|SOCIALISTES DE CATALUNYA/], ["CS", /^(C'S|CS)\b|^CIUDADANOS/],
+  ["PNV", /PNV|^EAJ/], ["CIU", /^(CIU|DL|CDC|JXCAT|JUNTS)\b|^JXCAT|JUNTS PER CATALUNYA/], ["CC", /^(CC|CCA)\b|COALICION CANARIA/],
+  ["PP", /^(PP|UPN-PP|PP-PAR|PP-FORO)\b|^P\.P\.|PARTIDO POPULAR/], ["VOX", /^VOX\b/],
+];
+const planoMay = s => String(s||"").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+export function familiaDe(siglas, nombre=""){ const s = planoMay(siglas).trim(), n = planoMay(nombre).trim(); return (REGLAS_FAMILIA.find(([,re])=>re.test(s) || re.test(n)) || ["OTROS"])[0]; }
+
+let nocheIntervalo = null, nocheEnsayo = null, nocheHistoria = [], nocheProv = null;
+export async function pintarNoche(sec, c){
+  ctx = c; estilos();
+  await base();
+  const E = HIST?.elecciones || [], ref = E[E.length-1];
+  const ensayoPedido = /[?&]ensayo/.test(location.search) || sessionStorage.getItem("el-ensayo") === "1";
+  sec.innerHTML = `<div class="chart" id="no-estado" style="gap:8px"></div>
+    <div id="no-kpis" style="margin-top:12px"></div>
+    <div class="hi-top" style="margin-top:12px">
+      <div class="chart"><h3>El nuevo hemiciclo</h3><p class="sub">Los escaños que lleva cada candidatura con lo escrutado. Hacen falta 176 para la mayoría absoluta.</p>${hemiSVG(350)}<div id="no-leyenda"></div></div>
+      <div class="chart hi-desliza" id="no-tabla"></div>
+    </div>
+    <section class="sec"><div class="sec-h"><h2>Provincia a provincia</h2><p>Cada provincia, del color de la candidatura que va primera; más intenso cuanto más escrutado. Pulsa una para ver su reparto.</p></div>
+      <div class="chart"><div id="no-mapa"></div></div><div class="chart" id="no-prov" style="margin-top:12px" hidden></div></section>
+    <section class="sec"><div class="sec-h"><h2>Escaños en el aire</h2><p>Los últimos escaños más ajustados con lo escrutado: cuántos votos le faltan a la siguiente candidatura para quitárselos. Cálculo propio con la ley D'Hondt sobre los votos provisionales.</p></div>
+      <div class="chart"><ul class="hi-ultimo" id="no-aire"></ul></div></section>
+    <section class="sec"><div class="sec-h"><h2>Cómo se movieron los escaños</h2><p>Escaños de cada candidatura según avanzaba el escrutinio.</p></div><div class="chart" id="no-evolucion"><p class="nota">Aparece en cuanto haya dos recuentos.</p></div></section>`;
+  const estado = sec.querySelector("#no-estado");
+  const pintarEstado = (html) => { estado.innerHTML = html; };
+
+  async function directo(){
+    try{
+      const r = await fetch("/api/resultados", {cache:"no-store"});
+      const d = await r.json().catch(()=>null);
+      if (!d || d.estado === "sin-configurar" || r.status === 404){
+        pintarEstado(`<p class="sub" style="margin:0">El escrutinio empieza el <b>domingo 29 de noviembre a las 20.00</b>, cuando cierran los colegios. Esta página se actualizará sola con los datos provisionales del Ministerio del Interior.</p>
+          <p style="margin:0"><button class="btn primary" data-no-ensayo>Ver un ensayo con el escrutinio del 23J</button></p>`);
+        return false;
+      }
+      if (d.estado === "error"){ pintarEstado(`<p class="sub" style="margin:0">No se ha podido leer el escrutinio (${esc(d.motivo||"")}). Se reintenta en unos segundos.</p>`); return true; }
+      if (d.estado === "sin-escrutinio"){ pintarEstado(`<p class="sub" style="margin:0">Los colegios han cerrado; aún no hay mesas escrutadas.</p>`); return true; }
+      pintarEstado(`<p class="sub" style="margin:0"><b>En directo.</b> Escrutinio provisional del Ministerio del Interior${d.actualizado?`, actualizado a las ${new Date(d.actualizado).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}`:""}. Se actualiza solo cada 20 segundos. El recuento definitivo lo hacen las Juntas Electorales a partir del miércoles.</p>`);
+      pintar(d); return true;
+    } catch(err){ return false; }
+  }
+  function parar(){ clearInterval(nocheIntervalo); nocheIntervalo = null; clearInterval(nocheEnsayo?.reloj); }
+  async function arrancarEnsayo(){
+    parar();
+    try{ sessionStorage.setItem("el-ensayo", "1"); }catch(err){}
+    const D = await pedir(`datos/elecciones/historico-${ref.id}.json`);
+    if (!D){ pintarEstado(`<p class="nota">No se ha podido preparar el ensayo.</p>`); return; }
+    nocheHistoria = [];
+    nocheEnsayo = {f: 0, D, reloj: null};
+    pintarEstado(`<p class="sub" style="margin:0"><b>Ensayo.</b> Así se verá la noche, con los resultados del 23 de julio de 2023 repartidos en el tiempo como si llegaran mesa a mesa (las cifras intermedias son simuladas; las finales, las oficiales).</p>
+      <div class="controls"><button class="btn" data-no-play>❚❚ Pausa</button><input type="range" min="0" max="100" value="0" step="1" data-no-f aria-label="Porcentaje escrutado del ensayo" style="flex:1;min-width:160px"><button class="chipbtn" data-no-salir>Salir del ensayo</button></div>`);
+    const paso = () => { if (!document.body.contains(sec)){ parar(); return; } nocheEnsayo.f = Math.min(1, nocheEnsayo.f + 0.02); const i = sec.querySelector("[data-no-f]"); if (i) i.value = Math.round(nocheEnsayo.f*100); pintar(simular(nocheEnsayo.D, nocheEnsayo.f)); if (nocheEnsayo.f >= 1){ clearInterval(nocheEnsayo.reloj); nocheEnsayo.reloj = null; const b = sec.querySelector("[data-no-play]"); if (b) b.textContent = "▶ Repetir"; } };
+    nocheEnsayo.reloj = setInterval(paso, 900); paso();
+  }
+  sec.addEventListener("click", async ev=>{
+    if (ev.target.closest("[data-no-ensayo]")){ arrancarEnsayo(); return; }
+    if (ev.target.closest("[data-no-salir]")){ parar(); try{ sessionStorage.removeItem("el-ensayo"); }catch(err){} nocheEnsayo = null; pintarNoche(sec, c); return; }
+    const b = ev.target.closest("[data-no-play]");
+    if (b && nocheEnsayo){ if (nocheEnsayo.reloj){ clearInterval(nocheEnsayo.reloj); nocheEnsayo.reloj = null; b.textContent = "▶ Seguir"; }
+      else { if (nocheEnsayo.f >= 1){ nocheEnsayo.f = 0; nocheHistoria = []; } b.textContent = "❚❚ Pausa"; nocheEnsayo.reloj = setInterval(()=>{ if (!document.body.contains(sec)){ parar(); return; } nocheEnsayo.f = Math.min(1, nocheEnsayo.f + .02); sec.querySelector("[data-no-f]").value = Math.round(nocheEnsayo.f*100); pintar(simular(nocheEnsayo.D, nocheEnsayo.f)); if (nocheEnsayo.f >= 1){ clearInterval(nocheEnsayo.reloj); nocheEnsayo.reloj = null; b.textContent = "▶ Repetir"; } }, 900); } return; }
+    const p = ev.target.closest("[data-p]"); if (p && sec.querySelector("#no-mapa").contains(p)){ ev.preventDefault(); nocheProv = p.dataset.p; if (ultimo) pintarProvinciaNoche(ultimo); sec.querySelector("#no-prov").scrollIntoView({block:"nearest", behavior:"smooth"}); }
+  });
+  sec.addEventListener("input", ev=>{ if (ev.target.matches("[data-no-f]") && nocheEnsayo){ clearInterval(nocheEnsayo.reloj); nocheEnsayo.reloj = null; const b = sec.querySelector("[data-no-play]"); if (b) b.textContent = "▶ Seguir";
+    nocheEnsayo.f = ev.target.value/100; nocheHistoria = nocheHistoria.filter(h=>h.escrutado <= ev.target.value); pintar(simular(nocheEnsayo.D, nocheEnsayo.f)); } });
+
+  let ultimo = null;
+  function pintar(d){
+    ultimo = d;
+    const anterior = nocheHistoria[nocheHistoria.length-1];
+    if (!anterior || anterior.escrutado !== d.escrutado) nocheHistoria.push({escrutado: d.escrutado, e: Object.fromEntries(d.partidos.filter(p=>p.e).map(p=>[p.s, p.e]))});
+    const conEscano = d.partidos.filter(p=>p.e), mayor = conEscano[0];
+    sec.querySelector("#no-kpis").innerHTML = `<div class="kpis"><div class="kpi"><b>${dec(d.escrutado||0, 1)} %</b><span>escrutado</span></div>
+      ${d.participacion!=null?`<div class="kpi"><b>${dec(d.participacion,1)} %</b><span>participación en lo escrutado (sin el voto desde el extranjero)</span></div>`:""}
+      ${mayor?`<div class="kpi"><b>${mayor.e}</b><span>escaños de ${esc(mayor.s)}, primera fuerza${mayor.e>=176?" (mayoría absoluta)":` (a ${176-mayor.e} de la mayoría)`}</span></div>`:""}
+      ${d.votantes?`<div class="kpi"><b>${fmtCorto(d.votantes)}</b><span>votos escrutados</span></div>`:""}</div>
+      <div style="height:6px;background:var(--sunk);border-radius:3px;overflow:hidden;margin-top:6px" role="progressbar" aria-valuenow="${Math.round(d.escrutado||0)}" aria-valuemin="0" aria-valuemax="100"><div style="height:100%;width:${d.escrutado||0}%;background:var(--ink);transition:width .6s"></div></div>`;
+    // Hemiciclo: candidaturas con escaño, de izquierda a derecha por familia.
+    const filas = d.partidos.map(p=>[p.s, familiaDe(p.s, p.n), p.v, p.e]);
+    pintarHemi(sec.querySelector(".hi-top .hi-hemi"), segsLista(filas, d.validos || d.partidos.reduce((s,p)=>s+p.v,0)));
+    sec.querySelector("#no-leyenda").innerHTML = leyendaGrupos([...new Set(filas.filter(f=>f[3]).map(f=>GRUPO_DE[f[1]]||"OTROS"))]);
+    const prev = ref ? Object.fromEntries(ref.partidos.map(p=>[p[0], p[4]])) : {};
+    const total = d.partidos.reduce((s,p)=>s+p.v,0) || 1, maxV = Math.max(...d.partidos.map(p=>p.v), 1);
+    sec.querySelector("#no-tabla").innerHTML = `<h3>Candidaturas</h3><table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">%</th><th></th><th class="n">Escaños</th>${nocheEnsayo?"":`<th class="n">Δ 2023</th>`}</tr></thead><tbody>
+      ${d.partidos.filter(p=>p.e || p.v >= .005*total).slice(0, 16).map(p=>{ const col = grupoDe(familiaDe(p.s, p.n)).color;
+        return `<tr><td title="${esc(p.n)}"><i class="d" style="background:${col}"></i>${esc(p.s)}</td><td class="n">${fmt(p.v)}</td><td class="n">${dec(p.p || p.v/total*100, 2)} %</td><td style="width:20%"><span class="bar" style="width:${(p.v/maxV*100).toFixed(1)}%;background:${col}"></span></td><td class="n"><b>${p.e}</b></td>${nocheEnsayo?"":`<td class="n">${prev[p.s]!=null?conSigno(p.e-prev[p.s]):"–"}</td>`}</tr>`; }).join("")}</tbody></table>`;
+    // Mapa: color de quien va primero en cada provincia, intensidad por lo escrutado.
+    const lider = cod => { const pr = d.provincias[cod]; const p = pr?.partidos?.slice().sort((a,b)=>b.v-a.v)[0]; return p ? {col: grupoDe(familiaDe(p.s, p.n)).color, esc: pr.escrutado||0} : null; };
+    sec.querySelector("#no-mapa").innerHTML = mapaSVG(cod=>{ const l = lider(cod); if (!l) return null; const t = 0.18 + 0.82*Math.min(1, l.esc/100); return `color-mix(in srgb, ${l.col} ${Math.round(t*100)}%, var(--sunk))`; })
+      + leyendaGrupos([...new Set(Object.keys(d.provincias).map(cod=>{ const p = d.provincias[cod].partidos.slice().sort((a,b)=>b.v-a.v)[0]; return p && (GRUPO_DE[familiaDe(p.s, p.n)]||"OTROS"); }).filter(Boolean))]);
+    // Escaños en el aire.
+    const aire = Object.entries(d.provincias).map(([cod, pr])=>[cod, ultimoEscano(pr, GEO.provincias[cod] ? (HIST?.elecciones?.[HIST.elecciones.length-1]?.prov?.[cod]?.e) : null)]).filter(x=>x[1]).sort((a,b)=>a[1].faltan-b[1].faltan).slice(0, 10);
+    sec.querySelector("#no-aire").innerHTML = aire.length ? aire.map(([cod,u])=>`<li><a href="${enlaceProv(cod)}" data-p="${cod}">${esc(nombreProv(cod))}</a><span>Lo tiene <b>${esc(u.gana)}</b>; a <b>${esc(u.segundo)}</b> le faltan</span><span class="m">${fmt(u.faltan)} votos</span></li>`).join("") : `<li class="nota">Aún no hay votos suficientes.</li>`;
+    if (nocheProv) pintarProvinciaNoche(d);
+    evolucion();
+  }
+  function pintarProvinciaNoche(d){
+    const caja = sec.querySelector("#no-prov"), pr = d.provincias[nocheProv]; if (!pr){ caja.hidden = true; return; }
+    const escanos = pr.partidos.reduce((s,p)=>s+p.e,0) || HIST?.elecciones?.[HIST.elecciones.length-1]?.prov?.[nocheProv]?.e || 0;
+    const validos = pr.partidos.reduce((s,p)=>s+p.v,0);
+    caja.hidden = false;
+    caja.innerHTML = `<div class="sec-h" style="padding:0"><h3>${esc(nombreProv(nocheProv))}</h3><span class="nota">${dec(pr.escrutado||0,1)} % escrutado · ${escanos} escaños</span></div>
+      <div class="hi-desliza">${tablaCocientes({e: escanos, validos, c: pr.partidos.map(p=>[p.s, familiaDe(p.s, p.n), p.v, p.e])})}</div>
+      <p class="nota">Barrera del 3 % calculada sobre los votos a candidaturas (sin los votos en blanco, que el directo no da por provincia). <a href="${enlaceProv(nocheProv)}">Su historia electoral →</a></p>`;
+  }
+  function evolucion(){
+    const caja = sec.querySelector("#no-evolucion");
+    if (nocheHistoria.length < 2) return;
+    const partidosTop = Object.entries(nocheHistoria[nocheHistoria.length-1].e).sort((a,b)=>b[1]-a[1]).slice(0, 6).map(x=>x[0]);
+    const W = Math.max(300, caja.clientWidth - 36), H = 220, ml = 34, mr = 90, mt = 12, mb = 24;
+    const xs = nocheHistoria.map(h=>h.escrutado), maxE = Math.max(...nocheHistoria.flatMap(h=>Object.values(h.e)), 10);
+    const x = v => ml + (v/100)*(W-ml-mr), y = v => mt + (1 - v/(Math.ceil(maxE/25)*25))*(H-mt-mb);
+    const top = Math.ceil(maxE/25)*25, marcas = Array.from({length: top/25+1}, (_,i)=>i*25);
+    const finales = [];
+    const lineas = partidosTop.map(s=>{ const col = grupoDe(familiaDe(s)).color, pts = nocheHistoria.map(h=>[h.escrutado, h.e[s]||0]);
+      const ult = pts[pts.length-1]; finales.push({y: y(ult[1])+4, t: `${s} ${ult[1]}`});
+      return `<path class="linea" d="${pts.map((p,i)=>`${i?"L":"M"}${x(p[0]).toFixed(1)} ${y(p[1]).toFixed(1)}`).join("")}" style="stroke:${col}"/><circle class="punto" cx="${x(ult[0])}" cy="${y(ult[1])}" r="4" style="fill:${col}"/>`; }).join("");
+    finales.sort((a,b)=>a.y-b.y); for (let i=1;i<finales.length;i++) finales[i].y = Math.max(finales[i].y, finales[i-1].y+13);
+    caja.innerHTML = `<svg class="hi-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Escaños de cada candidatura según el porcentaje escrutado">
+      ${marcas.map(v=>`<line class="eje" x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}"/><text class="tick" x="${ml-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("")}
+      ${[0,25,50,75,100].map(v=>`<text class="tick" x="${x(v)}" y="${H-6}" text-anchor="middle">${v} %</text>`).join("")}
+      ${lineas}${finales.map(f=>`<text class="lbl-fuera" x="${W-mr+8}" y="${f.y.toFixed(1)}">${esc(f.t)}</text>`).join("")}</svg>`;
+  }
+  conTip(sec.querySelector("#no-mapa"), ev=>{ const p = ev.target.closest("[data-p]"); if (!p || !ultimo) return ""; const pr = ultimo.provincias[p.dataset.p]; if (!pr) return `<b>${esc(nombreProv(p.dataset.p))}</b><br>Sin datos todavía`;
+    const tot = pr.partidos.reduce((s,x)=>s+x.v,0) || 1;
+    return `<b>${esc(nombreProv(p.dataset.p))}</b> · ${dec(pr.escrutado||0,1)} % escrutado${pr.partidos.slice().sort((a,b)=>b.v-a.v).slice(0,5).map(x=>filaTip(grupoDe(familiaDe(x.s, x.n)).color, x.s, `${dec(x.v/tot*100,1)} % · ${x.e}`)).join("")}<div style="color:var(--muted);margin-top:4px">Pulsa para ver su reparto</div>`; });
+
+  nocheProv = null;
+  if (ensayoPedido){ arrancarEnsayo(); return; }
+  const hay = await directo();
+  if (hay){ nocheIntervalo = setInterval(()=>{ if (!document.body.contains(sec)){ parar(); return; } if (!document.hidden) directo(); }, 20000); }
+}
+
+/* El último escaño de una provincia con lo escrutado: quién lo tiene y cuántos votos le faltan al siguiente. */
+function ultimoEscano(pr, escanosRef){
+  const escanos = pr.partidos.reduce((s,p)=>s+p.e,0) || escanosRef; if (!escanos) return null;
+  const votos = Object.fromEntries(pr.partidos.map(p=>[p.s, p.v]));
+  const validos = pr.partidos.reduce((s,p)=>s+p.v,0); if (!validos) return null;
+  const r = dhondt(votos, escanos, validos);
+  const u = r.gan[r.gan.length-1], sig = r.fuera.find(x=>x.c !== u?.c); if (!u || !sig) return null;
+  return {gana: u.c, segundo: sig.c, faltan: Math.max(1, Math.floor(u.q*((r.rep[sig.c]||0)+1)) - votos[sig.c] + 1)};
+}
+
+/* Ensayo: los resultados oficiales de 2023 repartidos en el tiempo. Cada provincia escruta a su ritmo y, al
+   principio, con un pequeño sesgo que desaparece al llegar al 100 %; los escaños se recalculan con la ley D'Hondt. */
+function simular(D, f){
+  const azar = s => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return ((h >>> 0) % 1000) / 1000; };
+  const provincias = {}, nacional = {};
+  for (const [cod, p] of Object.entries(D.prov)){
+    const ritmo = 0.7 + azar(cod)*0.8, esc = 1 - Math.pow(1 - f, ritmo);   // unas provincias van más deprisa; todas acaban en el 100 %
+    const votos = {};
+    p.c.forEach(x=>{ const sesgo = (azar(cod + x[0]) - .5) * .22 * (1 - esc); votos[x[0]] = Math.round(x[2] * esc * (1 + sesgo)); });
+    const validos = Object.values(votos).reduce((a,b)=>a+b,0) + Math.round(p.blancos*esc);
+    const rep = esc > 0 ? dhondt(votos, p.e, validos).rep : {};
+    provincias[cod] = {escrutado: Math.round(esc*10000)/100, partidos: p.c.map(x=>({s:x[0], n:"", v:votos[x[0]], e:rep[x[0]]||0, fam:x[1]})).sort((a,b)=>b.e-a.e || b.v-a.v)};
+    // España: se suma por familia (las candidaturas regionales de un mismo partido van juntas).
+    provincias[cod].partidos.forEach(x=>{ const k = x.fam === "OTROS" ? x.s : x.fam; const t = nacional[k] ||= {s:x.s, n:"", v:0, e:0, porSiglas:{}}; t.v += x.v; t.e += x.e; t.porSiglas[x.s] = (t.porSiglas[x.s]||0) + x.v; });
+  }
+  const partidos = Object.values(nacional).map(t=>({...t, s: Object.entries(t.porSiglas).sort((a,b)=>b[1]-a[1])[0][0]})).sort((a,b)=>b.e-a.e || b.v-a.v);
+  const total = partidos.reduce((s,p)=>s+p.v,0) || 1;
+  partidos.forEach(p=>{ p.p = p.v/total*100; delete p.porSiglas; });
+  const escrutado = Object.values(provincias).reduce((s,p)=>s+p.escrutado,0)/Object.keys(provincias).length;
+  return {estado:"ok", escrutado: Math.round(escrutado*100)/100, participacion: null, votantes: total, validos: total, partidos, provincias};
+}

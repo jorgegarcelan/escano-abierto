@@ -125,6 +125,7 @@ const PAGINAS = [
   {id:"provincias", t:"Provincias", d:"Las 52 circunscripciones: escaños, participación, votos por escaño y su historia electoral."},
   {id:"metricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
   {id:"mapa", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
+  {id:"noche", t:"La noche electoral", d:"El escrutinio del 29N en directo, provincia a provincia, con los escaños que aún están en el aire."},
 ];
 const PAG = Object.fromEntries(PAGINAS.map(p=>[p.id, p]));
 
@@ -155,6 +156,7 @@ export async function render(el, c, sub){
   else if (sub === "provincias") hist("pintarProvincias");
   else if (sub === "metricas") hist("pintarMetricas");
   else if (sub === "mapa") hist("pintarMunicipios");
+  else if (sub === "noche") hist("pintarNoche");
   else if (eleccion) hist("pintarFicha");
   else if (provincia) hist("pintarProvincia");
 }
@@ -185,10 +187,10 @@ function home(el){
         ${tarjeta("provincias", "52", "circunscripciones", miniMapa())}
         ${tarjeta("metricas", "", "")}
         ${tarjeta("mapa", "8.131", "municipios")}
+        ${tarjeta("noche", "20.00", "del 29 de noviembre: empieza el escrutinio. Antes, un ensayo con el 23J")}
       </div></section>
     <section class="sec"><div class="sec-h"><h2>Próximamente</h2></div>
-      <div class="el-pronto">${[["La noche electoral","Los resultados del escrutinio en directo, provincia a provincia, y el nuevo hemiciclo escaño a escaño.","29 de noviembre, desde las 20.00"],
-        ["Qué prometieron y qué votaron","Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.","Más adelante"]]
+      <div class="el-pronto">${[["Qué prometieron y qué votaron","Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.","Más adelante"]]
         .map(([t,p,s])=>`<div class="chart"><b>${esc(t)}</b><p>${esc(p)}</p><small>${esc(s)}</small></div>`).join("")}</div></section>`;
   montar350(el.querySelector(".el-350"));
   // Las tarjetas que necesitan el histórico se completan cuando llega (sin bloquear la portada).
