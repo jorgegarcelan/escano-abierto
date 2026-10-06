@@ -362,7 +362,7 @@
 }
 ],
 "tema": "campo",
-"total": 154,
+"total": 155,
 "total_sintesis": 149
 },
 "campo|GOB": {
@@ -1229,7 +1229,7 @@
 }
 ],
 "tema": "campo",
-"total": 378,
+"total": 385,
 "total_sintesis": 356
 },
 "campo|PSOE": {
@@ -1430,7 +1430,7 @@
 }
 ],
 "tema": "campo",
-"total": 188,
+"total": 189,
 "total_sintesis": 176
 },
 "campo|SUMAR": {
@@ -1631,7 +1631,7 @@
 }
 ],
 "tema": "campo",
-"total": 242,
+"total": 245,
 "total_sintesis": 242
 },
 "campo|VOX": {
@@ -1832,7 +1832,7 @@
 }
 ],
 "tema": "campo",
-"total": 352,
+"total": 358,
 "total_sintesis": 333
 },
 "clima|BILDU": {
@@ -4787,36 +4787,36 @@
 }
 ],
 "tema": "cultura",
-"total": 201,
+"total": 211,
 "total_sintesis": 202
 },
 "cultura|PSOE": {
-"firma": "9d5aa1f6a6dc4fa1b453d3963053c9206a9bf681",
+"firma": "9d2830c5310297e8cd64eb0686a4abf02cd891fb",
 "grupo": "PSOE",
 "lineas": [
 {
 "ejemplos": [
 [
-"Incluir a los deportistas con discapacidad en el futuro estatuto del deportista",
-"Marqués Atés",
-"DSCD-15-CO-488",
-"2026-02-10"
+"Establecer un suelo mínimo de derechos garantizados en el estatuto del deportista",
+"García López",
+"DSCD-15-CO-629",
+"2026-09-29"
 ],
 [
-"Aprobar un estatuto del deportista con consenso",
-"Marqués Atés",
-"DSCD-15-CO-412",
-"2025-10-14"
+"Convertir la carrera dual y la preparación para la retirada en un derecho del deportista",
+"García López",
+"DSCD-15-CO-629",
+"2026-09-29"
 ],
 [
-"que el futuro estatuto incluya a todos los deportistas y no solo a los profesionales o de alto nivel",
-"Gutiérrez Santiago",
-"DSCD-15-CO-330",
-"2025-05-20"
+"blindar, garantizar y asegurar la carrera dual del deportista profesional",
+"Marqués Atés",
+"DSCD-15-CO-501",
+"2026-02-24"
 ]
 ],
-"n": 7,
-"titulo": "Elaborar y desarrollar el Estatuto del Deportista"
+"n": 11,
+"titulo": "Aprobar y desarrollar el Estatuto del Deportista garantizando sus derechos"
 },
 {
 "ejemplos": [
@@ -4840,7 +4840,7 @@
 ]
 ],
 "n": 4,
-"titulo": "Adecuar el Reglamento del Congreso al lenguaje inclusivo de género"
+"titulo": "Reformar el Reglamento del Congreso para incorporar el lenguaje inclusivo"
 },
 {
 "ejemplos": [
@@ -4864,55 +4864,7 @@
 ]
 ],
 "n": 4,
-"titulo": "Aumentar los recursos y la protección para la lengua y cultura del Valle de Arán"
-},
-{
-"ejemplos": [
-[
-"Reforzar el uso y difusión de mediadores culturales y del teléfono 016 para superar la barrera idiomática",
-"Fernández Benéitez",
-"DSCD-15-CO-615",
-"2026-08-31"
-],
-[
-"mediación cultural y recursos públicos de emancipación",
-"Fernández Benéitez",
-"DSCD-15-PL-177",
-"2026-04-14"
-],
-[
-"Reforzar la figura de la mediación cultural",
-"Fernández Benéitez",
-"DSCD-15-PL-166",
-"2026-02-17"
-]
-],
-"n": 4,
-"titulo": "Reforzar el uso de la mediación cultural"
-},
-{
-"ejemplos": [
-[
-"Retransmisiones de competiciones en directo y diferido en los canales de RTVE",
-"De la Rosa Baena",
-"DSCD-15-CO-124",
-"2024-06-12"
-],
-[
-"Emisión de las ceremonias de apertura y clausura y programación diaria en Teledeporte y La 2",
-"De la Rosa Baena",
-"DSCD-15-CO-124",
-"2024-06-12"
-],
-[
-"Seguimiento especial en informativos de TVE, RNE y la web de RTVE",
-"De la Rosa Baena",
-"DSCD-15-CO-124",
-"2024-06-12"
-]
-],
-"n": 4,
-"titulo": "Garantizar la cobertura y retransmisión de competiciones deportivas en RTVE"
+"titulo": "Reconocer y dotar de financiación a la lengua y cultura del Valle de Arán"
 },
 {
 "ejemplos": [
@@ -4936,25 +4888,25 @@
 ]
 ],
 "n": 3,
-"titulo": "Avanzar en el desarrollo y aprobación del Estatuto del Artista"
+"titulo": "Impulsar y culminar la aprobación del Estatuto del Artista"
 },
 {
 "ejemplos": [
 [
-"Promocionar y recuperar el oficio tradicional de la piedra seca",
-"Lamuà Estañol",
-"DSCD-15-CO-180",
-"2024-10-15"
+"Incluir de forma destacada a Málaga como eje fundamental de las actividades conmemorativas del centenario de la Generación del 27",
+"López Cano",
+"DSCD-15-CO-635",
+"2026-09-30"
 ],
 [
-"Conservar y revalorizar las estructuras de piedra seca con apoyo institucional y local",
-"Lamuà Estañol",
-"DSCD-15-CO-180",
-"2024-10-15"
+"Incluir de forma destacada a Málaga en la conmemoración del centenario de la Generación del 27",
+"López Cano",
+"DSCD-15-CO-635",
+"2026-09-30"
 ]
 ],
 "n": 2,
-"titulo": "Proteger y poner en valor la técnica constructiva de la piedra seca"
+"titulo": "Incluir a Málaga en la conmemoración del centenario de la Generación del 27"
 },
 {
 "ejemplos": [
@@ -4973,11 +4925,47 @@
 ],
 "n": 2,
 "titulo": "Designar a Zaragoza como sede de la gala de los Premios Goya en 2028"
+},
+{
+"ejemplos": [
+[
+"Impulsar la ejecución del archivo provincial de Girona",
+"Lamuà Estañol",
+"DSCD-15-CO-451",
+"2025-11-18"
+],
+[
+"Que el Ministerio de Cultura continúe impulsando el Archivo Provincial de Girona",
+"Lamuà Estañol",
+"DSCD-15-CO-216",
+"2024-11-14"
+]
+],
+"n": 2,
+"titulo": "Impulsar y culminar la construcción del Archivo Provincial de Girona"
+},
+{
+"ejemplos": [
+[
+"Modificar el Real Decreto 1006/1985 para incluir derechos de descanso y maternidad",
+"Marqués Atés",
+"DSCD-15-CO-412",
+"2025-10-14"
+],
+[
+"Modificar y mejorar el Real Decreto 1006/1985",
+"Marqués Atés",
+"DSCD-15-CO-326",
+"2025-05-13"
+]
+],
+"n": 2,
+"titulo": "Modificar el Real Decreto 1006/1985 sobre deportistas profesionales"
 }
 ],
 "tema": "cultura",
-"total": 171,
-"total_sintesis": 167
+"total": 185,
+"total_sintesis": 185
 },
 "cultura|SUMAR": {
 "firma": "767bee311fdc4696cd49738ab4e02b1dea20e140",
@@ -5177,7 +5165,7 @@
 }
 ],
 "tema": "cultura",
-"total": 193,
+"total": 204,
 "total_sintesis": 191
 },
 "cultura|VOX": {
@@ -5378,7 +5366,7 @@
 }
 ],
 "tema": "cultura",
-"total": 135,
+"total": 141,
 "total_sintesis": 135
 },
 "defensa|BILDU": {
@@ -8900,7 +8888,7 @@
 }
 ],
 "tema": "democracia",
-"total": 183,
+"total": 184,
 "total_sintesis": 178
 },
 "educacion|BILDU": {
@@ -9260,7 +9248,7 @@
 }
 ],
 "tema": "educacion",
-"total": 76,
+"total": 78,
 "total_sintesis": 72
 },
 "educacion|GOB": {
@@ -10067,7 +10055,7 @@
 }
 ],
 "tema": "educacion",
-"total": 307,
+"total": 313,
 "total_sintesis": 303
 },
 "educacion|PSOE": {
@@ -10268,7 +10256,7 @@
 }
 ],
 "tema": "educacion",
-"total": 201,
+"total": 207,
 "total_sintesis": 199
 },
 "educacion|SUMAR": {
@@ -10469,7 +10457,7 @@
 }
 ],
 "tema": "educacion",
-"total": 251,
+"total": 258,
 "total_sintesis": 249
 },
 "educacion|VOX": {
@@ -10670,7 +10658,7 @@
 }
 ],
 "tema": "educacion",
-"total": 176,
+"total": 178,
 "total_sintesis": 175
 },
 "empleo|BILDU": {
@@ -12011,7 +11999,7 @@
 }
 ],
 "tema": "empleo",
-"total": 395,
+"total": 396,
 "total_sintesis": 383
 },
 "empleo|PSOE": {
@@ -12413,7 +12401,7 @@
 }
 ],
 "tema": "empleo",
-"total": 391,
+"total": 392,
 "total_sintesis": 388
 },
 "empleo|VOX": {
@@ -15671,7 +15659,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 391,
+"total": 393,
 "total_sintesis": 371
 },
 "exteriores|PSOE": {
@@ -15872,7 +15860,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 197,
+"total": 199,
 "total_sintesis": 189
 },
 "exteriores|SUMAR": {
@@ -16073,7 +16061,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 340,
+"total": 341,
 "total_sintesis": 326
 },
 "exteriores|VOX": {
@@ -17873,7 +17861,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 152,
+"total": 153,
 "total_sintesis": 145
 },
 "igualdad|VOX": {
@@ -18476,7 +18464,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 366,
+"total": 367,
 "total_sintesis": 365
 },
 "impuestos|GOB": {
@@ -19463,7 +19451,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 943,
+"total": 946,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -19664,7 +19652,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 226,
+"total": 228,
 "total_sintesis": 227
 },
 "impuestos|SUMAR": {
@@ -20066,7 +20054,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 578,
+"total": 582,
 "total_sintesis": 586
 },
 "inmigracion|BILDU": {
@@ -26657,7 +26645,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 499,
+"total": 502,
 "total_sintesis": 491
 },
 "sanidad|PSOE": {
@@ -26858,7 +26846,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 335,
+"total": 338,
 "total_sintesis": 329
 },
 "sanidad|SUMAR": {
@@ -30674,7 +30662,7 @@
 }
 ],
 "tema": "social",
-"total": 238,
+"total": 239,
 "total_sintesis": 233
 },
 "tecnologia|BILDU": {
@@ -31685,7 +31673,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 222,
+"total": 233,
 "total_sintesis": 219
 },
 "tecnologia|PSOE": {
@@ -31874,7 +31862,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 132,
+"total": 136,
 "total_sintesis": 136
 },
 "tecnologia|SUMAR": {
@@ -32075,7 +32063,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 189,
+"total": 194,
 "total_sintesis": 195
 },
 "tecnologia|VOX": {
@@ -32270,7 +32258,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 90,
+"total": 97,
 "total_sintesis": 90
 },
 "territorial|BILDU": {
@@ -36122,7 +36110,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 190,
+"total": 192,
 "total_sintesis": 185
 },
 "vivienda|GOB": {
@@ -37529,7 +37517,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 531,
+"total": 532,
 "total_sintesis": 526
 },
 "vivienda|VOX": {
@@ -37730,7 +37718,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 340,
+"total": 341,
 "total_sintesis": 339
 }
 }

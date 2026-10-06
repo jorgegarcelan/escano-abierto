@@ -564,6 +564,11 @@
 "Cataluña",
 "Girona"
 ],
+"Arcones": [
+"municipio",
+"Castilla y León",
+"Segovia"
+],
 "Arcos de la Frontera": [
 "municipio",
 "Andalucía",
@@ -849,6 +854,11 @@
 "Galicia",
 "Coruña (A)"
 ],
+"Barbastro": [
+"municipio",
+"Aragón",
+"Huesca"
+],
 "Barbate": [
 "municipio",
 "Andalucía",
@@ -1038,6 +1048,11 @@
 "municipio",
 "Galicia",
 "Coruña (A)"
+],
+"Bielsa": [
+"municipio",
+"Aragón",
+"Huesca"
 ],
 "Bilbao": [
 "municipio",
@@ -6284,6 +6299,11 @@
 "Comunidad de Madrid",
 "Madrid"
 ],
+"Valderrubio": [
+"municipio",
+"Andalucía",
+"Granada"
+],
 "Valdés": [
 "municipio",
 "Asturias",
@@ -6560,6 +6580,11 @@
 "León"
 ],
 "Villafranca del Bierzo": [
+"municipio",
+"Castilla y León",
+"León"
+],
+"Villagatón": [
 "municipio",
 "Castilla y León",
 "León"
