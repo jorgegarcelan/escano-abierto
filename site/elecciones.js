@@ -133,10 +133,32 @@ const CSS = `
 .el-prom .vs small{color:var(--muted)}
 .el-migas{font-size:13px;color:var(--muted);padding-top:4px;display:flex;gap:6px;align-items:center}
 .el-migas a{color:var(--muted)}
-.el-subnav{display:flex;gap:6px;overflow-x:auto;padding:10px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--line);scrollbar-width:thin}
-.el-subnav a{flex:none;font-size:13px;text-decoration:none;color:var(--muted);border:1px solid var(--line);border-radius:var(--r-pill);padding:5px 11px;background:var(--surface)}
-.el-subnav a:hover{color:var(--ink);border-color:var(--line-strong)}
-.el-subnav a[aria-current="page"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.el-nav{padding:12px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.el-nav-grupos{display:flex;flex-wrap:wrap;gap:12px 0}
+.el-nav-grupos .g{display:grid;gap:6px;align-content:start;padding:0 12px;border-left:1px solid var(--line)}
+.el-nav-grupos .g:first-child{padding-left:0;border-left:0}
+.el-nav-grupos .gt{font:600 10.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.el-nav-grupos .g.act .gt{color:var(--ink)}
+.el-nav-grupos .gi{display:flex;flex-wrap:wrap;gap:4px}
+.el-nav-grupos .gi a{font-size:12.5px;color:var(--muted);text-decoration:none;padding:4px 9px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.el-nav-grupos .gi a:hover{color:var(--ink);border-color:var(--line-strong)}
+.el-nav-grupos .gi a[aria-current="page"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.el-nav-movil{display:none}
+.el-nav-movil summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;border:1px solid var(--line-strong);border-radius:10px;padding:9px 12px;background:var(--surface)}
+.el-nav-movil summary::-webkit-details-marker{display:none}
+.el-nav-movil summary span{font:600 10.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.el-nav-movil summary b{flex:1;font-size:14.5px}
+.el-nav-movil summary::after{content:"▾";color:var(--muted)}
+.el-nav-movil[open] summary::after{content:"▴"}
+.el-nav-movil .el-nav-grupos{flex-direction:column;gap:14px;padding:14px 2px 4px}
+.el-nav-movil .el-nav-grupos .g{padding:0;border:0}
+@media (max-width:760px){ .el-nav>.el-nav-grupos{display:none} .el-nav-movil{display:block} }
+.el-sigue{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+.el-sigue a{display:grid;gap:2px;text-decoration:none;color:var(--ink);background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);padding:12px 16px;transition:border-color .2s}
+.el-sigue a:hover{border-color:var(--line-strong)}
+.el-sigue a.sig{text-align:right}
+.el-sigue small{font-size:12px;color:var(--muted)}
+.el-sigue b{font-size:15px}
 .el-tarjetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
 .el-tarjeta{display:grid;grid-template-rows:auto auto auto auto 1fr;gap:4px;text-decoration:none;color:var(--ink);background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);padding:16px 16px 14px;box-shadow:var(--sombra);transition:border-color .2s,transform .2s;min-height:220px}
 .el-tarjeta:hover{border-color:var(--line-strong);transform:translateY(-2px);text-decoration:none}
@@ -173,19 +195,20 @@ const fechaCortaEl = iso => { const [,m,d] = iso.split("-").map(Number); return 
 
 /* Apartados de la sección: cada uno es una subpágina (#elecciones-<id>). */
 const PAGINAS = [
-  {id:"350", t:"Los 350", d:"Cada escaño sale de una provincia. Del mapa al hemiciclo, y cómo ha cambiado el reparto desde 1977."},
-  {id:"caducan", t:"Lo que caduca", d:"Las leyes que la disolución deja a medio camino y los decretos-leyes que heredará la Diputación Permanente."},
-  {id:"legislatura", t:"La legislatura en cifras", d:"La XV legislatura, de la sesión constitutiva a la disolución: votaciones, leyes, decretos y preguntas."},
-  {id:"repite", t:"¿Repite?", d:"Quién de los 350 vuelve a ir en las listas, en qué puesto y por qué provincia."},
-  {id:"escano", t:"El precio de un escaño", d:"Cuántos votos cuesta un diputado en cada provincia, el último escaño de cada una y un simulador D'Hondt."},
-  {id:"historico", t:"Elecciones desde 1977", d:"Las dieciséis generales, con la ficha de cada elección y de su legislatura."},
-  {id:"provincias", t:"Provincias", d:"Las 52 circunscripciones: escaños, participación, votos por escaño y su historia electoral."},
-  {id:"metricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
-  {id:"mapa", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
-  {id:"voto", t:"La geografía del voto", d:"Ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el peso del voto: cómo vota cada España, municipio a municipio."},
-  {id:"noche", t:"La noche electoral", d:"El escrutinio del 29N en directo, provincia a provincia, con los escaños que aún están en el aire."},
+  {id:"350", c:"Los 350", t:"Los 350", d:"Cada escaño sale de una provincia. Del mapa al hemiciclo, y cómo ha cambiado el reparto desde 1977."},
+  {id:"caducan", c:"Lo que caduca", t:"Lo que caduca", d:"Las leyes que la disolución deja a medio camino y los decretos-leyes que heredará la Diputación Permanente."},
+  {id:"legislatura", c:"En cifras", t:"La legislatura en cifras", d:"La XV legislatura, de la sesión constitutiva a la disolución: votaciones, leyes, decretos y preguntas."},
+  {id:"repite", c:"¿Repite?", t:"¿Repite?", d:"Quién de los 350 vuelve a ir en las listas, en qué puesto y por qué provincia."},
+  {id:"escano", c:"Precio del escaño", t:"El precio de un escaño", d:"Cuántos votos cuesta un diputado en cada provincia, el último escaño de cada una y un simulador D'Hondt."},
+  {id:"historico", c:"Desde 1977", t:"Elecciones desde 1977", d:"Las dieciséis generales, con la ficha de cada elección y de su legislatura."},
+  {id:"provincias", c:"Provincias", t:"Provincias", d:"Las 52 circunscripciones: escaños, participación, votos por escaño y su historia electoral."},
+  {id:"metricas", c:"Métricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
+  {id:"mapa", c:"Por municipios", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
+  {id:"voto", c:"Geografía del voto", t:"La geografía del voto", d:"Ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el peso del voto: cómo vota cada España, municipio a municipio."},
+  {id:"noche", c:"En directo", t:"La noche electoral", d:"El escrutinio del 29N en directo, provincia a provincia, con los escaños que aún están en el aire."},
 ];
 const PAG = Object.fromEntries(PAGINAS.map(p=>[p.id, p]));
+let NAV = null, ORDEN_NAV = null;   // se completan con GRUPOS_PAG (más abajo, con la portada)
 
 export async function render(el, c, sub){
   ctx = c; estilos();
@@ -197,13 +220,15 @@ export async function render(el, c, sub){
   const {esc} = ctx;
   const actual = eleccion ? "historico" : provincia ? "provincias" : sub;
   const p = PAG[sub];
-  el.innerHTML = `<nav class="el-migas" aria-label="Estás en"><a href="#elecciones">Elecciones 29N</a>${eleccion||provincia?` <span>›</span> <a href="#elecciones-${actual}">${esc(PAG[actual].t)}</a>`:""}</nav>
-    <nav class="el-subnav" aria-label="Apartados de las elecciones">${PAGINAS.map(x=>`<a href="#elecciones-${x.id}"${x.id===actual?' aria-current="page"':""}>${esc(x.t)}</a>`).join("")}</nav>
-    <div id="el-pagina">${p ? `<div class="view-intro"><div><h2>${esc(p.t)}</h2><p>${esc(p.d)}</p></div></div>` : ""}<div class="el-cuerpo"><p class="nota">Cargando…</p></div></div>`;
+  const g = NAV.findIndex(x=>x.ids.includes(actual)), i = ORDEN_NAV.indexOf(actual);
+  const grupos = NAV.map((x,k)=>`<div class="g${k===g?" act":""}"><span class="gt">${String(k+1).padStart(2,"0")} · ${esc(x.n)}</span><div class="gi">${x.ids.map(id=>`<a href="#elecciones-${id}"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div></div>`).join("");
+  const vecino = (id, cls, flecha) => id ? `<a class="${cls}" href="#elecciones-${id}"><small>${cls==="ant"?"← Anterior":"Siguiente →"}</small><b>${esc(PAG[id].t)}</b></a>` : `<span></span>`;
+  el.innerHTML = `<nav class="el-migas" aria-label="Estás en"><a href="#elecciones">Elecciones 29N</a>${g>=0?` <span>›</span> <span>${esc(NAV[g].n)}</span>`:""}${eleccion||provincia?` <span>›</span> <a href="#elecciones-${actual}">${esc(PAG[actual].t)}</a>`:""}</nav>
+    <nav class="el-nav" aria-label="Apartados de las elecciones"><div class="el-nav-grupos">${grupos}</div>
+      <details class="el-nav-movil"><summary><span>Apartado</span><b>${esc(PAG[actual].t)}</b></summary><div class="el-nav-grupos">${grupos}</div></details></nav>
+    <div id="el-pagina">${p ? `<div class="view-intro"><div><h2>${esc(p.t)}</h2><p>${esc(p.d)}</p></div></div>` : ""}<div class="el-cuerpo"><p class="nota">Cargando…</p></div>
+      ${p ? `<nav class="el-sigue" aria-label="Otros apartados">${vecino(ORDEN_NAV[i-1], "ant")}${vecino(ORDEN_NAV[i+1], "sig")}</nav>` : ""}</div>`;
   const cuerpo = el.querySelector(".el-cuerpo");
-  // El menú de apartados se desplaza de lado: que se vea el actual.
-  const nav = el.querySelector(".el-subnav"), act = nav?.querySelector('[aria-current="page"]');
-  if (act) nav.scrollLeft = act.offsetLeft - nav.offsetLeft - (nav.clientWidth - act.offsetWidth) / 2;
   const hist = f => import("./elecciones-historico.js").then(m=>m[f](cuerpo, ctx, sub)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   if (sub === "350"){
     cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
@@ -226,12 +251,14 @@ export async function render(el, c, sub){
 /* ---------- portada de la sección ---------- */
 // Los apartados, agrupados por temas. El de los 350 no es una tarjeta: es la pieza central de su grupo.
 const GRUPOS_PAG = [
-  {t:"La legislatura que se acaba", d:"Lo que deja hecho y sin hacer la XV legislatura, y quién vuelve a presentarse.", ids:["caducan","legislatura","repite"]},
-  {t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano","provincias"], los350:true},
-  {t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una y en cifras.", ids:["historico","metricas"]},
-  {t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
-  {t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
+  {n:"La legislatura", t:"La legislatura que se acaba", d:"Lo que deja hecho y sin hacer la XV legislatura, y quién vuelve a presentarse.", ids:["caducan","legislatura","repite"]},
+  {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano","provincias"], los350:true},
+  {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una y en cifras.", ids:["historico","metricas"]},
+  {n:"El mapa", t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
+  {n:"La noche", t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
 ];
+NAV = GRUPOS_PAG.map(g=>({n:g.n, ids: g.los350 ? ["350", ...g.ids] : g.ids}));
+ORDEN_NAV = NAV.flatMap(g=>g.ids);
 // En qué fase está la elección: cambia la cabecera y lo que se destaca.
 function fase(){
   const hoy = hoyISO(), H = DATOS.calendario, de = n => H.find(x=>x.hito.startsWith(n)) || {};
