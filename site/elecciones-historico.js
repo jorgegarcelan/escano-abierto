@@ -942,7 +942,7 @@ export async function pintarEscano(sec, c){
     <div class="chart ps" style="margin-top:16px"><div class="eyebrow">El último escaño</div><h3 class="ps-t">El Congreso que pudo ser</h3>
       <p class="sub">En cada provincia, alguien se llevó el último escaño por unos pocos votos. Pon esos votos justo donde hacían falta, del escaño más barato al más caro, y mira cómo cambia el Congreso.</p>
       <div class="ps-c"><div class="ps-hemi" data-ps-hemi></div><div class="ps-lado"><div class="ps-cifras"><div><b data-ps-v>0</b><span>votos, <span data-ps-pct></span></span></div><div><b data-ps-n>0</b><span>escaños cambian de manos</span></div></div><div class="ps-g" data-ps-g></div></div></div>
-      <div class="ps-esc"><div class="ps-esc-h"><span>Cada punto es un escaño, del más barato al más caro. <b>Arrastra sobre la escalera.</b></span>
+      <div class="ps-esc"><div class="ps-esc-h"><span>Cada punto es un escaño, del más barato al más caro. Los votos se suman: para llegar a uno, antes hay que pagar los anteriores. <b>Arrastra sobre la escalera.</b></span>
         <div class="ps-btns"><button type="button" data-ps-play>▶ Reproducir</button><button type="button" data-ps-ir="3">1.000</button><button type="button" data-ps-ir="4">10.000</button><button type="button" data-ps-ir="5">100.000</button><button type="button" data-ps-ir="max">Todos</button></div></div>
         <svg data-ps-esc role="img" aria-label="Escaños que cambian de manos según los votos repartidos"></svg>
         <input type="range" id="ps-r" class="sr" min="2" max="6" step="0.01" aria-label="Votos para repartir"></div>
@@ -1045,8 +1045,8 @@ export async function pintarEscano(sec, c){
     const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiSVG(350, {etiqueta:"350"});
     $("[data-ps-esc]")._parar?.();   // la animación de la elección anterior, fuera
     const rango = $("#ps-r"), svg = $("[data-ps-esc]"), N = vueltas.length, quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // La escalera: votos acumulados (eje logarítmico) frente a escaños que cambian; cada cuenta, un escaño: gris mientras no cambia, del color de quien se lo lleva cuando cambia.
-    const W = Math.max(300, svg.parentNode.clientWidth || 600), H = W < 520 ? 230 : 270, m = {l:30, r:12, t:36, b:24};
+    // La escalera: votos sumados (eje logarítmico) frente a escaños que cambian; cada punto, un escaño: con el contorno de quien se lo llevaría, relleno cuando cambia.
+    const W = Math.max(300, svg.parentNode.clientWidth || 600), H = W < 520 ? 240 : 280, m = {l:30, r:12, t:36, b:34};
     const tope = maxLog + (maxLog - 2)*.02;   // un poco de aire a la derecha
     const X = v => m.l + (Math.log10(Math.max(100, v)) - 2)/(tope - 2)*(W - m.l - m.r), Y = n => H - m.b - n/N*(H - m.t - m.b);
     const aLog = x => Math.max(2, Math.min(maxLog, 2 + (x - m.l)/(W - m.l - m.r)*(tope - 2)));
@@ -1054,7 +1054,7 @@ export async function pintarEscano(sec, c){
     const rC = W < 520 ? 3.6 : 4.4;   // cuentas pequeñas: en la cola se tocan, como un collar
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.innerHTML = `      <g class="ejes">${[10,20,30,40,50].filter(n=>n <= N).map(n=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(n)}" y2="${Y(n)}"/><text x="${m.l - 6}" y="${Y(n) + 3.5}" text-anchor="end" data-n="${n}">${n}</text>`).join("")}
-        ${[1e3, 1e4, 1e5, 1e6].filter(v=>Math.log10(v) < maxLog - .1).map(v=>`<text x="${X(v)}" y="${H - 6}" text-anchor="middle">${fmtCorto(v)}</text>`).join("")}<text x="${W - m.r}" y="${H - 6}" text-anchor="end">votos →</text></g>
+        ${[1e3, 1e4, 1e5, 1e6].filter(v=>Math.log10(v) < maxLog - .1).map(v=>`<text x="${X(v)}" y="${H - m.b + 15}" text-anchor="middle">${fmtCorto(v)}</text>`).join("")}<text x="${W - m.r}" y="${H - 2}" text-anchor="end">votos sumados →</text></g>
       <defs><linearGradient id="ps-deg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="d0"/><stop offset="1" class="d1"/></linearGradient><clipPath id="ps-clip"><rect x="0" y="0" height="${H}" width="0"/></clipPath></defs>
       <path class="area" d="${escalon}L${X(vueltas[N-1].acum).toFixed(1)} ${Y(0)}Z" clip-path="url(#ps-clip)"/>
       <line class="base" x1="${m.l}" x2="${W - m.r}" y1="${Y(0)}" y2="${Y(0)}"/><path class="esc" d="${escalon}"/>
@@ -1074,7 +1074,7 @@ export async function pintarEscano(sec, c){
         let k = -1, d = 16; svg._v.forEach((v,i)=>{ const dd = Math.hypot(svg._X(v.acum) - x, (svg._Y(i+1) - y)*.5); if (dd < d){ d = dd; k = i; } });
         svg.querySelectorAll(".ptos circle").forEach((c,i)=>c.classList.toggle("h", i === k));
         if (k < 0) return ""; const v = svg._v[k];
-        return `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)}: le faltaron <b>${fmt(v.f)}</b> votos<br><span style="color:var(--muted)">Escaño n.º ${k+1} · ${fmt(v.acum)} votos acumulados</span>`; }); }
+        return `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)}: le faltaron <b>${fmt(v.f)}</b> votos<br><span style="color:var(--muted)">${k ? `Sumando los ${k} más baratos que van antes, ${fmt(v.acum)} votos en total` : "Es el escaño más barato de todos"}</span>`; }); }
     svg._v = vueltas; svg._X = X; svg._Y = Y;
     let antes = -1, vistos = new Set(), ultHechas = [];
     // Quién se los lleva: un hilo por escaño, del partido que lo pierde (izquierda) al que se lo lleva (derecha).
@@ -1125,7 +1125,7 @@ export async function pintarEscano(sec, c){
       const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu), x = X(presu);
       cur.setAttribute("transform", `translate(${x.toFixed(1)},0)`); clip.setAttribute("width", x.toFixed(1)); 
       const r = Math.pow(10, Math.floor(Math.log10(presu)) - 1);
-      curT.textContent = `${fmt(Math.round(presu/r)*r)} votos`; curT.setAttribute("text-anchor", x > W*.75 ? "end" : x < W*.2 ? "start" : "middle");
+      curT.textContent = `${fmt(Math.round(presu/r)*r)} votos en total`; curT.setAttribute("text-anchor", x > W*.75 ? "end" : x < W*.2 ? "start" : "middle");
       if (hechas.length === antes) return; antes = hechas.length;
       cols.forEach((c,i)=>{ c.classList.toggle("si", i < hechas.length); c.classList.toggle("ult", i === hechas.length - 1); });
       const n = hechas.length; guia.style.opacity = n ? 1 : 0;
@@ -1147,7 +1147,8 @@ export async function pintarEscano(sec, c){
     // Reproducir: el deslizador recorre la escalera de punta a punta (o hasta donde se le diga).
     let anim = null;
     const boton = $("[data-ps-play]");
-    function pararPlay(){ if (anim){ cancelAnimationFrame(anim); anim = null; } if (boton) boton.textContent = "▶ Reproducir"; }
+    let io = null;   // la reproducción automática de la primera vez: si alguien toca antes, ya no hace falta
+    function pararPlay(){ io?.disconnect(); if (anim){ cancelAnimationFrame(anim); anim = null; } if (boton) boton.textContent = "▶ Reproducir"; }
     svg._parar = pararPlay;
     function irA(hasta, dur){
       pararPlay(); if (quieto){ rango.value = hasta; pintar(true); return; }
@@ -1164,7 +1165,7 @@ export async function pintarEscano(sec, c){
     // La primera vez, la escalera se recorre sola hasta unos 125.000 votos al llegar a la vista.
     if (!rango.dataset.puesto){ rango.dataset.puesto = 1; rango.value = 2; pintar();
       if (quieto || !("IntersectionObserver" in window)){ rango.value = 5.1; pintar(); }
-      else { const io = new IntersectionObserver(es=>{ if (es.some(x=>x.isIntersecting)){ io.disconnect(); irA(Math.min(5.1, maxLog), 3200); } }, {threshold:.5}); io.observe(svg); } }
+      else { io = new IntersectionObserver(es=>{ if (es.some(x=>x.isIntersecting)){ io.disconnect(); irA(Math.min(5.1, maxLog), 3200); } }, {threshold:.5}); io.observe(svg); } }
     else pintar();
     return vueltas.map(v=>[v.cod, v.p]);
   }
