@@ -424,6 +424,8 @@ def construir(con_ia: bool = True) -> dict:
     elecciones.escribir(salida, SITIO / "datos" / "elecciones")
     from . import geografia    # sección «Geografía»: comunidades y provincias con los datos del INE (python -m escano.geografia)
     geografia.escribir(SITIO / "datos" / "geografia")
+    from . import encuestas    # «Las encuestas» del 29N: lo que dejó `python -m escano.encuestas` (Wikipedia y Polymarket)
+    encuestas.escribir(SITIO / "datos" / "encuestas")
     try:
         from .paginas import generar
         generar(salida, mod_hemiciclo.leer())

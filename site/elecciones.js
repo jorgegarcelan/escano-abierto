@@ -313,6 +313,7 @@ const PAGINAS = [
   {id:"metricas", c:"Métricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
   {id:"mapa", c:"Por municipios", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
   {id:"voto", c:"Geografía del voto", t:"La geografía del voto", d:"Ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el peso del voto: cómo vota cada España, municipio a municipio."},
+  {id:"encuestas", c:"Encuestas", t:"Las encuestas", d:"Todas las encuestas desde 2023 y su media día a día: cómo ha cambiado la intención de voto camino del 29N."},
   {id:"noche", c:"En directo", t:"La noche electoral", d:"El escrutinio del 29N en directo, provincia a provincia, con los escaños que aún están en el aire."},
 ];
 const PAG = Object.fromEntries(PAGINAS.map(p=>[p.id, p]));
@@ -355,6 +356,7 @@ export async function render(el, c, sub){
   else if (sub === "metricas") hist("pintarMetricas");
   else if (sub === "mapa") hist("pintarMunicipios");
   else if (sub === "noche") hist("pintarNoche");
+  else if (sub === "encuestas") import("./elecciones-encuestas.js").then(m=>m.pintarEncuestas(cuerpo, ctx)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   else if (sub === "voto") import("./elecciones-voto.js").then(m=>m.geografiaDelVoto(cuerpo)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   else if (eleccion) hist("pintarFicha");
   else if (provincia) hist("pintarProvincia");
@@ -367,6 +369,7 @@ const GRUPOS_PAG = [
   {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano"], los350:true},
   {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una, provincia a provincia y en cifras.", ids:["historico","metricas"]},
   {n:"El mapa", t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
+  {n:"Las encuestas", t:"Lo que dicen las encuestas", d:"Las encuestas y su media hasta el 23 de noviembre: desde el 24, la ley prohíbe publicarlas.", ids:["encuestas"]},
   {n:"La noche", t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
 ];
 NAV = GRUPOS_PAG.map(g=>({n:g.n, ids: g.los350 ? ["350", ...g.ids] : g.ids}));
@@ -419,6 +422,7 @@ function home(el){
     metricas: ()=>tarjeta("metricas", "", ""),
     mapa: ()=>tarjeta("mapa", "8.131", "municipios"),
     voto: ()=>tarjeta("voto", "7", "ejes para entender cómo vota cada España"),
+    encuestas: ()=>tarjeta("encuestas", "", ""),
     noche: ()=>tarjeta("noche", "20.00", "del 29 de noviembre: empieza el escrutinio. Antes, un ensayo con el 23J"),
   };
   // Lo que pasa ahora y lo siguiente del calendario.
