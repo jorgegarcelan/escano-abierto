@@ -271,6 +271,42 @@ svg.rio .hito text{font:600 10.5px var(--sans,inherit);fill:var(--muted)}
 svg.rio .hito:hover text{fill:var(--ink)}
 svg.rio .cruz{stroke:var(--ink);stroke-width:1;opacity:0;pointer-events:none}
 .rio-ley{margin-top:8px}
+.pv-partidos{display:flex;flex-wrap:wrap;gap:5px}
+.pv-partidos:empty{display:none}
+.pv-partidos button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);font:600 12px var(--sans,inherit);color:var(--muted)}
+.pv-partidos button i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.pv-partidos button:hover{border-color:var(--line-strong);color:var(--ink)}
+.pv-partidos button[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 22%,var(--surface));border-color:var(--c);color:var(--ink)}
+.pv-partidos button:focus-visible{outline:2px solid var(--no);outline-offset:2px}
+#pv-mapa path.prov.cambia{stroke:var(--ink);stroke-width:1.8}
+#pv-mapa path.prov.sel{stroke:var(--ink);stroke-width:3}
+.pv-nums{font-family:var(--mono);font-weight:700}
+.pv-nums text{fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-linejoin:round;pointer-events:none}
+.pv-int{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.pv-int i{flex:0 0 120px;height:8px;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--ink) 32%,var(--surface)),var(--ink))}
+.pv-giros{display:grid;gap:3px;max-height:260px;overflow:auto}
+.pv-giros button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-size:12.5px;padding:4px 6px;border-radius:6px}
+.pv-giros button:hover{background:var(--sunk)}
+.pv-giros span{display:inline-flex;align-items:center;gap:4px;color:var(--muted);white-space:nowrap}
+.pv-giros i{width:8px;height:8px;border-radius:50%;display:inline-block}
+button.pv-top-f{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+button.pv-top-f:hover span{text-decoration:underline}
+.pv-mini{position:relative;display:grid;gap:8px}
+.pv-mini h3{margin:0;font-size:20px}
+.pv-x{all:unset;cursor:pointer;position:absolute;top:-4px;right:0;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:18px;color:var(--muted);border:1px solid var(--line)}
+.pv-x:hover{color:var(--ink);border-color:var(--line-strong)}
+.pv-mini-r{display:grid;gap:4px}
+.pv-mini-f{display:grid;grid-template-columns:minmax(0,5em) minmax(0,1fr) 3.4em 1.6em;gap:8px;align-items:center;font-size:12.5px}
+.pv-mini-f .n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv-mini-f .b{height:9px;background:var(--sunk);border-radius:2px;overflow:hidden}
+.pv-mini-f .b i{display:block;height:100%;border-radius:2px;transition:width .5s ease}
+.pv-mini-f .p{font:11.5px var(--mono);color:var(--muted);text-align:right}
+.pv-mini-f b{font:700 12.5px var(--mono);text-align:right}
+.pv-mini-d{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5}.pv-mini-d b{color:var(--ink)}
+.pv-mini-t{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:2px}
+.pv-mini-t i{height:14px;border-radius:2px}
+.pv-mini-t i.sel{box-shadow:0 0 0 1.5px var(--ink)}
+.pv-mini .btn{justify-self:start}
 .pv-ctl{min-width:0}
 .pv-ctl .hi-seg{display:flex;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .pv-ctl .hi-seg button{white-space:nowrap;flex:none}
@@ -853,7 +889,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
   }
   // Para contar y para la leyenda, cada marca con su partido de siempre (el PSC con el PSOE, UPN-PP con el PP, las confluencias con Podemos).
   const MARCA = {"PSC":"PSOE", "UPN-PP":"PP", "En Comú":"Podemos", "En Marea":"Podemos"}, marca = n => MARCA[n] || n;
-  const METRICAS = [["primera","Primera fuerza"],["e","Escaños"],["part","Participación"],["precio","Votos por escaño"],["margen","Último escaño"]];
+  const METRICAS = [["primera","Primera fuerza"],["voto","Voto a…"],["e","Escaños"],["part","Participación"],["precio","Votos por escaño"],["margen","Último escaño"]];
   const valor = (j, cod, m) => { const p = E[j].prov[cod]; if (!p) return null;
     return m === "e" ? p.e : m === "part" ? p.votantes/p.censo : m === "precio" ? p.validos/p.e : m === "margen" ? D[E[j].id]?.prov?.[cod]?.ultimo?.faltan ?? null : null; };
   const fmtM = (m, v) => v == null ? "–" : m === "part" ? pct(v) : m === "e" ? `${v} ${v === 1 ? "escaño" : "escaños"}` : `${fmt(v)} votos`;
@@ -864,9 +900,9 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
         <div class="chart" id="hi-ficha"></div></div></section>
     <section class="sec"><div class="sec-h"><h2>Los 350 escaños, legislatura a legislatura</h2><p>Cada partido en su sitio, de 1977 a la disolución de 2026, con el nombre y el color que tenía en cada elección. Pulsa una legislatura para verla en toda la página.</p></div>
       <div class="chart"><div id="hi-rio"></div></div></section>
-    <section class="sec" id="hi-provincias"><div class="sec-h"><h2>Provincia a provincia</h2><p>Las 52 circunscripciones en la elección elegida. Pulsa una provincia para abrir su ficha.</p></div>
-      <div class="pv-ctl"><div class="hi-seg" role="group" aria-label="Qué se pinta">${METRICAS.map(([v,l])=>`<button data-pv-m="${v}" aria-pressed="${v===modoProv}">${esc(l)}</button>`).join("")}</div></div>
-      <div class="pv-top"><div class="chart pv-mapa-w"><h3 id="pv-t"></h3><div id="pv-mapa">${mapaSVG(()=>null)}</div><div id="pv-ley"></div></div>
+    <section class="sec" id="hi-provincias"><div class="sec-h"><h2>Provincia a provincia</h2><p>Las 52 circunscripciones en la elección elegida. Pulsa una provincia para ver su resultado.</p></div>
+      <div class="pv-ctl"><div class="hi-seg" role="group" aria-label="Qué se pinta">${METRICAS.map(([v,l])=>`<button data-pv-m="${v}" aria-pressed="${v===modoProv}">${esc(l)}</button>`).join("")}</div><div class="pv-partidos" id="pv-partidos"></div></div>
+      <div class="pv-top"><div class="chart pv-mapa-w"><h3 id="pv-t"></h3><div id="pv-mapa">${mapaSVG(()=>null, {enlazar:false})}</div><div id="pv-ley"></div></div>
         <div class="chart pv-res" id="pv-res"></div></div></section>
     <section class="sec"><div class="sec-h"><h2>Elección a elección</h2><p>Quién ganó cada provincia en las dieciséis generales. Pulsa un año para verlo arriba; pulsa una provincia para abrir su ficha.</p></div>
       <div class="chart"><div class="pv-tira" id="pv-tira"></div><div class="el-leyenda" id="pv-tira-ley"></div></div></section>
@@ -894,17 +930,40 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
     rio?.marcar(k);
   }
   // ---------- el mapa ----------
+  let selProv = null, partidoV = null;
+  // Las marcas de un año (las que pasan del 1 % en toda España), para «Voto a…».
+  const marcasDe = e => { const vistos = new Map(); e.partidos.slice().sort((a,b)=>b[3]-a[3]).forEach(p=>{ if (p[3] < e.validos*.01) return; const n = marca(siglaCorta(p[0])); if (!vistos.has(n)) vistos.set(n, {n, c: colorPartido(p[0], p[2])}); }); return [...vistos.values()].slice(0, 9); };
+  const cuotaDe = (j, cod, n) => { const dp = D[E[j].id]?.prov?.[cod]; if (!dp) return null; const v = dp.c.filter(x=>marca(siglaCorta(x[0])) === n).reduce((t,x)=>t + x[2], 0); return v/dp.validos; };
+  const mezcla = (c, a) => `color-mix(in srgb, ${c} ${Math.round(a)}%, var(--surface))`;
+  // Las cifras de escaños, sobre cada provincia.
+  const svgMapa = mapaEl.querySelector("svg"), nums = document.createElementNS("http://www.w3.org/2000/svg", "g"); nums.setAttribute("class", "pv-nums"); svgMapa.appendChild(nums);
   function pintarMapa(){
     const e = E[k], m = modoProv;
-    $("#pv-t").textContent = `${METRICAS.find(x=>x[0]===m)[1]} · ${anio(e)}`;
+    $("#pv-t").textContent = m === "voto" && partidoV ? `Voto a ${partidoV} · ${anio(e)}` : `${METRICAS.find(x=>x[0]===m)[1]} · ${anio(e)}`;
     sec.querySelectorAll("[data-pv-m]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.pvM === m)));
-    let color, ley = "", res = "";
+    let color, ley = "", res = "", cambia = ()=>false;
+    $("#pv-partidos").innerHTML = "";
     if (m === "primera"){
-      const G = Object.fromEntries(cods.map(c2=>[c2, ganador(k, c2)]));
-      color = c2 => G[c2]?.color;
+      // El color del ganador, más intenso cuanto más holgada la victoria; con borde, las que cambian de manos.
+      const G = Object.fromEntries(cods.map(c2=>[c2, ganador(k, c2)])), A = k > 0 ? Object.fromEntries(cods.map(c2=>[c2, ganador(k-1, c2)])) : {};
+      color = c2 => G[c2] && mezcla(G[c2].color, Math.max(32, Math.min(100, 32 + (G[c2].cuota - .25)/.25*68)));   // del 25 % (pálido) al 50 % o más (pleno)
+      cambia = c2 => k > 0 && G[c2] && A[c2] && marca(G[c2].nombre) !== marca(A[c2].nombre);
       const cuenta = {}; Object.values(G).forEach(g=>{ if (!g) return; (cuenta[marca(g.nombre)] ||= {n:0, color:g.color}).n++; });
-      const L = Object.entries(cuenta).sort((a,b)=>b[1].n - a[1].n), max = L[0]?.[1].n || 1;
-      res = `<div class="eyebrow">Primera fuerza en…</div>${L.map(([n,x])=>`<div class="pv-cuenta"><span class="nm"><i style="background:${x.color}"></i>${esc(n)}</span><span class="br"><i style="width:${(x.n/max*100).toFixed(1)}%;background:${x.color}"></i></span><b>${x.n}</b></div>`).join("")}<p class="nota">provincias de ${cods.length}</p>`;
+      const L = Object.entries(cuenta).sort((a,b)=>b[1].n - a[1].n), max = L[0]?.[1].n || 1, giros = cods.filter(cambia);
+      res = `<div class="eyebrow">Primera fuerza en…</div>${L.map(([n,x])=>`<div class="pv-cuenta"><span class="nm"><i style="background:${x.color}"></i>${esc(n)}</span><span class="br"><i style="width:${(x.n/max*100).toFixed(1)}%;background:${x.color}"></i></span><b>${x.n}</b></div>`).join("")}<p class="nota">provincias de ${cods.length}</p>`
+        + (k > 0 ? `<div class="eyebrow">${giros.length ? `Cambian de manos: ${giros.length}` : "Ninguna cambia de manos"}</div>${giros.length ? `<div class="pv-giros">${giros.map(c2=>`<button type="button" data-pv-sel="${c2}"><b>${esc(nombreProv(c2))}</b><span><i style="background:${A[c2].color}"></i>${esc(marca(A[c2].nombre))} → <i style="background:${G[c2].color}"></i>${esc(marca(G[c2].nombre))}</span></button>`).join("")}</div>` : ""}` : "");
+      ley = `<div class="pv-int"><span>Victoria ajustada</span><i></i><span>holgada</span></div>${k > 0 ? `<p class="nota" style="margin:4px 0 0">Con borde, las que cambian de manos respecto a ${anio(E[k-1])}.</p>` : ""}`;
+    } else if (m === "voto"){
+      // Voto a un partido: su porcentaje en cada provincia, en su color.
+      const M = marcasDe(e); if (!partidoV || !M.find(x=>x.n === partidoV)) partidoV = M[0]?.n;
+      $("#pv-partidos").innerHTML = M.map(x=>`<button type="button" data-pv-p="${esc(x.n)}" aria-pressed="${x.n === partidoV}" style="--c:${x.c}"><i></i>${esc(x.n)}</button>`).join("");
+      $("#pv-t").textContent = `Voto a ${partidoV} · ${anio(e)}`;
+      const col = M.find(x=>x.n === partidoV)?.c || NEUTRO, V = Object.fromEntries(cods.map(c2=>[c2, cuotaDe(k, c2, partidoV)])), vs = Object.values(V).filter(v=>v > 0), hi = Math.max(...vs, .01);
+      color = c2 => V[c2] > 0 ? mezcla(col, 12 + V[c2]/hi*88) : null;
+      ley = `<div class="hi-rampa"><span>0 %</span><span class="r" style="background:linear-gradient(90deg,${mezcla(col, 12)},${col})"></span><span>${pct(hi, 0)}</span></div>${cods.some(c2=>!(V[c2] > 0)) ? `<p class="nota" style="margin:4px 0 0">En gris, donde no se presentó.</p>` : ""}`;
+      const ord = cods.filter(c2=>V[c2] > 0).sort((a,b)=>V[b] - V[a]);
+      const lista = (L, tit) => `<div class="eyebrow">${tit}</div>${L.map(c2=>`<button type="button" class="pv-top-f" data-pv-sel="${c2}"><span>${esc(nombreProv(c2))}</span><b>${pct(V[c2])}</b></button>`).join("")}`;
+      res = lista(ord.slice(0, 5), "Donde más votos tuvo") + lista(ord.slice(-5).reverse(), "Donde menos");
     } else {
       const vs = cods.map(c2=>[c2, valor(k, c2, m)]).filter(x=>x[1] != null);
       if (!vs.length){ color = ()=>null; res = `<p class="nota">Cargando…</p>`; }
@@ -915,13 +974,30 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
         ley = leyendaRampa(m === "margen" ? x=>r(1-x) : r, lo, hi, m === "part" ? v=>pct(v,0) : m === "e" ? v=>v+" escaños" : v=>fmt(v)+" votos");
         const ord = vs.slice().sort((a,b)=>b[1]-a[1]), alto = ord.slice(0, 5), bajo = ord.slice(-5).reverse();
         const titA = {e:"Más escaños", part:"Más participación", precio:"Escaño más caro", margen:"Último escaño más holgado"}[m], titB = {e:"Menos escaños", part:"Menos participación", precio:"Escaño más barato", margen:"Último escaño más ajustado"}[m];
-        const lista = (L, tit) => `<div class="eyebrow">${tit}</div>${L.map(([c2,v])=>`<a class="pv-top-f" href="${enlaceProv(c2)}"><span>${esc(nombreProv(c2))}</span><b>${esc(fmtM(m, v))}</b></a>`).join("")}`;
+        const lista = (L, tit) => `<div class="eyebrow">${tit}</div>${L.map(([c2,v])=>`<button type="button" class="pv-top-f" data-pv-sel="${c2}"><span>${esc(nombreProv(c2))}</span><b>${esc(fmtM(m, v))}</b></button>`).join("")}`;
         res = m === "margen" ? lista(bajo, titB) + lista(alto, titA) : lista(alto, titA) + lista(bajo, titB);
       }
     }
-    Object.entries(paths).forEach(([c2, p])=>{ p.style.fill = color(c2) || "var(--sunk)"; });
-    $("#pv-ley").innerHTML = ley; $("#pv-res").innerHTML = res;
+    Object.entries(paths).forEach(([c2, p])=>{ p.style.fill = color(c2) || "var(--sunk)"; p.classList.toggle("cambia", !!cambia(c2)); p.classList.toggle("sel", c2 === selProv); });
+    if (selProv && paths[selProv]) paths[selProv].parentNode.appendChild(paths[selProv]);   // la elegida, por encima: que se vea su borde entero
+    const escala = (svgMapa.getBoundingClientRect().width || 600)/(GEO.ancho || 1000);   // las cifras, a unos 10-11 px se vea el mapa grande o pequeño
+    nums.style.fontSize = `${(10.5/escala).toFixed(1)}px`; nums.style.strokeWidth = `${(3/escala).toFixed(1)}px`;
+    nums.innerHTML = m === "e" ? cods.map(c2=>{ const g = GEO.provincias[c2], pr = e.prov[c2]; return g?.c && pr ? `<text x="${g.c[0]}" y="${+g.c[1]}" dy=".35em" text-anchor="middle">${pr.e}</text>` : ""; }).join("") : "";
+    $("#pv-ley").innerHTML = ley; $("#pv-res").innerHTML = selProv ? fichaMini(selProv) : res;
   }
+  // La provincia elegida, sin salir de la página: su resultado en ese año y sus dieciséis ganadores.
+  function fichaMini(c2){
+    const e = E[k], pr = e.prov[c2], dp = D[e.id]?.prov?.[c2]; if (!pr) return "";
+    const filas = (dp?.c || []).filter(x=>x[3] || x[2] >= dp.validos*.01).sort((a,b)=>b[2]-a[2]).slice(0, 7), max = filas[0]?.[2] || 1, u = dp?.ultimo;
+    return `<div class="pv-mini"><button type="button" class="pv-x" data-pv-x aria-label="Volver al resumen">×</button>
+      <div class="eyebrow">${esc(anio(e))} · ${pr.e} ${pr.e === 1 ? "escaño" : "escaños"}</div><h3>${esc(nombreProv(c2))}</h3>
+      <div class="pv-mini-r">${filas.map(x=>`<div class="pv-mini-f"><span class="n" title="${esc(x[0])}">${esc(siglaCorta(x[0]))}</span><span class="b"><i style="width:${(x[2]/max*100).toFixed(1)}%;background:${colorPartido(x[0], x[1])}"></i></span><span class="p">${pct(x[2]/dp.validos)}</span><b>${x[3] || ""}</b></div>`).join("")}</div>
+      <p class="pv-mini-d">Participación ${pct(pr.votantes/pr.censo)} · ${fmt(pr.validos/pr.e)} votos por escaño${u ? `<br>Último escaño para <b>${esc(siglaCorta(u.gana))}</b>; a ${esc(siglaCorta(u.segundo))} le faltaron ${fmt(u.faltan)} votos` : ""}</p>
+      <div class="eyebrow">Quién ganó, de 1977 a 2023</div><div class="pv-mini-t">${E.map((x,j)=>{ const g = ganador(j, c2); return `<i class="${j === k ? "sel" : ""}" style="background:${g ? g.color : "transparent"}" title="${esc(anio(x))}${g ? ": " + esc(g.nombre) : ""}"></i>`; }).join("")}</div>
+      <a class="btn" href="${enlaceProv(c2)}">La ficha de ${esc(nombreProv(c2))} →</a></div>`;
+  }
+  const elegirProv = c2 => { selProv = c2; pintarMapa(); const r = $("#pv-res"); if (r.getBoundingClientRect().top > innerHeight - 80) r.scrollIntoView({block:"nearest", behavior:"smooth"}); };
+  mapaEl.addEventListener("click", ev=>{ const p = ev.target.closest("[data-p]"); if (p){ pararH(); selProv === p.dataset.p ? (selProv = null, pintarMapa()) : elegirProv(p.dataset.p); } });
   conTip(mapaEl, ev=>{ const p = ev.target.closest("[data-p]"); if (!p) return ""; const c2 = p.dataset.p, g = ganador(k, c2), pr = E[k].prov[c2]; if (!pr) return "";
     return `<b>${esc(nombreProv(c2))}</b> · ${anio(E[k])}<br>${g ? `Ganó <b style="color:${g.color}">${esc(g.nombre)}</b> (${pct(g.cuota)})<br>` : ""}${fmtM("e", pr.e)} · participación ${pct(pr.votantes/pr.censo)}<br>${fmt(pr.validos/pr.e)} votos por escaño${valor(k, c2, "margen") != null ? `<br>Último escaño por ${fmt(valor(k, c2, "margen"))} votos` : ""}`; });
   // ---------- elección a elección ----------
@@ -962,6 +1038,9 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
   function pararH(){ clearInterval(playH); playH = null; const b = sec.querySelector("[data-hi-play]"); if (b) b.textContent = "▶ Reproducir"; }
   sec.addEventListener("click", ev=>{
     const m = ev.target.closest("[data-pv-m]"); if (m){ modoProv = m.dataset.pvM; pintarMapa(); return; }
+    const pp = ev.target.closest("[data-pv-p]"); if (pp){ partidoV = pp.dataset.pvP; pintarMapa(); return; }
+    if (ev.target.closest("[data-pv-x]")){ selProv = null; pintarMapa(); return; }
+    const ps = ev.target.closest("[data-pv-sel]"); if (ps){ elegirProv(ps.dataset.pvSel); return; }
     if (ev.target.closest("[data-hi-play]")){ if (playH){ pararH(); return; } sec.querySelector("[data-hi-play]").textContent = "❚❚ Pausa"; ir(k >= E.length-1 ? 0 : k+1);
       playH = setInterval(()=>{ if (k >= E.length-1 || !document.body.contains(sec)){ pararH(); return; } ir(k+1); }, 1600); return; }
     const y = ev.target.closest("[data-hi]"); if (y){ pararH(); ir(+y.dataset.hi); return; }
