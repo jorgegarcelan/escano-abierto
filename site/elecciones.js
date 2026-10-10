@@ -161,7 +161,7 @@ export async function render(el, c, sub){
   else if (sub === "metricas") hist("pintarMetricas");
   else if (sub === "mapa") hist("pintarMunicipios");
   else if (sub === "noche") hist("pintarNoche");
-  else if (sub === "voto") import("./geografia.js").then(m=>m.geografiaDelVoto(cuerpo, ctx)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
+  else if (sub === "voto") import("./elecciones-voto.js").then(m=>m.geografiaDelVoto(cuerpo)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   else if (eleccion) hist("pintarFicha");
   else if (provincia) hist("pintarProvincia");
 }
