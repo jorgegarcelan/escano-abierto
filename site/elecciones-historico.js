@@ -109,18 +109,22 @@ const CSS = `
 .pe-ve [data-ve] circle{stroke:var(--surface);stroke-width:2;transition:fill .5s}
 .pe-ve [data-ve]:hover circle{stroke:var(--ink)}
 .pe-ve [data-ve] text{font:700 11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
-.pe-saldo{display:grid;gap:4px;margin-top:10px}
-.pe-sal-h{display:grid;grid-template-columns:6.5em 1fr 1fr 3em;font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pe-sal-h span:first-child{grid-column:2;text-align:right;padding-right:6px}
-.pe-sal{display:grid;grid-template-columns:6.5em 1fr 1fr 3em;align-items:center;font-size:12.5px}
+.pe-saldo{display:grid;gap:7px;margin-top:14px}
+.pe-sal-t{margin:0 0 2px;font-size:13px;color:var(--muted)}.pe-sal-t b{color:var(--fg);font-family:var(--mono)}
+.pe-sal-h,.pe-sal{display:grid;grid-template-columns:6.5em minmax(0,1fr) minmax(0,1fr) 2.6em;column-gap:0}
+.pe-sal-h{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pe-sal-h span:first-child{grid-column:2;text-align:right;padding-right:8px}.pe-sal-h span:last-child{padding-left:8px}
+.pe-sal{align-items:center;font-size:12.5px}
 .pe-sal .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pe-sal .neg,.pe-sal .pos{height:12px;display:flex}
-.pe-sal .neg{justify-content:flex-end;border-right:1.5px solid var(--line-strong)}
-.pe-sal i{display:block;height:100%;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.pe-sal .neg i{border-radius:3px 0 0 3px}.pe-sal .pos i{border-radius:0 3px 3px 0}
-.pe-saldo.ya i{width:var(--w)}
+.pe-sal .neg,.pe-sal .pos{display:flex;flex-wrap:wrap;gap:3px;min-height:11px;padding:2px 8px;box-sizing:border-box;max-width:calc(10*14px - 3px + 16px)}  /* de diez en diez */
+.pe-sal .neg{flex-direction:row-reverse;justify-self:end;width:100%;border-right:1.5px solid var(--line-strong)}
+.pe-sal .q{box-sizing:border-box;width:11px;height:11px;border-radius:2.5px;transform:scale(0);opacity:0;transition:transform .35s cubic-bezier(.3,1.6,.5,1) var(--d),opacity .2s var(--d)}
+.pe-sal .pos .q{background:var(--c)}
+.pe-sal .neg .q{border:1.5px dashed var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.pe-saldo.ya .q{transform:none;opacity:1}
 .pe-sal .v{font:600 12px var(--mono);text-align:right}
 .pe-sal .v.mas{color:var(--si)}.pe-sal .v.menos{color:var(--no)}
+@media (prefers-reduced-motion:reduce){.pe-sal .q{transition:none}}
 .ps{background:linear-gradient(180deg,color-mix(in srgb,var(--no) 6%,var(--surface)),var(--surface))}
 .ps-t{font-size:clamp(20px,2.8vw,26px);margin:4px 0 6px}
 .ps-c{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,1fr);gap:14px 26px;align-items:center;margin-top:10px}
@@ -972,11 +976,19 @@ export async function pintarEscano(sec, c){
       const o = opciones.find(libre) || opciones[0];
       cajas.push(caja(o)); t.setAttribute("x", o[0]); t.setAttribute("dy", o[1]); t.setAttribute("text-anchor", o[2]); });
     conTip(svg, ev=>{ const b = ev.target.closest("[data-ve]"); return b && b.style.opacity !== "0" ? b.dataset.tip : ""; });
-    // Al lado: cuántos escaños de más o de menos frente al reparto proporcional.
-    const saldo = P.map(x=>[x, x[4] - prop(x)]).filter(([,s])=>Math.abs(s) >= .5).sort((a,b)=>b[1]-a[1]), mx = Math.max(1, ...saldo.map(([,s])=>Math.abs(s)));
-    lado.innerHTML = `<div class="pe-sal-h"><span>Le quita la ley</span><span>Le da la ley</span></div>` + saldo.map(([x,s])=>`<div class="pe-sal" data-tip="${esc(`<b>${esc(x[1])}</b><br>${x[4]} escaños; con un reparto proporcional, ${dec(prop(x),1)}`)}">
-      <span class="n">${esc(x[0])}</span><span class="neg">${s < 0 ? `<i style="--w:${(-s/mx*100).toFixed(0)}%;background:${grupoDe(x[2]).color}"></i>` : ""}</span><span class="pos">${s > 0 ? `<i style="--w:${(s/mx*100).toFixed(0)}%;background:${grupoDe(x[2]).color}"></i>` : ""}</span><span class="v ${s>0?"mas":"menos"}">${s > 0 ? "+" : "−"}${dec(Math.abs(s), 0)}</span></div>`).join("");
-    lado.classList.remove("ya"); requestAnimationFrame(()=>requestAnimationFrame(()=>lado.classList.add("ya")));
+    // Debajo: los escaños de más o de menos frente al reparto proporcional, uno a uno.
+    const saldo = P.map(x=>[x, Math.round(x[4] - prop(x))]).filter(([,s])=>s).sort((a,b)=>b[1]-a[1]);
+    const movidos = saldo.reduce((t,[,s])=>t + Math.max(0, s), 0);
+    let k = 0; const cuadros = (n, color, cls) => Array.from({length:n}, ()=>`<i class="${cls}" style="--c:${color};--d:${Math.min(k++, 60)*22}ms"></i>`).join("");
+    lado.innerHTML = `<p class="pe-sal-t">Frente a un reparto proporcional, la ley mueve <b>${movidos}</b> escaños. Cada cuadrado es uno.</p>
+      <div class="pe-sal-h"><span>Le quita</span><span>Le da</span></div>` + saldo.map(([x,s])=>{ const c = grupoDe(x[2]).color;
+      return `<div class="pe-sal" data-tip="${esc(`<b>${esc(x[1])}</b><br>Sacó ${x[4]} escaños; con un reparto proporcional, ${dec(prop(x),1)}<br>${s > 0 ? `La ley le da ${s} de más` : `La ley le quita ${-s}`}`)}">
+      <span class="n">${esc(x[0])}</span><span class="neg">${s < 0 ? cuadros(-s, c, "q") : ""}</span><span class="pos">${s > 0 ? cuadros(s, c, "q") : ""}</span><span class="v ${s>0?"mas":"menos"}">${s > 0 ? "+" : "−"}${Math.abs(s)}</span></div>`; }).join("");
+    // Los cuadrados caen al llegar a la vista (y al cambiar de elección, si ya se ve).
+    lado.classList.remove("ya"); lado._io?.disconnect();
+    if (!("IntersectionObserver" in window)) return lado.classList.add("ya");
+    lado._io = new IntersectionObserver(es=>{ if (es.some(x=>x.isIntersecting)){ lado._io.disconnect(); requestAnimationFrame(()=>lado.classList.add("ya")); } }, {threshold:.25});
+    lado._io.observe(lado);
   }
   /* El Congreso que pudo ser: los últimos escaños, del más barato al más caro, cambian de manos al mover los votos. */
   let pudoVotos = null;
