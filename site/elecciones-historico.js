@@ -97,6 +97,51 @@ const CSS = `
 .pe-coste.ya .b i,.hi-ult.ya .b i{width:var(--w)}
 .pe-bar .b i{display:block;height:100%;border-radius:0 5px 5px 0}
 .pe-bar .v{font:12.5px var(--mono);text-align:right}
+.pu-t{font-size:clamp(19px,2.6vw,24px);margin:4px 0 6px}
+.pu-umbral{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;align-items:end;margin:10px 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.pu-umbral label{font-size:14px;grid-column:1}
+.pu-umbral label b{font-family:var(--mono)}
+.pu-umbral input{grid-column:1;width:100%;accent-color:var(--no)}
+.pu-cifras{grid-column:2;grid-row:1/3;display:flex;gap:20px}
+.pu-cifras div{display:grid;gap:2px;max-width:15em}
+.pu-cifras b{font-family:var(--led,var(--display));font-size:clamp(28px,4vw,40px);line-height:1;font-weight:900;font-variant-numeric:tabular-nums}
+.pu-cifras span{font-size:12px;color:var(--muted);line-height:1.3}
+@media (max-width:640px){ .pu-umbral{grid-template-columns:1fr} .pu-cifras{grid-column:1;grid-row:auto} }
+.pu-c{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,1fr);gap:16px 22px;align-items:start}
+@media (max-width:820px){ .pu-c{grid-template-columns:1fr} }
+.pu-mapa{display:block;width:100%;height:auto;overflow:visible}
+.pu-mapa .fondo path{fill:var(--sunk);stroke:var(--surface);stroke-width:.8}
+.pu-mapa .fondo .can{fill:none;stroke:var(--line-strong)}
+.pu-mapa .d{transform:translate(var(--x),var(--y));cursor:pointer;transition:opacity .4s}
+.pu-mapa .d circle{stroke:var(--surface);stroke-width:1.5;transition:r .5s}
+.pu-mapa .d:hover circle:not(.anillo),.pu-mapa .d.sel circle:not(.anillo){stroke:var(--ink);stroke-width:3}
+.pu-mapa .d.fuera{opacity:.2}
+.pu-mapa .d:not(.fuera) .anillo{animation:pu-late 2.4s ease-in-out infinite}
+@keyframes pu-late{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){ .pu-mapa .d .anillo{animation:none} }
+.pu-lado{display:grid;gap:12px;align-content:start}
+.pu-lado h4{margin:6px 0 0;font-size:14px}
+.pu-duelo{border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;background:var(--surface);display:grid;gap:10px}
+.pu-dh{display:flex;justify-content:space-between;align-items:baseline}
+.pu-dh b{font-size:18px}.pu-dh span{font-size:12px;color:var(--muted)}
+.pu-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.pu-vs>div{display:grid;gap:2px;padding:8px 10px;border-radius:10px;border-left:5px solid var(--c);background:var(--sunk)}
+.pu-vs small{font-size:11px;color:var(--muted)}
+.pu-vs b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pu-vs .x{font:700 12px var(--mono);color:var(--muted)}
+.pu-falta{margin:0;font-size:14px;line-height:1.4}
+.pu-falta b{font-family:var(--led,var(--display));font-size:30px;font-weight:900;color:var(--no)}
+.pu-tally{display:grid;gap:4px}
+.pu-tt,.pu-tf{display:grid;grid-template-columns:minmax(0,7em) 1fr 1fr;gap:8px;align-items:center;font-size:12.5px}
+.pu-tt span{font-size:11px;color:var(--muted)}
+.pu-tf .n{display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pu-tf .n i{width:8px;height:8px;border-radius:50%;flex:none}
+.pu-tf .g,.pu-tf .p{display:flex;align-items:center;gap:5px;height:14px}
+.pu-tf .g i{display:block;height:100%;border-radius:2px;transition:width .5s}
+.pu-tf .p i{display:block;height:100%;border-radius:2px;border:1.5px dashed;box-sizing:border-box;transition:width .5s}
+.pu-tf b{font:600 11.5px var(--mono)}
+.pu-todas{margin-top:12px}
+.pu-todas summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
 .pe-sim{min-width:0;max-width:100%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,#4F7AA6 7%,var(--surface)),var(--surface))}
 .pe-sim-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
 .pe-sim-h h3{font-size:clamp(18px,2.4vw,22px);margin:4px 0 4px;line-height:1.3}
@@ -199,7 +244,7 @@ function estilos(){
   if (document.getElementById("hi-css")) return;
   const s = document.createElement("style"); s.id = "hi-css"; s.textContent = CSS; document.head.appendChild(s);
 }
-const fmt = n => Math.round(n).toLocaleString("es-ES");
+const fmt = n => (n < 0 ? "−" : "") + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ".");   // con punto de miles también en 1.000
 const fmtCorto = n => n >= 1e6 ? (n/1e6).toLocaleString("es-ES", {maximumFractionDigits:2}) + " M" : fmt(n);
 const pct = (x, d=1) => (x*100).toLocaleString("es-ES", {minimumFractionDigits:d, maximumFractionDigits:d}) + " %";
 const dec = (x, d=2) => x.toLocaleString("es-ES", {minimumFractionDigits:d, maximumFractionDigits:d});
@@ -838,7 +883,14 @@ export async function pintarEscano(sec, c){
         <p class="sub" id="he-mapa-s"></p><div id="he-mapa"></div></div>
       <div class="chart"><h3>Lo que costó cada escaño, por partido</h3><p class="sub">Votos de cada candidatura en toda España entre los escaños que sacó. Las que se presentan en pocas provincias compiten solo donde son fuertes.</p><div class="pe-coste" data-pe-coste></div></div>
     </div>
-    <div class="chart" style="margin-top:16px"><h3>El último escaño de cada provincia</h3><p class="sub">Los votos que le faltaron a la candidatura siguiente para quitárselo a quien lo ganó (escala logarítmica: cuanto más corta la barra, más ajustado). Pulsa una provincia para jugar con sus votos.</p><div class="hi-ult" data-pe-ult></div></div>
+    <div class="chart pu" style="margin-top:16px"><div class="eyebrow">El último escaño</div><h3 class="pu-t">Escaños que se decidieron por un puñado de votos</h3>
+      <p class="sub">En cada provincia, el último escaño que reparte la ley D'Hondt y los votos que le faltaron a la candidatura siguiente para quitárselo. Cada círculo es una provincia, del color de quien lo ganó, con un anillo del color de quien se quedó a las puertas: cuanto más ajustado, más grande.</p>
+      <div class="pu-umbral"><label for="pu-u">Decididos por menos de <b data-pu-uv></b> votos</label><input type="range" id="pu-u" min="2" max="5" step="0.01" aria-label="Umbral de votos">
+        <div class="pu-cifras"><div><b data-pu-n>0</b><span>escaños</span></div><div><b data-pu-s>0</b><span>votos, bien repartidos, les habrían dado la vuelta a todos</span></div></div></div>
+      <div class="pu-c"><svg class="pu-mapa" data-pu-mapa role="img" aria-label="El último escaño de cada provincia"></svg>
+        <div class="pu-lado"><div class="pu-duelo" data-pu-duelo><p class="nota">Pulsa una provincia para ver su duelo.</p></div>
+          <h4>Quién ganó y quién perdió por la mínima</h4><div class="pu-tally" data-pu-tally></div></div></div>
+      <details class="pu-todas"><summary>Las 52, de la más ajustada a la menos</summary><div class="hi-ult" data-pe-ult></div></details></div>
     <div class="chart pe-sim" id="he-sim" style="margin-top:16px"></div></section>`;
   const $ = s => sec.querySelector(s);
   let P = null, prev = {barato:0, caro:0, sin:0, mil:0, precio:0};
@@ -888,7 +940,50 @@ export async function pintarEscano(sec, c){
     const caja = $("[data-pe-ult]"); caja.classList.remove("ya");
     caja.innerHTML = ultimos.map(([cod,p],k)=>`<button data-ult="${cod}" data-tip="${esc(`<b>${esc(nombreProv(cod))}</b><br>Ganó el último escaño <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron ${fmt(p.ultimo.faltan)} votos`)}"><span class="p">${esc(nombreProv(cod))}</span><span class="b"><i style="--w:${(lg(p.ultimo.faltan)/mx*100).toFixed(1)}%;--d:${Math.min(k, 30)*25}ms;background:linear-gradient(90deg,${fam(p, p.ultimo.gana)} 50%,${fam(p, p.ultimo.segundo)} 50%)"></i></span><span class="q"><b>${esc(p.ultimo.gana)}</b> · ${esc(p.ultimo.segundo)}</span><span class="m">${fmt(p.ultimo.faltan)}</span></button>`).join("");
     requestAnimationFrame(()=>requestAnimationFrame(()=>caja.classList.add("ya")));
+    duelos(D, ultimos);
     return ultimos;
+  }
+  let umbral = 4, dueloSel = null;   // umbral en potencias de 10 (4 = 10.000 votos)
+  function duelos(D, ultimos){
+    const svg = $("[data-pu-mapa]"), fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]);
+    const lg = x => Math.log10(Math.max(10, x)), mx = lg(Math.max(...ultimos.map(([,p])=>p.ultimo.faltan)));
+    svg.setAttribute("viewBox", `0 0 ${GEO.ancho} ${GEO.alto}`);
+    svg.innerHTML = `<g class="fondo">${Object.values(GEO.provincias).map(pr=>`<path d="${pr.d}"/>`).join("")}<path class="can" d="${GEO.canarias}"/></g>
+      <g class="duelos">${ultimos.slice().sort((a,b)=>b[1].ultimo.faltan-a[1].ultimo.faltan).map(([cod,p])=>{ const pr = GEO.provincias[cod]; if (!pr) return "";
+        const r = 9 + 34*Math.pow(1 - lg(p.ultimo.faltan)/mx, 1.6);
+        return `<g class="d" data-pu="${cod}" data-f="${p.ultimo.faltan}" style="--x:${pr.c[0]}px;--y:${pr.c[1]}px"><circle r="${(r+4).toFixed(1)}" class="anillo" style="fill:${fam(p, p.ultimo.segundo).color}"/><circle r="${r.toFixed(1)}" style="fill:${fam(p, p.ultimo.gana).color}"/></g>`; }).join("")}</g>`;
+    conTip(svg, ev=>{ const g = ev.target.closest("[data-pu]"); if (!g) return ""; const p = D.prov[g.dataset.pu];
+      return `<b>${esc(nombreProv(g.dataset.pu))}</b><br>Ganó el último escaño <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron ${fmt(p.ultimo.faltan)} votos<div style="color:var(--muted);margin-top:4px">Pulsa para ver el duelo</div>`; });
+    const filtrar = () => {
+      const lim = Math.round(Math.pow(10, umbral)), dentro = ultimos.filter(([,p])=>p.ultimo.faltan < lim);
+      $("[data-pu-uv]").textContent = fmt(lim);
+      contar($("[data-pu-n]"), +$("[data-pu-n]").dataset.v || 0, dentro.length); $("[data-pu-n]").dataset.v = dentro.length;
+      const suma = dentro.reduce((s,[,p])=>s + p.ultimo.faltan, 0);
+      contar($("[data-pu-s]"), +$("[data-pu-s]").dataset.v || 0, suma); $("[data-pu-s]").dataset.v = suma;
+      svg.querySelectorAll("[data-pu]").forEach(g=>g.classList.toggle("fuera", +g.dataset.f >= lim));
+      // Quién ganó y quién perdió por la mínima (dentro del umbral), por familias.
+      const t = {}; dentro.forEach(([,p])=>{ const a = fam(p, p.ultimo.gana), b = fam(p, p.ultimo.segundo); (t[a.id] ||= {g:a, gana:0, pierde:0}).gana++; (t[b.id] ||= {g:b, gana:0, pierde:0}).pierde++; });
+      const filas = Object.values(t).sort((a,b)=>(b.gana+b.pierde)-(a.gana+a.pierde)), max = Math.max(1, ...filas.map(f=>Math.max(f.gana, f.pierde)));
+      $("[data-pu-tally]").innerHTML = filas.length ? `<div class="pu-tt"><span></span><span>se los llevó</span><span>se le escaparon</span></div>` + filas.map(f=>`<div class="pu-tf"><span class="n"><i style="background:${f.g.color}"></i>${esc(CORTO[f.g.id] || f.g.nombre)}</span>
+          <span class="g">${f.gana ? `<i style="width:${(f.gana/max*100).toFixed(0)}%;background:${f.g.color}"></i><b>${f.gana}</b>` : ""}</span><span class="p">${f.pierde ? `<i style="width:${(f.pierde/max*100).toFixed(0)}%;border-color:${f.g.color}"></i><b>${f.pierde}</b>` : ""}</span></div>`).join("")
+        : `<p class="nota">Ningún escaño por debajo de ese umbral.</p>`;
+    };
+    const verDuelo = cod => { dueloSel = cod; const p = D.prov[cod]; if (!p?.ultimo) return;
+      svg.querySelectorAll("[data-pu]").forEach(g=>g.classList.toggle("sel", g.dataset.pu === cod));
+      const a = fam(p, p.ultimo.gana), b = fam(p, p.ultimo.segundo);
+      $("[data-pu-duelo]").innerHTML = `<div class="pu-dh"><b>${esc(nombreProv(cod))}</b><span>${p.e} escaños</span></div>
+        <div class="pu-vs"><div style="--c:${a.color}"><small>ganó el último</small><b>${esc(p.ultimo.gana)}</b></div><span class="x">vs</span><div style="--c:${b.color}"><small>se quedó a las puertas</small><b>${esc(p.ultimo.segundo)}</b></div></div>
+        <p class="pu-falta"><b data-pu-falta>0</b> votos más de ${esc(p.ultimo.segundo)} le habrían quitado el escaño a ${esc(p.ultimo.gana)}.</p>
+        <button class="btn primary" data-pu-vuelta="${cod}">Darle la vuelta →</button>`;
+      contar($("[data-pu-falta]"), 0, p.ultimo.faltan, fmt, 600); };
+    const rango = $("#pu-u"); rango.value = umbral;
+    rango.oninput = () => { umbral = +rango.value; filtrar(); };
+    svg.onclick = ev => { const g = ev.target.closest("[data-pu]"); if (g) verDuelo(g.dataset.pu); };
+    $("[data-pu-duelo]").onclick = ev => { const b = ev.target.closest("[data-pu-vuelta]"); if (!b) return; const cod = b.dataset.puVuelta, sig = D.prov[cod].ultimo.segundo;
+      simProv = cod; simVotos = null; simulador(sec, P); $("#he-sim").scrollIntoView({block:"start", behavior:"smooth"});
+      setTimeout(()=>{ [...$("#he-sim").querySelectorAll("[data-mas]")].find(x=>x.dataset.mas === sig)?.click(); }, 700); };
+    filtrar();
+    verDuelo(dueloSel && D.prov[dueloSel]?.ultimo ? dueloSel : ultimos[0][0]);
   }
   function mapa(){
     const perd = heModo === "perdidos", val = Object.fromEntries(Object.entries(P).map(([c2,x])=>[c2, perd ? x.sin_escano/x.validos : x.validos/x.e]));
