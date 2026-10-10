@@ -14,13 +14,32 @@ export const GRUPOS = [
   {id:"UCD", nombre:"UCD y CDS", color:"#B98A16", familias:["UCD"]},
   {id:"CS", nombre:"Ciudadanos", color:"#CF7F12", familias:["CS"]},
   {id:"PP", nombre:"PP (antes AP y CD)", color:"#2C7BC4", familias:["PP"]},
-  {id:"VOX", nombre:"Vox", color:"#4E9A35", familias:["VOX"]},
+  {id:"VOX", nombre:"Vox", color:"#5BA83A", familias:["VOX"]},
   {id:"OTROS", nombre:"Otros", color:"#5E636B", familias:["OTROS"]},
 ];
 const GRUPO_DE = Object.fromEntries(GRUPOS.flatMap(g=>g.familias.map(f=>[f, g.id])));
 const G8 = Object.fromEntries(GRUPOS.map(g=>[g.id, g]));
 const CORTO = {IZQ:"IU-Podemos-Sumar", PSOE:"PSOE", NAC:"Nacionalistas", UCD:"UCD-CDS", CS:"Cs", PP:"PP", VOX:"Vox", OTROS:"Otros"};
 const grupoDe = fam => G8[GRUPO_DE[fam] || "OTROS"];
+/* El color de cada partido, el mismo que en el resto de la web (Sumar, magenta; Podemos, morado; IU, granate…).
+   Las siglas cambian de una elección a otra (PSC, PSdeG-PSOE, AP-PDP, JxCAT-JUNTS, ERC-CATSÍ…): se reconocen por
+   su comienzo. Si no se reconoce, el color de su familia. */
+const COLORES_PARTIDO = [
+  [/SUMAR/, "#C92F72"], [/PSOE|^P\.S\.O\.E/, "#D8342B"], [/^(PODEMOS|UNIDAS PODEMOS|UNIDOS PODEMOS|UP\b|EN COMU|ECP|EN MAREA)/, "#7B4BA8"],
+  [/^(PCE|PSUC|IU|I\.U\.|IC\b|IC-|ICV|ICU|EUPV|EUIB|EU\b|EU-|EB\b|EB-|UG-EU|UPEC-IU|IZQUIERDA)|PCE\b/, "#A4243B"],
+  [/^(MAS PAIS|M PAIS|MES COMPROM)/, "#2FA77A"], [/^COMPROMIS/, "#E07B39"],
+  [/^(PSC|PSDEG|PSE\b|PSE-|PSIB|PSN|PSPV)/, "#D8342B"], [/^(PP|AP|CD|UPN-PP)\b|^P\.P|^PP-|^AP-/, "#2C7BC4"],
+  [/^VOX\b/, "#5BA83A"], [/^C['´`’]S\b|^CS\b|^CIUDADANOS/, "#EB6109"], [/^(ERC|ESQUERRA|EC-FED|ERFN)/, "#E0A410"],
+  [/^(JXCAT|JUNTS|CIU|CDC|DL|PDPC|PDECAT)\b|^JXCAT/, "#1FA8A0"], [/^(EH BILDU|BILDU|AMAIUR|HB)\b/, "#86A832"], [/^(EAJ-PNV|PNV|EAJ)\b|^E\.A\.J\.|P\.N\.V\./, "#2F7A4A"],
+  [/^(BNG|B\.N\.G\.)/, "#6FB2DE"], [/^(CC|CCA|AIC)\b/, "#E8C21B"], [/^UCD\b/, "#E39A2D"], [/^(CDS|C\.D\.S\.)/, "#3E9B6E"], [/^UPYD\b/, "#E0388C"],
+  [/^(UPN|U\.P\.N\.)/, "#1D4F91"], [/^NA\+/, "#3B6FB6"], [/^(PRC|P\.R\.C\.)/, "#9BBF2E"], [/^(¡?TERUEL|EXISTE)/, "#2E7D4F"], [/^CUP/, "#E2C400"],
+  [/^PACMA/, "#7FB241"], [/^ADELANTE/, "#3C9A5A"], [/^(PA|PSA-PA|PSA)\b/, "#4BA05A"], [/^PAR\b/, "#D9A03A"], [/^UV\b/, "#4A6FA5"],
+];
+const colorPartido = (siglas, fam) => { const s = planoMay(siglas).trim(); return (COLORES_PARTIDO.find(([re])=>re.test(s)) || [, grupoDe(fam).color])[1]; };
+/* El color de una familia en una elección concreta: el de su partido más votado (en 2023, la izquierda es Sumar). */
+const colorFamEn = (id, e) => { if (id === "NAC" || id === "OTROS" || !e) return G8[id]?.color || G8.OTROS.color;
+  const p = (e.partidos || []).filter(x=>(GRUPO_DE[x[2]] || "OTROS") === id).sort((a,b)=>b[3]-a[3])[0];
+  return p ? colorPartido(p[0], p[2]) : G8[id].color; };
 
 const CSS = `
 .hi-anios{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
@@ -424,9 +443,9 @@ function pintarHemi(svg, segs, etiqueta){
   for (; i<cs.length; i++){ cs[i].style.fill = ""; delete cs[i].dataset.tip; }
   if (etiqueta != null){ const t = svg.querySelector(".anio"); if (t) t.textContent = etiqueta; }
 }
-const segsGrupo = (fam, validos) => { const g = porGrupo(fam); return GRUPOS.filter(x=>g[x.id][1]).map(x=>({color:x.color, n:g[x.id][1], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id][1]} escaños · ${pct(g[x.id][0]/validos)} de los votos`})); };
-const segsLista = (c, validos) => GRUPOS.flatMap(gr=>c.filter(x=>x[3] && (GRUPO_DE[x[1]]||"OTROS")===gr.id).sort((a,b)=>b[3]-a[3]).map(x=>({color:gr.color, n:x[3], tip:`<b>${esc(x[0])}</b><br>${x[3]} ${x[3]===1?"escaño":"escaños"} · ${pct(x[2]/validos)} de los votos`})));
-const leyendaGrupos = (ids) => `<div class="el-leyenda">${GRUPOS.filter(g=>!ids || ids.includes(g.id)).map(g=>`<span><i style="background:${g.color}"></i>${esc(g.nombre)}</span>`).join("")}</div>`;
+const segsGrupo = (fam, validos, e) => { const g = porGrupo(fam); return GRUPOS.filter(x=>g[x.id][1]).map(x=>({color:e ? colorFamEn(x.id, e) : x.color, n:g[x.id][1], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id][1]} escaños · ${pct(g[x.id][0]/validos)} de los votos`})); };
+const segsLista = (c, validos) => GRUPOS.flatMap(gr=>c.filter(x=>x[3] && (GRUPO_DE[x[1]]||"OTROS")===gr.id).sort((a,b)=>b[3]-a[3]).map(x=>({color:colorPartido(x[0], x[1]), n:x[3], tip:`<b>${esc(x[0])}</b><br>${x[3]} ${x[3]===1?"escaño":"escaños"} · ${pct(x[2]/validos)} de los votos`})));
+const leyendaGrupos = (ids, e) => `<div class="el-leyenda">${GRUPOS.filter(g=>!ids || ids.includes(g.id)).map(g=>`<span><i style="background:${e ? colorFamEn(g.id, e) : g.color}"></i>${esc(g.nombre)}</span>`).join("")}</div>`;
 const chipsAnios = (E, sel, attr, play=false) => `<div class="hi-anios" role="group" aria-label="Elección">${play?`<button class="play" data-${attr}-play>▶ Reproducir</button>`:""}${E.map((e,k)=>`<button data-${attr}="${k}" aria-pressed="${k===sel}">${anio(e)}</button>`).join("")}</div>`;
 
 /* ---------- áreas apiladas en escalón (cada legislatura dura hasta la siguiente elección) ---------- */
@@ -592,7 +611,7 @@ export async function pintarHistorico(sec, c){
   sec.innerHTML = `
     <section class="sec" style="padding-top:8px">${chipsAnios(E, selH, "hi", true)}
     <div class="hi-top">
-      <div class="chart">${hemiSVG(350, {etiqueta:" "})}${leyendaGrupos()}</div>
+      <div class="chart">${hemiSVG(350, {etiqueta:" "})}<div id="hi-leyenda"></div></div>
       <div class="chart" id="hi-ficha"></div>
     </div></section>
     <section class="sec"><div class="sec-h"><h2>Los 350 escaños, legislatura a legislatura</h2><p>Escaños de cada familia de partidos desde 1977 hasta la disolución de 2026. Pasa por encima para ver el reparto; pulsa para abrir la ficha de esa elección.</p></div>
@@ -604,18 +623,19 @@ export async function pintarHistorico(sec, c){
       <div class="chart"><div id="hi-mapa"></div></div>
       <p class="nota">Fuente: Ministerio del Interior, resultados oficiales de las elecciones al Congreso. Las candidaturas se agrupan con su cabecera nacional y cada una se asigna a una familia con reglas fijas, iguales para las dieciséis elecciones (<a href="https://github.com/jorgegarcelan/escano-abierto/blob/main/escano/historico.py">escano/historico.py</a>). Más indicadores en <a href="#elecciones-metricas">Métricas</a>.</p></section>`;
   // Miniaturas de las tarjetas.
-  sec.querySelectorAll("[data-mini-hemi]").forEach(svg=>{ const e = E[+svg.dataset.miniHemi]; pintarHemi(svg, segsGrupo(e.fam, e.validos)); });
+  sec.querySelectorAll("[data-mini-hemi]").forEach(svg=>{ const e = E[+svg.dataset.miniHemi]; pintarHemi(svg, segsGrupo(e.fam, e.validos, e)); });   // cada una, con los colores de su año
   const hemi = sec.querySelector(".hi-top .hi-hemi"), ficha = sec.querySelector("#hi-ficha"), modo = sec.querySelector("#hi-mapa-modo");
   modo.value = "primera";
   function pintar(k){
     selH = k; const e = E[k];
-    pintarHemi(hemi, segsGrupo(e.fam, e.validos), anio(e).replace("-A"," abr").replace("-N"," nov"));
+    pintarHemi(hemi, segsGrupo(e.fam, e.validos, e), anio(e).replace("-A"," abr").replace("-N"," nov"));
+    const gE = porGrupo(e.fam); sec.querySelector("#hi-leyenda").innerHTML = leyendaGrupos(GRUPOS.filter(x=>gE[x.id][1]).map(x=>x.id), e);   // la leyenda, con los colores de esa elección
     sec.querySelectorAll("[data-hi]").forEach(b=>b.setAttribute("aria-pressed", String(+b.dataset.hi===k)));
     const primeros = e.partidos.filter(p=>p[4]).slice(0, 10);
     ficha.innerHTML = `<div class="eyebrow">${esc(anioLargo(e))} · ${esc(e.legislatura==="Constituyente"?"Cortes constituyentes":e.legislatura+" legislatura")}</div>
       <div class="kpis" style="border:0;padding:4px 0 8px"><div class="kpi"><b>${pct(e.votantes/e.censo)}</b><span>participación</span></div><div class="kpi"><b>${e.partidos.filter(p=>p[4]).length}</b><span>candidaturas con escaño</span></div></div>
       <table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">%</th><th class="n">Escaños</th></tr></thead><tbody>
-      ${primeros.map(p=>`<tr><td><i class="d" style="background:${grupoDe(p[2]).color}"></i>${esc(p[0])}</td><td class="n">${pct(p[3]/e.validos)}</td><td class="n"><b>${p[4]}</b></td></tr>`).join("")}</tbody></table>
+      ${primeros.map(p=>`<tr><td><i class="d" style="background:${colorPartido(p[0], p[2])}"></i>${esc(p[0])}</td><td class="n">${pct(p[3]/e.validos)}</td><td class="n"><b>${p[4]}</b></td></tr>`).join("")}</tbody></table>
       <p><a class="btn" href="${enlaceE(e)}">Ficha de la elección y de la legislatura →</a></p>`;
     const rio = sec.querySelector("#hi-rio"); rio.innerHTML = graficoApilado(E, G, {sel:k, ancho:rio.clientWidth});
     montarApilado(rio.querySelector("svg"), E, G, j=>{ location.hash = enlaceE(E[j]).slice(1); });
@@ -678,7 +698,7 @@ export async function pintarFicha(sec, c, slug){
     </div>
     <section class="sec"><div class="sec-h"><h2>Resultados</h2><p>Candidaturas con escaño o con más del 0,5 % de los votos válidos. Votos válidos: ${fmt(e.validos)}, de ellos ${fmt(e.blancos)} en blanco; nulos: ${fmt(e.nulos)}.</p></div>
       <div class="chart hi-desliza"><table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">%</th><th></th><th class="n">Escaños</th>${prev?`<th class="n">Δ ${anio(prev)}</th>`:""}</tr></thead><tbody>
-        ${filas.map(p=>{ const gr = grupoDe(p[2]), ant = prevPorSiglas[p[0]];
+        ${filas.map(p=>{ const gr = {color: colorPartido(p[0], p[2])}, ant = prevPorSiglas[p[0]];
           return `<tr><td title="${esc(p[1])}"><i class="d" style="background:${gr.color}"></i>${esc(p[0])}</td><td class="n">${fmt(p[3])}</td><td class="n">${pct(p[3]/e.validos)}</td><td style="width:22%"><span class="bar" style="width:${(p[3]/e.validos/maxPct*100).toFixed(1)}%;background:${gr.color}"></span></td><td class="n"><b>${p[4]}</b></td>${prev?`<td class="n">${ant?conSigno(p[4]-ant[4]):`<span style="color:var(--muted)" data-tip="No se presentó con estas siglas en ${anio(prev)}: el cambio por familias está en el gráfico de abajo">–</span>`}</td>`:""}</tr>`; }).join("")}</tbody></table></div></section>
     <div class="hi-dos" style="margin-top:18px">
       ${prev?`<div class="chart"><h3>Cambio de escaños desde ${anio(prev)}</h3><p class="sub">Por familia de partidos.</p>${cambioGrupos(g, gPrev)}</div>`:""}
@@ -706,7 +726,7 @@ function votosEscanos(lista, validos){
   const filas = lista.slice(0, 14), max = Math.max(...filas.map(p=>Math.max(p[3]/validos, p[4]/350))) * 1.05;
   const W = 420, fila = 22, H = filas.length*fila + 26, ml = 92, mr = 16, x = v => ml + v/max*(W-ml-mr);
   const marcas = [0, .1, .2, .3, .4, .5].filter(v=>v<=max).map(v=>`<line class="eje" x1="${x(v)}" x2="${x(v)}" y1="0" y2="${H-20}"/><text class="tick" x="${x(v)}" y="${H-6}" text-anchor="middle">${v*100}%</text>`).join("");
-  return `<svg class="hi-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Parte de los votos y de los escaños de cada candidatura">${marcas}${filas.map((p,i)=>{ const yy = i*fila + 12, v = p[3]/validos, e = p[4]/350, col = grupoDe(p[2]).color;
+  return `<svg class="hi-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Parte de los votos y de los escaños de cada candidatura">${marcas}${filas.map((p,i)=>{ const yy = i*fila + 12, v = p[3]/validos, e = p[4]/350, col = colorPartido(p[0], p[2]);
     return `<g data-tip="${esc(`<b>${esc(p[0])}</b><br>${pct(v)} de los votos · ${pct(e)} de los escaños (${p[4]})`)}"><rect x="0" y="${yy-10}" width="${W}" height="${fila}" fill="transparent"/><text class="tick" x="${ml-8}" y="${yy+4}" text-anchor="end" style="fill:var(--ink)">${esc(p[0].slice(0,13))}</text>
       <line x1="${x(v)}" x2="${x(e)}" y1="${yy}" y2="${yy}" stroke="${col}" stroke-width="2"/><circle cx="${x(v)}" cy="${yy}" r="4.5" style="fill:var(--surface);stroke:${col};stroke-width:2"/><circle cx="${x(e)}" cy="${yy}" r="4.5" style="fill:${col}" class="punto"/></g>`; }).join("")}</svg>`;
 }
@@ -835,7 +855,7 @@ export async function pintarProvincia(sec, c, sub){
     sec.querySelector("#pr-leyenda").innerHTML = leyendaGrupos(GRUPOS.filter(x=>gr[x.id][1]).map(x=>x.id));
     const filas = p.c.filter(x=>x[3] || x[2] >= 0.01*p.validos), max = Math.max(...filas.map(x=>x[2]));
     sec.querySelector("#pr-tabla").innerHTML = `<h3>Resultados</h3><table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">%</th><th></th><th class="n">Escaños</th></tr></thead><tbody>
-      ${filas.map(x=>`<tr><td><i class="d" style="background:${grupoDe(x[1]).color}"></i>${esc(x[0])}</td><td class="n">${fmt(x[2])}</td><td class="n">${pct(x[2]/p.validos)}</td><td style="width:24%"><span class="bar" style="width:${(x[2]/max*100).toFixed(1)}%;background:${grupoDe(x[1]).color}"></span></td><td class="n"><b>${x[3]}</b></td></tr>`).join("")}</tbody></table>
+      ${filas.map(x=>`<tr><td><i class="d" style="background:${colorPartido(x[0], x[1])}"></i>${esc(x[0])}</td><td class="n">${fmt(x[2])}</td><td class="n">${pct(x[2]/p.validos)}</td><td style="width:24%"><span class="bar" style="width:${(x[2]/max*100).toFixed(1)}%;background:${colorPartido(x[0], x[1])}"></span></td><td class="n"><b>${x[3]}</b></td></tr>`).join("")}</tbody></table>
       <p class="nota">Votos válidos: ${fmt(p.validos)} (${fmt(p.blancos)} en blanco). <a href="${enlaceE(e)}">Ver la elección de ${anio(e)} en toda España →</a></p>`;
     sec.querySelector("#pr-n").textContent = p.e;
     sec.querySelector("#pr-cocientes").innerHTML = tablaCocientes(p);
@@ -851,11 +871,11 @@ export async function pintarProvincia(sec, c, sub){
 }
 function tablaCocientes(p){
   const entran = p.c.filter(x=>x[2] >= 0.03*p.validos);
-  const coc = entran.flatMap(x=>Array.from({length:p.e},(_,d)=>({s:x[0], v:x[2], q:x[2]/(d+1), d:d+1, col:grupoDe(x[1]).color}))).sort((a,b)=>b.q-a.q || b.v-a.v);
+  const coc = entran.flatMap(x=>Array.from({length:p.e},(_,d)=>({s:x[0], v:x[2], q:x[2]/(d+1), d:d+1, col:colorPartido(x[0], x[1])}))).sort((a,b)=>b.q-a.q || b.v-a.v);
   const gan = new Map(coc.slice(0, p.e).map((x,i)=>[x.s+"|"+x.d, i+1]));
   const cols = Math.min(p.e, 40);
   return `<table class="hi-cocientes"><thead><tr><th class="c">Candidatura</th>${Array.from({length:cols},(_,d)=>`<th>÷${d+1}</th>`).join("")}</tr></thead><tbody>
-    ${entran.map(x=>`<tr><th class="c">${esc(x[0])}</th>${Array.from({length:cols},(_,d)=>{ const n = gan.get(x[0]+"|"+(d+1)), q = x[2]/(d+1), col = grupoDe(x[1]).color;
+    ${entran.map(x=>`<tr><th class="c">${esc(x[0])}</th>${Array.from({length:cols},(_,d)=>{ const n = gan.get(x[0]+"|"+(d+1)), q = x[2]/(d+1), col = colorPartido(x[0], x[1]);
       return `<td class="${n?"g":""}${n===p.e?" u":""}" ${n?`style="background:${col};color:${textoSobre(col)}"`:""} data-tip="${esc(`<b>${esc(x[0])}</b> ÷ ${d+1} = ${fmt(q)}${n?`<br>Escaño nº ${n} de ${p.e}`:"<br>No llega a escaño"}`)}">${fmt(q)}</td>`; }).join("")}</tr>`).join("")}</tbody></table>
     ${p.e>cols?`<p class="nota">Se muestran los ${cols} primeros divisores.</p>`:""}`;
 }
@@ -894,7 +914,7 @@ function barrasMayoria(E, ancho){
   const y = v => mt + (1-v/220)*(H-mt-mb);
   return `<svg class="hi-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Escaños de la primera fuerza en cada elección">
     ${[0,100,176,220].map(v=>`<line class="eje" x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}" ${v===176?'stroke-dasharray="3 3" style="stroke:var(--ink)"':""}/><text class="tick" x="${ml-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("")}
-    ${E.map((e,k)=>{ const p = e.partidos[0], col = grupoDe(p[2]).color, x0 = ml + k*bw + bw*.2, w = Math.min(24, bw*.6);
+    ${E.map((e,k)=>{ const p = e.partidos[0], col = colorPartido(p[0], p[2]), x0 = ml + k*bw + bw*.2, w = Math.min(24, bw*.6);
       return `<a href="${enlaceE(e)}"><g data-tip="${esc(`<b>${esc(anioLargo(e))}</b><br>${esc(p[0])}: ${p[4]} escaños${p[4]>=176?" (mayoría absoluta)":` (a ${176-p[4]} de la mayoría)`}`)}"><rect x="${ml+k*bw}" y="${mt}" width="${bw}" height="${H-mt-mb}" fill="transparent"/>
         <path d="M${x0} ${y(0)}V${y(p[4])+4}q0-4 4-4h${w-8}q4 0 4 4V${y(0)}Z" style="fill:${col}"/></g></a>
         ${k%3===0||k===n-1?`<text class="tick" x="${x0+w/2}" y="${H-6}" text-anchor="middle">${e.fecha.slice(2,4)}</text>`:""}`; }).join("")}</svg>`;
@@ -1052,7 +1072,7 @@ export async function pintarEscano(sec, c){
     P.forEach(x=>{ const id = x[0]; vistos.add(id);
       let b = g.querySelector(`[data-ve="${CSS_ID(id)}"]`);
       if (!b){ b = document.createElementNS(NS, "g"); b.dataset.ve = CSS_ID(id); b.innerHTML = `<circle r="7"/><text dy="-11" text-anchor="middle"></text>`; b.style.transform = `translate(${X(0)}px, ${Y(0)}px)`; g.appendChild(b); }
-      b.querySelector("circle").style.fill = grupoDe(x[2]).color;
+      b.querySelector("circle").style.fill = colorPartido(x[0], x[2]);
       const t = b.querySelector("text"); t.textContent = x[4] >= 2 || x[3] > e.validos*0.03 ? x[0] : "";
       b.dataset.tip = `<b>${esc(x[1])}</b><br>${fmt(x[3])} votos (${pct(x[3]/e.validos)}) · ${x[4]} ${x[4]===1?"escaño":"escaños"}<br>Con un reparto proporcional: ${dec(prop(x), 1)}<br>${x[4] ? `Cada escaño le costó ${fmt(x[3]/x[4])} votos` : "Ningún escaño"}`;
       requestAnimationFrame(()=>{ b.style.transform = `translate(${X(x[3]).toFixed(1)}px, ${Y(x[4]).toFixed(1)}px)`; b.style.opacity = 1; }); });
@@ -1073,7 +1093,7 @@ export async function pintarEscano(sec, c){
     const movidos = saldo.reduce((t,[,s])=>t + Math.max(0, s), 0);
     let k = 0; const cuadros = (n, color, cls) => Array.from({length:n}, ()=>`<i class="${cls}" style="--c:${color};--d:${Math.min(k++, 60)*22}ms"></i>`).join("");
     lado.innerHTML = `<p class="pe-sal-t">Frente a un reparto proporcional, la ley mueve <b>${movidos}</b> escaños. Cada cuadrado es uno.</p>
-      <div class="pe-sal-h"><span>Le quita</span><span>Le da</span></div>` + saldo.map(([x,s])=>{ const c = grupoDe(x[2]).color;
+      <div class="pe-sal-h"><span>Le quita</span><span>Le da</span></div>` + saldo.map(([x,s])=>{ const c = colorPartido(x[0], x[2]);
       return `<div class="pe-sal" data-tip="${esc(`<b>${esc(x[1])}</b><br>Sacó ${x[4]} escaños; con un reparto proporcional, ${dec(prop(x),1)}<br>${s > 0 ? `La ley le da ${s} de más` : `La ley le quita ${-s}`}`)}">
       <span class="n">${esc(x[0])}</span><span class="neg">${s < 0 ? cuadros(-s, c, "q") : ""}</span><span class="pos">${s > 0 ? cuadros(s, c, "q") : ""}</span><span class="v ${s>0?"mas":"menos"}">${s > 0 ? "+" : "−"}${Math.abs(s)}</span></div>`; }).join("");
     // Los cuadrados caen al llegar a la vista (y al cambiar de elección, si ya se ve).
@@ -1085,7 +1105,9 @@ export async function pintarEscano(sec, c){
   /* El Congreso que pudo ser: los últimos escaños que se decidieron por menos de X votos cambian de manos. */
   let pudoVotos = null, selFam = null;
   function ultimo(D, e){
-    const fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]);
+    // Las familias con el color que tienen en esta elección (en 2023, la izquierda es Sumar).
+    const GR = GRUPOS.map(g=>({...g, color: colorFamEn(g.id, e)})), GRm = Object.fromEntries(GR.map(g=>[g.id, g]));
+    const fam = (p, sig) => GRm[grupoDe((p.c.find(x=>x[0]===sig) || [])[1]).id];
     const vueltas = Object.entries(D.prov).filter(([,p])=>p.ultimo).map(([cod,p])=>({cod, p, de: fam(p, p.ultimo.gana), a: fam(p, p.ultimo.segundo), f: p.ultimo.faltan}))
       .sort((a,b)=>a.f-b.f);
     const base = porGrupo(e.fam), votantes = e.votantes, maxLog = Math.log10(vueltas[vueltas.length-1].f);
@@ -1136,7 +1158,7 @@ export async function pintarEscano(sec, c){
       const nomF = f => Wf < 520 ? ({IZQ:"IU-Sumar", NAC:"Nacional.", UCD:"UCD"}[f.id] || CORTO[f.id] || f.nombre) : (CORTO[f.id] || f.nombre);   // en el móvil, nombres cortos
       const lab = Math.min(Wf*.36, 22 + Math.max(...hechas.flatMap(v=>[nomF(v.de), nomF(v.a)]).map(t=>t.length))*7.8);   // lo justo para el rótulo más largo
       const cDe = {}, cA = {}; hechas.forEach(v=>{ cDe[v.de.id] = (cDe[v.de.id] || 0) + 1; cA[v.a.id] = (cA[v.a.id] || 0) + 1; });
-      const orden = GRUPOS.map(g=>g.id), fam = Object.fromEntries(GRUPOS.map(g=>[g.id, g]));
+      const orden = GR.map(g=>g.id), fam = GRm;
       const izq = orden.filter(id=>cDe[id]), der = orden.filter(id=>cA[id]);
       const alto = (l, c) => l.reduce((t,id)=>t + c[id]*u, 0) + (l.length - 1)*gap, Hf = Math.max(alto(izq, cDe), alto(der, cA)) + 8;
       const nodos = (l, c) => { let y = 4 + (Hf - 8 - alto(l, c))/2; const o = {}; l.forEach(id=>{ o[id] = {y, h: c[id]*u, k: 0}; y += c[id]*u + gap; }); return o; };
@@ -1183,12 +1205,12 @@ export async function pintarEscano(sec, c){
       const g = Object.fromEntries(GRUPOS.map(x=>[x.id, base[x.id][1]])), cambio = Object.fromEntries(GRUPOS.map(x=>[x.id, 0]));
       hechas.forEach(v=>{ g[v.de.id]--; g[v.a.id]++; cambio[v.de.id]--; cambio[v.a.id]++; });
       const usados = hechas.reduce((t,v)=>t + v.f, 0), rapido = !suave || quieto;
-      pintarHemi(hemi.querySelector(".hi-hemi"), GRUPOS.filter(x=>g[x.id] > 0).map(x=>({color:x.color, n:g[x.id], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id]} escaños${cambio[x.id] ? ` (${cambio[x.id] > 0 ? "+" : "−"}${Math.abs(cambio[x.id])})` : ""}`})), null);
+      pintarHemi(hemi.querySelector(".hi-hemi"), GR.filter(x=>g[x.id] > 0).map(x=>({color:x.color, n:g[x.id], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id]} escaños${cambio[x.id] ? ` (${cambio[x.id] > 0 ? "+" : "−"}${Math.abs(cambio[x.id])})` : ""}`})), null);
       if (rapido){ $("[data-ps-v]").textContent = fmt(usados); $("[data-ps-n]").textContent = fmt(hechas.length); }
       else { contar($("[data-ps-v]"), pudoVotos?.v ?? 0, usados); contar($("[data-ps-n]"), pudoVotos?.n ?? 0, hechas.length); }
       pudoVotos = {v: usados, n: hechas.length};
       $("[data-ps-pct]").textContent = hechas.length ? `: el ${pct(usados/votantes, usados/votantes < .01 ? 2 : 1)} de los que votaron` : "";
-      $("[data-ps-g]").innerHTML = GRUPOS.filter(x=>base[x.id][1] || cambio[x.id]).map(x=>`<div class="${cambio[x.id] > 0 ? "mas" : cambio[x.id] < 0 ? "menos" : ""}"><i style="background:${x.color}"></i><span>${esc(CORTO[x.id] || x.nombre)}</span><b>${g[x.id]}</b><small>${cambio[x.id] ? (cambio[x.id] > 0 ? "+" : "−") + Math.abs(cambio[x.id]) : ""}</small></div>`).join("");
+      $("[data-ps-g]").innerHTML = GR.filter(x=>base[x.id][1] || cambio[x.id]).map(x=>`<div class="${cambio[x.id] > 0 ? "mas" : cambio[x.id] < 0 ? "menos" : ""}"><i style="background:${x.color}"></i><span>${esc(CORTO[x.id] || x.nombre)}</span><b>${g[x.id]}</b><small>${cambio[x.id] ? (cambio[x.id] > 0 ? "+" : "−") + Math.abs(cambio[x.id]) : ""}</small></div>`).join("");
       flujo._h = hechas; flujoQuien(hechas);
     };
     // Reproducir: el deslizador recorre la escalera de punta a punta (o hasta donde se le diga).
@@ -1277,7 +1299,7 @@ function simulador(sec, P, {explicar = false} = {}){
   simVotos ||= Object.fromEntries(lista.map(x=>[x[0], x[2]]));
   const resto = p.validos - lista.reduce((s,x)=>s+x[2],0);
   const validosDe = V => resto + Object.values(V).reduce((s,v)=>s+v,0);
-  const real = Object.fromEntries(lista.map(x=>[x[0], x[2]])), color = Object.fromEntries(lista.map(x=>[x[0], grupoDe(x[1]).color]));
+  const real = Object.fromEntries(lista.map(x=>[x[0], x[2]])), color = Object.fromEntries(lista.map(x=>[x[0], colorPartido(x[0], x[1])]));
   const opciones = Object.keys(P).sort((a,b)=>nombreProv(a).localeCompare(nombreProv(b),"es")).map(c2=>`<option value="${c2}"${c2===simProv?" selected":""}>${esc(nombreProv(c2))}</option>`).join("");
   caja.innerHTML = `<div class="pe-sim-h"><div class="eyebrow">Juega con los votos</div><h3>¿Cuántos votos cambian un escaño en <select data-sim-prov aria-label="Provincia">${opciones}</select>?</h3>
       <p class="sub">${p.e === 1 ? "Aquí se reparte un solo escaño: se lo lleva quien más votos tiene." : `Los ${p.e} escaños se reparten por rondas. En cada una, el escaño es para la barra más larga; y esa barra se divide entre uno más (÷2, ÷3…) para la ronda siguiente.`}</p></div>
@@ -1553,10 +1575,10 @@ export async function pintarNoche(sec, c){
     const prev = ref ? Object.fromEntries(ref.partidos.map(p=>[p[0], p[4]])) : {};
     const total = d.partidos.reduce((s,p)=>s+p.v,0) || 1, maxV = Math.max(...d.partidos.map(p=>p.v), 1);
     sec.querySelector("#no-tabla").innerHTML = `<h3>Candidaturas</h3><table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">%</th><th></th><th class="n">Escaños</th>${nocheEnsayo?"":`<th class="n">Δ 2023</th>`}</tr></thead><tbody>
-      ${d.partidos.filter(p=>p.e || p.v >= .005*total).slice(0, 16).map(p=>{ const col = grupoDe(familiaDe(p.s, p.n)).color;
+      ${d.partidos.filter(p=>p.e || p.v >= .005*total).slice(0, 16).map(p=>{ const col = colorPartido(p.s, familiaDe(p.s, p.n));
         return `<tr><td title="${esc(p.n)}"><i class="d" style="background:${col}"></i>${esc(p.s)}</td><td class="n">${fmt(p.v)}</td><td class="n">${dec(p.p || p.v/total*100, 2)} %</td><td style="width:20%"><span class="bar" style="width:${(p.v/maxV*100).toFixed(1)}%;background:${col}"></span></td><td class="n"><b>${p.e}</b></td>${nocheEnsayo?"":`<td class="n">${prev[p.s]!=null?conSigno(p.e-prev[p.s]):"–"}</td>`}</tr>`; }).join("")}</tbody></table>`;
     // Mapa: color de quien va primero en cada provincia, intensidad por lo escrutado.
-    const lider = cod => { const pr = d.provincias[cod]; const p = pr?.partidos?.slice().sort((a,b)=>b.v-a.v)[0]; return p ? {col: grupoDe(familiaDe(p.s, p.n)).color, esc: pr.escrutado||0} : null; };
+    const lider = cod => { const pr = d.provincias[cod]; const p = pr?.partidos?.slice().sort((a,b)=>b.v-a.v)[0]; return p ? {col: colorPartido(p.s, familiaDe(p.s, p.n)), esc: pr.escrutado||0} : null; };
     sec.querySelector("#no-mapa").innerHTML = mapaSVG(cod=>{ const l = lider(cod); if (!l) return null; const t = 0.18 + 0.82*Math.min(1, l.esc/100); return `color-mix(in srgb, ${l.col} ${Math.round(t*100)}%, var(--sunk))`; })
       + leyendaGrupos([...new Set(Object.keys(d.provincias).map(cod=>{ const p = d.provincias[cod].partidos.slice().sort((a,b)=>b.v-a.v)[0]; return p && (GRUPO_DE[familiaDe(p.s, p.n)]||"OTROS"); }).filter(Boolean))]);
     // Escaños en el aire.
@@ -1583,7 +1605,7 @@ export async function pintarNoche(sec, c){
     const x = v => ml + (v/100)*(W-ml-mr), y = v => mt + (1 - v/(Math.ceil(maxE/25)*25))*(H-mt-mb);
     const top = Math.ceil(maxE/25)*25, marcas = Array.from({length: top/25+1}, (_,i)=>i*25);
     const finales = [];
-    const lineas = partidosTop.map(s=>{ const col = grupoDe(familiaDe(s)).color, pts = nocheHistoria.map(h=>[h.escrutado, h.e[s]||0]);
+    const lineas = partidosTop.map(s=>{ const col = colorPartido(s, familiaDe(s)), pts = nocheHistoria.map(h=>[h.escrutado, h.e[s]||0]);
       const ult = pts[pts.length-1]; finales.push({y: y(ult[1])+4, t: `${s} ${ult[1]}`});
       return `<path class="linea" d="${pts.map((p,i)=>`${i?"L":"M"}${x(p[0]).toFixed(1)} ${y(p[1]).toFixed(1)}`).join("")}" style="stroke:${col}"/><circle class="punto" cx="${x(ult[0])}" cy="${y(ult[1])}" r="4" style="fill:${col}"/>`; }).join("");
     finales.sort((a,b)=>a.y-b.y); for (let i=1;i<finales.length;i++) finales[i].y = Math.max(finales[i].y, finales[i-1].y+13);
@@ -1594,7 +1616,7 @@ export async function pintarNoche(sec, c){
   }
   conTip(sec.querySelector("#no-mapa"), ev=>{ const p = ev.target.closest("[data-p]"); if (!p || !ultimo) return ""; const pr = ultimo.provincias[p.dataset.p]; if (!pr) return `<b>${esc(nombreProv(p.dataset.p))}</b><br>Sin datos todavía`;
     const tot = pr.partidos.reduce((s,x)=>s+x.v,0) || 1;
-    return `<b>${esc(nombreProv(p.dataset.p))}</b> · ${dec(pr.escrutado||0,1)} % escrutado${pr.partidos.slice().sort((a,b)=>b.v-a.v).slice(0,5).map(x=>filaTip(grupoDe(familiaDe(x.s, x.n)).color, x.s, `${dec(x.v/tot*100,1)} % · ${x.e}`)).join("")}<div style="color:var(--muted);margin-top:4px">Pulsa para ver su reparto</div>`; });
+    return `<b>${esc(nombreProv(p.dataset.p))}</b> · ${dec(pr.escrutado||0,1)} % escrutado${pr.partidos.slice().sort((a,b)=>b.v-a.v).slice(0,5).map(x=>filaTip(colorPartido(x.s, familiaDe(x.s, x.n)), x.s, `${dec(x.v/tot*100,1)} % · ${x.e}`)).join("")}<div style="color:var(--muted);margin-top:4px">Pulsa para ver su reparto</div>`; });
 
   nocheProv = null;
   if (ensayoPedido){ arrancarEnsayo(); return; }
