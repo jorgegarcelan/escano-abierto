@@ -110,7 +110,7 @@ const CSS = `
 .pe-ve [data-ve]:hover circle{stroke:var(--ink)}
 .pe-ve [data-ve] text{font:700 11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
 .pe-saldo{display:grid;gap:7px;margin-top:14px}
-.pe-sal-t{margin:0 0 2px;font-size:13px;color:var(--muted)}.pe-sal-t b{color:var(--fg);font-family:var(--mono)}
+.pe-sal-t{margin:0 0 2px;font-size:13px;color:var(--muted)}.pe-sal-t b{color:var(--ink);font-family:var(--mono)}
 .pe-sal-h,.pe-sal{display:grid;grid-template-columns:6.5em minmax(0,1fr) minmax(0,1fr) 2.6em;column-gap:0}
 .pe-sal-h{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .pe-sal-h span:first-child{grid-column:2;text-align:right;padding-right:8px}.pe-sal-h span:last-child{padding-left:8px}
@@ -141,20 +141,38 @@ const CSS = `
 .ps-g small{font:700 12px var(--mono);text-align:right}
 .ps-g .mas{background:color-mix(in srgb,var(--si) 14%,transparent)}.ps-g .mas small{color:var(--si)}
 .ps-g .menos{background:color-mix(in srgb,var(--no) 14%,transparent)}.ps-g .menos small{color:var(--no)}
-.ps-ctl{display:grid;gap:6px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-.ps-ctl label{font-size:13px;color:var(--muted)}
-.ps-ctl input{width:100%;accent-color:var(--no)}
-.ps-curva svg{display:block;width:100%;height:auto;overflow:visible}
-.ps-curva .cur{fill:none;stroke:var(--no);stroke-width:2}
-.ps-curva text{font:10px var(--mono);fill:var(--muted)}
-.ps-curva .pto{fill:var(--ink);stroke:var(--surface);stroke-width:2;transition:cx .2s,cy .2s}
-.ps-lista{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;max-height:180px;overflow:auto}
-.ps-lista button{all:unset;cursor:pointer;display:grid;gap:1px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:12px;animation:pe-pop .3s ease}
-.ps-lista button:hover{border-color:var(--line-strong)}
-.ps-lista b{font-size:12.5px}
-.ps-lista span{display:flex;align-items:center;gap:4px;color:var(--muted)}
-.ps-lista i{width:7px;height:7px;border-radius:50%;display:inline-block}
-.ps-lista small{font:11px var(--mono);color:var(--no)}
+.ps-esc{margin-top:16px;padding:12px 14px 6px;border:1px solid var(--line);border-radius:12px;background:var(--surface);position:relative}
+.ps-esc-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)}
+.ps-esc-h b{color:var(--ink);font-weight:600}
+.ps-btns{display:flex;flex-wrap:wrap;gap:5px}
+.ps-btns button{all:unset;cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:999px;font:600 11.5px var(--mono);color:var(--ink);background:var(--sunk)}
+.ps-btns button:hover{border-color:var(--line-strong)}.ps-btns button:focus-visible{outline:2px solid var(--no)}
+.ps-btns [data-ps-play]{background:var(--no);border-color:var(--no);color:#fff}
+[data-ps-esc]{display:block;width:100%;height:auto;margin-top:6px;cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+[data-ps-esc] .ejes line{stroke:var(--line);stroke-dasharray:2 3}
+[data-ps-esc] .ejes text{font:10px var(--mono);fill:var(--muted)}
+[data-ps-esc] .fondo{fill:color-mix(in srgb,var(--ink) 4%,transparent)}
+[data-ps-esc] .lleno{fill:color-mix(in srgb,var(--no) 16%,transparent)}
+[data-ps-esc] .esc{fill:none;stroke:var(--line-strong);stroke-width:1.5}
+[data-ps-esc] .ptos circle{fill:var(--surface);stroke:var(--c);stroke-width:1.5;opacity:.55;transition:fill .25s,opacity .25s,r .25s}
+[data-ps-esc] .ptos circle.si{fill:var(--c);opacity:1;r:5.5}
+[data-ps-esc] .cursor line{stroke:var(--no);stroke-width:1.5}
+[data-ps-esc] .cursor circle{fill:var(--no);stroke:var(--surface);stroke-width:2}
+[data-ps-esc] .cursor text{font:700 11.5px var(--mono);fill:var(--ink)}
+.ps-esc:focus-within{outline:2px solid color-mix(in srgb,var(--no) 50%,transparent)}
+.ps-tr{margin-top:16px}
+.ps-tr .nota{margin:6px 0 0}
+.ps-par{display:grid;grid-template-columns:minmax(0,15em) 2.2em minmax(0,1fr);gap:4px 12px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.ps-par:first-of-type{border-top:0}
+@media (max-width:640px){ .ps-par{grid-template-columns:minmax(0,1fr) 2.2em} .ps-pv{grid-column:1/-1} }
+.ps-dir{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;min-width:0;padding-top:3px}
+.ps-dir i{width:9px;height:9px;border-radius:50%;flex:none}
+.ps-dir em{font-style:normal;color:var(--muted);margin:0 2px}
+.ps-par > b{font:700 18px var(--mono);text-align:right;line-height:1.3}
+.ps-pv{display:flex;flex-wrap:wrap;gap:4px}
+.ps-pv button{all:unset;cursor:pointer;padding:3px 9px;border-radius:999px;background:var(--sunk);border:1px solid var(--line);font-size:12px}
+.ps-pv button:hover{border-color:var(--line-strong);color:var(--ink)}
+.ps-pv button.nuevo{animation:pe-pop .35s ease}
 .pe-sim{min-width:0;max-width:100%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,#4F7AA6 7%,var(--surface)),var(--surface))}
 .pe-sim-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
 .pe-sim-h h3{font-size:clamp(18px,2.4vw,22px);margin:4px 0 4px;line-height:1.3}
@@ -898,11 +916,13 @@ export async function pintarEscano(sec, c){
       <div class="chart"><h3>Votos y escaños: a quién favorece la ley</h3><p class="sub">Cada bola es un partido: sus votos en toda España y los escaños que sacó. La diagonal marca lo que le tocaría con un reparto proporcional: por encima, la ley le da más escaños que su parte de los votos; por debajo, menos.</p><svg class="pe-ve" data-pe-ve role="img" aria-label="Votos y escaños de cada partido frente al reparto proporcional"></svg><div class="pe-saldo" data-pe-ve-lado></div></div>
     </div>
     <div class="chart ps" style="margin-top:16px"><div class="eyebrow">El último escaño</div><h3 class="ps-t">El Congreso que pudo ser</h3>
-      <p class="sub">En cada provincia, alguien se llevó el último escaño por unos pocos votos. Arrastra el deslizador: con esos votos, puestos justo donde hacían falta (del escaño más barato al más caro), estos escaños cambian de manos y el Congreso se recolorea.</p>
+      <p class="sub">En cada provincia, alguien se llevó el último escaño por unos pocos votos. Pon esos votos justo donde hacían falta, del escaño más barato al más caro, y mira cómo cambia el Congreso.</p>
       <div class="ps-c"><div class="ps-hemi" data-ps-hemi></div><div class="ps-lado"><div class="ps-cifras"><div><b data-ps-v>0</b><span>votos, <span data-ps-pct></span></span></div><div><b data-ps-n>0</b><span>escaños cambian de manos</span></div></div><div class="ps-g" data-ps-g></div></div></div>
-      <div class="ps-ctl"><label for="ps-r">Votos para repartir</label><input type="range" id="ps-r" min="2" max="6" step="0.01"><div class="ps-curva" data-ps-curva></div></div>
-      <div class="ps-lista" data-ps-lista></div>
-      <details class="pu-todas"><summary>El último escaño de las 52 provincias</summary><div class="hi-ult" data-pe-ult></div></details></div>
+      <div class="ps-esc"><div class="ps-esc-h"><span>Cada punto es un escaño, del más barato al más caro. <b>Arrastra sobre la escalera.</b></span>
+        <div class="ps-btns"><button type="button" data-ps-play>▶ Reproducir</button><button type="button" data-ps-ir="3">1.000</button><button type="button" data-ps-ir="4">10.000</button><button type="button" data-ps-ir="5">100.000</button><button type="button" data-ps-ir="max">Todos</button></div></div>
+        <svg data-ps-esc role="img" aria-label="Escaños que cambian de manos según los votos repartidos"></svg>
+        <input type="range" id="ps-r" class="sr" min="2" max="6" step="0.01" aria-label="Votos para repartir"></div>
+      <div class="ps-tr"><div class="eyebrow">Quién se los lleva</div><div data-ps-lista></div></div></div>
     <div class="chart pe-sim" id="he-sim" style="margin-top:16px"></div></section>`;
   const $ = s => sec.querySelector(s);
   let P = null, prev = {barato:0, caro:0, sin:0, mil:0, precio:0};
@@ -998,34 +1018,83 @@ export async function pintarEscano(sec, c){
       .sort((a,b)=>a.f-b.f);
     let acum = 0; vueltas.forEach(v=>{ acum += v.f; v.acum = acum; });
     const base = porGrupo(e.fam), votantes = e.votantes, maxLog = Math.log10(vueltas[vueltas.length-1].acum);
-    // Las listas (las 52 en barras) siguen en el desplegable.
-    const lg = x => Math.log10(Math.max(10, x)), mx = lg(vueltas[vueltas.length-1].f);
-    const caja = $("[data-pe-ult]"); caja.classList.remove("ya");
-    caja.innerHTML = vueltas.map((v,k)=>`<button data-ult="${v.cod}" data-tip="${esc(`<b>${esc(nombreProv(v.cod))}</b><br>Ganó el último escaño <b>${esc(v.p.ultimo.gana)}</b>; a <b>${esc(v.p.ultimo.segundo)}</b> le faltaron ${fmt(v.f)} votos`)}"><span class="p">${esc(nombreProv(v.cod))}</span><span class="b"><i style="--w:${(lg(v.f)/mx*100).toFixed(1)}%;--d:${Math.min(k, 30)*25}ms;background:linear-gradient(90deg,${v.de.color} 50%,${v.a.color} 50%)"></i></span><span class="q"><b>${esc(v.p.ultimo.gana)}</b> · ${esc(v.p.ultimo.segundo)}</span><span class="m">${fmt(v.f)}</span></button>`).join("");
-    requestAnimationFrame(()=>requestAnimationFrame(()=>caja.classList.add("ya")));
     const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiSVG(350, {etiqueta:"350"});
-    const rango = $("#ps-r"), curva = $("[data-ps-curva]");
-    // La curva: votos acumulados (eje logarítmico) frente a escaños que cambian.
-    const Wc = Math.max(260, curva.clientWidth || 400), Hc = 90, X = v => 8 + (Math.log10(Math.max(100, v)) - 2)/(maxLog - 2)*(Wc - 16), Y = n => Hc - 14 - n/vueltas.length*(Hc - 24);
-    curva.innerHTML = `<svg viewBox="0 0 ${Wc} ${Hc}"><path class="cur" d="${vueltas.map((v,i)=>`${i ? "L" : "M"}${X(v.acum).toFixed(1)} ${Y(i).toFixed(1)}L${X(v.acum).toFixed(1)} ${Y(i+1).toFixed(1)}`).join("")}"/>
-      ${[1e3, 1e4, 1e5, 1e6].filter(v=>v < Math.pow(10, maxLog)).map(v=>`<text x="${X(v)}" y="${Hc - 1}" text-anchor="middle">${fmt(v)}</text>`).join("")}<circle class="pto" r="5"/></svg>`;
-    const pto = curva.querySelector(".pto");
-    const pintar = () => {
-      const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu);
+    $("[data-ps-esc]")._parar?.();   // la animación de la elección anterior, fuera
+    const rango = $("#ps-r"), svg = $("[data-ps-esc]"), N = vueltas.length, quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // La escalera: votos acumulados (eje logarítmico) frente a escaños que cambian; cada punto, un escaño, del color de quien se lo lleva.
+    const W = Math.max(300, svg.parentNode.clientWidth || 600), H = W < 520 ? 210 : 240, m = {l:30, r:12, t:36, b:24};
+    const X = v => m.l + (Math.log10(Math.max(100, v)) - 2)/(maxLog - 2)*(W - m.l - m.r), Y = n => H - m.b - n/N*(H - m.t - m.b);
+    const aLog = x => Math.max(2, Math.min(maxLog, 2 + (x - m.l)/(W - m.l - m.r)*(maxLog - 2)));
+    const escalon = vueltas.map((v,i)=>`${i ? "" : `M${X(100)} ${Y(0)}`}L${X(v.acum).toFixed(1)} ${Y(i).toFixed(1)}L${X(v.acum).toFixed(1)} ${Y(i+1).toFixed(1)}`).join("");
+    const area = `${escalon}L${X(vueltas[N-1].acum).toFixed(1)} ${Y(0)}Z`;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = `<defs><clipPath id="ps-clip"><rect x="0" y="0" height="${H}" width="0"/></clipPath></defs>
+      <g class="ejes">${[10,20,30,40,50].filter(n=>n <= N).map(n=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(n)}" y2="${Y(n)}"/><text x="${m.l - 6}" y="${Y(n) + 3.5}" text-anchor="end">${n}</text>`).join("")}
+        ${[1e3, 1e4, 1e5, 1e6].filter(v=>Math.log10(v) < maxLog - .1).map(v=>`<text x="${X(v)}" y="${H - 6}" text-anchor="middle">${fmtCorto(v)}</text>`).join("")}<text x="${W - m.r}" y="${H - 6}" text-anchor="end">votos →</text></g>
+      <path class="fondo" d="${area}"/><path class="lleno" d="${area}" clip-path="url(#ps-clip)"/><path class="esc" d="${escalon}"/>
+      <g class="ptos">${vueltas.map((v,i)=>`<circle data-i="${i}" cx="${X(v.acum).toFixed(1)}" cy="${Y(i+1).toFixed(1)}" r="4.5" style="--c:${v.a.color}"/>`).join("")}</g>
+      <g class="cursor"><line y1="${m.t - 12}" y2="${H - m.b}"/><circle cy="${m.t - 12}" r="6"/><text y="${m.t - 20}"></text></g>`;
+    const clip = svg.querySelector("#ps-clip rect"), cur = svg.querySelector(".cursor"), curT = cur.querySelector("text"), ptos = [...svg.querySelectorAll(".ptos circle")];
+    // Arrastrar (o pulsar) sobre la escalera mueve el deslizador, que sigue ahí para el teclado.
+    const xDe = ev => { const r = svg.getBoundingClientRect(); return (ev.clientX - r.left)/r.width*W; };
+    let arrastre = false;
+    svg.onpointerdown = ev => { arrastre = true; svg.setPointerCapture(ev.pointerId); pararPlay(); rango.value = aLog(xDe(ev)); pintar(); };
+    svg.onpointermove = ev => { if (arrastre){ rango.value = aLog(xDe(ev)); pintar(); } };
+    svg.onpointerup = svg.onpointercancel = () => { arrastre = false; };
+    if (!svg.dataset.tip){ svg.dataset.tip = 1;
+      conTip(svg, ev=>{ if (arrastre || !svg._v) return ""; const x = xDe(ev), r = svg.getBoundingClientRect(), y = (ev.clientY - r.top)/r.height*H;
+        let k = -1, d = 14; svg._v.forEach((v,i)=>{ const dd = Math.hypot(svg._X(v.acum) - x, svg._Y(i+1) - y); if (dd < d){ d = dd; k = i; } });
+        if (k < 0) return ""; const v = svg._v[k];
+        return `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)}: le faltaron <b>${fmt(v.f)}</b> votos<br><span style="color:var(--muted)">Escaño n.º ${k+1} · ${fmt(v.acum)} votos acumulados</span>`; }); }
+    svg._v = vueltas; svg._X = X; svg._Y = Y;
+    let antes = -1, vistos = new Set();
+    const pintar = (suave = false) => {
+      const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu), x = X(presu);
+      cur.setAttribute("transform", `translate(${x.toFixed(1)},0)`); clip.setAttribute("width", Math.max(0, x).toFixed(1));
+      const r = Math.pow(10, Math.floor(Math.log10(presu)) - 1);
+      curT.textContent = `${fmt(Math.round(presu/r)*r)} votos`; curT.setAttribute("text-anchor", x > W*.75 ? "end" : x < W*.2 ? "start" : "middle");
+      if (hechas.length === antes) return; antes = hechas.length;
+      ptos.forEach((c,i)=>c.classList.toggle("si", i < hechas.length));
       const g = Object.fromEntries(GRUPOS.map(x=>[x.id, base[x.id][1]])), cambio = Object.fromEntries(GRUPOS.map(x=>[x.id, 0]));
       hechas.forEach(v=>{ g[v.de.id]--; g[v.a.id]++; cambio[v.de.id]--; cambio[v.a.id]++; });
-      const usados = hechas.length ? hechas[hechas.length-1].acum : 0;
+      const usados = hechas.length ? hechas[hechas.length-1].acum : 0, rapido = !suave || quieto;
       pintarHemi(hemi.querySelector(".hi-hemi"), GRUPOS.filter(x=>g[x.id] > 0).map(x=>({color:x.color, n:g[x.id], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id]} escaños${cambio[x.id] ? ` (${cambio[x.id] > 0 ? "+" : "−"}${Math.abs(cambio[x.id])})` : ""}`})), null);
-      contar($("[data-ps-v]"), pudoVotos?.v ?? 0, usados); contar($("[data-ps-n]"), pudoVotos?.n ?? 0, hechas.length);
+      if (rapido){ $("[data-ps-v]").textContent = fmt(usados); $("[data-ps-n]").textContent = fmt(hechas.length); }
+      else { contar($("[data-ps-v]"), pudoVotos?.v ?? 0, usados); contar($("[data-ps-n]"), pudoVotos?.n ?? 0, hechas.length); }
       pudoVotos = {v: usados, n: hechas.length};
-      $("[data-ps-pct]").textContent = hechas.length ? `el ${pct(usados/votantes, usados/votantes < .01 ? 2 : 1)} de los que votaron` : "mueve el deslizador";
+      $("[data-ps-pct]").textContent = hechas.length ? `el ${pct(usados/votantes, usados/votantes < .01 ? 2 : 1)} de los que votaron` : "arrastra sobre la escalera";
       $("[data-ps-g]").innerHTML = GRUPOS.filter(x=>base[x.id][1] || cambio[x.id]).map(x=>`<div class="${cambio[x.id] > 0 ? "mas" : cambio[x.id] < 0 ? "menos" : ""}"><i style="background:${x.color}"></i><span>${esc(CORTO[x.id] || x.nombre)}</span><b>${g[x.id]}</b><small>${cambio[x.id] ? (cambio[x.id] > 0 ? "+" : "−") + Math.abs(cambio[x.id]) : ""}</small></div>`).join("");
-      $("[data-ps-lista]").innerHTML = hechas.length ? hechas.map(v=>`<button data-ult="${v.cod}" title="Llevar al simulador"><b>${esc(nombreProv(v.cod))}</b><span><i style="background:${v.de.color}"></i>${esc(v.p.ultimo.gana)} → <i style="background:${v.a.color}"></i>${esc(v.p.ultimo.segundo)}</span><small>${fmt(v.f)}</small></button>`).join("") : `<p class="nota">Ningún escaño cambia aún.</p>`;
-      pto.setAttribute("cx", X(Math.max(100, usados)).toFixed(1)); pto.setAttribute("cy", Y(hechas.length).toFixed(1));
+      // Quién se los lleva: los escaños que cambian, agrupados por de quién a quién.
+      const pares = {}; hechas.forEach(v=>{ const k = v.de.id + ">" + v.a.id; (pares[k] ||= {de: v.de, a: v.a, l: []}).l.push(v); });
+      const nuevos = new Set(hechas.map(v=>v.cod));
+      $("[data-ps-lista]").innerHTML = hechas.length ? Object.values(pares).sort((a,b)=>b.l.length - a.l.length).map(t=>`<div class="ps-par">
+        <span class="ps-dir"><i style="background:${t.de.color}"></i>${esc(CORTO[t.de.id] || t.de.nombre)}<em>→</em><i style="background:${t.a.color}"></i>${esc(CORTO[t.a.id] || t.a.nombre)}</span><b>${t.l.length}</b>
+        <span class="ps-pv">${t.l.map(v=>`<button type="button" data-ult="${v.cod}" class="${vistos.has(v.cod) ? "" : "nuevo"}" data-tip="${esc(`<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)} con ${fmt(v.f)} votos más<br><span style='color:var(--muted)'>Pulsa para probarlo en el simulador</span>`)}">${esc(nombreProv(v.cod))}</button>`).join("")}</span></div>`).join("")
+        : `<p class="nota">Con tan pocos votos no cambia ningún escaño: el más barato costaba ${fmt(vueltas[0].f)}.</p>`;
+      vistos = nuevos;
     };
-    rango.max = maxLog.toFixed(2); if (!rango.dataset.puesto){ rango.value = 5.1; rango.dataset.puesto = 1; }
-    rango.oninput = pintar;
-    pintar();
+    // Reproducir: el deslizador recorre la escalera de punta a punta (o hasta donde se le diga).
+    let anim = null;
+    const boton = $("[data-ps-play]");
+    function pararPlay(){ if (anim){ cancelAnimationFrame(anim); anim = null; } if (boton) boton.textContent = "▶ Reproducir"; }
+    svg._parar = pararPlay;
+    function irA(hasta, dur){
+      pararPlay(); if (quieto){ rango.value = hasta; pintar(true); return; }
+      const desde = +rango.value, t0 = performance.now(), ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+      boton.textContent = "❚❚ Pausa";
+      const paso = ahora => { const t = Math.min(1, (ahora - t0)/dur); rango.value = desde + (hasta - desde)*ease(t); pintar();
+        if (t < 1 && document.body.contains(svg)) anim = requestAnimationFrame(paso); else pararPlay(); };
+      anim = requestAnimationFrame(paso);
+    }
+    boton.onclick = () => { if (anim) return pararPlay(); if (+rango.value >= maxLog - .01) rango.value = 2; irA(maxLog, 7000*(maxLog - +rango.value)/(maxLog - 2)); };
+    sec.querySelectorAll("[data-ps-ir]").forEach(b=>b.onclick = () => irA(b.dataset.psIr === "max" ? maxLog : Math.min(maxLog, +b.dataset.psIr), 900));
+    rango.max = maxLog.toFixed(2); if (+rango.value > maxLog) rango.value = maxLog;
+    rango.oninput = () => { pararPlay(); pintar(); };
+    // La primera vez, la escalera se recorre sola hasta unos 125.000 votos al llegar a la vista.
+    if (!rango.dataset.puesto){ rango.dataset.puesto = 1; rango.value = 2; pintar();
+      if (quieto || !("IntersectionObserver" in window)){ rango.value = 5.1; pintar(); }
+      else { const io = new IntersectionObserver(es=>{ if (es.some(x=>x.isIntersecting)){ io.disconnect(); irA(Math.min(5.1, maxLog), 3200); } }, {threshold:.5}); io.observe(svg); } }
+    else pintar();
     return vueltas.map(v=>[v.cod, v.p]);
   }
   function mapa(){
