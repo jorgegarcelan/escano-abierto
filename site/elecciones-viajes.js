@@ -119,8 +119,8 @@ export async function montarViajes(raiz, ctx, colorOrigen){
   const guillo = cajaG ? guillotina(cajaG, L, ficha) : null;
   if (cajaE) sankey(cajaE, L, ctx, colorOrigen, ficha, f=>guillo?.filtrar(f));   // pulsar un nodo ilumina sus leyes en la guillotina
   // La ficha también en las listas de leyes del apartado (las que llevan data-ini).
-  raiz.addEventListener("mouseover", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && POR_EXP[b.dataset.ini] && !ficha.fija()) ficha.mostrar(POR_EXP[b.dataset.ini], b); });
-  raiz.addEventListener("mouseout", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && !ficha.fija()) ficha.ocultar(); });
+  raiz.addEventListener("mouseover", ev=>{ const b = ev.target.closest(".el-lista [data-ini], .cad-cards [data-ini], .cad-hielos [data-ini], .cad-filas [data-ini]"); if (b && POR_EXP[b.dataset.ini] && !ficha.fija()) ficha.mostrar(POR_EXP[b.dataset.ini], b); });
+  raiz.addEventListener("mouseout", ev=>{ const b = ev.target.closest(".el-lista [data-ini], .cad-cards [data-ini], .cad-hielos [data-ini], .cad-filas [data-ini]"); if (b && !ficha.fija()) ficha.ocultar(); });
 }
 
 /* ---------- el sankey: de quién presentó cada ley a dónde acabó ---------- */

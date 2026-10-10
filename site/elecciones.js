@@ -85,6 +85,36 @@ const CSS = `
   .elh-cal::after,.elh-cal .hoy{display:none}
   .elh-cal .h.proximo i{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 18%,transparent)}
 }
+.cad-pista{display:inline-flex;gap:2px;flex:none}
+.cad-pista i{width:9px;height:6px;border-radius:2px;background:var(--line)}
+.cad-pista i.si{background:var(--ink)}
+.cad-quien{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
+.cad-quien i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.cad-cards{display:grid;gap:8px}
+.cad-card{all:unset;box-sizing:border-box;display:grid;gap:7px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;background:var(--surface)}
+.cad-card:hover,.cad-card:focus-visible{border-color:var(--line-strong)}
+.cad-card .etq{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.cad-card .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cad-card .pie{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+.cad-hielos{display:grid;gap:4px}
+.cad-hielo{all:unset;box-sizing:border-box;display:grid;grid-template-columns:3.6em minmax(0,1fr);gap:12px;align-items:center;padding:8px 6px;border-radius:8px;cursor:pointer;border-top:1px solid var(--line)}
+.cad-hielo:first-child{border-top:0}
+.cad-hielo:hover,.cad-hielo:focus-visible{background:var(--sunk)}
+.cad-hielo .n{font:700 22px var(--mono);text-align:right;color:#7FB8E0;line-height:1;display:grid}
+.cad-hielo .n small{font:500 10.5px var(--mono);color:var(--muted)}
+.cad-hielo .c{display:grid;gap:4px;min-width:0}
+.cad-hielo .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cad-filas{list-style:none;margin:6px 0 0;padding:0;display:grid}
+.cad-filas li{border-top:1px solid var(--line)}
+.cad-filas li:first-child{border-top:0}
+.cad-filas button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto 5.6em;gap:12px;align-items:center;padding:7px 4px;cursor:pointer;border-radius:6px}
+.cad-filas button:hover,.cad-filas button:focus-visible{background:var(--sunk)}
+.cad-filas .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cad-filas .d{font:12px var(--mono);color:var(--muted);text-align:right}
+@media (max-width:640px){
+  .cad-filas button{grid-template-columns:auto minmax(0,1fr) 5.4em;row-gap:3px}
+  .cad-filas .t{grid-column:1/-1;grid-row:2}
+}
 .el-lead{margin:2px 0 4px;font-size:16px;line-height:1.5;max-width:68ch}
 .el-barras{display:grid;gap:3px}
 .el-barras button{all:unset;display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 3em;gap:10px;align-items:center;font-size:13px;padding:3px 6px;border-radius:6px;cursor:pointer}
@@ -527,6 +557,22 @@ const deAutores = xs => { const n = xs.map(a=>a==="CCAA" ? "de un parlamento aut
 const colorAutor = a => ctx.G?.[a]?.color || COLOR_ORIGEN[a] || "var(--line-strong)";
 const ORDENES_CAD = [["dias","Más tiempo en el Congreso"],["ampl","Más veces ampliado el plazo"],["etapa","Las que llegaron más lejos"],["recientes","Las más recientes"]];
 let selCad = {q:"", autor:"", etapa:"", orden:"dias", n:30};
+// Hasta dónde llegó: cinco tramos (presentada, admitida, informe, Congreso, Senado), rellenos hasta su etapa.
+const pistaEtapas = x => `<span class="cad-pista" role="img" aria-label="${ctx.esc(ETAPAS[x[6]] || "")}" title="${ctx.esc(ETAPAS[x[6]] || "")}">${ETAPAS.map((_,k)=>`<i class="${k <= x[6] ? "si" : ""}"></i>`).join("")}</span>`;
+const quienCorto = x => { const a = x[2] === "PL" ? "GOB" : x[4][0]; const n = x[2] === "PL" ? "Gobierno" : x[4].length > 1 ? "Varios grupos" : (NOMBRE_AUTOR[a] || a);
+  return `<span class="cad-quien"><i style="background:${colorAutor(a)}"></i>${ctx.esc(n)}</span>`; };
+function tarjetaCerca(x){
+  const {esc} = ctx;
+  return `<button class="cad-card" data-ini="${esc(x[0])}"><span class="etq">${esc(ETAPAS[x[6]] || "")}</span><span class="t">${esc(x[1])}</span><span class="pie">${quienCorto(x)}<span>${miles(x[8])} días</span></span></button>`;
+}
+function filaCongelada(x, max){
+  const {esc} = ctx;
+  return `<button class="cad-hielo" data-ini="${esc(x[0])}"><span class="n">${x[7]}<small>veces</small></span><span class="c"><span class="t">${esc(x[1])}</span>${quienCorto(x)}</span></button>`;
+}
+function filaCaducada(x){
+  const {esc} = ctx;
+  return `<li><button data-ini="${esc(x[0])}">${pistaEtapas(x)}<span class="t">${esc(x[1])}</span>${quienCorto(x)}<span class="d">${miles(x[8])} días</span></button></li>`;
+}
 function itemCaducada(x){
   const {esc} = ctx;
   return `<li><button class="linklike t" data-ini="${esc(x[0])}">${esc(x[1].length>170?x[1].slice(0,168)+"…":x[1])}</button><span class="m">${esc(x[0])}</span>
@@ -546,8 +592,8 @@ function caducan(){
       <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)}</span>`).join("")}</div></div>
     <div class="chart"><h3>De dónde vinieron y dónde acabaron</h3><p class="sub">Los proyectos y proposiciones de ley de toda la legislatura: quién los presentó (el Gobierno, cada grupo, el Senado o un parlamento autonómico), hasta dónde llegó cada uno y dónde se quedó el resto. Las firmadas por más de un grupo van juntas. Pulsa un nodo para ver esas leyes y encontrarlas en la guillotina.</p><div id="vj-sankey"><p class="nota">Cargando…</p></div></div>
     <div class="grid2">
-      <div class="chart"><h3>Las que estaban más cerca</h3><p class="sub">Ya las había aprobado el Pleno del Congreso.</p><ul class="el-lista">${cerca.map(itemCaducada).join("")}</ul></div>
-      <div class="chart"><h3>Las más congeladas</h3><p class="sub">Las de plazo de enmiendas más veces ampliado: <button class="linklike" data-gl="plazo-enmiendas">el congelador</button>.</p><ul class="el-lista">${congeladas.map(itemCaducada).join("")}</ul></div>
+      <div class="chart"><h3>Las que estaban más cerca</h3><p class="sub">Ya las había aprobado el Pleno del Congreso. La barra marca hasta qué etapa llegaron.</p><div class="cad-cards">${cerca.map(tarjetaCerca).join("")}</div></div>
+      <div class="chart"><h3>Las más congeladas</h3><p class="sub">Veces que se amplió su plazo de enmiendas: <button class="linklike" data-gl="plazo-enmiendas">el congelador</button>.</p><div class="cad-hielos">${congeladas.map(x=>filaCongelada(x, congeladas[0][7])).join("")}</div></div>
     </div>
     <div class="chart" id="el-cad-todas"><h3>Las ${miles(C.total)}, una a una</h3>
       <div class="controls"><input type="search" data-cad="q" placeholder="Busca por título o expediente…" aria-label="Buscar una ley" value="${esc(selCad.q)}">
@@ -565,7 +611,7 @@ function montarCaducan(raiz){
     const k = {dias:(a,b)=>b[8]-a[8], ampl:(a,b)=>b[7]-a[7]||b[8]-a[8], etapa:(a,b)=>b[6]-a[6]||b[8]-a[8], recientes:(a,b)=>b[5].localeCompare(a[5])}[selCad.orden];
     xs.sort(k);
     caja.innerHTML = `<p class="nota" style="margin:4px 0 0">${xs.length === C.total ? `Las ${miles(xs.length)} leyes.` : `${miles(xs.length)} de ${miles(C.total)} leyes.`}</p>
-      <ul class="el-lista">${xs.slice(0, selCad.n).map(itemCaducada).join("") || `<li class="nota">Ninguna ley coincide.</li>`}</ul>
+      <ul class="cad-filas">${xs.slice(0, selCad.n).map(filaCaducada).join("") || `<li class="nota">Ninguna ley coincide.</li>`}</ul>
       ${xs.length > selCad.n ? `<button class="btn" data-cad-mas>Ver ${Math.min(30, xs.length - selCad.n)} más</button>` : ""}`;
   };
   let t0 = null;
