@@ -251,6 +251,26 @@ const CSS = `
 .hi-bar small{font:11px var(--mono);color:var(--muted);text-align:right}
 .hi-bar-m .t{background:none;height:14px}
 .hi-bar-m em{position:absolute;left:var(--m);transform:translateX(-50%);font:600 10px var(--mono);font-style:normal;color:var(--muted);white-space:nowrap}
+.rio-ctl{display:flex;justify-content:flex-end;margin:-4px 0 6px}
+svg.rio{display:block;width:100%;height:auto;overflow:visible;cursor:pointer}
+svg.rio .bandas rect{stroke:var(--surface);stroke-width:1;transition:opacity .3s}
+svg.rio.consel .bandas rect:not(.sel){opacity:.68}
+svg.rio .marco{fill:none;stroke:var(--ink);stroke-width:1.5;pointer-events:none}
+svg.rio .ejes line{stroke:var(--line);stroke-dasharray:2 4}
+svg.rio .ejes text,svg.rio .mayoria text,svg.rio .anios text{font:10.5px var(--mono);fill:var(--muted)}
+svg.rio .mayoria line{stroke:var(--ink);stroke-dasharray:4 3;opacity:.6}
+svg.rio .anios .selt{font-weight:700;fill:var(--ink)}
+svg.rio .anios text{transition:opacity .2s}
+svg.rio .lbls{transition:opacity .25s;pointer-events:none}
+svg.rio .lbls text{font:600 11.5px var(--sans,inherit)}
+svg.rio .der text{font:600 11.5px var(--sans,inherit);fill:var(--ink)}
+svg.rio .hito{cursor:help}
+svg.rio .hito line{stroke:var(--muted);stroke-dasharray:2 2}
+svg.rio .hito circle{fill:var(--ink)}
+svg.rio .hito text{font:600 10.5px var(--sans,inherit);fill:var(--muted)}
+svg.rio .hito:hover text{fill:var(--ink)}
+svg.rio .cruz{stroke:var(--ink);stroke-width:1;opacity:0;pointer-events:none}
+.rio-ley{margin-top:8px}
 .pv-ctl{min-width:0}
 .pv-ctl .hi-seg{display:flex;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .pv-ctl .hi-seg button{white-space:nowrap;flex:none}
@@ -709,6 +729,109 @@ export async function miniaturas(el, c){
 /* =====================================================================================================
    ELECCIONES DESDE 1977: las dieciséis y sus 52 provincias, todo al mismo año
    ===================================================================================================== */
+/* Los 350, legislatura a legislatura: un rectángulo por partido y legislatura (familias finas, en el orden en que se
+   sientan; cada tramo, con el nombre y el color de su marca en esa elección). Escaños o votos, hitos arriba. */
+const HITOS_RIO = [["197706","Cortes constituyentes"],["198210","Mayoría absoluta del PSOE"],["199603","Primer Gobierno del PP"],["201111","Mayoría absoluta del PP"],["201512","Fin del bipartidismo"],["201904","Entra Vox"]];
+function rioLegislaturas(caja, E, {sel = E.length - 1, elegir = ()=>{}} = {}){
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches, NS = "http://www.w3.org/2000/svg";
+  const FAMS = Object.keys(ORDEN_FAM).sort((a,b)=>ORDEN_FAM[a] - ORDEN_FAM[b]);
+  const marcaDe = (e, f) => { if (f === "OTROS") return {n:"Otros", c:G8.OTROS.color};
+    const t = e.partidos.filter(x=>x[2]===f).sort((a,b)=>b[3]-a[3])[0]; return t ? {n: siglaCorta(t[0]), c: colorPartido(t[0], f)} : {n: f, c: G8.OTROS.color}; };
+  const MARCAS = E.map(e=>Object.fromEntries(FAMS.map(f=>[f, marcaDe(e, f)])));
+  let modo = caja._modo || "e", k = sel, W, H, m, xs, Y, geo = {};
+  const val = (j, f, md = modo) => { const x = E[j].fam[f]; return !x ? 0 : md === "e" ? x[1] : x[0]/E[j].validos*100; };
+  const fmtV = v => modo === "e" ? String(v) : `${dec(v, 1)} %`;
+  // La geometría de cada rectángulo, para el modo que toque.
+  function calcular(md){
+    const tope = md === "e" ? 350 : 100, Yf = v => m.t + (1 - v/tope)*(H - m.t - m.b), out = {};
+    E.forEach((e,j)=>{ let base = 0; FAMS.forEach(f=>{ const v = val(j, f, md); out[j + "|" + f] = {y: Yf(base + v), h: Yf(base) - Yf(base + v)}; base += v; }); });
+    return {out, Yf};
+  }
+  function dibujar(){
+    W = Math.max(320, caja.clientWidth || 800); const estrecho = W < 640; H = estrecho ? 290 : 350;
+    m = {l: 34, r: estrecho ? 86 : 132, t: estrecho ? 30 : 44, b: 24};
+    const t0 = tiempo(E[0].fecha), t1 = tiempo(FIN), X = t => m.l + (tiempo(t) - t0)/(t1 - t0)*(W - m.l - m.r);
+    xs = E.map(e=>X(e.fecha)).concat([X(FIN)]);
+    const {out, Yf} = calcular(modo); geo = out; Y = Yf;
+    const rects = E.map((e,j)=>FAMS.filter(f=>E[j].fam[f]).map(f=>{ const g = out[j + "|" + f];
+      return `<rect data-j="${j}" data-f="${f}" x="${xs[j].toFixed(1)}" y="${g.y.toFixed(1)}" width="${(xs[j+1] - xs[j]).toFixed(1)}" height="${Math.max(0, g.h).toFixed(1)}" fill="${MARCAS[j][f].c}"/>`; }).join("")).join("");
+    const hitos = HITOS_RIO.map(([id, t], i)=>{ const j = E.findIndex(e=>e.id===id); if (j < 0) return ""; const x = xs[j] + 1, nivel = i % 2, yy = 12 + nivel*14;
+      return `<g class="hito" data-tip="${esc(`<b>${esc(anioLargo(E[j]))}</b><br>${esc(t)}`)}"><line x1="${x}" x2="${x}" y1="${yy + 3}" y2="${m.t}"/><circle cx="${x}" cy="${yy}" r="3"/>${estrecho ? "" : `<text x="${x + 6}" y="${yy + 4}">${esc(t)}</text>`}</g>`; }).join("");
+    caja.innerHTML = `<div class="rio-ctl"><div class="hi-seg" role="group" aria-label="Qué se apila"><button data-rio="e" aria-pressed="${modo==="e"}">Escaños</button><button data-rio="v" aria-pressed="${modo==="v"}">Votos</button></div></div>
+      <svg class="rio" viewBox="0 0 ${W} ${H}" role="img" aria-label="Escaños de cada partido en cada legislatura desde 1977">
+      <defs><clipPath id="rio-clip"><rect x="0" y="0" width="${quieto ? W : 0}" height="${H}"/></clipPath></defs>
+      <g class="ejes"></g><g class="hitos">${hitos}</g><g class="bandas" clip-path="url(#rio-clip)">${rects}</g><g class="mayoria"></g><g class="lbls" clip-path="url(#rio-clip)"></g><g class="der"></g><g class="anios"></g><rect class="marco" y="${m.t}" height="${H - m.t - m.b}" rx="2"/>
+      <line class="cruz" y1="${m.t}" y2="${H - m.b}"/></svg><div class="el-leyenda rio-ley"></div>`;
+    rotular(); marcar(k);
+    // La leyenda: cada color, con las marcas que lo usaron (PCE · IU, AP · CD · PP…).
+    const porColor = new Map(); E.forEach((e,j)=>FAMS.forEach(f=>{ if (!E[j].fam[f]?.[1]) return; const x = MARCAS[j][f]; const l = porColor.get(x.c) || []; if (!l.includes(x.n)) l.push(x.n); porColor.set(x.c, l); }));
+    caja.querySelector(".rio-ley").innerHTML = [...porColor].map(([c,ns])=>`<span><i style="background:${c}"></i>${esc(ns.join(" · "))}</span>`).join("");
+    // Al llegar a la vista, el río se dibuja de izquierda a derecha.
+    const clip = caja.querySelector("#rio-clip rect");
+    if (!quieto){ const io = new IntersectionObserver(es=>{ if (!es.some(x=>x.isIntersecting)) return; io.disconnect();
+      const t0 = performance.now(), paso = ahora => { const t = Math.min(1, (ahora - t0)/1400), e2 = 1 - Math.pow(1 - t, 3); clip.setAttribute("width", (W*e2).toFixed(1)); if (t < 1) requestAnimationFrame(paso); }; requestAnimationFrame(paso); }, {threshold:.3});
+      io.observe(caja); }
+    const svg = caja.querySelector("svg.rio"), cruz = svg.querySelector(".cruz");
+    const cual = ev => { const r = svg.getBoundingClientRect(), xv = (ev.clientX - r.left)/r.width*W; let j = 0; while (j < E.length-1 && xv >= xs[j+1]) j++; return j; };
+    svg.addEventListener("mousemove", ev=>{ if (ev.target.closest(".hito")) return; const j = cual(ev); cruz.setAttribute("x1", (xs[j] + xs[j+1])/2); cruz.setAttribute("x2", (xs[j] + xs[j+1])/2); cruz.style.opacity = .5;
+      const filas = FAMS.filter(f=>val(j, f) > 0).sort((a,b)=>val(j, b) - val(j, a)).filter(f=>modo === "v" ? val(j, f) >= .5 : true);
+      tip(`<b>${esc(anioLargo(E[j]))}</b>${filas.map(f=>filaTip(MARCAS[j][f].c, MARCAS[j][f].n, fmtV(val(j, f)))).join("")}<div style="color:var(--muted);margin-top:4px">Pulsa para verla en toda la página</div>`, ev); });
+    svg.addEventListener("mouseleave", ()=>{ cruz.style.opacity = 0; tip(""); });
+    svg.addEventListener("click", ev=>{ if (ev.target.closest(".hito")) return; elegir(cual(ev)); });
+  }
+  // Ejes, mayoría, rótulos dentro de las bandas y los últimos valores a la derecha (sin pisarse).
+  function rotular(){
+    const svg = caja.querySelector("svg.rio"), estrecho = W < 640;
+    const marcas = modo === "e" ? [0, 100, 250, 350] : [0, 25, 50, 75, 100];
+    svg.querySelector(".ejes").innerHTML = marcas.map(v=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${modo === "e" ? v : v + " %"}</text>`).join("");
+    svg.querySelector(".mayoria").innerHTML = modo === "e" ? `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(176)}" y2="${Y(176)}"/><text x="${m.l - 6}" y="${Y(176) + 4}" text-anchor="end">176</text>` : "";
+    // Dentro: cada tramo de una misma marca, rotulado en su legislatura más ancha… si cabe.
+    let lbl = "";
+    FAMS.forEach(f=>{ let j = 0; while (j < E.length){ const n = MARCAS[j][f].n; let fin = j; while (fin + 1 < E.length && MARCAS[fin+1][f].n === n && val(fin+1, f) > 0) fin++;
+        if (val(j, f) > 0){ const anchoT = n.length*6.6 + 8; let mej = null;
+          // El hueco más holgado para el nombre: una legislatura o hasta tres seguidas, si la banda va más o menos a la misma altura.
+          for (let q = j; q <= fin; q++) for (let L = 1; L <= 3 && q + L - 1 <= fin; L++){
+            const gs = Array.from({length:L}, (_,i)=>geo[(q+i) + "|" + f]), w = xs[q+L] - xs[q], hMin = Math.min(...gs.map(g=>g.h));
+            const cy = gs.reduce((t,g)=>t + g.y + g.h/2, 0)/L, nivelado = gs.every(g=>Math.abs(g.y + g.h/2 - cy) < g.h/2 - 6);
+            if (hMin >= 15 && w >= anchoT && nivelado && (!mej || hMin*Math.min(w, 120) > mej.p)) mej = {x: (xs[q] + xs[q+L])/2, y: cy, p: hMin*Math.min(w, 120), c: MARCAS[q][f].c}; }
+          if (mej) lbl += `<text x="${mej.x.toFixed(1)}" y="${(mej.y + 4).toFixed(1)}" text-anchor="middle" fill="${textoSobre(mej.c)}">${esc(n)}</text>`; }
+        j = fin + 1; } });
+    svg.querySelector(".lbls").innerHTML = lbl;
+    // A la derecha, la última legislatura: nombre y valor de cada partido, separados para que no se pisen.
+    const ult = E.length - 1, der = FAMS.filter(f=>val(ult, f) > 0).map(f=>({y: geo[ult + "|" + f].y + geo[ult + "|" + f].h/2 + 4, t: `${MARCAS[ult][f].n} ${fmtV(val(ult, f))}`, c: MARCAS[ult][f].c, v: val(ult, f)})).filter(x=>modo === "e" || x.v >= 1).sort((a,b)=>a.y - b.y);
+    for (let i = 1; i < der.length; i++) der[i].y = Math.max(der[i].y, der[i-1].y + 13);
+    for (let i = der.length - 2; i >= 0; i--) der[i].y = Math.min(der[i].y, der[i+1].y - 13);
+    svg.querySelector(".der").innerHTML = der.map(x=>`<circle cx="${W - m.r + 10}" cy="${x.y - 4}" r="3.5" fill="${x.c}"/><text x="${W - m.r + 18}" y="${x.y.toFixed(1)}">${esc(x.t)}</text>`).join("");
+    const muestra = []; E.forEach((e,j)=>{ if (j === E.length - 1 || !muestra.length || xs[j] - xs[muestra[muestra.length-1]] >= (estrecho ? 46 : 40)) muestra.push(j); });
+    if (muestra.length > 1 && xs[muestra[muestra.length-1]] - xs[muestra[muestra.length-2]] < 40) muestra.splice(muestra.length - 2, 1);   // el último año, siempre; el de antes, fuera si se pisan
+    svg.querySelector(".anios").innerHTML = muestra.map(j=>`<text data-a="${j}" x="${xs[j].toFixed(1)}" y="${H - 6}" text-anchor="${j === 0 ? "start" : "middle"}">${E[j].fecha.slice(0,4)}</text>`).join("") + `<text class="selt" y="${H - 6}" text-anchor="middle"></text>`;
+  }
+  // La legislatura elegida: el resto, más tenue; su año, abajo y en negrita.
+  function marcar(j){
+    k = j; const svg = caja.querySelector("svg.rio"); if (!svg) return;
+    svg.classList.add("consel"); svg.querySelectorAll(".bandas rect").forEach(r=>r.classList.toggle("sel", +r.dataset.j === j));
+    const cx = (xs[j] + xs[j+1])/2, st = svg.querySelector(".selt"); st.setAttribute("x", cx.toFixed(1)); st.textContent = anio(E[j]);
+    const marco = svg.querySelector(".marco"); marco.setAttribute("x", xs[j].toFixed(1)); marco.setAttribute("width", (xs[j+1] - xs[j]).toFixed(1));
+    svg.querySelectorAll(".anios [data-a]").forEach(t=>{ t.style.opacity = Math.abs(+t.getAttribute("x") - cx) < 34 ? 0 : 1; });
+  }
+  // Escaños ↔ votos: los rectángulos se mueven a su sitio nuevo.
+  function cambiarModo(md){
+    if (md === modo) return; const antes = geo; modo = caja._modo = md; const {out, Yf} = calcular(md); geo = out; Y = Yf;
+    caja.querySelectorAll("[data-rio]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.rio === md)));
+    const rs = [...caja.querySelectorAll(".bandas rect")], t0 = performance.now(), dur = quieto ? 1 : 650, ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+    caja.querySelector(".lbls").style.opacity = 0;
+    const paso = ahora => { const t = Math.min(1, (ahora - t0)/dur), e2 = ease(t);
+      rs.forEach(r=>{ const kk = r.dataset.j + "|" + r.dataset.f, a = antes[kk], b = out[kk]; r.setAttribute("y", (a.y + (b.y - a.y)*e2).toFixed(1)); r.setAttribute("height", Math.max(0, a.h + (b.h - a.h)*e2).toFixed(1)); });
+      if (t < 1) requestAnimationFrame(paso); else { rotular(); marcar(k); caja.querySelector(".lbls").style.opacity = 1; } };
+    requestAnimationFrame(paso);
+  }
+  caja.onclick = ev=>{ const b = ev.target.closest("[data-rio]"); if (b) cambiarModo(b.dataset.rio); };
+  dibujar();
+  // Si cambia el ancho (girar el móvil, redimensionar), se vuelve a dibujar.
+  let ancho = caja.clientWidth; caja._ro?.disconnect();
+  if ("ResizeObserver" in window){ caja._ro = new ResizeObserver(()=>{ if (Math.abs(caja.clientWidth - ancho) > 24){ ancho = caja.clientWidth; dibujar(); } }); caja._ro.observe(caja); }
+  return {marcar};
+}
 let selH = null, playH = null;
 /* Los escaños de una elección por candidatura, de izquierda a derecha por familia, para pintar el hemiciclo. */
 const segsNac = e => segsLista(e.partidos.map(p=>[p[0], p[2], p[3], p[4]]), e.validos);
@@ -719,7 +842,6 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
   const cods = Object.keys(GEO.provincias).filter(c2=>E[E.length-1].prov[c2]);
   let k = E.findIndex(e=>e.id===anioRecordado()); if (k < 0) k = selH ?? E.length - 1;
   const D = {};   // el detalle de cada elección (por provincia y candidatura)
-  const Gfam = E.map(e=>Object.fromEntries(Object.entries(porGrupo(e.fam)).map(([g,v])=>[g,v[1]])));
   const topFam = (e, f) => (e.partidos || []).filter(x=>x[2]===f).sort((a,b)=>b[3]-a[3])[0];
   // La candidatura más votada (no la familia: en 2015, Podemos e IU iban por separado). Sin el detalle, la familia como aproximación.
   function ganador(j, cod){
@@ -740,8 +862,8 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
       <div class="hi-sel"><button class="hi-sel-play" data-hi-play>▶ Reproducir</button><div class="hi-sel-r" role="group" aria-label="Elección">${E.map((e,j)=>`<button class="hi-sel-b" data-hi="${j}" aria-pressed="${j===k}" title="${esc(anioLargo(e))}">${(hemiReal("") || hemiSVG(350)).replace(/class="hi-hemi[^"]*"/, `class="hi-hemi hi-real" data-mini="${j}"`)}<b>${anio(e)}</b></button>`).join("")}</div></div>
       <div class="hi-top hi-portada"><div class="chart hi-hemi-w"><div id="hi-hemi">${hemiReal(" ") || hemiSVG(350, {etiqueta:" "})}</div><div class="el-leyenda" id="hi-leyenda"></div></div>
         <div class="chart" id="hi-ficha"></div></div></section>
-    <section class="sec"><div class="sec-h"><h2>Los 350 escaños, legislatura a legislatura</h2><p>Por familia de partidos, de 1977 a la disolución de 2026. Pulsa un año para verlo en toda la página.</p></div>
-      <div class="chart"><div id="hi-rio"></div>${leyendaGrupos()}</div></section>
+    <section class="sec"><div class="sec-h"><h2>Los 350 escaños, legislatura a legislatura</h2><p>Cada partido en su sitio, de 1977 a la disolución de 2026, con el nombre y el color que tenía en cada elección. Pulsa una legislatura para verla en toda la página.</p></div>
+      <div class="chart"><div id="hi-rio"></div></div></section>
     <section class="sec" id="hi-provincias"><div class="sec-h"><h2>Provincia a provincia</h2><p>Las 52 circunscripciones en la elección elegida. Pulsa una provincia para abrir su ficha.</p></div>
       <div class="pv-ctl"><div class="hi-seg" role="group" aria-label="Qué se pinta">${METRICAS.map(([v,l])=>`<button data-pv-m="${v}" aria-pressed="${v===modoProv}">${esc(l)}</button>`).join("")}</div></div>
       <div class="pv-top"><div class="chart pv-mapa-w"><h3 id="pv-t"></h3><div id="pv-mapa">${mapaSVG(()=>null)}</div><div id="pv-ley"></div></div>
@@ -769,8 +891,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
     sec.querySelectorAll("[data-hi]").forEach(b=>b.setAttribute("aria-pressed", String(+b.dataset.hi === k)));
     const b = sec.querySelector(`.hi-sel-b[data-hi="${k}"]`), r = $(".hi-sel-r");
     if (b && r){ const bl = b.offsetLeft - r.offsetLeft, bw = b.offsetWidth; if (bl < r.scrollLeft || bl + bw > r.scrollLeft + r.clientWidth) r.scrollTo({left: bl - r.clientWidth/2 + bw/2, behavior: quieto ? "auto" : "smooth"}); }
-    const rio = $("#hi-rio"); rio.innerHTML = graficoApilado(E, Gfam, {sel:k, ancho:rio.clientWidth});
-    montarApilado(rio.querySelector("svg"), E, Gfam, j=>{ pararH(); ir(j); });
+    rio?.marcar(k);
   }
   // ---------- el mapa ----------
   function pintarMapa(){
@@ -849,6 +970,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
     const tr = ev.target.closest("tr[data-ir]"); if (tr && !ev.target.closest("a")) location.hash = tr.dataset.ir.slice(1);
   });
   $("#pv-busca").addEventListener("input", ev=>{ buscaProv = ev.target.value; tabla(); });
+  const rio = rioLegislaturas($("#hi-rio"), E, {sel: k, elegir: j=>{ pararH(); ir(j); }});
   // El detalle de las dieciséis (unos 20 KB cada una), antes de pintar: el ganador de cada provincia es su candidatura más votada.
   pintarPortada();
   await Promise.all(E.map(e=>cargarD(e.id).then(d=>{ if (d) D[e.id] = d; })));
