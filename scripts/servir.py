@@ -20,5 +20,12 @@ class SinCache(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     puerto = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
     carpeta = sys.argv[2] if len(sys.argv) > 2 else "site"
+    try:
+        servidor = ThreadingHTTPServer(("127.0.0.1", puerto), partial(SinCache, directory=carpeta))
+    except OSError as e:
+        if e.errno != 48:   # EADDRINUSE en macOS
+            raise
+        sys.exit(f"El puerto {puerto} ya está ocupado: probablemente la web ya está abierta en http://localhost:{puerto}.\n"
+                 f"Para ver qué lo usa: lsof -nP -iTCP:{puerto} -sTCP:LISTEN")
     print(f"http://localhost:{puerto} · {carpeta}/ (sin caché)")
-    ThreadingHTTPServer(("127.0.0.1", puerto), partial(SinCache, directory=carpeta)).serve_forever()
+    servidor.serve_forever()
