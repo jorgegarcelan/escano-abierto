@@ -213,7 +213,7 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
     lista.innerHTML = `<h4>${esc(titulo)}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
     alElegir(pasa);
   });
-  lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b, true); });
+  lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b) ficha.pulsar(L.find(x=>x.exp===b.dataset.vjLey), b); });
   lista.addEventListener("mouseover", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b && !ficha.fija()) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b); });
   lista.addEventListener("mouseleave", ()=>{ if (!ficha.fija()) ficha.ocultar(); });
   // El rastro de una selección: por cada enlace, la banda de las suyas (encima del enlace, con el color del grupo,
@@ -336,7 +336,7 @@ function guillotina(caja, L, ficha){
   // Ficha al pasar por un punto; al pulsar, se queda fija.
   svg.addEventListener("mouseover", ev=>{ const c = ev.target.closest("circle"); if (c && !ficha.fija()) ficha.mostrar(L[+c.dataset.i], c); });
   svg.addEventListener("mouseout", ev=>{ if (ev.target.closest("circle") && !ficha.fija()) ficha.ocultar(); });
-  svg.addEventListener("click", ev=>{ const c = ev.target.closest("circle"); if (c) ficha.mostrar(L[+c.dataset.i], c, true); });
+  svg.addEventListener("click", ev=>{ const c = ev.target.closest("circle"); if (c) ficha.pulsar(L[+c.dataset.i], c); });
   // Empieza con el final (la foto de la disolución) y se reproduce sola la primera vez que se ve entera.
   objetivos(); pts.forEach(p=>{ p.x = p.tx; p.y = p.ty; p.o = p.to; }); paso();
   if (!reducido && "IntersectionObserver" in window){
@@ -364,7 +364,7 @@ function crearFicha(ctx){
       <div class="s">${esc(quien(l))} · ${esc(l.exp)}${l.comision ? ` · ${esc(l.comision)}` : ""}</div>
       <ol>${pasos}${final ? `<li class="fin" style="--c:${D[2]}">${final}</li>` : ""}</ol>
       ${l.ampl ? `<div class="s" style="margin-top:8px">Plazo de enmiendas ampliado ${l.ampl} ${l.ampl === 1 ? "vez" : "veces"}.</div>` : ""}
-      <div class="ir"><button class="btn" data-ini="${esc(l.exp)}">Ver su tramitación →</button>${fija ? "" : `<small style="color:var(--muted)">Pulsa para fijarla</small>`}</div>`;
+      <div class="ir"><button class="btn" data-ini="${esc(l.exp)}">Ver su tramitación →</button>${fija ? "" : `<small style="color:var(--muted)">Pulsa para ver su tramitación</small>`}</div>`;
   }
   function colocar(ancla){
     const r = ancla.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight, vw = document.documentElement.clientWidth;
@@ -375,8 +375,12 @@ function crearFicha(ctx){
     if (x === Math.max(8, Math.min(vw - w - 8, r.left)) && r.bottom + h + 8 < innerHeight) y = r.bottom + 8;
     el.style.left = Math.max(8, x) + "px"; el.style.top = Math.max(8, y) + "px";
   }
+  const conRaton = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const api = {
     fija: () => fija,
+    pulsar(l, ancla){ if (!l) return;
+      if (conRaton){ api.ocultar(); location.hash = "iniciativa-" + l.exp.replace("/", "-"); }
+      else api.mostrar(l, ancla, true); },
     mostrar(l, ancla, fijar=false){ if (!l) return; fija = fijar; el.innerHTML = contenido(l); el.hidden = false; colocar(ancla); },
     ocultar(){ fija = false; el.hidden = true; },
   };
