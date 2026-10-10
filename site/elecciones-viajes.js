@@ -195,17 +195,19 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   svg.addEventListener("mouseleave", ()=>tipVj(""));
   svg.addEventListener("click", ev=>{
     const r = ev.target.closest("[data-n]"), p = ev.target.closest("[data-e]");
-    const n = r ? nodo(r.dataset.n) : p ? enlace(+p.dataset.e).b : null;
-    const f = r ? n?.filtro : p ? enlace(+p.dataset.e).filtro : null;
+    // Pulsar un flujo es pulsar su grupo (si sale de un grupo) o la salida a la que va.
+    const e = p ? enlace(+p.dataset.e) : null, n = r ? nodo(r.dataset.n) : e ? (e.origen ? e.a : e.b) : null;
+    const f = n?.filtro;
     if (!f) return;
-    const id = r ? n.id : "e"+p.dataset.e;
+    const id = n.id;
     actual = actual === id ? null : id;
     svg.classList.toggle("filtrado", !!actual);
     svg.querySelectorAll("[data-n]").forEach(x=>x.classList.remove("on","off"));
     if (!actual){ rastro(null); lista.hidden = true; alElegir(null); return; }
     const pasa = l => (f.quien ? quienPresento(l) === f.quien : true) && (f.etapa !== undefined ? l.etapa === f.etapa && f.destinos.includes(l.destino) : true);
     const xs = L.filter(pasa).sort((a,b)=>b.d0-a.d0);
-    rastro(xs, f.quien ? n.color : null);
+    // Los grupos de color gris (el Mixto, «varios») se confundirían con el fondo: su rastro va con el color del texto.
+    rastro(xs, f.quien ? (["MIXTO","VARIOS"].includes(f.quien) ? "var(--ink)" : n.color) : null);
     lista.hidden = false;
     const titulo = f.quien ? `${xs.length} presentadas por: ${NOMBRE_ORIGEN_V[f.quien] || f.quien}` : `${xs.length} ${n.nombre.toLowerCase()} · se quedaron en «${COLUMNAS[f.etapa]}»`;
     lista.innerHTML = `<h4>${esc(titulo)}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
@@ -238,7 +240,7 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
       rects(n.id).forEach(r=>{ r.classList.toggle("on", !!m); r.classList.toggle("off", m === 0); });
       v.closest("text").classList.toggle("off", m === 0); };
     if (!xs){ nodos.forEach(n=>{ pintarNodo(n); rects(n.id).forEach(r=>r.classList.remove("on","off")); }); return; }
-    capa.innerHTML = enlaces.map((e,i)=>{ const m = xs.filter(e.de).length; return m ? `<path d="${e.banda(m*k)}" fill="${e.origen || !color ? e.origen ? e.color : "var(--ink)" : color}" data-e="${i}"/>` : ""; }).join("");
+    capa.innerHTML = enlaces.map((e,i)=>{ const m = xs.filter(e.de).length; return m ? `<path d="${e.banda(m*k)}" fill="${e.origen && (!color || color !== "var(--ink)") ? e.color : color || "var(--ink)"}" data-e="${i}"/>` : ""; }).join("");
     // Mientras el rastro no llega a un nodo, ese nodo se queda apagado.
     nodos.forEach(n=>{ const v = valores.get(n.id); if (v) v.closest("text").classList.add("off"); rects(n.id).forEach(r=>r.classList.add("off")); });
     const hechos = new Set();
