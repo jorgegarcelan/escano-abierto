@@ -309,8 +309,7 @@ const PAGINAS = [
   {id:"legislatura", c:"En cifras", t:"La legislatura en cifras", d:"La XV legislatura, de la sesión constitutiva a la disolución: votaciones, leyes, decretos y preguntas."},
   {id:"repite", c:"¿Repite?", t:"¿Repite?", d:"Quién de los 350 vuelve a ir en las listas, en qué puesto y por qué provincia."},
   {id:"escano", c:"Precio del escaño", t:"El precio de un escaño", d:"Cuántos votos cuesta un diputado en cada provincia, el último escaño de cada una y un simulador D'Hondt."},
-  {id:"historico", c:"Desde 1977", t:"Elecciones desde 1977", d:"Las dieciséis generales, con la ficha de cada elección y de su legislatura."},
-  {id:"provincias", c:"Provincias", t:"Provincias", d:"Las 52 circunscripciones, elección a elección: quién ganó en cada una, sus escaños, su participación y lo que costó cada escaño."},
+  {id:"historico", c:"Desde 1977", t:"Elecciones desde 1977", d:"Las dieciséis generales y sus 52 provincias: el hemiciclo de cada una, quién ganó dónde y cómo ha cambiado cada circunscripción."},
   {id:"metricas", c:"Métricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
   {id:"mapa", c:"Por municipios", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
   {id:"voto", c:"Geografía del voto", t:"La geografía del voto", d:"Ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el peso del voto: cómo vota cada España, municipio a municipio."},
@@ -324,10 +323,12 @@ export async function render(el, c, sub){
   if (!DATOS){ el.innerHTML = `<p class="nota">Cargando la sección de elecciones…</p>`; await cargar(); }
   if (!DATOS){ el.innerHTML = `<p class="nota">No se han podido cargar los datos de las elecciones.</p>`; return; }
   sub = (sub || "").replace(/^el-/, "");
+  // Provincias ya es parte de «Elecciones desde 1977»: el enlace antiguo lleva allí, a su mitad provincial.
+  const aProvincias = sub === "provincias"; if (aProvincias) sub = "historico";
   const eleccion = /^\d{4}(-abril|-noviembre)?$/.test(sub), provincia = sub.startsWith("provincia-");
   if (!sub || (!PAG[sub] && !eleccion && !provincia)) return home(el);
   const {esc} = ctx;
-  const actual = eleccion ? "historico" : provincia ? "provincias" : sub;
+  const actual = eleccion || provincia ? "historico" : sub;
   const p = PAG[sub];
   const g = NAV.findIndex(x=>x.ids.includes(actual)), i = ORDEN_NAV.indexOf(actual);
   const grupos = NAV.map((x,k)=>`<div class="g${k===g?" act":""}"><span class="gt">${String(k+1).padStart(2,"0")} · ${esc(x.n)}</span><div class="gi">${x.ids.map(id=>`<a href="#elecciones-${id}"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div></div>`).join("");
@@ -350,8 +351,7 @@ export async function render(el, c, sub){
     import("./elecciones-cifras.js").then(m=>m.montarCifras(cuerpo, ctx, DATOS.balance)).catch(err=>console.error(err)); }
   else if (sub === "repite"){ cuerpo.innerHTML = `<section class="sec" id="el-repite" style="padding-top:8px"><p class="nota">Cargando…</p></section>`; pintarRepite(cuerpo.querySelector("#el-repite")); }
   else if (sub === "escano") hist("pintarEscano");
-  else if (sub === "historico") hist("pintarHistorico");
-  else if (sub === "provincias") hist("pintarProvincias");
+  else if (sub === "historico") hist(aProvincias ? "pintarProvincias" : "pintarHistorico");
   else if (sub === "metricas") hist("pintarMetricas");
   else if (sub === "mapa") hist("pintarMunicipios");
   else if (sub === "noche") hist("pintarNoche");
@@ -365,7 +365,7 @@ export async function render(el, c, sub){
 const GRUPOS_PAG = [
   {n:"La legislatura", t:"La legislatura que se acaba", d:"Lo que deja hecho y sin hacer la XV legislatura, y quién vuelve a presentarse.", ids:["caducan","legislatura","repite"]},
   {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano"], los350:true},
-  {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una, provincia a provincia y en cifras.", ids:["historico","provincias","metricas"]},
+  {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una, provincia a provincia y en cifras.", ids:["historico","metricas"]},
   {n:"El mapa", t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
   {n:"La noche", t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
 ];
@@ -415,7 +415,6 @@ function home(el){
     legislatura: ()=>tarjeta("legislatura", fmt(B.votaciones), `votaciones; la más ajustada, ${B.mas_ajustada?`${B.mas_ajustada.si} a ${B.mas_ajustada.no}`:""}`),
     repite: ()=>tarjeta("repite", DATOS.hay?.candidaturas ? "" : "28 oct", DATOS.hay?.candidaturas ? "" : "el BOE publica las listas", miniHemi()),
     escano: ()=>tarjeta("escano", "", ""),
-    provincias: ()=>tarjeta("provincias", "52", "circunscripciones", miniMapa()),
     historico: ()=>tarjeta("historico", "16", "elecciones generales desde 1977"),
     metricas: ()=>tarjeta("metricas", "", ""),
     mapa: ()=>tarjeta("mapa", "8.131", "municipios"),
@@ -500,10 +499,6 @@ function miniWaffle(){
 function miniHemi(){
   const P = ctx.PLANO; if (!P) return "";
   return `<svg viewBox="0 0 ${P.ancho} ${P.alto}" aria-hidden="true">${ctx.DIPS.filter(d=>!d[8] && d[5]!=null).map(d=>`<circle cx="${d[5]}" cy="${d[6]}" r="5" fill="${ctx.G[d[1]]?.color||"#888"}"/>`).join("")}</svg>`;
-}
-function miniMapa(){
-  if (!GEO) return "";
-  return `<svg viewBox="0 0 ${GEO.ancho} ${GEO.alto}" aria-hidden="true">${Object.values(GEO.provincias).map(p=>`<path d="${p.d}" style="fill:var(--sunk);stroke:var(--line-strong)" stroke-width="1"/>`).join("")}</svg>`;
 }
 
 /* ---------- calendario: en qué punto estamos ---------- */
