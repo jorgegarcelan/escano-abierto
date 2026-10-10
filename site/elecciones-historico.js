@@ -64,6 +64,28 @@ const CSS = `
 .hi-rampa{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .hi-rampa span.r{display:inline-block;width:140px;height:9px;border-radius:2px}
 .hi-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px}
+.hi-seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-pill);overflow:hidden;background:var(--surface);margin:2px 0 4px}
+.hi-seg button{appearance:none;border:0;background:none;font:500 12.5px var(--sans);color:var(--muted);padding:5px 12px;cursor:pointer}
+.hi-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.hi-ult{display:grid;gap:2px;max-height:460px;overflow:auto;padding-right:4px}
+.hi-ult button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,8.5em) minmax(0,1fr) minmax(0,9em) 4.5em;gap:10px;align-items:center;font-size:12.5px;padding:4px 6px;border-radius:6px;cursor:pointer}
+.hi-ult button:hover,.hi-ult button:focus-visible{background:var(--sunk)}
+.hi-ult .p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-ult .b{height:10px;background:var(--sunk);border-radius:2px;overflow:hidden}
+.hi-ult .b i{display:block;height:100%;border-radius:0 4px 4px 0}
+.hi-ult .q{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-ult .q b{color:var(--ink)}
+.hi-ult .m{font:12px var(--mono);text-align:right}
+@media (max-width:640px){ .hi-ult button{grid-template-columns:minmax(0,1fr) 4.5em} .hi-ult .b{grid-column:1/-1;grid-row:2} .hi-ult .q{display:none} }
+.hi-coc-c{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.hi-coc-c h4{margin:0 0 4px;font-size:14px}
+.hi-coc{overflow-x:auto}
+.hi-coc table{border-collapse:separate;border-spacing:2px;font-size:12px}
+.hi-coc th{font-weight:600;text-align:left;white-space:nowrap;padding:3px 6px;color:var(--muted)}
+.hi-coc th i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.hi-coc td{font-family:var(--mono);text-align:right;padding:4px 7px;border-radius:4px;background:var(--sunk);color:var(--muted);white-space:nowrap;transition:background .25s}
+.hi-coc td.ult{outline:2px solid var(--ink);outline-offset:1px}
+.hi-coc td.sig{outline:2px dashed var(--ink);outline-offset:1px;color:var(--ink)}
 .hi-ultimo{display:grid;gap:0;margin:0;padding:0;list-style:none}
 .hi-ultimo li{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);align-items:baseline;font-size:13.5px}
 .hi-ultimo li:first-child{border-top:0}
@@ -717,7 +739,7 @@ export async function pintarReparto(sec, c){
 /* =====================================================================================================
    EL PRECIO DE UN ESCAÑO
    ===================================================================================================== */
-let selE = null, simProv = null, simVotos = null;
+let selE = null, simProv = null, simVotos = null, heModo = "precio";
 export async function pintarEscano(sec, c){
   ctx = c; estilos();
   await base(); if (!HIST){ sec.innerHTML = `<p class="nota">No se han podido cargar los resultados.</p>`; return; }
@@ -745,21 +767,32 @@ export async function pintarEscano(sec, c){
         <div class="kpi alert"><b>${fmtCorto(sinEsc)}</b><span>votos (${fmt(sinEsc)}) a candidaturas que no sacaron escaño en su provincia</span></div>
         <div class="kpi"><b>${menosDeMil}</b><span>últimos escaños decididos por menos de 1.000 votos</span></div></div>
       <div class="hi-dos" style="margin-top:14px">
-        <div class="chart"><h3>Votos por escaño en cada provincia</h3><p class="sub">Votos válidos entre escaños. Cuanto más intenso el color, más caro: cada provincia tiene al menos dos diputados y el resto se reparte por población. Pulsa una para simular su reparto.</p><div id="he-mapa"></div></div>
+        <div class="chart"><h3 id="he-mapa-t">Votos por escaño en cada provincia</h3><div class="hi-seg" role="group" aria-label="Qué se pinta"><button data-he-modo="precio" aria-pressed="${heModo==="precio"}">Votos por escaño</button><button data-he-modo="perdidos" aria-pressed="${heModo==="perdidos"}">Votos que no sirvieron</button></div>
+          <p class="sub" id="he-mapa-s"></p><div id="he-mapa"></div></div>
         <div class="chart"><h3>Lo que costó cada escaño</h3><p class="sub">Votos de cada candidatura en toda España entre los escaños que sacó.</p>
           ${coste.map(([x,v])=>`<div style="display:grid;grid-template-columns:110px 1fr 74px;gap:8px;align-items:center;font-size:13px" data-tip="${esc(`<b>${esc(x[1])}</b><br>${fmt(x[3])} votos · ${x[4]} escaños`)}"><span>${esc(x[0])}</span><span style="display:block;height:12px;width:${(v/maxCoste*100).toFixed(1)}%;background:${grupoDe(x[2]).color};border-radius:0 4px 4px 0"></span><span style="text-align:right;font-variant-numeric:tabular-nums">${fmt(v)}</span></div>`).join("")}
           <p class="nota">Las candidaturas que se presentan en pocas provincias pueden necesitar menos votos por escaño: compiten solo donde son fuertes.</p></div>
       </div>
-      <div class="chart" style="margin-top:18px"><h3>El último escaño de cada provincia</h3><p class="sub">El último diputado que reparte la ley D'Hondt en cada circunscripción y los votos que le faltaron a la siguiente candidatura para quitárselo.</p>
-        <ul class="hi-ultimo">${ultimos.slice(0, 12).map(([cod,p])=>`<li><a href="${enlaceProv(cod)}">${esc(nombreProv(cod))}</a><span>Lo ganó <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron</span><span class="m">${fmt(p.ultimo.faltan)} votos</span></li>`).join("")}</ul>
-        <details><summary>Las ${ultimos.length} provincias</summary><ul class="hi-ultimo">${ultimos.slice(12).map(([cod,p])=>`<li><a href="${enlaceProv(cod)}">${esc(nombreProv(cod))}</a><span>${esc(p.ultimo.gana)} sobre ${esc(p.ultimo.segundo)}</span><span class="m">${fmt(p.ultimo.faltan)}</span></li>`).join("")}</ul></details></div>
+      <div class="chart" style="margin-top:18px"><h3>El último escaño de cada provincia</h3><p class="sub">Los votos que le faltaron a la candidatura siguiente para quitarle el último escaño a quien lo ganó (escala logarítmica: cuanto más corta la barra, más ajustado). Pulsa una provincia para llevarla al simulador.</p>
+        <div class="hi-ult">${(()=>{ const lg = x => Math.log10(Math.max(10, x)), mx = lg(Math.max(...ultimos.map(([,p])=>p.ultimo.faltan)));
+          const fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]).color;
+          return ultimos.map(([cod,p])=>`<button data-ult="${cod}" data-tip="${esc(`<b>${esc(nombreProv(cod))}</b><br>Ganó el último escaño <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron ${fmt(p.ultimo.faltan)} votos`)}"><span class="p">${esc(nombreProv(cod))}</span><span class="b"><i style="width:${(lg(p.ultimo.faltan)/mx*100).toFixed(1)}%;background:linear-gradient(90deg,${fam(p, p.ultimo.gana)} 50%,${fam(p, p.ultimo.segundo)} 50%)"></i></span><span class="q"><b>${esc(p.ultimo.gana)}</b> · ${esc(p.ultimo.segundo)}</span><span class="m">${fmt(p.ultimo.faltan)}</span></button>`).join(""); })()}</div></div>
       <div class="chart hi-sim" id="he-sim" style="margin-top:18px"></div>`;
-    const v = Object.fromEntries(precio), lo = barato[1], hi = caro[1], r = rampa(NEUTRO);
     const mapa = sec.querySelector("#he-mapa");
-    mapa.innerHTML = mapaSVG(c2=>v[c2]!=null ? r((v[c2]-lo)/(hi-lo)) : null, {enlazar:false, clase:"clic"}) + leyendaRampa(r, lo, hi, x=>fmt(x)+" votos");
+    const pintarMapa = () => {
+      const perd = heModo === "perdidos", val = Object.fromEntries(Object.entries(P).map(([c2,x])=>[c2, perd ? x.sin_escano/x.validos : x.validos/x.e]));
+      const vs = Object.values(val), lo = Math.min(...vs), hi = Math.max(...vs), r = rampa(perd ? "#B4613A" : NEUTRO);
+      sec.querySelector("#he-mapa-t").textContent = perd ? "Votos que no sirvieron para elegir a nadie" : "Votos por escaño en cada provincia";
+      sec.querySelector("#he-mapa-s").textContent = perd ? "Parte de los votos válidos de cada provincia que fue a candidaturas sin escaño allí. En las provincias pequeñas, con pocos escaños en juego, se pierden muchos más." : "Votos válidos entre escaños. Cuanto más intenso el color, más caro: cada provincia tiene al menos dos diputados y el resto se reparte por población. Pulsa una para simular su reparto.";
+      sec.querySelectorAll("[data-he-modo]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.heModo === heModo)));
+      mapa.innerHTML = mapaSVG(c2=>val[c2]!=null ? r((val[c2]-lo)/(hi-lo||1)) : null, {enlazar:false, clase:"clic"}) + leyendaRampa(r, lo, hi, perd ? x=>pct(x,0) : x=>fmt(x)+" votos");
+    };
+    pintarMapa();
+    sec.querySelectorAll("[data-he-modo]").forEach(b=>b.addEventListener("click", ()=>{ heModo = b.dataset.heModo; pintarMapa(); }));
     conTip(mapa, ev=>{ const p = ev.target.closest("[data-p]"); if (!p) return ""; const x = P[p.dataset.p];
-      return `<b>${esc(nombreProv(p.dataset.p))}</b><br>${x.e} escaños · ${fmt(x.validos/x.e)} votos por escaño<br>${fmt(x.sin_escano)} votos sin escaño<div style="color:var(--muted);margin-top:4px">Pulsa para simular su reparto</div>`; });
+      return `<b>${esc(nombreProv(p.dataset.p))}</b><br>${x.e} escaños · ${fmt(x.validos/x.e)} votos por escaño<br>${fmt(x.sin_escano)} votos sin escaño (${pct(x.sin_escano/x.validos, 0)})<div style="color:var(--muted);margin-top:4px">Pulsa para simular su reparto</div>`; });
     mapa.addEventListener("click", ev=>{ const p = ev.target.closest("[data-p]"); if (p){ simProv = p.dataset.p; simVotos = null; simulador(sec, P); sec.querySelector("#he-sim").scrollIntoView({block:"nearest", behavior:"smooth"}); } });
+    sec.querySelector(".hi-ult")?.addEventListener("click", ev=>{ const b = ev.target.closest("[data-ult]"); if (!b) return; simProv = b.dataset.ult; simVotos = null; simulador(sec, P); sec.querySelector("#he-sim").scrollIntoView({block:"start", behavior:"smooth"}); });
     simVotos = null; simulador(sec, P);
   }
   sec.addEventListener("click", ev=>{ const b = ev.target.closest("[data-he]"); if (b) pintar(+b.dataset.he); });
@@ -785,7 +818,8 @@ function simulador(sec, P){
     <table><tbody>${lista.map(x=>{ const gr = grupoDe(x[1]); return `<tr data-fila="${esc(x[0])}"><td style="width:24%"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${gr.color};margin-right:6px"></i>${esc(x[0])}</td>
       <td style="width:38%"><input type="range" min="0" max="${Math.round(x[2]*2+p.validos*0.02)}" step="${Math.max(1, Math.round(p.validos/2000))}" value="${simVotos[x[0]] ?? x[2]}" data-sim="${esc(x[0])}" aria-label="Votos de ${esc(x[0])}"></td>
       <td class="n" style="width:14%" data-v></td><td style="width:24%"><span class="esc" data-e></span></td></tr>`; }).join("")}</tbody></table>
-    <p class="q" data-q></p>`;
+    <p class="q" data-q></p>
+    <div class="hi-coc-c"><h4>La tabla de cocientes</h4><p class="sub">Los votos de cada candidatura entre 1, 2, 3… Los ${p.e} cocientes más altos se llevan los escaños (en color); el recuadro marca el último y el discontinuo, el primero que se queda fuera.</p><div class="hi-coc" data-coc></div></div>`;
   const pintar = () => {
     const validos = p.validos - lista.reduce((s,x)=>s+x[2],0) + Object.values(simVotos).reduce((s,v)=>s+v,0);
     const r = dhondt(simVotos, p.e, validos);
@@ -793,6 +827,13 @@ function simulador(sec, P){
       tr.querySelector("[data-v]").textContent = fmt(simVotos[c2]);
       tr.querySelector("[data-e]").innerHTML = Array.from({length:n},()=>`<i style="background:${gr.color}"></i>`).join("") + `<span class="q">&nbsp;${n}${n!==x[3]?` (real: ${x[3]})`:""}</span>`; });
     const ult = r.gan[r.gan.length-1], sig = r.fuera[0];
+    // La tabla de cocientes: una fila por candidatura que pasa la barrera, una columna por divisor.
+    const ganan = new Set(r.gan.map(x=>x.c+"|"+x.d)), cols = Math.min(p.e, 12);
+    const filas = lista.filter(x=>simVotos[x[0]] >= r.barrera && simVotos[x[0]] > 0).sort((a,b)=>simVotos[b[0]]-simVotos[a[0]]);
+    caja.querySelector("[data-coc]").innerHTML = filas.length ? `<table><thead><tr><th></th>${Array.from({length:cols},(_,d)=>`<th>÷${d+1}</th>`).join("")}</tr></thead><tbody>${filas.map(x=>{ const gr = grupoDe(x[1]);
+      return `<tr><th><i style="background:${gr.color}"></i>${esc(x[0])}</th>${Array.from({length:cols},(_,d)=>{ const k = x[0]+"|"+(d+1), q = simVotos[x[0]]/(d+1);
+        const cls = [ganan.has(k) ? "si" : "", ult && ult.c === x[0] && ult.d === d+1 ? "ult" : "", sig && sig.c === x[0] && sig.d === d+1 ? "sig" : ""].join(" ");
+        return `<td class="${cls}" style="${ganan.has(k) ? `background:${gr.color};color:${textoSobre(gr.color)}` : ""}">${fmt(q)}</td>`; }).join("")}</tr>`; }).join("")}</tbody></table>${p.e > cols ? `<p class="nota">Se muestran los ${cols} primeros divisores.</p>` : ""}` : `<p class="nota">Ninguna candidatura pasa la barrera.</p>`;
     caja.querySelector("[data-q]").innerHTML = ult ? `Último escaño: <b>${esc(ult.c)}</b> con ${fmt(ult.q)} votos por escaño (sus votos entre ${ult.d}). ${sig?`El siguiente cociente era de <b>${esc(sig.c)}</b>: ${fmt(sig.q)}.`:""} Barrera del 3 %: ${fmt(r.barrera)} votos.` : "";
   };
   caja.oninput = ev=>{ const i = ev.target.closest("[data-sim]"); if (i){ simVotos[i.dataset.sim] = +i.value; pintar(); } };
