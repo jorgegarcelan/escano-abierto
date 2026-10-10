@@ -141,6 +141,35 @@ const CSS = `
 .el-rdl-card .n{font:600 11px var(--mono);color:#E0A410;letter-spacing:.03em}
 .el-rdl-card .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .el-rdl-card .f{font-size:12px;color:var(--muted)}
+.el-rep-espera{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 24px;align-items:center;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);padding:18px 20px;box-shadow:var(--sombra)}
+.el-rep-espera .n{display:grid;gap:2px;text-align:center}
+.el-rep-espera .n b{font-family:var(--led,var(--display));font-size:clamp(48px,7vw,72px);line-height:.9;font-weight:900}
+.el-rep-espera .n span{font-size:12.5px;color:var(--muted)}
+.el-rep-espera h3{margin:0 0 6px;font-size:18px}
+.el-rep-espera p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
+@media (max-width:560px){ .el-rep-espera{grid-template-columns:1fr} }
+.el-rel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:860px){ .el-rel{grid-template-columns:1fr} }
+.el-rel-hemi circle{cursor:pointer;stroke:var(--surface);stroke-width:.6;transition:opacity .2s}
+.el-rel-hemi circle.fijo{opacity:.16}
+.el-rel-hemi circle.rel{stroke:var(--ink);stroke-width:1.2}
+.el-rel-hemi.filtrado circle.rel:not(.on){opacity:.25}
+.el-rel-meses{display:flex;align-items:flex-end;gap:2px;height:96px;padding-bottom:16px;position:relative}
+.el-rel-meses button{all:unset;flex:1;height:100%;display:flex;align-items:flex-end;position:relative;cursor:pointer}
+.el-rel-meses button i{display:block;width:100%;height:var(--h);min-height:2px;background:var(--line-strong);border-radius:2px 2px 0 0}
+.el-rel-meses button:not([disabled]) i{background:var(--no)}
+.el-rel-meses button[disabled]{cursor:default}
+.el-rel-meses button[disabled] i{height:2px;background:var(--line)}
+.el-rel-meses button[aria-pressed="true"] i{background:var(--ink)}
+.el-rel-meses small{position:absolute;left:0;top:100%;margin-top:3px;font:10px var(--mono);color:var(--muted);white-space:nowrap}
+.el-rel-lista{list-style:none;margin:10px 0 0;padding:0;max-height:360px;overflow:auto;display:grid}
+.el-rel-lista li{display:grid;grid-template-columns:7.2em minmax(0,1fr);gap:2px 10px;padding:6px 2px;border-top:1px solid var(--line);font-size:13px;align-items:baseline}
+.el-rel-lista li:first-child{border-top:0}
+.el-rel-lista .f{font:11.5px var(--mono);color:var(--muted);white-space:nowrap}
+.el-rel-lista .q button{font-size:13px;text-align:left}
+.el-rel-lista .q i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
+.el-rel-lista .fl{color:var(--muted)}
+.el-rel-lista .c{grid-column:2;font-size:11.5px;color:var(--muted)}
 .el-350{position:relative;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);box-shadow:var(--sombra);overflow:hidden}
 .el-350 svg{display:block;width:100%;max-width:min(900px,calc(78vh * 1000 / 820));height:auto;margin:0 auto;touch-action:manipulation}
 .el-350 .prov{fill:var(--sunk);stroke:var(--line-strong);stroke-width:.6;transition:opacity .6s}
@@ -723,7 +752,12 @@ async function pintarRepite(sec){
   const C = await cargarCand();
   const cuerpo = sec.querySelector(".nota");
   if (!C){
-    cuerpo.outerHTML = `<div class="chart"><p class="sub" style="margin:0">Las candidaturas presentadas se publican en el BOE el <b>28 de octubre</b> y las proclamadas, el <b>3 de noviembre</b>. Ese día, esta sección cruzará cada lista con los diputados de la legislatura: quién vuelve, en qué puesto, quién cambia de provincia o de siglas y quién no se presenta.</p></div>`;
+    const H = DATOS.calendario, pres = H.find(h=>h.hito.startsWith("Listas presentadas")), proc = H.find(h=>h.hito.startsWith("Proclamación"));
+    const faltan = pres ? diasHasta(pres.fecha) : null;
+    cuerpo.outerHTML = `<div class="el-rep-espera"><div class="n">${faltan > 0 ? `<b>${faltan}</b><span>${faltan === 1 ? "día" : "días"} para las listas</span>` : `<b>28 oct</b><span>las listas, en el BOE</span>`}</div>
+      <div><h3>Las listas aún no se conocen</h3><p>Las candidaturas presentadas se publican en el BOE el <b>${esc(fechaLarga(pres?.fecha || "2026-10-28"))}</b>; las Juntas Electorales las proclaman el <b>${esc(fechaLarga(proc ? proc.fecha : "2026-11-02"))}</b> y el BOE las publica al día siguiente. Ese día, aquí: quién de los 350 vuelve a ir en una lista, en qué puesto y si es de salida, quién cambia de provincia o de siglas y quién no se presenta.</p></div></div>
+      <div id="el-relevos"></div>`;
+    relevos(sec.querySelector("#el-relevos"));
     return;
   }
   const vivos = DIPS.map((d,i)=>({d,i})).filter(({d})=>!d[8]);
@@ -749,7 +783,9 @@ async function pintarRepite(sec){
     <div class="chart"><div class="controls"><label for="el-rep-prov">Provincia</label><select id="el-rep-prov">${provs.map(c=>`<option${c===repiteProv?" selected":""}>${esc(c)}</option>`).join("")}</select></div><div id="el-rep-tabla"></div></div>
     ${listaCambios(repiten.filter(x=>x.r.otra_provincia), "Cambian de provincia", x=>`ahora por ${esc(x.r.circ)}`)}
     ${listaCambios(repiten.filter(x=>x.otrasSiglas), "Con otras siglas", x=>`en 2023 por ${esc(x.d[3])}; ahora, ${esc(x.r.candidatura)} (${esc(x.r.siglas)})`)}
-    <p class="nota">Fuente: candidaturas ${fase} al Congreso de los Diputados (BOE ${(C.boe||[]).map(esc).join(", ")}). Los nombres se casan con los del Congreso de forma automática; un homónimo se desempata por provincia.</p>`;
+    <p class="nota">Fuente: candidaturas ${fase} al Congreso de los Diputados (BOE ${(C.boe||[]).map(esc).join(", ")}). Los nombres se casan con los del Congreso de forma automática; un homónimo se desempata por provincia.</p>
+    <div id="el-relevos"></div>`;
+  relevos(sec.querySelector("#el-relevos"));
   const tabla = () => { const t = sec.querySelector("#el-rep-tabla"); if (!t) return;
     const suyos = info.filter(x=>x.d[2]===repiteProv).sort((a,b)=>ORDEN_HEMI.indexOf(a.d[1])-ORDEN_HEMI.indexOf(b.d[1]) || a.d[0].localeCompare(b.d[0],"es"));
     const listas = (C.listas||{})[repiteProv] || [];
@@ -758,6 +794,56 @@ async function pintarRepite(sec){
       ${listas.length?`<details><summary>Las ${listas.filter(l=>l.proclamada).length} listas de ${esc(repiteProv)}</summary><ul class="el-lista">${listas.filter(l=>l.proclamada).map(l=>`<li><span class="t"><b>${esc(l.siglas||l.nombre)}</b> · ${esc(l.titulares.slice(0,6).map(x=>x[0]).join(", "))}${l.titulares.length>6?"…":""}</span><span class="m">${l.titulares.length} + ${l.suplentes.length}</span></li>`).join("")}</ul></details>`:""}`; };
   tabla();
   sec.querySelector("#el-rep-prov").addEventListener("change", e=>{ repiteProv = e.target.value; tabla(); });
+}
+/* Los relevos: escaños que cambiaron de manos durante la legislatura (quien se fue y quien entró por la lista). */
+function relevos(caja){
+  const {esc, G, DIPS, PLANO} = ctx; if (!caja || !PLANO) return;
+  // Quién salió y quién entró (escano/elecciones.py, con las fichas del Congreso): [sale, entra, fecha, provincia, formación].
+  const R = DATOS.relevos || {personas: DIPS.length, salidas: []};
+  const porNombre = Object.fromEntries(DIPS.map((d,i)=>[d[0], {d, i}]));
+  const persona = (n, circ, form) => porNombre[n] || {d:[n, "", circ, form, "", null, null, null, ""], i:-1};
+  const salidas = R.salidas.map(([sale, entra, fecha, circ, form])=>({sale: persona(sale, circ, form), entra: entra ? persona(entra, circ, form) : null, fecha}));
+  // El escaño de cada cadena: el de quien lo ocupa hoy (siguiendo los relevos hasta el final).
+  const sucesor = new Map(R.salidas.filter(x=>x[1]).map(x=>[x[0], x[1]]));
+  const ultimo = n => { let m = n, k = 0; while (sucesor.has(m) && k++ < 10) m = sucesor.get(m); return porNombre[m]; };
+  const asientos = {};
+  DIPS.forEach((d,i)=>{ if (!d[8] && d[5] != null) asientos[`${d[5]}|${d[6]}`] = [{d,i}]; });
+  salidas.forEach(s=>{ const u = ultimo(s.sale.d[0]); if (!u || u.d[5] == null) return; const k = `${u.d[5]}|${u.d[6]}`; s.k = k;
+    const cadena = asientos[k] ||= [u]; if (!cadena.some(z=>z.d[0] === s.sale.d[0])) cadena.push(s.sale); });
+  Object.values(asientos).forEach(xs=>xs.sort((a,b)=>(a.d[4]||"").localeCompare(b.d[4]||"")));
+  const personas = R.personas;
+  // Salidas por mes, de agosto de 2023 a la disolución.
+  const meses = []; for (let y = 2023, m = 7; y < 2026 || (y === 2026 && m <= 9); m++){ if (m > 11){ m = 0; y++; } meses.push(`${y}-${String(m+1).padStart(2,"0")}`); }
+  const porMes = Object.fromEntries(meses.map(m=>[m, salidas.filter(s=>s.fecha.startsWith(m))]));
+  const maxM = Math.max(1, ...meses.map(m=>porMes[m].length));
+  const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  const grupoDe = x => G[x.d[1]] || {color:"#888", nombre:x.d[1]};
+  const fechaC = f => /^\d/.test(f||"") ? ctx.fechaCorta(f) : "";
+  caja.innerHTML = `<div class="sec-h" style="margin-top:28px"><h2>Antes de las listas: los relevos</h2><p>En los 350 escaños de la XV legislatura se han sentado ${personas} personas: ${salidas.length} diputados dejaron el escaño y entró el siguiente de su lista.</p></div>
+    <div class="el-rel"><div class="chart"><h3>Los escaños que cambiaron de manos</h3><p class="sub">Encendidos, los que tuvieron relevo. Pasa por uno para ver quién lo ocupó.</p>
+        <svg class="el-hemi el-rel-hemi" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Hemiciclo: los escaños con relevo durante la legislatura">${Object.entries(asientos).map(([k,xs])=>{ const ult = xs[xs.length-1], [x,y] = k.split("|");
+          return `<circle cx="${x}" cy="${y}" r="5.3" fill="${grupoDe(ult).color}" class="${xs.length > 1 ? "rel" : "fijo"}" data-asiento="${esc(k)}"/>`; }).join("")}</svg>
+        <p class="nota" style="margin:6px 0 0">${Object.values(asientos).filter(xs=>xs.length > 1).length} escaños cambiaron de manos; algunos, más de una vez.</p></div>
+      <div class="chart"><h3>Cuándo se fueron</h3><p class="sub">Salidas por mes. Pulsa uno para verlas en el hemiciclo y en la lista.</p>
+        <div class="el-rel-meses" role="group" aria-label="Salidas por mes">${meses.map(m=>{ const n = porMes[m].length, [y,mm] = m.split("-");
+          return `<button data-rel-mes="${m}" style="--h:${(n/maxM*100).toFixed(0)}%" ${n ? "" : "disabled"} title="${MES[+mm-1]} ${y}: ${n} ${n===1?"salida":"salidas"}"><i></i>${mm === "01" ? `<small>${y}</small>` : ""}</button>`; }).join("")}</div>
+        <ul class="el-rel-lista"></ul></div></div>`;
+  const lista = caja.querySelector(".el-rel-lista"), hemi = caja.querySelector("svg");
+  let mes = null;
+  const pintarLista = () => {
+    const xs = mes ? porMes[mes] : salidas;
+    lista.innerHTML = xs.map(s=>`<li><span class="f">${esc(fechaC(s.fecha))}</span><span class="q"><button class="linklike" data-dip="${esc(ctx.slug(s.sale.d[0]))}"><i style="background:${grupoDe(s.sale).color}"></i>${esc(ctx.legible(s.sale.d[0]))}</button> <span class="fl">→</span> ${s.entra ? `<button class="linklike" data-dip="${esc(ctx.slug(s.entra.d[0]))}">${esc(ctx.legible(s.entra.d[0]))}</button>` : `<span class="fl">sin relevo en los datos</span>`}</span><span class="c">${esc(s.sale.d[2])} · ${esc(s.sale.d[3])}</span></li>`).join("");
+    hemi.classList.toggle("filtrado", !!mes);
+    const marcados = new Set((mes ? porMes[mes] : []).map(s=>s.k));
+    hemi.querySelectorAll("circle").forEach(c=>c.classList.toggle("on", marcados.has(c.dataset.asiento)));
+  };
+  caja.addEventListener("click", ev=>{ const b = ev.target.closest("[data-rel-mes]"); if (!b) return; mes = mes === b.dataset.relMes ? null : b.dataset.relMes;
+    caja.querySelectorAll("[data-rel-mes]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.relMes === mes))); pintarLista(); });
+  hemi.addEventListener("mousemove", ev=>{ const c = ev.target.closest("circle"); if (!c){ tipEl(""); return; } const xs = asientos[c.dataset.asiento];
+    tipEl(`<b>${esc(xs[xs.length-1].d[2])}</b> · ${esc(grupoDe(xs[xs.length-1]).nombre)}<br>${xs.map(x=>`${esc(ctx.legible(x.d[0]))} <span style="color:var(--muted)">${esc(fechaC(x.d[4]))}${x.d[8] ? " – " + esc(fechaC(x.d[8]) || "?") : " – hoy"}</span>`).join("<br>")}`, ev); });
+  hemi.addEventListener("mouseleave", ()=>tipEl(""));
+  hemi.addEventListener("click", ev=>{ const c = ev.target.closest("circle"); if (!c) return; const xs = asientos[c.dataset.asiento]; ctx.irDiputado?.(ctx.slug(xs[xs.length-1].d[0])); });
+  pintarLista();
 }
 function listaCambios(xs, titulo, detalle){
   if (!xs.length) return "";

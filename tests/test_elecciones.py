@@ -277,3 +277,15 @@ def test_dia_a_dia_de_la_legislatura():
     d = elecciones.dia_a_dia(salida)
     assert d["dias"] == {"2024-03-12": [2, 0, 1, 1], "2024-06-07": [0, 1, 0, 0]}
     assert [(v[0], v[3], v[4]) for v in d["votos"]] == [("1-1", 175, 175)]
+
+
+def test_relevos_de_la_legislatura():
+    fichas = {
+        "A, Ana": {"circunscripcion": "Soria", "formacion": "PP", "alta": "2023-08-01", "baja": "2024-01-10"},
+        "B, Berta": {"circunscripcion": "Soria", "formacion": "PP", "alta": "2024-01-15"},
+        "C, Carlos": {"circunscripcion": "Soria", "formacion": "PSOE", "alta": "2023-08-01"},
+        "D, Dora": {"circunscripcion": "Soria", "formacion": "PSOE", "alta": "2023-08-01", "baja": "2025-03-01"},
+        "E, Eva": {"circunscripcion": "Soria", "formacion": "PSOE", "alta": "2025-03-05"}}
+    r = elecciones.relevos(fichas)
+    assert r["personas"] == 5
+    assert [x[:3] for x in r["salidas"]] == [["D, Dora", "E, Eva", "2025-03-01"], ["A, Ana", "B, Berta", "2024-01-10"]]

@@ -38,6 +38,11 @@ ESCANOS = {
 }
 
 
+def _fichas_diputados() -> dict:
+    ruta = DATOS / "diputados.json"
+    return json.loads(ruta.read_text()) if ruta.exists() else {}
+
+
 def escanos_cambian() -> list[list]:
     """Provincias cuyo número de diputados cambia respecto a las últimas generales: [código, antes, ahora]."""
     ruta = CARPETA / "historico.json"
@@ -203,6 +208,21 @@ def _es_rdl(a: dict) -> bool:
     return a["tipo"] == "Real decreto-ley" and a["titulo"].startswith("Real Decreto-ley")
 
 
+def relevos(fichas: dict) -> dict:
+    """Los diputados que dejaron el escaño durante la legislatura y quién entró en su lugar: el siguiente que da de alta
+    su misma lista (provincia y formación) desde el día en que se fue. `fichas`: data/diputados.json."""
+    salen = sorted(((n, f) for n, f in fichas.items() if f.get("baja")), key=lambda x: (x[1]["baja"], x[0]))
+    usados, out = set(), []
+    for n, f in salen:
+        entra = min((m for m, g in fichas.items() if m != n and m not in usados and g.get("circunscripcion") == f.get("circunscripcion")
+                     and g.get("formacion") == f.get("formacion") and (g.get("alta") or "") >= f["baja"]),
+                    key=lambda m: (fichas[m].get("alta") or "", m), default=None)
+        if entra:
+            usados.add(entra)
+        out.append([n, entra, f["baja"], f.get("circunscripcion", ""), f.get("formacion", "")])
+    return {"personas": len(fichas), "salidas": sorted(out, key=lambda x: (x[2], x[0]), reverse=True)}
+
+
 def dia_a_dia(salida: dict, hasta: date = CONVOCATORIA) -> dict:
     """La legislatura día a día, para «La legislatura en cifras»: qué pasó cada día (votaciones, leyes, decretos-leyes
     y preguntas registradas) y cada votación nominal con su resultado (para el histograma de márgenes): la web solo
@@ -272,6 +292,7 @@ def escribir(salida: dict, carpeta=None) -> None:
         "decreto": DECRETO,
         "escanos": ESCANOS,
         "escanos_cambian": escanos_cambian(),
+        "relevos": relevos(_fichas_diputados()),
         "caducan": caducan(leyes),
         "convalidar": pendientes_de_convalidar(leyes, salida["datos"]["votaciones"]),
         "decretos": decretos(leyes, salida["datos"]["votaciones"]),

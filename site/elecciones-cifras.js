@@ -130,14 +130,15 @@ function calendario(caja, D, votos, B){
     ley.innerHTML = modo === "leyes" ? `<span><i style="background:${VERDE}"></i>Se publica una ley</span><span><i style="background:${MORADO}"></i>Se publica un decreto-ley</span>`
       : modo === "votaciones" ? `<span>Menos</span><span class="r" style="background:linear-gradient(90deg,${rampa(AZUL,0)},${rampa(AZUL,1)})"></span><span>Más votaciones (hasta ${maxV} en un día)</span>`
       : `<span>Menos</span><span class="r" style="background:linear-gradient(90deg,${rampa(AMBAR,0)},${rampa(AMBAR,1)})"></span><span>Más preguntas (hasta ${miles(maxP)} en un día)</span>`; };
-  const mover = () => { rects.forEach((r,i)=>r.classList.toggle("fut", i > cursor)); acum[cursor].forEach((x,k)=>{ cont[k].textContent = miles(x); }); fecha.textContent = corta(dias[cursor]); };
+  const mover = () => { const a = acum[Math.max(0, Math.min(cursor, acum.length - 1))]; if (!a) return;
+    rects.forEach((r,i)=>r.classList.toggle("fut", i > cursor)); a.forEach((x,k)=>{ cont[k].textContent = miles(x); }); fecha.textContent = corta(dias[Math.min(cursor, dias.length - 1)]); };
   const boton = caja.querySelector("[data-cf-play]"), reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function play(){
     if (jugando){ jugando = false; boton.textContent = "▶ Seguir"; return; }
     if (cursor >= dias.length - 1) cursor = 0;
     jugando = true; boton.textContent = "❚❚ Pausa";
     let antes = performance.now(), t = cursor;
-    const paso = ahora => { if (!jugando) return; t = Math.min(dias.length - 1, t + (ahora - antes) * dias.length / 11000); antes = ahora; cursor = Math.floor(t); mover();
+    const paso = ahora => { if (!jugando || !caja.contains(boton)) return;   // se paró, o se salió de la página / se volvió a dibujar t = Math.min(dias.length - 1, t + (ahora - antes) * dias.length / 11000); antes = ahora; cursor = Math.floor(t); mover();
       if (cursor >= dias.length - 1){ jugando = false; boton.textContent = "↺ Otra vez"; return; } requestAnimationFrame(paso); };
     requestAnimationFrame(paso);
   }
