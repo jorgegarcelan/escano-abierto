@@ -25,6 +25,26 @@ SALIDA = SITIO / "datos" / "elecciones"
 # desde el día de la publicación.
 CONVOCATORIA = date(2026, 10, 6)
 VOTACION = date(2026, 11, 29)
+DECRETO = {"rd": "Real Decreto 806/2026, de 5 de octubre", "boe": "BOE-A-2026-20742"}
+CONSTITUCION = date(2026, 12, 23)   # art. 5 del decreto: sesiones constitutivas el 23 de diciembre a las 10.00
+
+# Diputados que elige cada provincia (código INE) el 29N: el anexo del decreto, con la población del padrón
+# (art. 162 LOREG). Respecto a 2023, Madrid gana uno (38) y Cádiz lo pierde (8).
+ESCANOS = {
+    "01": 4, "02": 4, "03": 12, "04": 6, "05": 3, "06": 5, "07": 8, "08": 32, "09": 4, "10": 4, "11": 8, "12": 5, "13": 5,
+    "14": 6, "15": 8, "16": 3, "17": 6, "18": 7, "19": 3, "20": 6, "21": 5, "22": 3, "23": 5, "24": 4, "25": 4, "26": 4,
+    "27": 4, "28": 38, "29": 11, "30": 10, "31": 5, "32": 4, "33": 7, "34": 3, "35": 8, "36": 7, "37": 4, "38": 7, "39": 5,
+    "40": 3, "41": 12, "42": 2, "43": 6, "44": 3, "45": 6, "46": 16, "47": 5, "48": 8, "49": 3, "50": 7, "51": 1, "52": 1,
+}
+
+
+def escanos_cambian() -> list[list]:
+    """Provincias cuyo número de diputados cambia respecto a las últimas generales: [código, antes, ahora]."""
+    ruta = CARPETA / "historico.json"
+    if not ruta.exists():
+        return []
+    antes = {c: p["e"] for c, p in json.loads(ruta.read_text())["elecciones"][-1]["prov"].items()}
+    return [[c, antes[c], n] for c, n in ESCANOS.items() if c in antes and antes[c] != n]
 
 
 def calendario(conv: date = CONVOCATORIA, votacion: date = VOTACION) -> list[dict]:
@@ -53,9 +73,9 @@ def calendario(conv: date = CONVOCATORIA, votacion: date = VOTACION) -> list[dic
         {"fecha": votacion.isoformat(), "hito": "Votación",
          "detalle": "Los colegios abren de 9.00 a 20.00. El escrutinio provisional empieza al cerrar las mesas.",
          "ley": "art. 84"},
-        {"fecha": (votacion + timedelta(days=25)).isoformat(), "hito": "Constitución de las nuevas Cortes",
-         "detalle": "Como tarde 25 días después de la votación, en la fecha que fija el Real Decreto. Empieza la XVI legislatura.",
-         "ley": "art. 68.6 CE", "aprox": True},
+        {"fecha": CONSTITUCION.isoformat(), "hito": "Constitución de las nuevas Cortes",
+         "detalle": "El Congreso y el Senado se reúnen a las 10.00, como fija el Real Decreto de convocatoria. Empieza la XVI legislatura.",
+         "ley": "art. 68.6 CE"},
     ]
 
 
@@ -149,6 +169,9 @@ def escribir(salida: dict, carpeta=None) -> None:
     datos = {
         "convocatoria": CONVOCATORIA.isoformat(), "votacion": VOTACION.isoformat(),
         "calendario": calendario(),
+        "decreto": DECRETO,
+        "escanos": ESCANOS,
+        "escanos_cambian": escanos_cambian(),
         "caducan": caducan(leyes),
         "convalidar": pendientes_de_convalidar(leyes, salida["datos"]["votaciones"]),
         "balance": balance(salida),

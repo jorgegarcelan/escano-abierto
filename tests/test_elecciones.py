@@ -222,3 +222,12 @@ def test_caducan_no_cuenta_las_concluidas():
     ley = {"exp": "121/64", "titulo": "Ley", "tipo": "Proyecto de ley", "origen": "GOB", "autores": ["GOB"], "presentada": "2025-07-17",
            "estado": "en trámite", "etapa": 4, "ampliaciones": 0, "situacion": "Concluido - (Aprobado con modificaciones)"}
     assert elecciones.caducan({"iniciativas": [ley]})["total"] == 0
+
+
+def test_escanos_del_decreto_de_convocatoria():
+    # Anexo del Real Decreto 806/2026: 350 diputados en 52 circunscripciones; Madrid gana uno y Cádiz lo pierde.
+    assert sum(elecciones.ESCANOS.values()) == 350 and len(elecciones.ESCANOS) == 52
+    assert (elecciones.ESCANOS["28"], elecciones.ESCANOS["11"], elecciones.ESCANOS["42"]) == (38, 8, 2)
+    h = {x["hito"]: x for x in elecciones.calendario()}
+    assert h["Constitución de las nuevas Cortes"]["fecha"] == "2026-12-23"
+    assert elecciones.escanos_cambian() == [["11", 9, 8], ["28", 37, 38]]
