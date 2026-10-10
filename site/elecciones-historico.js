@@ -151,11 +151,18 @@ const CSS = `
 [data-ps-esc]{display:block;width:100%;height:auto;margin-top:6px;cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 [data-ps-esc] .ejes line{stroke:var(--line);stroke-dasharray:2 3}
 [data-ps-esc] .ejes text{font:10px var(--mono);fill:var(--muted)}
-[data-ps-esc] .fondo{fill:color-mix(in srgb,var(--ink) 4%,transparent)}
-[data-ps-esc] .lleno{fill:color-mix(in srgb,var(--no) 16%,transparent)}
-[data-ps-esc] .esc{fill:none;stroke:var(--line-strong);stroke-width:1.5}
-[data-ps-esc] .ptos circle{fill:var(--surface);stroke:var(--c);stroke-width:1.5;opacity:.55;transition:fill .25s,opacity .25s,r .25s}
-[data-ps-esc] .ptos circle.si{fill:var(--c);opacity:1;r:5.5}
+[data-ps-esc] .esc{fill:none;stroke:var(--line-strong);stroke-width:1;stroke-linejoin:round}
+[data-ps-esc] .base{stroke:var(--line-strong)}
+[data-ps-esc] .ptos circle{fill:var(--surface);stroke:var(--c);stroke-width:1.5;stroke-opacity:.7;transition:fill .4s ease var(--d),r .2s,stroke .2s}
+[data-ps-esc] .ptos circle.si{fill:var(--c);stroke:var(--surface);stroke-opacity:1}
+[data-ps-esc] .ptos circle.ult{r:6.5;stroke:var(--ink);stroke-width:2}
+[data-ps-esc] .ptos circle.h{r:6.5;stroke:var(--ink);stroke-width:2}
+[data-ps-esc] .guia{transition:opacity .2s}
+[data-ps-esc] .guia line{stroke:var(--ult,var(--no));stroke-width:1;stroke-dasharray:3 3;opacity:.7}
+[data-ps-esc] .guia text{font:700 10.5px var(--mono);fill:var(--ult,var(--no));transition:fill .3s}
+[data-ps-esc] .d0{stop-color:var(--ult,var(--no));stop-opacity:.42;transition:stop-color .3s}
+[data-ps-esc] .d1{stop-color:var(--ult,var(--no));stop-opacity:.04;transition:stop-color .3s}
+[data-ps-esc] .area{fill:url(#ps-deg)}
 [data-ps-esc] .cursor line{stroke:var(--no);stroke-width:1.5}
 [data-ps-esc] .cursor circle{fill:var(--no);stroke:var(--surface);stroke-width:2}
 [data-ps-esc] .cursor text{font:700 11.5px var(--mono);fill:var(--ink)}
@@ -1021,20 +1028,23 @@ export async function pintarEscano(sec, c){
     const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiSVG(350, {etiqueta:"350"});
     $("[data-ps-esc]")._parar?.();   // la animación de la elección anterior, fuera
     const rango = $("#ps-r"), svg = $("[data-ps-esc]"), N = vueltas.length, quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // La escalera: votos acumulados (eje logarítmico) frente a escaños que cambian; cada punto, un escaño, del color de quien se lo lleva.
-    const W = Math.max(300, svg.parentNode.clientWidth || 600), H = W < 520 ? 210 : 240, m = {l:30, r:12, t:36, b:24};
-    const X = v => m.l + (Math.log10(Math.max(100, v)) - 2)/(maxLog - 2)*(W - m.l - m.r), Y = n => H - m.b - n/N*(H - m.t - m.b);
-    const aLog = x => Math.max(2, Math.min(maxLog, 2 + (x - m.l)/(W - m.l - m.r)*(maxLog - 2)));
+    // La escalera: votos acumulados (eje logarítmico) frente a escaños que cambian; cada cuenta, un escaño: gris mientras no cambia, del color de quien se lo lleva cuando cambia.
+    const W = Math.max(300, svg.parentNode.clientWidth || 600), H = W < 520 ? 230 : 270, m = {l:30, r:12, t:36, b:24};
+    const tope = maxLog + (maxLog - 2)*.02;   // un poco de aire a la derecha
+    const X = v => m.l + (Math.log10(Math.max(100, v)) - 2)/(tope - 2)*(W - m.l - m.r), Y = n => H - m.b - n/N*(H - m.t - m.b);
+    const aLog = x => Math.max(2, Math.min(maxLog, 2 + (x - m.l)/(W - m.l - m.r)*(tope - 2)));
     const escalon = vueltas.map((v,i)=>`${i ? "" : `M${X(100)} ${Y(0)}`}L${X(v.acum).toFixed(1)} ${Y(i).toFixed(1)}L${X(v.acum).toFixed(1)} ${Y(i+1).toFixed(1)}`).join("");
-    const area = `${escalon}L${X(vueltas[N-1].acum).toFixed(1)} ${Y(0)}Z`;
+    const rC = W < 520 ? 3.6 : 4.4;   // cuentas pequeñas: en la cola se tocan, como un collar
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-    svg.innerHTML = `<defs><clipPath id="ps-clip"><rect x="0" y="0" height="${H}" width="0"/></clipPath></defs>
-      <g class="ejes">${[10,20,30,40,50].filter(n=>n <= N).map(n=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(n)}" y2="${Y(n)}"/><text x="${m.l - 6}" y="${Y(n) + 3.5}" text-anchor="end">${n}</text>`).join("")}
+    svg.innerHTML = `      <g class="ejes">${[10,20,30,40,50].filter(n=>n <= N).map(n=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(n)}" y2="${Y(n)}"/><text x="${m.l - 6}" y="${Y(n) + 3.5}" text-anchor="end" data-n="${n}">${n}</text>`).join("")}
         ${[1e3, 1e4, 1e5, 1e6].filter(v=>Math.log10(v) < maxLog - .1).map(v=>`<text x="${X(v)}" y="${H - 6}" text-anchor="middle">${fmtCorto(v)}</text>`).join("")}<text x="${W - m.r}" y="${H - 6}" text-anchor="end">votos →</text></g>
-      <path class="fondo" d="${area}"/><path class="lleno" d="${area}" clip-path="url(#ps-clip)"/><path class="esc" d="${escalon}"/>
-      <g class="ptos">${vueltas.map((v,i)=>`<circle data-i="${i}" cx="${X(v.acum).toFixed(1)}" cy="${Y(i+1).toFixed(1)}" r="4.5" style="--c:${v.a.color}"/>`).join("")}</g>
+      <defs><linearGradient id="ps-deg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="d0"/><stop offset="1" class="d1"/></linearGradient><clipPath id="ps-clip"><rect x="0" y="0" height="${H}" width="0"/></clipPath></defs>
+      <path class="area" d="${escalon}L${X(vueltas[N-1].acum).toFixed(1)} ${Y(0)}Z" clip-path="url(#ps-clip)"/>
+      <line class="base" x1="${m.l}" x2="${W - m.r}" y1="${Y(0)}" y2="${Y(0)}"/><path class="esc" d="${escalon}"/>
+      <g class="guia"><line x1="${m.l}" y1="0" y2="0"/><text x="${m.l - 6}" y="3.5" text-anchor="end"></text></g>
+      <g class="ptos">${vueltas.map((v,i)=>`<circle cx="${X(v.acum).toFixed(1)}" cy="${Y(i+1).toFixed(1)}" r="${rC}" style="--c:${v.a.color};--d:${(i%6)*30}ms"/>`).join("")}</g>
       <g class="cursor"><line y1="${m.t - 12}" y2="${H - m.b}"/><circle cy="${m.t - 12}" r="6"/><text y="${m.t - 20}"></text></g>`;
-    const clip = svg.querySelector("#ps-clip rect"), cur = svg.querySelector(".cursor"), curT = cur.querySelector("text"), ptos = [...svg.querySelectorAll(".ptos circle")];
+    const cur = svg.querySelector(".cursor"), curT = cur.querySelector("text"), cols = [...svg.querySelectorAll(".ptos circle")], guia = svg.querySelector(".guia"), clip = svg.querySelector("#ps-clip rect");
     // Arrastrar (o pulsar) sobre la escalera mueve el deslizador, que sigue ahí para el teclado.
     const xDe = ev => { const r = svg.getBoundingClientRect(); return (ev.clientX - r.left)/r.width*W; };
     let arrastre = false;
@@ -1042,19 +1052,26 @@ export async function pintarEscano(sec, c){
     svg.onpointermove = ev => { if (arrastre){ rango.value = aLog(xDe(ev)); pintar(); } };
     svg.onpointerup = svg.onpointercancel = () => { arrastre = false; };
     if (!svg.dataset.tip){ svg.dataset.tip = 1;
+      svg.addEventListener("mouseleave", ()=>svg.querySelectorAll(".ptos circle.h").forEach(c=>c.classList.remove("h")));
       conTip(svg, ev=>{ if (arrastre || !svg._v) return ""; const x = xDe(ev), r = svg.getBoundingClientRect(), y = (ev.clientY - r.top)/r.height*H;
-        let k = -1, d = 14; svg._v.forEach((v,i)=>{ const dd = Math.hypot(svg._X(v.acum) - x, svg._Y(i+1) - y); if (dd < d){ d = dd; k = i; } });
+        let k = -1, d = 16; svg._v.forEach((v,i)=>{ const dd = Math.hypot(svg._X(v.acum) - x, (svg._Y(i+1) - y)*.5); if (dd < d){ d = dd; k = i; } });
+        svg.querySelectorAll(".ptos circle").forEach((c,i)=>c.classList.toggle("h", i === k));
         if (k < 0) return ""; const v = svg._v[k];
         return `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)}: le faltaron <b>${fmt(v.f)}</b> votos<br><span style="color:var(--muted)">Escaño n.º ${k+1} · ${fmt(v.acum)} votos acumulados</span>`; }); }
     svg._v = vueltas; svg._X = X; svg._Y = Y;
     let antes = -1, vistos = new Set();
     const pintar = (suave = false) => {
       const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu), x = X(presu);
-      cur.setAttribute("transform", `translate(${x.toFixed(1)},0)`); clip.setAttribute("width", Math.max(0, x).toFixed(1));
+      cur.setAttribute("transform", `translate(${x.toFixed(1)},0)`); clip.setAttribute("width", x.toFixed(1)); 
       const r = Math.pow(10, Math.floor(Math.log10(presu)) - 1);
       curT.textContent = `${fmt(Math.round(presu/r)*r)} votos`; curT.setAttribute("text-anchor", x > W*.75 ? "end" : x < W*.2 ? "start" : "middle");
       if (hechas.length === antes) return; antes = hechas.length;
-      ptos.forEach((c,i)=>c.classList.toggle("si", i < hechas.length));
+      cols.forEach((c,i)=>{ c.classList.toggle("si", i < hechas.length); c.classList.toggle("ult", i === hechas.length - 1); });
+      const n = hechas.length; guia.style.opacity = n ? 1 : 0;
+      if (n) svg.style.setProperty("--ult", hechas[n-1].a.color);   // el área y la guía, del color del último escaño que cambia
+      guia.setAttribute("transform", `translate(0,${Y(n).toFixed(1)})`);
+      guia.querySelector("line").setAttribute("x2", n ? X(hechas[n-1].acum).toFixed(1) : m.l); guia.querySelector("text").textContent = n;
+      svg.querySelectorAll(".ejes [data-n]").forEach(t=>t.style.opacity = n && Math.abs(Y(+t.dataset.n) - Y(n)) < 10 ? 0 : 1);   // que el número de la guía no pise el del eje
       const g = Object.fromEntries(GRUPOS.map(x=>[x.id, base[x.id][1]])), cambio = Object.fromEntries(GRUPOS.map(x=>[x.id, 0]));
       hechas.forEach(v=>{ g[v.de.id]--; g[v.a.id]++; cambio[v.de.id]--; cambio[v.a.id]++; });
       const usados = hechas.length ? hechas[hechas.length-1].acum : 0, rapido = !suave || quieto;
