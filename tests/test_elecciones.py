@@ -264,3 +264,16 @@ def test_decretos_leyes_y_su_convalidacion():
     assert (d["1/2026"]["estado"], d["1/2026"]["voto"]["si"], d["1/2026"]["proyecto"]) == ("convalidado", 180, True)
     assert (d["2/2026"]["estado"], d["2/2026"]["proyecto"]) == ("derogado", None)
     assert d["3/2026"]["estado"] == "pendiente" and d["3/2026"]["voto"] is None
+
+
+def test_dia_a_dia_de_la_legislatura():
+    salida = {"datos": {"votaciones": [
+        {"id": "1-1", "fecha": "2024-03-12", "titulo": "Ley de prueba", "si": "175", "no": "175"},
+        {"id": "1-2", "fecha": "2024-03-12", "titulo": "Moción", "si": "0", "no": "0"},          # por asentimiento
+        {"id": "9-1", "fecha": "2026-10-20", "titulo": "Después de la disolución", "si": "1", "no": "0"}]},
+        "leyes": {"aprobadas": [{"tipo": "Ley", "titulo": "Ley 1/2024, de 7 de junio", "fecha": "2024-06-07"},
+                                {"tipo": "Real decreto-ley", "titulo": "Real Decreto-ley 1/2024, de 2 de enero", "fecha": "2024-03-12"}]},
+        "preguntas": [{"presentada": "2024-03-12"}, {"presentada": "2023-08-01"}]}
+    d = elecciones.dia_a_dia(salida)
+    assert d["dias"] == {"2024-03-12": [2, 0, 1, 1], "2024-06-07": [0, 1, 0, 0]}
+    assert [(v[0], v[3], v[4]) for v in d["votos"]] == [("1-1", 175, 175)]

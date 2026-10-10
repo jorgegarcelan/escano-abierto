@@ -203,6 +203,37 @@ def _es_rdl(a: dict) -> bool:
     return a["tipo"] == "Real decreto-ley" and a["titulo"].startswith("Real Decreto-ley")
 
 
+def dia_a_dia(salida: dict, hasta: date = CONVOCATORIA) -> dict:
+    """La legislatura día a día, para «La legislatura en cifras»: qué pasó cada día (votaciones, leyes, decretos-leyes
+    y preguntas registradas) y cada votación nominal con su resultado (para el histograma de márgenes): la web solo
+    tiene en memoria las del periodo que se está viendo."""
+    from .construir import titulo_votacion
+    d = salida["datos"]
+    leyes = salida.get("leyes") or {"iniciativas": [], "aprobadas": []}
+    dias: dict[str, list[int]] = {}
+    suma = lambda f, k: dias.setdefault(f, [0, 0, 0, 0]).__setitem__(k, dias[f][k] + 1)
+    votos = []
+    for v in d["votaciones"]:
+        if v["fecha"] > hasta.isoformat():
+            continue
+        suma(v["fecha"], 0)
+        si, no = int(v.get("si") or 0), int(v.get("no") or 0)
+        if si + no:
+            t = titulo_votacion(v.get("titulo") or "", v.get("subgrupo", ""))
+            votos.append([v["id"], v["fecha"], t if len(t) <= 110 else t[:108].rsplit(" ", 1)[0] + "…", si, no])
+    for a in leyes.get("aprobadas", []):
+        if a.get("fecha") and a["fecha"] <= hasta.isoformat():
+            if a["tipo"] in ("Ley", "Ley orgánica"):
+                suma(a["fecha"], 1)
+            elif _es_rdl(a):
+                suma(a["fecha"], 2)
+    for q in salida.get("preguntas") or []:
+        if q.get("presentada") and "2023-08-17" <= q["presentada"] <= hasta.isoformat():
+            suma(q["presentada"], 3)
+    return {"desde": "2023-08-17", "hasta": hasta.isoformat(), "campos": ["votaciones", "leyes", "decretos", "preguntas"],
+            "dias": dict(sorted(dias.items())), "votos": sorted(votos, key=lambda x: (x[1], x[0]))}
+
+
 def balance(salida: dict) -> dict:
     """La XV legislatura en cifras, de la sesión constitutiva a la disolución."""
     d = salida["datos"]
@@ -221,8 +252,8 @@ def balance(salida: dict) -> dict:
         "sesiones": len(d["sesiones"]), "intervenciones": len(salida.get("intervenciones") or []),
         "leyes": aprobadas.get("Ley", 0), "leyes_organicas": aprobadas.get("Ley orgánica", 0),
         "decretos_ley": aprobadas.get("Real decreto-ley", 0),
-        "convalidados": sum("de convalidación" in t for t in resoluciones),
-        "derogados": sum("de derogación" in t for t in resoluciones),
+        "convalidados": sum(x["estado"] == "convalidado" for x in decretos(leyes, votos)),
+        "derogados": sum(x["estado"] == "derogado" for x in decretos(leyes, votos)),
         "preguntas": len(preguntas), "sin_respuesta": sum(p.get("estado") == "pendiente" for p in preguntas),
         "diputados": len(d["diputados"]),
         "mas_ajustada": {"id": estrecha["id"], "fecha": estrecha["fecha"], "titulo": estrecha["titulo"],
@@ -249,6 +280,8 @@ def escribir(salida: dict, carpeta=None) -> None:
         "hay": {n: (CARPETA / f"{n}.json").exists() for n in ("candidaturas", "promesas", "resultados")},
     }
     (carpeta / "elecciones.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
+    # La legislatura día a día (para «La legislatura en cifras»): aparte, porque solo lo pide ese apartado.
+    (carpeta / "legislatura.json").write_text(json.dumps(dia_a_dia(salida), ensure_ascii=False, separators=(",", ":")))
     # El viaje de cada ley (para «Lo que caduca»): aparte, porque solo lo pide ese apartado.
     (carpeta / "viajes.json").write_text(json.dumps(viajes(leyes), ensure_ascii=False, separators=(",", ":")))
     for f in sorted(CARPETA.rglob("*.json")):   # con las subcarpetas (provincias/)

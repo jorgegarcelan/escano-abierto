@@ -292,7 +292,8 @@ export async function render(el, c, sub){
     import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), ctx));
   } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo); montarDecretos(cuerpo);
     import("./elecciones-viajes.js").then(m=>m.montarViajes(cuerpo, ctx, COLOR_ORIGEN)).catch(err=>console.error(err)); }
-  else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`; }
+  else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`;
+    import("./elecciones-cifras.js").then(m=>m.montarCifras(cuerpo, ctx, DATOS.balance)).catch(err=>console.error(err)); }
   else if (sub === "repite"){ cuerpo.innerHTML = `<section class="sec" id="el-repite" style="padding-top:8px"><p class="nota">Cargando…</p></section>`; pintarRepite(cuerpo.querySelector("#el-repite")); }
   else if (sub === "escano") hist("pintarEscano");
   else if (sub === "historico") hist("pintarHistorico");
@@ -690,7 +691,8 @@ function montarDecretos(raiz){
   svg.addEventListener("mousemove", ev=>{ const c = ev.target.closest("[data-rdl]"); if (!c){ tipEl(""); return; } tipEl(tipRdl(D[+c.dataset.rdl]), ev); });
   svg.addEventListener("mouseleave", ()=>tipEl(""));
   svg.addEventListener("click", ev=>{ const c = ev.target.closest("[data-rdl]"); if (!c) return; const d = D[+c.dataset.rdl];
-    if (d.voto?.id) location.hash = "votacion-" + d.voto.id; else if (d.pdf) window.open(d.pdf, "_blank", "noopener"); });
+    if (d.voto?.id){ const b = document.createElement("button"); b.hidden = true; b.dataset.irv = d.voto.id; b.dataset.f = d.voto.fecha; document.body.appendChild(b); b.click(); b.remove(); }   // data-irv: la web carga su mes
+    else if (d.pdf) window.open(d.pdf, "_blank", "noopener"); });
 }
 // Tooltip propio (como el de la portada): la web usa data-tip en el HTML, aquí va dibujado en SVG.
 let tipCaja = null;
@@ -705,13 +707,8 @@ function tipEl(html, ev){
 
 /* ---------- la legislatura en cifras ---------- */
 function balance(){
-  const {esc, fmt} = ctx, B = DATOS.balance, aj = B.mas_ajustada;
-  const k = [[B.plenos,"días de Pleno con votaciones"],[fmt(B.votaciones),"votaciones"],[B.ajustadas,"decididas por 10 votos o menos"],
-    [B.leyes+B.leyes_organicas,`leyes aprobadas (${B.leyes_organicas} orgánicas)`],[B.decretos_ley,"reales decretos-leyes del Gobierno"],
-    [B.derogados,"decretos-leyes derogados por el Congreso",true],[fmt(B.preguntas),"preguntas escritas al Gobierno"],[fmt(B.sin_respuesta),"sin respuesta",true]];
-  return `<div class="sec-h"><h2>La legislatura en cifras</h2><p>De la sesión constitutiva del 17 de agosto de 2023 a la disolución del 6 de octubre de 2026.</p></div>
-    <div class="kpis">${k.map(([x,l,a])=>`<div class="kpi ${a?"alert":""}"><b>${x}</b><span>${esc(l)}</span></div>`).join("")}</div>
-    ${aj?`<div class="chart"><h3>La votación más ajustada</h3><p class="sub">${esc(ctx.fechaCorta(aj.fecha))}: ${aj.si} a favor y ${aj.no} en contra.</p><p><button class="linklike" data-irv="${esc(aj.id)}" data-f="${esc(aj.fecha)}">${esc(aj.titulo)} →</button></p></div>`:""}`;
+  return `<div class="chart"><h3>La legislatura, día a día</h3><p class="sub">Cada cuadrado es uno de los 1.147 días entre la sesión constitutiva y la disolución. Dale al ▶ para recorrerla y ver subir los contadores, o elige qué pintar. Pasa por un día para ver qué pasó; púlsalo para ir a sus votaciones.</p><div id="cf-dia"><p class="nota">Cargando…</p></div></div>
+    <div class="chart"><h3>Por cuántos votos</h3><div id="cf-margen"><p class="nota">Cargando…</p></div></div>`;
 }
 
 /* ---------- ¿Repite? ---------- */
