@@ -3094,10 +3094,10 @@ function irCargo(id){
 }
 
 /* ---------- elecciones del 29N (site/elecciones.js, se carga al abrir la pestaña) ---------- */
-let elSub = null;
+let elSub = null, elUltimo = null;
 function renderElecciones(){
   const ctxEl = {G, DIPS, PLANO, ORDEN_HEMI, esc, fmt, slug, legible, fechaCorta, autorNombre, irDiputado, glosa};
-  const sub = elSub; elSub = null;
+  const sub = elUltimo = elSub; elSub = null;
   import("./elecciones.js").then(m=>m.render($("#elecciones"), ctxEl, sub))
     .catch(()=>{ $("#elecciones").innerHTML = `<p class="nota">No se ha podido cargar la sección de elecciones.</p>`; });
 }
@@ -3534,6 +3534,7 @@ function show(id, push){
   if (id && id.startsWith("cargo-")){ const c=id.slice(6); if (orgSel!==c){ orgSel=c; rendered.organigrama=false; } id="organigrama"; push=false; }
   else if (id==="organigrama" && push && orgSel){ orgSel=null; rendered.organigrama=false; }
   if (id && id.startsWith("elecciones-")){ elSub = id.slice(11); rendered.elecciones=false; id="elecciones"; push=false; }
+  else if (id==="elecciones" && elUltimo){ rendered.elecciones=false; }   // de un apartado a la portada de la sección
   if (id && id.startsWith("geografia-")){ geoSub = id.slice(10); rendered.geografia=false; id="geografia"; push=false; }
   else if (id==="geografia" && geoUltimo){ rendered.geografia=false; }   // de una ficha a la portada de la sección
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }

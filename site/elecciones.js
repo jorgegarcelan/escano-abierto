@@ -144,6 +144,9 @@ export async function render(el, c, sub){
     <nav class="el-subnav" aria-label="Apartados de las elecciones">${PAGINAS.map(x=>`<a href="#elecciones-${x.id}"${x.id===actual?' aria-current="page"':""}>${esc(x.t)}</a>`).join("")}</nav>
     <div id="el-pagina">${p ? `<div class="view-intro"><div><h2>${esc(p.t)}</h2><p>${esc(p.d)}</p></div></div>` : ""}<div class="el-cuerpo"><p class="nota">Cargando…</p></div></div>`;
   const cuerpo = el.querySelector(".el-cuerpo");
+  // El menú de apartados se desplaza de lado: que se vea el actual.
+  const nav = el.querySelector(".el-subnav"), act = nav?.querySelector('[aria-current="page"]');
+  if (act) nav.scrollLeft = act.offsetLeft - nav.offsetLeft - (nav.clientWidth - act.offsetWidth) / 2;
   const hist = f => import("./elecciones-historico.js").then(m=>m[f](cuerpo, ctx, sub)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   if (sub === "350"){
     cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
