@@ -229,30 +229,43 @@ const CSS = `
 .pe-ctl .pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}.pe-ctl .pri:hover{background:var(--ink);opacity:.88}
 .pe-ctl button:focus-visible{outline:2px solid var(--no);outline-offset:2px}
 .pe-barras{display:grid;gap:5px;position:relative}
-.pe-b,.pe-b-h{display:grid;grid-template-columns:minmax(0,6.5em) minmax(0,1fr) minmax(4.5em,auto);gap:10px;align-items:center}
+.pe-b,.pe-b-h{display:grid;grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 10.5em 7em;gap:10px;align-items:center}
+.pe-b .cq{font:11.5px var(--mono);color:var(--muted);text-align:right;white-space:nowrap}.pe-b .cq b{color:var(--ink);font-weight:600}
+@media (max-width:560px){ .pe-b,.pe-b-h{grid-template-columns:minmax(0,5em) minmax(0,1fr) 6.6em 3.6em;gap:6px} .pe-b .cq .vv{display:none} }   /* columnas fijas: todas las barras, en la misma escala */
 .pe-b-h{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);min-height:14px}
 .pe-b-h > span:last-child{text-align:left}
 .pe-b .n{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pe-b .t,.pe-b-h .t{position:relative;height:22px;display:block}
 .pe-b-h .t{height:14px}
 .pe-b .t i{position:absolute;left:0;top:3px;bottom:3px;width:var(--w,0%);background:var(--c);border-radius:2px;transition:width .5s cubic-bezier(.3,.7,.3,1),box-shadow .25s,opacity .3s}
-.pe-b .t small{position:absolute;left:calc(var(--w,0%) + 8px);top:50%;transform:translateY(-50%);font:11.5px var(--mono);color:var(--muted);white-space:nowrap;transition:left .5s cubic-bezier(.3,.7,.3,1)}
-.pe-b .t small b{color:var(--ink);font-weight:600}
-.pe-b .s{display:flex;flex-wrap:wrap;gap:2px;align-content:center}
-.pe-b .s i{width:8px;height:8px;border-radius:1.5px;background:var(--c);animation:pe-pop .3s ease}
+.pe-b .s{display:flex;align-items:center;gap:6px}
+.pe-b .s b{font:700 14px var(--mono);min-width:1.2em;text-align:right}
+.pe-b .s .q{display:flex;flex-wrap:wrap;gap:2px;align-content:center}
+.pe-b .s .q i{width:8px;height:8px;border-radius:1.5px;background:var(--c);animation:pe-pop .3s ease}
 .pe-b.fuera .t i{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 45%,transparent) 0 3px,transparent 3px 6px)}
 .pe-b.fuera .n{color:var(--muted)}
 .pe-b.toca .t i{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--c)}
 .pe-b.toca .n{color:var(--c)}
 .pe-barras.fin .pe-b .t::after,.pe-barras.fin .pe-b-h .t::after{content:"";position:absolute;left:var(--l);top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink);opacity:.55}
 .pe-barras.fin .pe-b-h .t::after{display:none}
-.pe-barras.fin .pe-b:not(.fuera) .t small{left:calc(var(--l) + 10px)}   /* al final, los números en columna, pasada la línea */
 .lin-t{position:absolute;left:var(--l,0%);transform:translateX(-50%);white-space:nowrap;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:600}
 .pe-paso{min-height:2.8em;margin:12px 0 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
 .pe-paso b{color:var(--ink)}
 .pe-paso-n{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink);background:var(--sunk);border-radius:999px;padding:2px 8px;margin-right:4px}
-.pe-sim-hemi{position:relative;text-align:center;align-self:center}
-.pe-sim-hemi .hi-hemi{max-width:var(--hw,340px);margin:0 auto}
+.pe-sillas-w{min-width:0}
+.pe-sillas{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px;margin-top:8px}
+.pe-sillas.muchas{grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:4px}
+.pe-silla{position:relative;min-height:58px;border:1.5px dashed var(--line-strong);border-radius:8px;padding:6px 7px;display:grid;align-content:space-between;gap:2px;transition:background .3s,border-color .3s}
+.pe-silla .k{font:600 10px var(--mono);opacity:.7}
+.pe-silla b{font-size:12.5px;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pe-silla small{font:10.5px var(--mono);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pe-silla.llena{background:var(--c);border:1.5px solid var(--c)}
+.pe-silla.llena .k{opacity:.8}
+.pe-silla.nueva{animation:pe-silla .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pe-silla{from{transform:scale(.6);opacity:.2}to{transform:none;opacity:1}}
+.pe-sillas.muchas .pe-silla{min-height:30px;padding:3px;border-radius:5px;place-items:center}
+.pe-sillas.muchas .pe-silla b,.pe-sillas.muchas .pe-silla small{display:none}
+.pe-sillas.muchas .pe-silla .k{font-size:9px}
 .pe-votos{margin-top:22px;border-top:1px solid var(--line)}
 .pe-votos-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:12px 0 6px;font-size:13px;color:var(--muted)}
 .pe-votos-h > b{color:var(--ink);font-size:14px}
@@ -281,7 +294,7 @@ const CSS = `
 .pe-flip .menos{background:color-mix(in srgb,var(--no) 25%,var(--surface));color:var(--ink)}
 @keyframes pe-flip{0%{opacity:0;transform:translateY(6px) scale(.96)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:.0}}
 .hi-coc td.ahora{outline:2px solid var(--no);outline-offset:1px;color:var(--ink)}
-@media (prefers-reduced-motion:reduce){ .pe-b .t i,.pe-b .t small{transition:none} }
+@media (prefers-reduced-motion:reduce){ .pe-b .t i{transition:none} }
 .hi-coc td{transition:background .3s,color .3s}
 .hi-seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-pill);overflow:hidden;background:var(--surface);margin:2px 0 4px}
 .hi-seg button{appearance:none;border:0;background:none;font:500 12.5px var(--sans);color:var(--muted);padding:5px 12px;cursor:pointer}
@@ -1305,10 +1318,10 @@ function simulador(sec, P, {explicar = false} = {}){
       <p class="sub">${p.e === 1 ? "Aquí se reparte un solo escaño: se lo lleva quien más votos tiene." : `Los ${p.e} escaños se reparten por rondas. En cada una, el escaño es para la barra más larga; y esa barra se divide entre uno más (÷2, ÷3…) para la ronda siguiente.`}</p></div>
     <div class="pe-sim-c"><div class="pe-rondas">
         <div class="pe-ctl"><button type="button" class="pri" data-sim-play>▶ Ver el reparto</button><button type="button" data-sim-paso>Siguiente escaño →</button><button type="button" data-sim-reset>↺ Resultado real</button></div>
-        <div class="pe-barras" data-barras><div class="pe-b-h"><span></span><span class="t"><span class="lin-t" data-lin-t></span></span><span>Escaños</span></div>
-          ${lista.map(x=>`<div class="pe-b" data-b="${esc(x[0])}" style="--c:${color[x[0]]}"><span class="n">${esc(x[0])}</span><span class="t"><i></i><small data-bq></small></span><span class="s" data-bs></span></div>`).join("")}</div>
+        <div class="pe-barras" data-barras><div class="pe-b-h"><span></span><span class="t"><span class="lin-t" data-lin-t></span></span><span></span><span>Escaños</span></div>
+          ${lista.map(x=>`<div class="pe-b" data-b="${esc(x[0])}" style="--c:${color[x[0]]}"><span class="n">${esc(x[0])}</span><span class="t"><i></i></span><small class="cq" data-bq></small><span class="s"><b data-bn>0</b><span class="q" data-bs></span></span></div>`).join("")}</div>
         <p class="pe-paso" data-paso aria-live="polite"></p></div>
-      <div class="pe-sim-hemi" style="--hw:${p.e <= 4 ? 170 : p.e <= 10 ? 250 : 340}px">${hemiSVG(p.e, {etiqueta: String(p.e)})}<div class="pe-flip" aria-live="polite"></div></div></div>
+      <div class="pe-sillas-w"><div class="eyebrow">${p.e === 1 ? "El escaño" : `Los ${p.e} escaños`} de ${esc(nombreProv(simProv))}</div><div class="pe-sillas${p.e > 12 ? " muchas" : ""}" data-sillas>${Array.from({length:p.e},(_,i)=>`<div class="pe-silla"><span class="k">${i+1}.º</span><b></b><small></small></div>`).join("")}</div><div class="pe-flip" aria-live="polite"></div></div></div>
     <div class="pe-votos"><div class="pe-votos-h"><b>Los votos</b><span>Arrástralos, o pide <b>+1 escaño</b> y la web calcula cuántos faltan.</span></div>
       ${lista.map(x=>`<div class="pe-voto" data-fila="${esc(x[0])}" style="--c:${color[x[0]]}"><span class="n">${esc(x[0])}</span>
         <input type="range" min="0" max="${Math.round(x[2]*2+p.validos*0.02)}" step="${Math.max(1, Math.round(p.validos/2000))}" value="${simVotos[x[0]] ?? x[2]}" data-sim="${esc(x[0])}" aria-label="Votos de ${esc(x[0])}">
@@ -1316,24 +1329,31 @@ function simulador(sec, P, {explicar = false} = {}){
       <p class="nota" data-q></p></div>
     <div class="hi-coc-c"><h4>La tabla de cocientes</h4><p class="sub">Las mismas rondas, en números: los votos de cada candidatura entre 1, 2, 3… Los ${p.e} cocientes más altos se llevan los escaños (en color); el recuadro marca el último y el discontinuo, el primero que se queda fuera.</p><div class="hi-coc" data-coc></div></div>`;
   let antes = null, anim = null, k = null, fase = 0, enVista = null;   // k: escaños ya repartidos en la explicación (null = reparto completo)
-  const flip = caja.querySelector(".pe-flip"), hemi = caja.querySelector(".hi-hemi"), pasoEl = caja.querySelector("[data-paso]"), barrasEl = caja.querySelector("[data-barras]");
-  hemi.setAttribute("viewBox", "-112 -112 224 126");   // que no se corte la fila de abajo
+  const flip = caja.querySelector(".pe-flip"), sillas = [...caja.querySelectorAll(".pe-silla")], pasoEl = caja.querySelector("[data-paso]"), barrasEl = caja.querySelector("[data-barras]");
   const cuenta = (r, n) => { const rep = {}; r.gan.slice(0, n).forEach(y=>rep[y.c] = (rep[y.c]||0) + 1); return rep; };
-  const segsDe = rep => lista.filter(x=>rep[x[0]]).map(x=>({color: color[x[0]], n: rep[x[0]], tip: `<b>${esc(x[0])}</b><br>${rep[x[0]]} ${rep[x[0]]===1?"escaño":"escaños"}`}));
   // Las barras: lo que pide cada candidatura para el escaño siguiente (sus votos entre los escaños que ya tiene más uno).
   function barras(r, n, toca){
-    const rep = cuenta(r, n), max = Math.max(...lista.map(x=>simVotos[x[0]]), 1), w = q => q/max*72;   // la barra más larga ocupa el 72 %: a la derecha, el número
+    const rep = cuenta(r, n), max = Math.max(...lista.map(x=>simVotos[x[0]]), 1), w = q => q/max*96;   // la barra más larga, casi de lado a lado
     lista.forEach(x=>{ const c2 = x[0], fila = [...barrasEl.querySelectorAll("[data-b]")].find(f=>f.dataset.b === c2), v = simVotos[c2], pasa = v > 0 && v >= r.barrera, d = (rep[c2]||0) + 1;
       if (!fila) return;
       fila.classList.toggle("fuera", !pasa); fila.classList.toggle("toca", !!toca && toca.c === c2);
       fila.style.setProperty("--w", `${w(pasa ? v/d : v).toFixed(2)}%`);
-      fila.querySelector("[data-bq]").innerHTML = pasa ? `${fmt(v)} ÷ ${d} = <b>${fmt(v/d)}</b>` : `${fmt(v)} · no llega al 3 %`;
-      const s = fila.querySelector("[data-bs]"), ya = s.children.length, quiere = rep[c2]||0;
+      fila.querySelector("[data-bq]").innerHTML = pasa ? `<span class="vv">${fmt(v)} </span>÷ ${d} = <b>${fmt(v/d)}</b>` : `no llega al 3 %`;
+      const s = fila.querySelector("[data-bs]"), ya = s.children.length, quiere = rep[c2]||0; fila.querySelector("[data-bn]").textContent = pasa ? quiere : "";
       if (ya < quiere) s.insertAdjacentHTML("beforeend", Array.from({length: quiere - ya}, ()=>`<i></i>`).join("")); else while (s.children.length > quiere) s.lastChild.remove(); });
     // El listón del final: el último cociente que se llevó escaño. Todas las barras quedan por debajo.
     const fin = n >= r.gan.length && r.gan.length, ult = r.gan[r.gan.length - 1];
     barrasEl.classList.toggle("fin", !!fin); barrasEl.style.setProperty("--l", fin ? `${w(ult.q).toFixed(2)}%` : "0%");
     caja.querySelector("[data-lin-t]").textContent = fin ? `último escaño: ${fmt(ult.q)}` : "";
+  }
+  // Los escaños de la provincia, en el orden en que se reparten: cada uno, con quién se lo lleva y con qué cociente.
+  function asientosProv(r, n){
+    sillas.forEach((el,i)=>{ const x = i < n ? r.gan[i] : null, antes = el.dataset.c || "";
+      el.dataset.c = x ? x.c : ""; el.classList.toggle("llena", !!x);
+      if (x && antes !== x.c){ el.classList.remove("nueva"); void el.offsetWidth; el.classList.add("nueva"); }
+      el.style.setProperty("--c", x ? color[x.c] : ""); el.style.color = x ? textoSobre(color[x.c]) : "";
+      el.querySelector("b").textContent = x ? x.c : ""; el.querySelector("small").textContent = x ? `÷${x.d} · ${fmt(x.q)}` : "";
+      el.dataset.tip = x ? `<b>Escaño ${i+1}.º</b>: ${esc(x.c)}<br>${fmt(simVotos[x.c])} ÷ ${x.d} = <b>${fmt(x.q)}</b>` : `<b>Escaño ${i+1}.º</b><br>Aún sin repartir`; });
   }
   function tabla(r, n, cur){
     const ganan = new Set(r.gan.slice(0, n).map(x=>x.c+"|"+x.d)), cols = Math.min(p.e, 12), fin = n >= r.gan.length;
@@ -1349,7 +1369,7 @@ function simulador(sec, P, {explicar = false} = {}){
     return u ? `El último escaño fue para <b>${esc(u.c)}</b>, con ${f(u.q)} (÷${u.d}).${s ? ` La barra más larga que se queda sin escaño es la de <b>${esc(s.c)}</b>: ${f(s.q)}.` : ""}` : "Ninguna candidatura pasa la barrera."; };
   // Un momento de la explicación: n escaños repartidos; si «toca», se señala la barra que se lleva el siguiente.
   function momento(r, n, toca){
-    barras(r, n, toca); tabla(r, n, toca); pintarHemi(hemi, segsDe(cuenta(r, n)), n >= r.gan.length ? String(p.e) : String(n));
+    barras(r, n, toca); tabla(r, n, toca); asientosProv(r, n);
     if (n >= r.gan.length) pasoEl.innerHTML = final(r);
     else if (toca) pasoEl.innerHTML = `<span class="pe-paso-n">Escaño ${n+1} de ${p.e}</span> La barra más larga es la de <b style="color:${color[toca.c]}">${esc(toca.c)}</b>: ${fmt(toca.q)}.`;
     else if (n) { const x = r.gan[n-1], d = cuenta(r, n)[x.c] + 1; pasoEl.innerHTML = `<span class="pe-paso-n">Escaño ${n} de ${p.e}</span> Para <b style="color:${color[x.c]}">${esc(x.c)}</b>. Su barra pasa a ÷${d}: ${fmt(simVotos[x.c]/d)}.`; }
