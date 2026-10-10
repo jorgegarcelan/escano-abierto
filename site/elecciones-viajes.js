@@ -30,6 +30,8 @@ const CSS = `
 .vj-sankey rect{cursor:pointer}
 .vj-sankey svg.filtrado .enlaces path{fill-opacity:.09}
 .vj-sankey .rastro path{fill-opacity:.78;cursor:pointer}
+.vj-sankey svg.dibujando [data-n]:not(.visto){opacity:0}
+.vj-sankey [data-n]{transition:opacity .35s}
 .vj-sankey svg.filtrado rect.off{opacity:.3}
 .vj-sankey svg.filtrado text.off{opacity:.45}
 .vj-sankey svg.filtrado text:not(.off) .v{fill:var(--ink);font-weight:700}
@@ -172,8 +174,9 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   const laterales = rot.filter(r=>!r.arriba).sort((a,b)=>a.n.col-b.n.col || a.y-b.y);
   laterales.forEach((r,i)=>{ const prev = laterales[i-1], min = r.n.linea ? 15 : 26; if (prev && prev.n.col === r.n.col && r.y - prev.y < min) r.y = prev.y + min; });
   caja.innerHTML = `<div class="vj-sankey"><svg viewBox="0 0 ${W} ${H + 20}" role="img" aria-label="De dónde vino y dónde acabó cada proyecto y proposición de ley de la legislatura">
-      <g class="enlaces">${enlaces.map((e,i)=>`<path d="${e.d}" fill="${e.color}" data-e="${i}"/>`).join("")}</g>
-      <g class="rastro"></g>
+      <defs><clipPath id="vj-c-base"><rect x="-2" y="0" width="${W + 4}" height="${H + 20}"/></clipPath><clipPath id="vj-c-rastro"><rect x="-2" y="0" width="${W + 4}" height="${H + 20}"/></clipPath></defs>
+      <g class="enlaces" clip-path="url(#vj-c-base)">${enlaces.map((e,i)=>`<path d="${e.d}" fill="${e.color}" data-e="${i}"/>`).join("")}</g>
+      <g class="rastro" clip-path="url(#vj-c-rastro)"></g>
       <g class="nodos">${nodos.map(n=>`<rect x="${n.x}" y="${n.y}" width="${nodoW}" height="${n.h.toFixed(1)}" rx="2" fill="${n.color}" data-n="${esc(n.id)}"/>`).join("")}</g>
       <g class="rotulos">${rot.map(r=>`<text x="${r.x}" y="${r.y}" text-anchor="${r.ancla}" data-n="${esc(r.n.id)}"><tspan class="t">${esc(r.n.nombre)}</tspan>${r.n.linea ? `<tspan class="v" dx="6">${miles(r.n.n)}</tspan>` : `<tspan class="v" x="${r.x}" dy="13">${miles(r.n.n)} · ${pct(r.n.n)}</tspan>`}</text>`).join("")}</g>
     </svg></div><div class="vj-sel" hidden></div>`;
@@ -214,16 +217,46 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   // El rastro de una selección: por cada enlace, la banda de las suyas (encima del enlace, con el color del grupo,
   // o del de cada origen si se eligió una salida), y en cada nodo, «X de N».
   const capa = svg.querySelector(".rastro"), valores = new Map([...svg.querySelectorAll(".rotulos text")].map(t=>[t.dataset.n, t.querySelector(".v")]));
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const corteBase = svg.querySelector("#vj-c-base rect"), corteRastro = svg.querySelector("#vj-c-rastro rect");
+  let barridos = {};
+  // Abre un recorte de izquierda a derecha en «dur» ms; enX(x) avisa de por dónde va (para los nodos y sus cifras).
+  function barrer(rect, dur, enX, clave){
+    cancelAnimationFrame(barridos[clave]);
+    const ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2, t0 = performance.now();
+    if (reducido){ rect.setAttribute("width", W + 4); enX(W + 4); return; }
+    const paso = ahora => { const t = Math.min(1, (ahora - t0)/dur), x = ease(t) * (W + 4);
+      rect.setAttribute("width", x.toFixed(1)); enX(x); if (t < 1) barridos[clave] = requestAnimationFrame(paso); };
+    rect.setAttribute("width", 0); enX(-1); barridos[clave] = requestAnimationFrame(paso);
+  }
+  const rects = id => [...svg.querySelectorAll("rect[data-n]")].filter(r=>r.dataset.n === id);
   function rastro(xs, color){
     selXs = xs; capa.innerHTML = "";
-    nodos.forEach(n=>{ const v = valores.get(n.id); if (!v) return;
-      if (!xs){ v.textContent = n.linea ? miles(n.n) : `${miles(n.n)} · ${pct(n.n)}`; return; }
-      const m = xs.filter(n.de).length;
+    const cuentas = new Map(nodos.map(n=>[n.id, xs ? xs.filter(n.de).length : null]));
+    const pintarNodo = n => { const v = valores.get(n.id), m = cuentas.get(n.id); if (!v) return;
       v.textContent = m ? `${miles(m)} de ${miles(n.n)}` : n.linea ? miles(n.n) : `${miles(n.n)} · ${pct(n.n)}`;
-      svg.querySelectorAll("rect[data-n]").forEach(r=>{ if (r.dataset.n === n.id) r.classList.add(m ? "on" : "off"); });
-      v.closest("text").classList.toggle("off", !m); });
-    if (!xs) return;
+      rects(n.id).forEach(r=>{ r.classList.toggle("on", !!m); r.classList.toggle("off", m === 0); });
+      v.closest("text").classList.toggle("off", m === 0); };
+    if (!xs){ nodos.forEach(n=>{ pintarNodo(n); rects(n.id).forEach(r=>r.classList.remove("on","off")); }); return; }
     capa.innerHTML = enlaces.map((e,i)=>{ const m = xs.filter(e.de).length; return m ? `<path d="${e.banda(m*k)}" fill="${e.origen || !color ? e.origen ? e.color : "var(--ink)" : color}" data-e="${i}"/>` : ""; }).join("");
+    // Mientras el rastro no llega a un nodo, ese nodo se queda apagado.
+    nodos.forEach(n=>{ const v = valores.get(n.id); if (v) v.closest("text").classList.add("off"); rects(n.id).forEach(r=>r.classList.add("off")); });
+    const hechos = new Set();
+    barrer(corteRastro, 1700, x=>{ nodos.forEach(n=>{ if (!hechos.has(n.id) && n.x <= x){ hechos.add(n.id); pintarNodo(n); } }); }, "rastro");
+  }
+  // La primera vez que se ve, el diagrama se dibuja etapa a etapa: los flujos avanzan y cada nodo aparece al llegarle.
+  const aparecer = () => {
+    const hechos = new Set();
+    svg.classList.add("dibujando");
+    barrer(corteBase, 2200, x=>{ nodos.forEach(n=>{ if (!hechos.has(n.id) && n.x <= x + 2){ hechos.add(n.id);
+      svg.querySelectorAll("[data-n]").forEach(el=>{ if (el.dataset.n === n.id) el.classList.add("visto"); }); } });
+      if (x >= W) svg.classList.remove("dibujando"); }, "base");
+  };
+  if (reducido || !("IntersectionObserver" in window)) svg.querySelectorAll("[data-n]").forEach(el=>el.classList.add("visto"));
+  else {
+    corteBase.setAttribute("width", 0); svg.classList.add("dibujando");
+    const io = new IntersectionObserver(es=>{ if (es.some(e=>e.isIntersecting && e.intersectionRatio > .35)){ io.disconnect(); aparecer(); } }, {threshold:[.35]});
+    io.observe(svg);
   }
 }
 let tipEl = null;
