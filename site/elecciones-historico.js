@@ -167,19 +167,36 @@ const CSS = `
 [data-ps-esc] .cursor circle{fill:var(--no);stroke:var(--surface);stroke-width:2}
 [data-ps-esc] .cursor text{font:700 11.5px var(--mono);fill:var(--ink)}
 .ps-esc:focus-within{outline:2px solid color-mix(in srgb,var(--no) 50%,transparent)}
-.ps-tr{margin-top:16px}
+.ps-tr{margin-top:18px}
 .ps-tr .nota{margin:6px 0 0}
-.ps-par{display:grid;grid-template-columns:minmax(0,15em) 2.2em minmax(0,1fr);gap:4px 12px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.ps-fl-t{display:flex;justify-content:space-between;margin-top:8px;font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+[data-ps-flujo]{display:block;width:100%;height:auto;margin-top:4px;overflow:visible}
+[data-ps-flujo] .hilo{fill:none;opacity:.78;cursor:pointer;transition:opacity .2s}
+[data-ps-flujo] .hilo.nuevo{stroke-dasharray:1;stroke-dashoffset:1;animation:ps-dib .7s cubic-bezier(.3,.7,.3,1) forwards}
+@keyframes ps-dib{to{stroke-dashoffset:0}}
+[data-ps-flujo]:hover .hilo{opacity:.35}[data-ps-flujo] .hilo:hover{opacity:1}
+[data-ps-flujo] .hilo.fuera,[data-ps-flujo]:hover .hilo.fuera{opacity:.07}
+[data-ps-flujo] .nodo{cursor:pointer}
+[data-ps-flujo] .nodo text{font:600 12.5px var(--sans,inherit);fill:var(--ink)}
+[data-ps-flujo] .nodo .mas{fill:var(--si);font-family:var(--mono)}[data-ps-flujo] .nodo .menos{fill:var(--no);font-family:var(--mono)}
+[data-ps-flujo] .nodo:hover rect,[data-ps-flujo] .nodo.on rect{stroke:var(--ink);stroke-width:1.5}
+[data-ps-flujo].sel .nodo:not(.on) text{opacity:.5}
+.ps-ayuda{margin:10px 0 2px;font-size:12.5px;color:var(--muted)}
+.ps-fil{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 2px;font-size:13px;color:var(--muted)}
+.ps-fil b{display:inline-flex;align-items:center;gap:5px;color:var(--ink)}.ps-fil i{width:9px;height:9px;border-radius:50%}
+.ps-fil button{all:unset;cursor:pointer;margin-left:4px;padding:2px 9px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--ink)}
+.ps-par{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:4px 12px;align-items:start;padding:7px 0;border-top:1px solid var(--line)}
 .ps-par:first-of-type{border-top:0}
-@media (max-width:640px){ .ps-par{grid-template-columns:minmax(0,1fr) 2.2em} .ps-pv{grid-column:1/-1} }
-.ps-dir{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;min-width:0;padding-top:3px}
-.ps-dir i{width:9px;height:9px;border-radius:50%;flex:none}
-.ps-dir em{font-style:normal;color:var(--muted);margin:0 2px}
-.ps-par > b{font:700 18px var(--mono);text-align:right;line-height:1.3}
+@media (max-width:640px){ .ps-par{grid-template-columns:1fr} }
+.ps-dir{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;min-width:0;padding-top:3px}
+.ps-dir i{width:8px;height:8px;border-radius:50%;flex:none}
+.ps-dir em{font-style:normal;color:var(--muted);margin:0 1px}
+.ps-dir b{margin-left:auto;font:700 13px var(--mono);padding-left:8px}
 .ps-pv{display:flex;flex-wrap:wrap;gap:4px}
-.ps-pv button{all:unset;cursor:pointer;padding:3px 9px;border-radius:999px;background:var(--sunk);border:1px solid var(--line);font-size:12px}
+.ps-pv button{all:unset;cursor:pointer;padding:2px 8px;border-radius:999px;background:var(--sunk);border:1px solid var(--line);font-size:11.5px}
 .ps-pv button:hover{border-color:var(--line-strong);color:var(--ink)}
 .ps-pv button.nuevo{animation:pe-pop .35s ease}
+@media (prefers-reduced-motion:reduce){ [data-ps-flujo] .hilo.nuevo{animation:none;stroke-dashoffset:0} }
 .pe-sim{min-width:0;max-width:100%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,#4F7AA6 7%,var(--surface)),var(--surface))}
 .pe-sim-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
 .pe-sim-h h3{font-size:clamp(18px,2.4vw,22px);margin:4px 0 4px;line-height:1.3}
@@ -929,7 +946,7 @@ export async function pintarEscano(sec, c){
         <div class="ps-btns"><button type="button" data-ps-play>▶ Reproducir</button><button type="button" data-ps-ir="3">1.000</button><button type="button" data-ps-ir="4">10.000</button><button type="button" data-ps-ir="5">100.000</button><button type="button" data-ps-ir="max">Todos</button></div></div>
         <svg data-ps-esc role="img" aria-label="Escaños que cambian de manos según los votos repartidos"></svg>
         <input type="range" id="ps-r" class="sr" min="2" max="6" step="0.01" aria-label="Votos para repartir"></div>
-      <div class="ps-tr"><div class="eyebrow">Quién se los lleva</div><div data-ps-lista></div></div></div>
+      <div class="ps-tr"><div class="eyebrow">Quién se los lleva</div><div class="ps-fl-t"><span>Los pierde</span><span>Se los lleva</span></div><svg data-ps-flujo role="img" aria-label="De qué partido a qué partido pasan los escaños"></svg><div data-ps-lista></div></div></div>
     <div class="chart pe-sim" id="he-sim" style="margin-top:16px"></div></section>`;
   const $ = s => sec.querySelector(s);
   let P = null, prev = {barato:0, caro:0, sin:0, mil:0, precio:0};
@@ -1018,7 +1035,7 @@ export async function pintarEscano(sec, c){
     lado._io.observe(lado);
   }
   /* El Congreso que pudo ser: los últimos escaños, del más barato al más caro, cambian de manos al mover los votos. */
-  let pudoVotos = null;
+  let pudoVotos = null, selFam = null;
   function ultimo(D, e){
     const fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]);
     const vueltas = Object.entries(D.prov).filter(([,p])=>p.ultimo).map(([cod,p])=>({cod, p, de: fam(p, p.ultimo.gana), a: fam(p, p.ultimo.segundo), f: p.ultimo.faltan}))
@@ -1059,7 +1076,51 @@ export async function pintarEscano(sec, c){
         if (k < 0) return ""; const v = svg._v[k];
         return `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)}: le faltaron <b>${fmt(v.f)}</b> votos<br><span style="color:var(--muted)">Escaño n.º ${k+1} · ${fmt(v.acum)} votos acumulados</span>`; }); }
     svg._v = vueltas; svg._X = X; svg._Y = Y;
-    let antes = -1, vistos = new Set();
+    let antes = -1, vistos = new Set(), ultHechas = [];
+    // Quién se los lleva: un hilo por escaño, del partido que lo pierde (izquierda) al que se lo lleva (derecha).
+    const flujo = $("[data-ps-flujo]"), lista = $("[data-ps-lista]");
+    function flujoQuien(hechas){
+      ultHechas = hechas;
+      if (selFam && !hechas.some(v=>v.de.id === selFam || v.a.id === selFam)) selFam = null;
+      if (!hechas.length){ flujo.style.display = "none"; $(".ps-fl-t").style.display = "none";
+        lista.innerHTML = `<p class="nota">Con tan pocos votos no cambia ningún escaño: el más barato costaba ${fmt(vueltas[0].f)}.</p>`; vistos = new Set(); return; }
+      flujo.style.display = ""; $(".ps-fl-t").style.display = "";
+      const Wf = Math.max(300, flujo.parentNode.clientWidth || 600), u = Wf < 520 ? 5 : 6, gap = 12, bw = 8;
+      const nomF = f => Wf < 520 ? ({IZQ:"IU-Sumar", NAC:"Nacional.", UCD:"UCD"}[f.id] || CORTO[f.id] || f.nombre) : (CORTO[f.id] || f.nombre);   // en el móvil, nombres cortos
+      const lab = Math.min(Wf*.36, 22 + Math.max(...hechas.flatMap(v=>[nomF(v.de), nomF(v.a)]).map(t=>t.length))*7.8);   // lo justo para el rótulo más largo
+      const cDe = {}, cA = {}; hechas.forEach(v=>{ cDe[v.de.id] = (cDe[v.de.id] || 0) + 1; cA[v.a.id] = (cA[v.a.id] || 0) + 1; });
+      const orden = GRUPOS.map(g=>g.id), fam = Object.fromEntries(GRUPOS.map(g=>[g.id, g]));
+      const izq = orden.filter(id=>cDe[id]), der = orden.filter(id=>cA[id]);
+      const alto = (l, c) => l.reduce((t,id)=>t + c[id]*u, 0) + (l.length - 1)*gap, Hf = Math.max(alto(izq, cDe), alto(der, cA)) + 8;
+      const nodos = (l, c) => { let y = 4 + (Hf - 8 - alto(l, c))/2; const o = {}; l.forEach(id=>{ o[id] = {y, h: c[id]*u, k: 0}; y += c[id]*u + gap; }); return o; };
+      const NI = nodos(izq, cDe), ND = nodos(der, cA), x0 = lab + bw, x1 = Wf - lab - bw, xm = (x0 + x1)/2;
+      // Cada hilo ocupa su ranura: a la izquierda, ordenados por destino; a la derecha, por origen (menos cruces).
+      const hilos = hechas.map((v,i)=>({v, i}));
+      [...hilos].sort((a,b)=>orden.indexOf(a.v.de.id) - orden.indexOf(b.v.de.id) || orden.indexOf(a.v.a.id) - orden.indexOf(b.v.a.id) || a.i - b.i).forEach(h=>{ const n = NI[h.v.de.id]; h.y0 = n.y + n.k++*u + u/2; });
+      [...hilos].sort((a,b)=>orden.indexOf(a.v.a.id) - orden.indexOf(b.v.a.id) || orden.indexOf(a.v.de.id) - orden.indexOf(b.v.de.id) || a.i - b.i).forEach(h=>{ const n = ND[h.v.a.id]; h.y1 = n.y + n.k++*u + u/2; });
+      const pares = [...new Set(hechas.map(v=>v.de.id + "-" + v.a.id))];
+      const toca = v => !selFam || v.de.id === selFam || v.a.id === selFam;
+      flujo.setAttribute("viewBox", `0 0 ${Wf} ${Hf}`); flujo.classList.toggle("sel", !!selFam);
+      flujo.innerHTML = `<defs>${pares.map(k=>{ const [d,a] = k.split("-"); return `<linearGradient id="ps-fl-${k}" gradientUnits="userSpaceOnUse" x1="${x0}" x2="${x1}" y1="0" y2="0"><stop offset="0" stop-color="${fam[d].color}"/><stop offset="1" stop-color="${fam[a].color}"/></linearGradient>`; }).join("")}</defs>
+        <g class="hilos">${hilos.map(h=>`<path class="hilo${vistos.has(h.v.cod) ? "" : " nuevo"}${toca(h.v) ? "" : " fuera"}" data-ult="${h.v.cod}" data-h="${h.i}" pathLength="1" stroke="url(#ps-fl-${h.v.de.id}-${h.v.a.id})" stroke-width="${u - 1.2}" d="M${x0} ${h.y0.toFixed(1)}C${xm} ${h.y0.toFixed(1)} ${xm} ${h.y1.toFixed(1)} ${x1} ${h.y1.toFixed(1)}"/>`).join("")}</g>
+        ${izq.map(id=>`<g class="nodo${selFam === id ? " on" : ""}" data-fam="${id}"><rect x="${lab}" y="${NI[id].y}" width="${bw}" height="${NI[id].h}" rx="2" fill="${fam[id].color}"/><text x="${lab - 8}" y="${NI[id].y + NI[id].h/2 + 4}" text-anchor="end">${esc(nomF(fam[id]))} <tspan class="menos">−${cDe[id]}</tspan></text></g>`).join("")}
+        ${der.map(id=>`<g class="nodo${selFam === id ? " on" : ""}" data-fam="${id}"><rect x="${x1}" y="${ND[id].y}" width="${bw}" height="${ND[id].h}" rx="2" fill="${fam[id].color}"/><text x="${x1 + bw + 8}" y="${ND[id].y + ND[id].h/2 + 4}"><tspan class="mas">+${cA[id]}</tspan> ${esc(nomF(fam[id]))}</text></g>`).join("")}`;
+      // Debajo, las provincias: todas, o solo las del partido elegido.
+      const grupos = {}; hechas.filter(toca).forEach(v=>{ const k = v.de.id + ">" + v.a.id; (grupos[k] ||= {de: v.de, a: v.a, l: []}).l.push(v); });
+      lista.innerHTML = (selFam ? `<div class="ps-fil">Solo <b><i style="background:${fam[selFam].color}"></i>${esc(nomF(fam[selFam]))}</b>: pierde ${cDe[selFam] || 0}, se lleva ${cA[selFam] || 0} <button type="button" data-ps-todos>Ver todos</button></div>`
+          : `<p class="ps-ayuda">Pulsa un partido para ver solo los suyos; pulsa una provincia para probarla en el simulador.</p>`)
+        + Object.values(grupos).sort((a,b)=>b.l.length - a.l.length).map(t=>`<div class="ps-par"><span class="ps-dir"><i style="background:${t.de.color}"></i>${esc(nomF(t.de))}<em>→</em><i style="background:${t.a.color}"></i>${esc(nomF(t.a))}<b>${t.l.length}</b></span>
+          <span class="ps-pv">${t.l.map(v=>`<button type="button" data-ult="${v.cod}" class="${vistos.has(v.cod) ? "" : "nuevo"}">${esc(nombreProv(v.cod))}</button>`).join("")}</span></div>`).join("");
+      vistos = new Set(hechas.map(v=>v.cod));
+    }
+    flujo.onclick = ev => { const n = ev.target.closest("[data-fam]"); if (!n) return; selFam = selFam === n.dataset.fam ? null : n.dataset.fam; vistos = new Set(ultHechas.map(v=>v.cod)); flujoQuien(ultHechas); };
+    lista.onclick = ev => { if (ev.target.closest("[data-ps-todos]")){ selFam = null; flujoQuien(ultHechas); } };
+    if (!flujo.dataset.tip){ flujo.dataset.tip = 1;
+      conTip(flujo, ev=>{ const h = ev.target.closest(".hilo"), n = ev.target.closest("[data-fam]"), H = flujo._h || [];
+        if (h){ const v = H[+h.dataset.h]; return v ? `<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)} con ${fmt(v.f)} votos más<br><span style="color:var(--muted)">Pulsa para probarlo en el simulador</span>` : ""; }
+        if (n){ const id = n.dataset.fam, pierde = H.filter(v=>v.de.id === id), gana = H.filter(v=>v.a.id === id);
+          return `<b>${esc(CORTO[id] || id)}</b>${pierde.length ? `<br>Pierde ${pierde.length}: ${esc(pierde.map(v=>nombreProv(v.cod)).join(", "))}` : ""}${gana.length ? `<br>Se lleva ${gana.length}: ${esc(gana.map(v=>nombreProv(v.cod)).join(", "))}` : ""}<br><span style="color:var(--muted)">Pulsa para ver solo los suyos</span>`; }
+        return ""; }); }
     const pintar = (suave = false) => {
       const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu), x = X(presu);
       cur.setAttribute("transform", `translate(${x.toFixed(1)},0)`); clip.setAttribute("width", x.toFixed(1)); 
@@ -1081,14 +1142,7 @@ export async function pintarEscano(sec, c){
       pudoVotos = {v: usados, n: hechas.length};
       $("[data-ps-pct]").textContent = hechas.length ? `el ${pct(usados/votantes, usados/votantes < .01 ? 2 : 1)} de los que votaron` : "arrastra sobre la escalera";
       $("[data-ps-g]").innerHTML = GRUPOS.filter(x=>base[x.id][1] || cambio[x.id]).map(x=>`<div class="${cambio[x.id] > 0 ? "mas" : cambio[x.id] < 0 ? "menos" : ""}"><i style="background:${x.color}"></i><span>${esc(CORTO[x.id] || x.nombre)}</span><b>${g[x.id]}</b><small>${cambio[x.id] ? (cambio[x.id] > 0 ? "+" : "−") + Math.abs(cambio[x.id]) : ""}</small></div>`).join("");
-      // Quién se los lleva: los escaños que cambian, agrupados por de quién a quién.
-      const pares = {}; hechas.forEach(v=>{ const k = v.de.id + ">" + v.a.id; (pares[k] ||= {de: v.de, a: v.a, l: []}).l.push(v); });
-      const nuevos = new Set(hechas.map(v=>v.cod));
-      $("[data-ps-lista]").innerHTML = hechas.length ? Object.values(pares).sort((a,b)=>b.l.length - a.l.length).map(t=>`<div class="ps-par">
-        <span class="ps-dir"><i style="background:${t.de.color}"></i>${esc(CORTO[t.de.id] || t.de.nombre)}<em>→</em><i style="background:${t.a.color}"></i>${esc(CORTO[t.a.id] || t.a.nombre)}</span><b>${t.l.length}</b>
-        <span class="ps-pv">${t.l.map(v=>`<button type="button" data-ult="${v.cod}" class="${vistos.has(v.cod) ? "" : "nuevo"}" data-tip="${esc(`<b>${esc(nombreProv(v.cod))}</b><br>${esc(v.p.ultimo.gana)} → ${esc(v.p.ultimo.segundo)} con ${fmt(v.f)} votos más<br><span style='color:var(--muted)'>Pulsa para probarlo en el simulador</span>`)}">${esc(nombreProv(v.cod))}</button>`).join("")}</span></div>`).join("")
-        : `<p class="nota">Con tan pocos votos no cambia ningún escaño: el más barato costaba ${fmt(vueltas[0].f)}.</p>`;
-      vistos = nuevos;
+      flujo._h = hechas; flujoQuien(hechas);
     };
     // Reproducir: el deslizador recorre la escalera de punta a punta (o hasta donde se le diga).
     let anim = null;
