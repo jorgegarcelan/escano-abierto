@@ -209,6 +209,26 @@ def _capa(topo: dict, objeto: str, tol: float, decimales: int, proj: Proyeccion 
     return salida, proj
 
 
+def _siluetas(topo: dict, objeto: str, codigos: set[str], lado: float = 100.0) -> dict[str, str]:
+    """El contorno a gran escala de las provincias que en el mapa de España no llegan a dibujarse (Ceuta y Melilla):
+    cada una en su propio lienzo de `lado` de ancho, sin simplificar. Para la silueta del simulador."""
+    arcos_ll = _arcos(topo)
+    salida = {}
+    for g in topo["objects"][objeto]["geometries"]:
+        cod = str(g.get("id", ""))
+        if cod not in codigos:
+            continue
+        anillos = [[_lambert(lon, lat) for lon, lat in _anillo_puntos(anillo, arcos_ll)] for pol in _anillos(g) for anillo in pol]
+        xs = [x for a in anillos for x, _ in a]
+        ys = [y for a in anillos for _, y in a]
+        if not xs:
+            continue
+        k = lado / max(max(xs) - min(xs), max(ys) - min(ys))
+        locales = [[((x - min(xs)) * k, (y - min(ys)) * k) for x, y in a] for a in anillos]   # pocos puntos: sin simplificar
+        salida[cod] = _path(locales, 1)
+    return salida
+
+
 def descargar() -> None:
     from .red import descargar as bajar
     CARPETA_CRUDOS.mkdir(parents=True, exist_ok=True)
@@ -227,6 +247,10 @@ def escribir() -> dict:
     _, proj = _capa(muni_topo, "provinces", 0.5, 1)
     provincias, _ = _capa(muni_topo, "provinces", 0.35, 1, proj)
     municipios, _ = _capa(muni_topo, "municipalities", 0.45, 1, proj)
+    # Las que se quedan sin dibujo a esta escala, con un contorno propio a gran escala.
+    siluetas = _siluetas(muni_topo, "provinces", {c for c, p in provincias.items() if not p["d"]})
+    for c, d in siluetas.items():
+        provincias[c]["silueta"] = d
     SALIDA.mkdir(parents=True, exist_ok=True)
     geo_prov = {
         "ancho": ANCHO, "alto": ALTO, "canarias": proj.recuadro,

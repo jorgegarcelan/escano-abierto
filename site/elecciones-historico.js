@@ -218,6 +218,15 @@ const CSS = `
 .ps-pv button.nuevo{animation:pe-pop .35s ease}
 @media (prefers-reduced-motion:reduce){ [data-ps-flujo] .hilo.nuevo{animation:none;stroke-dashoffset:0} }
 .pe-sim{min-width:0;max-width:100%;overflow:hidden}
+.pe-sim-h{display:flex;gap:16px 28px;align-items:center;justify-content:space-between}
+.pe-sim-tx{flex:1 1 auto;min-width:0}
+.pe-silueta{flex:none;margin:0;width:clamp(76px,13vw,128px);display:grid;gap:4px;justify-items:center}
+.pe-silueta svg{display:block;width:100%;height:clamp(76px,13vw,128px);overflow:visible}
+.pe-silueta path{fill:color-mix(in srgb,var(--c,var(--ink)) 24%,transparent);stroke:var(--ink);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:pe-sil 1.4s ease forwards;transition:fill .5s}
+@keyframes pe-sil{0%{stroke-dashoffset:1;fill-opacity:0}55%{fill-opacity:0}100%{stroke-dashoffset:0;fill-opacity:1}}
+.pe-silueta figcaption{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:560px){ .pe-sim-h{align-items:flex-start} .pe-silueta{width:64px} .pe-silueta svg{height:64px} }
+@media (prefers-reduced-motion:reduce){ .pe-silueta path{animation:none;stroke-dashoffset:0} }
 .pe-sim-h h3{font-size:clamp(19px,2.6vw,24px);margin:4px 0 6px;line-height:1.3}
 .pe-sim-h select{font:inherit;font-weight:700;color:var(--ink);background:var(--sunk);border:1px solid var(--line-strong);border-radius:8px;padding:1px 6px}
 .pe-sim-h .sub{margin:0;max-width:64ch}
@@ -1314,8 +1323,10 @@ function simulador(sec, P, {explicar = false} = {}){
   const validosDe = V => resto + Object.values(V).reduce((s,v)=>s+v,0);
   const real = Object.fromEntries(lista.map(x=>[x[0], x[2]])), color = Object.fromEntries(lista.map(x=>[x[0], colorPartido(x[0], x[1])]));
   const opciones = Object.keys(P).sort((a,b)=>nombreProv(a).localeCompare(nombreProv(b),"es")).map(c2=>`<option value="${c2}"${c2===simProv?" selected":""}>${esc(nombreProv(c2))}</option>`).join("");
-  caja.innerHTML = `<div class="pe-sim-h"><div class="eyebrow">Juega con los votos</div><h3>¿Cuántos votos cambian un escaño en <select data-sim-prov aria-label="Provincia">${opciones}</select>?</h3>
+  const silueta = GEO?.provincias?.[simProv]?.d || GEO?.provincias?.[simProv]?.silueta;   // Ceuta y Melilla, con su contorno a gran escala
+  caja.innerHTML = `<div class="pe-sim-h"><div class="pe-sim-tx"><div class="eyebrow">Juega con los votos</div><h3>¿Cuántos votos cambian un escaño en <select data-sim-prov aria-label="Provincia">${opciones}</select>?</h3>
       <p class="sub">${p.e === 1 ? "Aquí se reparte un solo escaño: se lo lleva quien más votos tiene." : `Los ${p.e} escaños se reparten por rondas. En cada una, el escaño es para la barra más larga; y esa barra se divide entre uno más (÷2, ÷3…) para la ronda siguiente.`}</p></div>
+      ${silueta ? `<figure class="pe-silueta" aria-hidden="true"><svg><path d="${silueta}" pathLength="1"/></svg><figcaption>${p.e} ${p.e === 1 ? "escaño" : "escaños"}</figcaption></figure>` : ""}</div>
     <div class="pe-sim-c"><div class="pe-rondas">
         <div class="pe-ctl"><button type="button" class="pri" data-sim-play>▶ Ver el reparto</button><button type="button" data-sim-paso>Siguiente escaño →</button><button type="button" data-sim-reset>↺ Resultado real</button></div>
         <div class="pe-barras" data-barras><div class="pe-b-h"><span></span><span class="t"><span class="lin-t" data-lin-t></span></span><span></span><span>Escaños</span></div>
@@ -1329,6 +1340,11 @@ function simulador(sec, P, {explicar = false} = {}){
       <p class="nota" data-q></p></div>
     <div class="hi-coc-c"><h4>La tabla de cocientes</h4><p class="sub">Las mismas rondas, en números: los votos de cada candidatura entre 1, 2, 3… Los ${p.e} cocientes más altos se llevan los escaños (en color); el recuadro marca el último y el discontinuo, el primero que se queda fuera.</p><div class="hi-coc" data-coc></div></div>`;
   let antes = null, anim = null, k = null, fase = 0, enVista = null;   // k: escaños ya repartidos en la explicación (null = reparto completo)
+  const gen = caja._gen = (caja._gen || 0) + 1;   // si se vuelve a montar (otra provincia, otra elección), lo que quede en marcha de esta se para
+  // La silueta de la provincia, encuadrada a su tamaño (el trazo no engorda al ampliar las pequeñas).
+  const sil = caja.querySelector(".pe-silueta svg");
+  if (sil){ const bb = sil.querySelector("path").getBBox(), pad = Math.max(bb.width, bb.height)*.06;
+    sil.setAttribute("viewBox", `${(bb.x - pad).toFixed(1)} ${(bb.y - pad).toFixed(1)} ${(bb.width + 2*pad).toFixed(1)} ${(bb.height + 2*pad).toFixed(1)}`); }
   const flip = caja.querySelector(".pe-flip"), sillas = [...caja.querySelectorAll(".pe-silla")], pasoEl = caja.querySelector("[data-paso]"), barrasEl = caja.querySelector("[data-barras]");
   const cuenta = (r, n) => { const rep = {}; r.gan.slice(0, n).forEach(y=>rep[y.c] = (rep[y.c]||0) + 1); return rep; };
   // Las barras: lo que pide cada candidatura para el escaño siguiente (sus votos entre los escaños que ya tiene más uno).
@@ -1377,6 +1393,8 @@ function simulador(sec, P, {explicar = false} = {}){
   }
   const pintar = () => {
     const validos = validosDe(simVotos), r = dhondt(simVotos, p.e, validos);
+    const gana = Object.entries(r.rep).sort((a,b)=>b[1]-a[1] || simVotos[b[0]]-simVotos[a[0]])[0];   // la silueta, del color de quien más escaños saca
+    if (sil) sil.style.setProperty("--c", gana ? color[gana[0]] : "var(--ink)");
     caja.querySelectorAll("[data-fila]").forEach(f=>{ const c2 = f.dataset.fila, n = r.rep[c2]||0, inp = f.querySelector("[data-sim]"), dv = simVotos[c2] - real[c2];
       f.querySelector("[data-v]").textContent = fmt(simVotos[c2]);
       const dvEl = f.querySelector("[data-dv]"); dvEl.textContent = dv ? `${dv > 0 ? "+" : "−"}${fmt(Math.abs(dv))}` : ""; dvEl.className = dv > 0 ? "sube" : dv < 0 ? "baja" : "";
@@ -1394,8 +1412,9 @@ function simulador(sec, P, {explicar = false} = {}){
   // La explicación por rondas: primero se señala la barra más larga; luego se lleva el escaño y su barra se divide.
   const bPlay = caja.querySelector("[data-sim-play]");
   const rActual = () => dhondt(simVotos, p.e, validosDe(simVotos));
-  function parar(){ if (anim){ clearTimeout(anim); anim = null; } enVista?.disconnect(); caja.classList.remove("explicando"); bPlay.textContent = k != null && k < rActual().gan.length ? "▶ Seguir" : "▶ Ver el reparto"; }
-  caja._parar = () => { parar(); };
+  function parar(){ if (anim){ clearTimeout(anim); anim = null; } enVista?.disconnect(); caja.classList.remove("explicando"); bPlay.textContent = k != null && k < p.e ? "▶ Seguir" : "▶ Ver el reparto"; }
+  // Desde fuera (al cambiar de provincia o de elección) solo se cancelan los relojes: los votos ya pueden ser otros.
+  caja._parar = () => { if (anim){ clearTimeout(anim); anim = null; } enVista?.disconnect(); };
   function avanzar(r){   // un medio paso: señalar (fase 0) o adjudicar (fase 1)
     if (k == null){ k = 0; fase = 0; momento(r, 0); return true; }
     if (k >= r.gan.length) return false;
@@ -1416,9 +1435,9 @@ function simulador(sec, P, {explicar = false} = {}){
   const faltan = c2 => { const n0 = dhondt(simVotos, p.e, validosDe(simVotos)).rep[c2] || 0; let lo = simVotos[c2], hi = simVotos[c2] + p.validos*2;
     const gana = v => { const V = {...simVotos, [c2]: v}; return (dhondt(V, p.e, validosDe(V)).rep[c2] || 0) > n0; };
     if (!gana(hi)) return null; while (hi - lo > 1){ const mid = Math.floor((lo + hi)/2); if (gana(mid)) hi = mid; else lo = mid; } return hi; };
-  const animar = (c2, destino) => { const ini = simVotos[c2], t0 = performance.now(), dur = quieto ? 1 : 900, inp = [...caja.querySelectorAll("[data-sim]")].find(i=>i.dataset.sim === c2);
+  const animar = (c2, destino) => { if (caja._gen !== gen || !simVotos) return; const ini = simVotos[c2], t0 = performance.now(), dur = quieto ? 1 : 900, inp = [...caja.querySelectorAll("[data-sim]")].find(i=>i.dataset.sim === c2);
     if (inp && destino > +inp.max) inp.max = Math.ceil(destino*1.1);
-    const paso = ahora => { const t = Math.min(1, (ahora - t0)/dur), e2 = 1 - Math.pow(1 - t, 3); simVotos[c2] = Math.round(ini + (destino - ini)*e2); if (inp) inp.value = simVotos[c2]; pintar(); if (t < 1) requestAnimationFrame(paso); };
+    const paso = ahora => { if (caja._gen !== gen || !simVotos) return; const t = Math.min(1, (ahora - t0)/dur), e2 = 1 - Math.pow(1 - t, 3); simVotos[c2] = Math.round(ini + (destino - ini)*e2); if (inp) inp.value = simVotos[c2]; pintar(); if (t < 1) requestAnimationFrame(paso); };
     requestAnimationFrame(paso); };
   const alReparto = () => { parar(); k = null; fase = 0; };   // cualquier cambio de votos vuelve al reparto completo
   caja.oninput = ev=>{ const i = ev.target.closest("[data-sim]"); if (i){ alReparto(); simVotos[i.dataset.sim] = +i.value; pintar(); } };
