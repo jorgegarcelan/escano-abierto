@@ -36,6 +36,25 @@ const CSS = `
 .vj-sankey text .v{fill:var(--muted);font-family:var(--mono);font-size:11px}
 .vj-tip{position:fixed;z-index:65;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:7px 10px;font-size:12.5px;line-height:1.4;max-width:280px}
 .vj-tip[hidden]{display:none}
+.vj-q-ctl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-bottom:10px}
+.vj-seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-pill,999px);overflow:hidden;background:var(--surface)}
+.vj-seg button{appearance:none;border:0;background:none;font:500 12.5px var(--sans);color:var(--muted);padding:5px 12px;cursor:pointer}
+.vj-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.vj-ley{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.vj-ley span{display:inline-flex;align-items:center;gap:5px}
+.vj-ley i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.vj-quien{display:grid;gap:4px}
+.vj-q{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 7.5em;gap:10px;align-items:center}
+.vj-q .nom{all:unset;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vj-q .nom:hover{text-decoration:underline}
+.vj-q .nom i{width:9px;height:9px;border-radius:50%;flex:none}
+.vj-q .barra{display:flex;height:16px;gap:2px;transition:width .4s}
+.vj-q .barra button{all:unset;display:block;height:100%;min-width:2px;cursor:pointer;border-radius:2px;outline:2px solid transparent;outline-offset:1px}
+.vj-q .barra button:hover,.vj-q .barra button.on{outline-color:var(--ink)}
+#vj-quien.filtrado .vj-q .barra button:not(.on){opacity:.35}
+.vj-q .v{font:12px var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+.vj-q .v b{color:var(--no,#C8473B)}
+@media (max-width:640px){ .vj-quien{gap:12px} .vj-q{grid-template-columns:1fr auto;row-gap:4px} .vj-q .barra{grid-column:1/-1;grid-row:2} }
 .vj-sel{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
 .vj-sel h4{margin:0 0 4px;font-size:14px}
 .vj-sel ul{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:320px;overflow:auto}
@@ -106,7 +125,7 @@ function lugar(L, t, tDis){
 
 export async function montarViajes(raiz, ctx, colorOrigen){
   estilos();
-  const cajaE = raiz.querySelector("#vj-sankey"), cajaG = raiz.querySelector("#vj-guillotina");
+  const cajaE = raiz.querySelector("#vj-sankey"), cajaG = raiz.querySelector("#vj-guillotina"), cajaQ = raiz.querySelector("#vj-quien");
   if (!cajaE && !cajaG) return;
   await cargar();
   if (!V){ [cajaE, cajaG].forEach(c=>{ if (c) c.innerHTML = `<p class="nota">No se han podido cargar los viajes de las leyes.</p>`; }); return; }
@@ -114,6 +133,7 @@ export async function montarViajes(raiz, ctx, colorOrigen){
   const ficha = crearFicha(ctx);
   const guillo = cajaG ? guillotina(cajaG, L, ficha) : null;
   if (cajaE) sankey(cajaE, L, colorOrigen, ficha, f=>guillo?.filtrar(f));   // pulsar un nodo ilumina sus leyes en la guillotina
+  if (cajaQ) quienes(cajaQ, L, ctx, colorOrigen, ficha, f=>guillo?.filtrar(f));
   // La ficha también en las listas de leyes del apartado (las que llevan data-ini).
   raiz.addEventListener("mouseover", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && POR_EXP[b.dataset.ini] && !ficha.fija()) ficha.mostrar(POR_EXP[b.dataset.ini], b); });
   raiz.addEventListener("mouseout", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && !ficha.fija()) ficha.ocultar(); });
@@ -209,6 +229,59 @@ function tipVj(html, ev){
   const w = tipEl.offsetWidth, h = tipEl.offsetHeight, vw = document.documentElement.clientWidth;
   let x = ev.clientX + 14, y = ev.clientY + 14; if (x + w > vw - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
   tipEl.style.left = Math.max(8, x) + "px"; tipEl.style.top = Math.max(8, y) + "px";
+}
+
+/* ---------- de quién eran: lo que presentó cada autor y cómo acabó ---------- */
+const FINES = [
+  ["ley", "Acabaron en ley", ["aprobada","pendiente"], "var(--si,#3C8C6A)"],
+  ["caduca", "Caducan", ["caduca"], "var(--no,#C8473B)"],
+  ["rechazada", "Rechazadas", ["rechazada"], "#C9873E"],
+  ["fuera", "Retiradas o decaídas", ["retirada","decaída","otra"], "#8A8F98"],
+];
+const NOMBRE_AUTOR_V = {GOB:"Gobierno", SEN:"Senado", CCAA:"Parlamentos autonómicos", MIXTO:"Grupo Mixto", SUMAR:"Sumar", VOX:"Vox", BILDU:"EH Bildu", JUNTS:"Junts", GRUPOS:"Varios grupos"};
+function quienes(caja, L, ctx, colorOrigen, ficha, alElegir){
+  const autores = {};
+  L.forEach(l=>(l.autores.length ? l.autores : [l.origen]).forEach(a=>(autores[a] ||= []).push(l)));
+  const filas = Object.entries(autores).map(([a, xs])=>({a, xs, n: xs.length, por: Object.fromEntries(FINES.map(([id,,ds])=>[id, xs.filter(l=>ds.includes(l.destino)).length]))}))
+    .sort((x,y)=>y.n-x.n);
+  const max = filas[0].n, color = a => ctx.G?.[a]?.color || colorOrigen[a] || "var(--line-strong)";
+  let modo = "n", actual = null;
+  caja.innerHTML = `<div class="vj-q-ctl"><div class="vj-seg" role="group" aria-label="Escala"><button data-q-modo="n" aria-pressed="true">Cuántas</button><button data-q-modo="p" aria-pressed="false">Qué parte</button></div>
+      <div class="vj-ley">${FINES.map(f=>`<span><i style="background:${f[3]}"></i>${esc(f[1])}</span>`).join("")}</div></div>
+    <div class="vj-quien"></div><div class="vj-sel" hidden></div>`;
+  const cuerpo = caja.querySelector(".vj-quien"), lista = caja.querySelector(".vj-sel");
+  const pintar = () => {
+    const orden = modo === "n" ? filas : [...filas].sort((x,y)=>y.por.caduca/y.n - x.por.caduca/x.n || y.n - x.n);   // en porcentaje, de más a menos caducado
+    cuerpo.innerHTML = orden.map(f=>`<div class="vj-q">
+      <button class="nom" data-cad-autor="${esc(f.a)}" title="Ver sus leyes caducadas en la lista de abajo"><i style="background:${color(f.a)}"></i>${esc(NOMBRE_AUTOR_V[f.a] || f.a)}</button>
+      <div class="barra" style="width:${modo === "n" ? (f.n/max*100).toFixed(1) : 100}%">${FINES.filter(([id])=>f.por[id]).map(([id,nombre,,c])=>`<button class="${actual === f.a+"|"+id ? "on" : ""}" style="flex:${f.por[id]};background:${c}" data-q="${esc(f.a)}|${id}" aria-label="${esc(`${NOMBRE_AUTOR_V[f.a] || f.a}: ${f.por[id]} ${nombre.toLowerCase()}`)}"></button>`).join("")}</div>
+      <span class="v"><b>${f.por.caduca}</b> de ${f.n}${modo === "p" ? ` · ${Math.round(f.por.caduca/f.n*100)} %` : ""}</span></div>`).join("");
+    caja.classList.toggle("filtrado", !!actual);
+  };
+  caja.addEventListener("click", ev=>{
+    const m = ev.target.closest("[data-q-modo]");
+    if (m){ modo = m.dataset.qModo; caja.querySelectorAll("[data-q-modo]").forEach(b=>b.setAttribute("aria-pressed", String(b === m))); pintar(); return; }
+    const b = ev.target.closest("[data-q]"); if (!b) return;
+    actual = actual === b.dataset.q ? null : b.dataset.q;
+    pintar();
+    if (!actual){ lista.hidden = true; alElegir(null); return; }
+    const [a, id] = actual.split("|"), fin = FINES.find(f=>f[0]===id), f = filas.find(x=>x.a===a);
+    const xs = f.xs.filter(l=>fin[2].includes(l.destino)).sort((x,y)=>y.d0-x.d0);
+    lista.hidden = false;
+    lista.innerHTML = `<h4>${esc(NOMBRE_AUTOR_V[a] || a)} · ${xs.length} ${esc(fin[1].toLowerCase())}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
+    const set = new Set(xs.map(l=>l.exp));
+    alElegir(l=>set.has(l.exp));
+  });
+  cuerpo.addEventListener("mousemove", ev=>{
+    const b = ev.target.closest("[data-q]"); if (!b){ tipVj(""); return; }
+    const [a, id] = b.dataset.q.split("|"), f = filas.find(x=>x.a===a), fin = FINES.find(x=>x[0]===id);
+    tipVj(`<b>${esc(NOMBRE_AUTOR_V[a] || a)}</b><br>${f.por[id]} de sus ${f.n} ${f.n === 1 ? "ley" : "leyes"} (${Math.round(f.por[id]/f.n*100)} %): ${esc(fin[1].toLowerCase())}<br><i>Pulsa para verlas</i>`, ev);
+  });
+  cuerpo.addEventListener("mouseleave", ()=>tipVj(""));
+  lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b, true); });
+  lista.addEventListener("mouseover", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b && !ficha.fija()) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b); });
+  lista.addEventListener("mouseleave", ()=>{ if (!ficha.fija()) ficha.ocultar(); });
+  pintar();
 }
 
 /* ---------- la guillotina ---------- */

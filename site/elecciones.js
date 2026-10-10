@@ -536,7 +536,7 @@ function caducan(){
   const {esc} = ctx, C = DATOS.caducan;
   const cerca = C.lista.filter(x=>x[6]>=3);
   const congeladas = [...C.lista].sort((a,b)=>b[7]-a[7]).slice(0,5);
-  const autores = Object.entries(C.por_autor), maxA = Math.max(...autores.map(a=>a[1]));
+  const autores = Object.entries(C.por_autor);
   return `<p class="el-lead">Al disolverse las Cortes caducan todos los asuntos que el Congreso no había terminado. Las leyes a medio tramitar tendrán que volver a presentarse en la próxima legislatura y empezar de cero.</p>
     <div class="kpis"><div class="kpi alert"><b>${miles(C.total)}</b><span>leyes caducan sin terminar su tramitación</span></div>
       <div class="kpi"><b>${C.proyectos}</b><span>proyectos del Gobierno</span></div><div class="kpi"><b>${C.proposiciones}</b><span>proposiciones de grupos, Senado y comunidades</span></div>
@@ -545,8 +545,7 @@ function caducan(){
       <div id="vj-guillotina"><p class="nota">Cargando…</p></div>
       <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)}</span>`).join("")}</div></div>
     <div class="chart"><h3>De dónde vinieron y dónde acabaron</h3><p class="sub">Los proyectos y proposiciones de ley de toda la legislatura: quién los presentó, hasta dónde llegó cada uno y dónde se quedó el resto. Pulsa un nodo para ver esas leyes y encontrarlas en la guillotina.</p><div id="vj-sankey"><p class="nota">Cargando…</p></div></div>
-    <div class="chart"><h3>De quién eran</h3><p class="sub">Leyes que caducan según quién las presentó (una proposición firmada por varios grupos cuenta para cada uno). Pulsa una barra para ver sus leyes.</p>
-      <div class="el-barras">${autores.map(([a,n])=>`<button data-cad-autor="${esc(a)}"><span class="l">${esc(NOMBRE_AUTOR[a]||a)}</span><span class="b"><i style="width:${(n/maxA*100).toFixed(1)}%;background:${colorAutor(a)}"></i></span><span class="v">${n}</span></button>`).join("")}</div></div>
+    <div class="chart"><h3>De quién eran</h3><p class="sub">Todo lo que presentó cada uno en la legislatura y cómo acabó: en ley, caducado, rechazado o retirado. Una proposición firmada por varios grupos cuenta para cada uno. Pulsa un tramo para ver esas leyes en la guillotina, o un nombre para filtrar la lista de abajo.</p><div id="vj-quien"><p class="nota">Cargando…</p></div></div>
     <div class="grid2">
       <div class="chart"><h3>Las que estaban más cerca</h3><p class="sub">Ya las había aprobado el Pleno del Congreso.</p><ul class="el-lista">${cerca.map(itemCaducada).join("")}</ul></div>
       <div class="chart"><h3>Las más congeladas</h3><p class="sub">Las de plazo de enmiendas más veces ampliado: <button class="linklike" data-gl="plazo-enmiendas">el congelador</button>.</p><ul class="el-lista">${congeladas.map(itemCaducada).join("")}</ul></div>
