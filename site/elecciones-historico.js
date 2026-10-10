@@ -337,6 +337,11 @@ export async function miniaturas(el, c){
   const mapa = caja("mapa");
   if (mapa){ const gan = c => ult.prov[c] && primera(porGrupo(ult.prov[c].fam)).color;
     mapa.innerHTML = mapaSVG(gan, {enlazar:false}).replace('role="img"', 'aria-hidden="true"'); }
+  // La geografía del voto: un círculo por provincia, del tamaño de sus votantes y del color de la más votada.
+  const voto = caja("voto");
+  if (voto){ const P = Object.entries(ult.prov).filter(([c])=>GEO.provincias[c]).sort((a,b)=>b[1].votantes-a[1].votantes);
+    voto.innerHTML = `<svg viewBox="0 0 ${GEO.ancho} ${GEO.alto}" aria-hidden="true">${Object.values(GEO.provincias).map(p=>`<path d="${p.d}" style="fill:var(--sunk);stroke:var(--line)" stroke-width="1"/>`).join("")}
+      ${P.map(([c,p])=>`<circle cx="${GEO.provincias[c].c[0]}" cy="${GEO.provincias[c].c[1]}" r="${(Math.sqrt(p.votantes)*0.046+4).toFixed(1)}" fill="${primera(porGrupo(p.fam)).color}" fill-opacity=".8" stroke="var(--surface)" stroke-width="2"/>`).join("")}</svg>`; }
 }
 
 /* =====================================================================================================
