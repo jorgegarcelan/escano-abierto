@@ -310,7 +310,7 @@ const PAGINAS = [
   {id:"repite", c:"¿Repite?", t:"¿Repite?", d:"Quién de los 350 vuelve a ir en las listas, en qué puesto y por qué provincia."},
   {id:"escano", c:"Precio del escaño", t:"El precio de un escaño", d:"Cuántos votos cuesta un diputado en cada provincia, el último escaño de cada una y un simulador D'Hondt."},
   {id:"historico", c:"Desde 1977", t:"Elecciones desde 1977", d:"Las dieciséis generales, con la ficha de cada elección y de su legislatura."},
-  {id:"provincias", c:"Provincias", t:"Provincias", d:"Las 52 circunscripciones: escaños, participación, votos por escaño y su historia electoral."},
+  {id:"provincias", c:"Provincias", t:"Provincias", d:"Las 52 circunscripciones, elección a elección: quién ganó en cada una, sus escaños, su participación y lo que costó cada escaño."},
   {id:"metricas", c:"Métricas", t:"Métricas", d:"Participación, fragmentación, desproporcionalidad, volatilidad y bipartidismo, elección a elección."},
   {id:"mapa", c:"Por municipios", t:"Municipio a municipio", d:"El voto de 2019 y 2023 en los 8.131 municipios y cuánto cambió entre las dos."},
   {id:"voto", c:"Geografía del voto", t:"La geografía del voto", d:"Ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el peso del voto: cómo vota cada España, municipio a municipio."},
@@ -364,8 +364,8 @@ export async function render(el, c, sub){
 // Los apartados, agrupados por temas. El de los 350 no es una tarjeta: es la pieza central de su grupo.
 const GRUPOS_PAG = [
   {n:"La legislatura", t:"La legislatura que se acaba", d:"Lo que deja hecho y sin hacer la XV legislatura, y quién vuelve a presentarse.", ids:["caducan","legislatura","repite"]},
-  {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano","provincias"], los350:true},
-  {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una y en cifras.", ids:["historico","metricas"]},
+  {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano"], los350:true},
+  {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una, provincia a provincia y en cifras.", ids:["historico","provincias","metricas"]},
   {n:"El mapa", t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
   {n:"La noche", t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
 ];
