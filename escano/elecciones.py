@@ -38,6 +38,29 @@ ESCANOS = {
 }
 
 
+def padron() -> dict | None:
+    """Población de cada provincia (padrón del INE, de la sección de geografía): la base del reparto de escaños."""
+    ruta = DATOS / "geografia" / "territorios.json"
+    if not ruta.exists():
+        return None
+    t = json.loads(ruta.read_text())
+    return {"anio": t["fuentes"]["padron"], "pob": {c: p["pob"] for c, p in t["provincias"].items()}}
+
+
+def reparto(pob: dict[str, int], total: int = 350, minimo: int = 2) -> dict[str, int]:
+    """Escaños de cada provincia según el art. 162 de la LOREG: un mínimo fijo (Ceuta y Melilla, uno) y el resto por
+    población, con los restos mayores. Con el padrón de 2025 da exactamente el anexo del decreto de convocatoria."""
+    fijos = {c: 1 if c in ("51", "52") else minimo for c in pob}
+    resto = total - sum(fijos.values())
+    P = {c: v for c, v in pob.items() if c not in ("51", "52")}
+    cuota = sum(P.values()) / resto
+    enteros = {c: int(v // cuota) for c, v in P.items()}
+    por_resto = sorted(P, key=lambda c: (-(P[c] / cuota - enteros[c]), c))
+    for c in por_resto[:resto - sum(enteros.values())]:
+        enteros[c] += 1
+    return {c: fijos[c] + enteros.get(c, 0) for c in pob}
+
+
 def _fichas_diputados() -> dict:
     ruta = DATOS / "diputados.json"
     return json.loads(ruta.read_text()) if ruta.exists() else {}
@@ -293,6 +316,7 @@ def escribir(salida: dict, carpeta=None) -> None:
         "escanos": ESCANOS,
         "escanos_cambian": escanos_cambian(),
         "relevos": relevos(_fichas_diputados()),
+        "padron": padron(),
         "caducan": caducan(leyes),
         "convalidar": pendientes_de_convalidar(leyes, salida["datos"]["votaciones"]),
         "decretos": decretos(leyes, salida["datos"]["votaciones"]),

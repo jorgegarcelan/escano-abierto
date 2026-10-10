@@ -1,3 +1,4 @@
+import pytest
 from datetime import date
 
 from escano import elecciones, geo
@@ -289,3 +290,12 @@ def test_relevos_de_la_legislatura():
     r = elecciones.relevos(fichas)
     assert r["personas"] == 5
     assert [x[:3] for x in r["salidas"]] == [["D, Dora", "E, Eva", "2025-03-01"], ["A, Ana", "B, Berta", "2024-01-10"]]
+
+
+def test_reparto_de_escanos_como_el_decreto():
+    p = elecciones.padron()
+    if not p:
+        pytest.skip("sin data/geografia")
+    assert elecciones.reparto(p["pob"]) == elecciones.ESCANOS
+    sin_minimo = elecciones.reparto(p["pob"], minimo=1)
+    assert sum(sin_minimo.values()) == 350 and sin_minimo["28"] > elecciones.ESCANOS["28"]

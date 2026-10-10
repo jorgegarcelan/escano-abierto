@@ -170,6 +170,30 @@ const CSS = `
 .el-rel-lista .q i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
 .el-rel-lista .fl{color:var(--muted)}
 .el-rel-lista .c{grid-column:2;font-size:11.5px;color:var(--muted)}
+.el-regla-ctl{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 28px;margin-bottom:12px}
+.el-regla-ctl>div{display:grid;gap:5px}
+.el-regla-ctl label{font-size:13px;color:var(--muted)}
+.el-regla-ctl label b{color:var(--ink);font-family:var(--mono)}
+.el-regla-ctl small{font-size:11.5px;color:var(--muted)}
+.el-regla-ctl input[type=range]{width:min(320px,70vw);accent-color:var(--ink)}
+.el-seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-pill);overflow:hidden;background:var(--surface)}
+.el-seg button{appearance:none;border:0;background:none;font:600 13px var(--mono);color:var(--muted);padding:6px 14px;cursor:pointer}
+.el-seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.el-regla-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 24px;padding:10px 0 14px;border-block:1px solid var(--line);margin-bottom:10px}
+.el-regla-kpis div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center}
+.el-regla-kpis b{font-family:var(--led,var(--display));font-size:36px;font-weight:900;line-height:1}
+.el-regla-kpis span{font-size:13px;color:var(--muted);line-height:1.35}
+.el-regla-filas{display:grid;gap:3px}
+.el-regla-filas .fila{display:grid;grid-template-columns:minmax(0,8.5em) minmax(0,1fr) 4em;gap:10px;align-items:center;font-size:12.5px}
+.el-regla-filas .fila a{color:var(--ink);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.el-regla-filas .fila a:hover{text-decoration:underline}
+.el-regla-filas .cel{display:flex;flex-wrap:wrap;gap:2px}
+.el-regla-filas .cel i{width:8px;height:8px;border-radius:2px;background:var(--line-strong);display:block}
+.el-regla-filas .cel i.gana{background:var(--si)}
+.el-regla-filas .cel i.pierde{background:transparent;box-shadow:inset 0 0 0 1.5px var(--no)}
+.el-regla-filas .v{font:600 12.5px var(--mono);text-align:right;white-space:nowrap}
+.el-regla-filas .v small.mas{color:var(--si)}
+.el-regla-filas .v small.menos{color:var(--no)}
 .el-350{position:relative;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);box-shadow:var(--sombra);overflow:hidden}
 .el-350 svg{display:block;width:100%;max-width:min(900px,calc(78vh * 1000 / 820));height:auto;margin:0 auto;touch-action:manipulation}
 .el-350 .prov{fill:var(--sunk);stroke:var(--line-strong);stroke-width:.6;transition:opacity .6s}
@@ -316,9 +340,10 @@ export async function render(el, c, sub){
   const cuerpo = el.querySelector(".el-cuerpo");
   const hist = f => import("./elecciones-historico.js").then(m=>m[f](cuerpo, ctx, sub)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   if (sub === "350"){
-    cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
+    cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-regla"></section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
     montar350(cuerpo.querySelector(".el-350"));
-    import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), ctx));
+    import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), {...ctx, escanos2026: DATOS.escanos}));
+    simulador350(cuerpo.querySelector("#el-regla"));
   } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo); montarDecretos(cuerpo);
     import("./elecciones-viajes.js").then(m=>m.montarViajes(cuerpo, ctx, COLOR_ORIGEN)).catch(err=>console.error(err)); }
   else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`;
@@ -591,6 +616,54 @@ function montar350(caja){
     io.observe(svg);
   }
 }
+
+/* ---------- la regla de los 350: un simulador ---------- */
+// Art. 162 de la LOREG: un mínimo por provincia (Ceuta y Melilla, uno) y el resto por población, con los restos mayores.
+// Con el padrón de 2025 y los valores de la ley (350 y 2) da exactamente el anexo del decreto (lo comprueba un test).
+function repartoLoreg(pob, total = 350, minimo = 2){
+  const fijos = Object.fromEntries(Object.keys(pob).map(c=>[c, c === "51" || c === "52" ? 1 : minimo]));
+  const resto = total - Object.values(fijos).reduce((a,b)=>a+b, 0);
+  const P = Object.fromEntries(Object.entries(pob).filter(([c])=>c !== "51" && c !== "52"));
+  const cuota = Object.values(P).reduce((a,b)=>a+b, 0) / resto;
+  const ent = Object.fromEntries(Object.entries(P).map(([c,v])=>[c, Math.floor(v / cuota)]));
+  const orden = Object.keys(P).sort((a,b)=>(P[b]/cuota - ent[b]) - (P[a]/cuota - ent[a]) || a.localeCompare(b));
+  orden.slice(0, resto - Object.values(ent).reduce((a,b)=>a+b, 0)).forEach(c=>{ ent[c]++; });
+  return Object.fromEntries(Object.keys(pob).map(c=>[c, fijos[c] + (ent[c] || 0)]));
+}
+let regla = {total: 350, minimo: 2};
+function simulador350(sec){
+  const PAD = DATOS.padron, ESC = DATOS.escanos; if (!sec || !PAD || !ESC || !GEO) return;
+  const {esc} = ctx, pob = PAD.pob, cods = Object.keys(pob).sort((a,b)=>pob[b]-pob[a]);
+  const nombre = c => GEO.provincias[c]?.corto || c, miles2 = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  sec.innerHTML = `<div class="sec-h"><h2>La regla: por qué Soria elige 2 y Madrid 38</h2><p>La ley da a cada provincia un mínimo de dos diputados (a Ceuta y Melilla, uno) y reparte el resto según su población. Con el padrón de ${PAD.anio} sale justo el reparto del decreto del 29N. Cambia la regla y mira qué pasaría.</p></div>
+    <div class="chart">
+      <div class="el-regla-ctl"><div><label>Mínimo por provincia</label><div class="el-seg" role="group" aria-label="Mínimo de escaños por provincia">${[1,2,3,4].map(v=>`<button data-min="${v}" aria-pressed="${v===regla.minimo}">${v}</button>`).join("")}</div></div>
+        <div><label for="el-total">Diputados en el Congreso: <b id="el-total-v">${regla.total}</b></label><input type="range" id="el-total" min="300" max="400" step="1" value="${regla.total}"><small>La Constitución permite entre 300 y 400</small></div>
+        <button class="btn" data-regla-ley>Volver a la ley actual</button></div>
+      <div class="el-regla-kpis"></div>
+      <div class="el-regla-filas"></div>
+      <div class="el-leyenda"><span><i style="background:var(--line-strong);border-radius:2px"></i>Escaño que ya tiene hoy</span><span><i style="background:var(--si);border-radius:2px"></i>Ganaría</span><span><i style="background:transparent;border:1.5px solid var(--no);box-sizing:border-box;border-radius:2px"></i>Perdería</span></div>
+    </div>`;
+  const pintar = () => {
+    const R = repartoLoreg(pob, regla.total, regla.minimo);
+    const hab = c => pob[c] / R[c], vals = cods.filter(c=>c !== "51" && c !== "52").map(c=>[c, hab(c)]).sort((a,b)=>a[1]-b[1]);
+    const [cMin, hMin] = vals[0], [cMax, hMax] = vals[vals.length-1];
+    const cambian = cods.reduce((s,c)=>s + Math.max(0, R[c] - ESC[c]), 0);
+    sec.querySelector("#el-total-v").textContent = regla.total;
+    sec.querySelector(".el-regla-kpis").innerHTML = `<div><b>${dec(hMax / hMin, 1)}×</b><span>pesa un voto de ${esc(nombre(cMin))} frente a uno de ${esc(nombre(cMax))} (${miles2(hMin)} y ${miles2(hMax)} habitantes por escaño)</span></div>
+      <div><b>${cambian}</b><span>${cambian === 1 ? "escaño cambiaría" : "escaños cambiarían"} de provincia respecto al reparto del 29N</span></div>`;
+    sec.querySelector(".el-regla-filas").innerHTML = cods.map(c=>{ const r = R[c], h = ESC[c], n = Math.max(r, h);
+      const cel = Array.from({length:n}, (_,j)=>`<i class="${j < Math.min(r,h) ? "" : r > h ? "gana" : "pierde"}"></i>`).join("");
+      return `<div class="fila"><a href="#elecciones-provincia-${esc(ctx.slug(GEO.provincias[c]?.circ || ""))}">${esc(nombre(c))}</a><span class="cel">${cel}</span><span class="v">${r}${r !== h ? ` <small class="${r > h ? "mas" : "menos"}">${r > h ? "+" : "−"}${Math.abs(r - h)}</small>` : ""}</span></div>`; }).join("");
+  };
+  sec.addEventListener("click", ev=>{
+    const m = ev.target.closest("[data-min]"); if (m){ regla.minimo = +m.dataset.min; sec.querySelectorAll("[data-min]").forEach(b=>b.setAttribute("aria-pressed", String(b === m))); pintar(); return; }
+    if (ev.target.closest("[data-regla-ley]")){ regla = {total:350, minimo:2}; sec.querySelector("#el-total").value = 350; sec.querySelectorAll("[data-min]").forEach(b=>b.setAttribute("aria-pressed", String(+b.dataset.min === 2))); pintar(); }
+  });
+  sec.querySelector("#el-total").addEventListener("input", e=>{ regla.total = +e.target.value; pintar(); });
+  pintar();
+}
+const dec = (x, d = 1) => x.toLocaleString("es-ES", {minimumFractionDigits: d, maximumFractionDigits: d});
 
 /* ---------- lo que caduca ---------- */
 const ETAPAS = ["Presentada, sin admitir a debate","Admitida a debate","Con informe en comisión","Aprobada en el Congreso","Pasó por el Senado"];

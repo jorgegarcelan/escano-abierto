@@ -672,7 +672,8 @@ let selR = null, playR = null;
 export async function pintarReparto(sec, c){
   ctx = c; estilos();
   await base(); if (!HIST){ sec.innerHTML = ""; return; }
-  const E = HIST.elecciones;
+  // Con el decreto de convocatoria se conoce el reparto del 29N (aún sin resultados: los escaños, en gris).
+  const E = c.escanos2026 ? [...HIST.elecciones, {id:"2026", fecha:"2026-11-29", prov:Object.fromEntries(Object.entries(c.escanos2026).map(([k,e])=>[k, {e, fam:{}}]))}] : HIST.elecciones;
   selR ??= E.length - 1;
   sec.innerHTML = `<div class="sec-h"><h2>Cómo ha cambiado el reparto</h2><p>Cada provincia tiene al menos dos diputados (Ceuta y Melilla, uno) y el resto se reparte según su población antes de cada elección. Cada punto es un escaño, del color de la familia que lo ganó.</p></div>
     ${chipsAnios(E, selR, "re", true)}
@@ -694,7 +695,9 @@ export async function pintarReparto(sec, c){
       });
     }
     const pri = E[0], cambios = Object.keys(e.prov).map(c2=>[c2, e.prov[c2].e - pri.prov[c2].e]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
-    sec.querySelector("#re-lado").innerHTML = `<div class="eyebrow">${esc(anioLargo(e))}</div>
+    const ant = E[k-1], cambiosAnt = ant ? Object.keys(e.prov).map(c2=>[c2, e.prov[c2].e - (ant.prov[c2]?.e||0)]).filter(x=>x[1]) : [];
+    sec.querySelector("#re-lado").innerHTML = `<div class="eyebrow">${esc(anioLargo(e))}${e.id === "2026" ? " · aún sin votar" : ""}</div>
+      ${ant ? `<h3>Frente a ${esc(anio(ant))}</h3>${cambiosAnt.length ? `<ul class="el-lista">${cambiosAnt.map(([c2,d])=>`<li><a class="t" href="${enlaceProv(c2)}">${esc(nombreProv(c2))}</a><span class="m">${ant.prov[c2].e} → ${e.prov[c2].e} (${conSigno(d)})</span></li>`).join("")}</ul>` : `<p class="nota">Los mismos escaños en cada provincia.</p>`}` : ""}
       ${k ? `<h3>Frente a 1977</h3>${cambios.length ? `<ul class="el-lista">${cambios.map(([c2,d])=>`<li><a class="t" href="${enlaceProv(c2)}">${esc(nombreProv(c2))}</a><span class="m">${pri.prov[c2].e} → ${e.prov[c2].e} (${conSigno(d)})</span></li>`).join("")}</ul>` : `<p class="nota">El mismo reparto que en 1977.</p>`}`
         : `<p class="sub">El reparto de las primeras elecciones. Elige otra para ver qué provincias ganaron o perdieron escaños.</p>`}`;
   }
