@@ -541,10 +541,10 @@ function caducan(){
     <div class="kpis"><div class="kpi alert"><b>${miles(C.total)}</b><span>leyes caducan sin terminar su tramitación</span></div>
       <div class="kpi"><b>${C.proyectos}</b><span>proyectos del Gobierno</span></div><div class="kpi"><b>${C.proposiciones}</b><span>proposiciones de grupos, Senado y comunidades</span></div>
       <div class="kpi"><b>${C.congelador}</b><span>con el plazo de enmiendas ampliado diez veces o más</span></div><div class="kpi"><b>${miles(C.dias_medio)}</b><span>días de media en el Congreso</span></div></div>
-    <div class="chart"><h3>Del registro al BOE</h3><p class="sub">Todos los proyectos y proposiciones de ley de la legislatura: cuántos llegaron a cada etapa y dónde se quedó el resto. Pulsa un tramo para ver esas leyes.</p><div id="vj-embudo"><p class="nota">Cargando…</p></div></div>
     <div class="chart"><h3>La guillotina</h3><p class="sub">Cada punto es una ley: entra el día en que se presentó y avanza a medida que pasa cada etapa. Dale al ▶ o arrastra la fecha. El 6 de octubre de 2026, con la disolución, todo lo que seguía en trámite cae. Pasa por un punto para ver su viaje.</p>
       <div id="vj-guillotina"><p class="nota">Cargando…</p></div>
       <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)}</span>`).join("")}</div></div>
+    <div class="chart"><h3>De dónde vinieron y dónde acabaron</h3><p class="sub">Los proyectos y proposiciones de ley de toda la legislatura: quién los presentó, hasta dónde llegó cada uno y dónde se quedó el resto. Pulsa un nodo para ver esas leyes y encontrarlas en la guillotina.</p><div id="vj-sankey"><p class="nota">Cargando…</p></div></div>
     <div class="chart"><h3>De quién eran</h3><p class="sub">Leyes que caducan según quién las presentó (una proposición firmada por varios grupos cuenta para cada uno). Pulsa una barra para ver sus leyes.</p>
       <div class="el-barras">${autores.map(([a,n])=>`<button data-cad-autor="${esc(a)}"><span class="l">${esc(NOMBRE_AUTOR[a]||a)}</span><span class="b"><i style="width:${(n/maxA*100).toFixed(1)}%;background:${colorAutor(a)}"></i></span><span class="v">${n}</span></button>`).join("")}</div></div>
     <div class="grid2">

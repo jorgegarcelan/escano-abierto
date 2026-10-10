@@ -22,18 +22,20 @@ const DESTINOS = [
 ];
 const DESTINO = Object.fromEntries(DESTINOS.map(d=>[d[0], d]));
 const CSS = `
-.vj-embudo{display:grid;gap:6px}
-.vj-fila{display:grid;grid-template-columns:minmax(0,12em) minmax(0,1fr) 3.5em;gap:10px;align-items:center;font-size:13px}
-.vj-fila .l small{display:block;color:var(--muted);font-size:11.5px}
-.vj-barra{display:flex;height:22px;gap:2px}
-.vj-barra button{all:unset;display:block;height:100%;min-width:2px;cursor:pointer;border-radius:2px;transition:opacity .2s,outline-color .2s;outline:2px solid transparent;outline-offset:1px}
-.vj-barra button:hover,.vj-barra button:focus-visible{outline-color:var(--ink)}
-.vj-barra button.on{outline-color:var(--ink)}
-.vj-embudo.filtrado .vj-barra button:not(.on){opacity:.35}
-.vj-fila .v{font:600 13px var(--mono);text-align:right}
-.vj-ley{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:8px}
-.vj-ley span{display:inline-flex;align-items:center;gap:5px}
-.vj-ley i{width:10px;height:10px;border-radius:2px;display:inline-block}
+#vj-sankey{min-width:0;max-width:100%}
+.vj-sankey{overflow-x:auto;scrollbar-width:thin;max-width:100%}
+.vj-sankey svg{display:block;width:100%;min-width:760px;height:auto}
+.vj-sankey .enlaces path{fill-opacity:.32;transition:fill-opacity .2s;cursor:pointer}
+.vj-sankey .enlaces path:hover{fill-opacity:.55}
+.vj-sankey rect{cursor:pointer}
+.vj-sankey svg.filtrado .enlaces path:not(.on){fill-opacity:.1}
+.vj-sankey svg.filtrado .enlaces path.on{fill-opacity:.6}
+.vj-sankey svg.filtrado rect:not(.on){opacity:.45}
+.vj-sankey text{font:12px var(--sans);fill:var(--ink);pointer-events:none}
+.vj-sankey text .t{font-weight:600}
+.vj-sankey text .v{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.vj-tip{position:fixed;z-index:65;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:7px 10px;font-size:12.5px;line-height:1.4;max-width:280px}
+.vj-tip[hidden]{display:none}
 .vj-sel{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
 .vj-sel h4{margin:0 0 4px;font-size:14px}
 .vj-sel ul{list-style:none;margin:0;padding:0;display:grid;gap:2px;max-height:320px;overflow:auto}
@@ -68,7 +70,7 @@ const CSS = `
 .vj-ficha li small{color:var(--muted);font-family:var(--mono)}
 .vj-ficha .x{all:unset;position:absolute;right:10px;top:8px;cursor:pointer;color:var(--muted);font-size:16px}
 .vj-ficha .ir{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-@media (max-width:640px){ .vj-fila{grid-template-columns:1fr 3em} .vj-fila .vj-barra{grid-column:1/-1;grid-row:2} }
+
 `;
 const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
@@ -104,53 +106,109 @@ function lugar(L, t, tDis){
 
 export async function montarViajes(raiz, ctx, colorOrigen){
   estilos();
-  const cajaE = raiz.querySelector("#vj-embudo"), cajaG = raiz.querySelector("#vj-guillotina");
+  const cajaE = raiz.querySelector("#vj-sankey"), cajaG = raiz.querySelector("#vj-guillotina");
   if (!cajaE && !cajaG) return;
   await cargar();
   if (!V){ [cajaE, cajaG].forEach(c=>{ if (c) c.innerHTML = `<p class="nota">No se han podido cargar los viajes de las leyes.</p>`; }); return; }
   const L = preparar(ctx, colorOrigen), POR_EXP = Object.fromEntries(L.map(l=>[l.exp, l]));
   const ficha = crearFicha(ctx);
-  let sel = null;            // {etapa, destino}: el tramo del embudo elegido
-  const enSel = l => !sel || (l.etapa === sel.etapa && (sel.destino === "sigue" ? false : l.destino === sel.destino));
   const guillo = cajaG ? guillotina(cajaG, L, ficha) : null;
-  if (cajaE) embudo(cajaE, L, ficha, s=>{ sel = s; guillo?.filtrar(sel ? enSel : null); });
+  if (cajaE) sankey(cajaE, L, colorOrigen, ficha, f=>guillo?.filtrar(f));   // pulsar un nodo ilumina sus leyes en la guillotina
   // La ficha también en las listas de leyes del apartado (las que llevan data-ini).
   raiz.addEventListener("mouseover", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && POR_EXP[b.dataset.ini] && !ficha.fija()) ficha.mostrar(POR_EXP[b.dataset.ini], b); });
   raiz.addEventListener("mouseout", ev=>{ const b = ev.target.closest(".el-lista [data-ini]"); if (b && !ficha.fija()) ficha.ocultar(); });
 }
 
-/* ---------- el embudo ---------- */
-function embudo(caja, L, ficha, alElegir){
-  const filas = COLUMNAS.map((t,k)=>{
-    const llegan = L.filter(l=>l.etapa >= k), quedan = L.filter(l=>l.etapa === k);
-    const por = {}; quedan.forEach(l=>{ por[l.destino] = (por[l.destino]||0) + 1; });
-    return {k, t, llegan: llegan.length, siguen: llegan.length - quedan.length, por};
-  });
-  const max = filas[0].llegan;
-  caja.innerHTML = `<div class="vj-embudo">${filas.map(f=>`<div class="vj-fila"><div class="l">${esc(f.t)}<small>${f.k === 0 ? "en la legislatura" : `el ${Math.round(f.llegan/max*100)} % de las presentadas`}</small></div>
-      <div class="vj-barra" style="width:${(f.llegan/max*100).toFixed(1)}%">${[...DESTINOS.filter(d=>d[0] !== "sigue" && f.por[d[0]]).map(d=>[d, f.por[d[0]]]), ...(f.siguen ? [[DESTINO.sigue, f.siguen]] : [])]
-        .map(([d,n])=>`<button style="flex:${n};background:${d[2]}" data-vj-sel="${f.k}|${d[0]}" aria-label="${esc(`${f.t}: ${n} ${d[1].toLowerCase()}`)}" data-tip="${esc(`<b>${esc(f.t)}</b><br>${n} ${d[0] === "sigue" ? "siguen a la etapa siguiente" : esc(d[1].toLowerCase()) + " en esta etapa"}`)}"></button>`).join("")}</div>
-      <div class="v">${miles(f.llegan)}</div></div>`).join("")}</div>
-    <div class="vj-ley">${DESTINOS.filter(d=>L.some(l=>l.destino===d[0]) || d[0]==="sigue").map(d=>`<span><i style="background:${d[2]}"></i>${esc(d[1])}</span>`).join("")}</div>
-    <div class="vj-sel" hidden></div>`;
-  const lista = caja.querySelector(".vj-sel");
+/* ---------- el sankey: de quién presentó cada ley a dónde acabó ---------- */
+// Las salidas de cada etapa se agrupan en tres: caducan, rechazadas y retiradas o decaídas (con las subsumidas e inadmitidas).
+const SALIDAS = [
+  ["caduca", "Caducan", ["caduca"], "var(--no,#C8473B)"],
+  ["rechazada", "Rechazadas", ["rechazada"], "#C9873E"],
+  ["fuera", "Retiradas o decaídas", ["retirada","decaída","otra"], "#8A8F98"],
+  ["pendiente", "Aprobadas, pendientes del BOE", ["pendiente"], "color-mix(in srgb,var(--si,#3C8C6A) 55%,var(--surface))"],
+];
+const NOMBRE_ORIGEN_V = {GOB:"Gobierno", GRUPOS:"Grupos parlamentarios", SEN:"Senado", CCAA:"Parlamentos autonómicos"};
+function sankey(caja, L, colorOrigen, ficha, alElegir){
+  const NS = "http://www.w3.org/2000/svg", T = L.length, pct = n => (n/T*100).toLocaleString("es-ES", {maximumFractionDigits: n/T < .01 ? 1 : 0}) + " %";
+  // Nodos por columna: 0, los orígenes; 1, presentadas; 2…6, el tronco de cada etapa y, debajo, las salidas de la anterior.
+  const origenes = ["GOB","GRUPOS","SEN","CCAA"].map(o=>({id:"o-"+o, col:0, n:L.filter(l=>l.origen===o).length, nombre:NOMBRE_ORIGEN_V[o], color:colorOrigen[o], filtro:{origen:o}})).filter(x=>x.n);
+  const tronco = COLUMNAS.map((t,k)=>({id:"e-"+k, col:k+1, n:L.filter(l=>l.etapa>=k).length, nombre:t, color: k===5 ? "var(--si,#3C8C6A)" : "#7C8089", tronco:true, k}));
+  const salidas = [];
+  for (let k = 0; k < 5; k++) SALIDAS.forEach(([id, nombre, ds, color])=>{ const n = L.filter(l=>l.etapa===k && ds.includes(l.destino)).length;
+    if (n) salidas.push({id:`s-${k}-${id}`, col:k+2, n, nombre, color, desde:k, filtro:{etapa:k, destinos:ds}}); });
+  const nodos = [...origenes, ...tronco, ...salidas];
+  // Medidas.
+  const W = Math.max(760, caja.clientWidth || 900), H = W < 900 ? 400 : 440, nodoW = 12, top = 46, gap = 14;
+  const k = (H - top - 10 - gap*(origenes.length-1)) / T;
+  const xCol = c => c * (W - nodoW - 150) / 6, ancho = (W - nodoW - 150) / 6;
+  if (ancho < 175) tronco.forEach((n,k)=>{ n.nombre = CORTAS[k]; });
+  const porCol = {}; nodos.forEach(n=>(porCol[n.col] ||= []).push(n));
+  Object.values(porCol).forEach(ns=>{ let y = top; ns.forEach(n=>{ n.x = xCol(n.col); n.y = y; n.h = Math.max(1.5, n.n*k); y += n.h + gap; }); });
+  // Enlaces: orígenes → presentadas; cada tronco → el siguiente tronco y sus salidas.
+  const enlaces = [];
+  origenes.forEach(o=>enlaces.push({a:o, b:tronco[0], n:o.n, color:o.color, filtro:o.filtro}));
+  for (let e = 0; e < 5; e++){
+    enlaces.push({a:tronco[e], b:tronco[e+1], n:tronco[e+1].n, color:"#7C8089"});
+    salidas.filter(s=>s.desde===e).forEach(s=>enlaces.push({a:tronco[e], b:s, n:s.n, color:s.color, filtro:s.filtro}));
+  }
+  const salida = {}, entrada = {};   // dónde va por dentro de cada nodo el siguiente enlace (para apilarlos sin cruzarse)
+  enlaces.forEach(e=>{ const y1 = e.a.y + (salida[e.a.id] || 0), y2 = e.b.y + (entrada[e.b.id] || 0), h = e.n*k;
+    salida[e.a.id] = (salida[e.a.id] || 0) + h; entrada[e.b.id] = (entrada[e.b.id] || 0) + h;
+    const x1 = e.a.x + nodoW, x2 = e.b.x, xm = (x1 + x2)/2;
+    e.d = `M${x1} ${y1}C${xm} ${y1} ${xm} ${y2} ${x2} ${y2}L${x2} ${y2+h}C${xm} ${y2+h} ${xm} ${y1+h} ${x1} ${y1+h}Z`; });
+  // Rótulos: el tronco, encima; orígenes y salidas, a la derecha (empujando hacia abajo si se pisan).
+  const rot = [];
+  nodos.forEach(n=>{ if (n.tronco) rot.push({n, x:n.x, y:n.y - 22, ancla:"start", arriba:true}); else rot.push({n, x:n.x + nodoW + 6, y:n.y + n.h/2 + 4, ancla:"start"}); });
+  const laterales = rot.filter(r=>!r.arriba).sort((a,b)=>a.n.col-b.n.col || a.y-b.y);
+  laterales.forEach((r,i)=>{ const prev = laterales[i-1]; if (prev && prev.n.col === r.n.col && r.y - prev.y < 26) r.y = prev.y + 26; });
+  caja.innerHTML = `<div class="vj-sankey"><svg viewBox="0 0 ${W} ${H + 20}" role="img" aria-label="De dónde vino y dónde acabó cada proyecto y proposición de ley de la legislatura">
+      <g class="enlaces">${enlaces.map((e,i)=>`<path d="${e.d}" fill="${e.color}" data-e="${i}"/>`).join("")}</g>
+      <g class="nodos">${nodos.map(n=>`<rect x="${n.x}" y="${n.y}" width="${nodoW}" height="${n.h.toFixed(1)}" rx="2" fill="${n.color}" data-n="${esc(n.id)}"/>`).join("")}</g>
+      <g class="rotulos">${rot.map(r=>`<text x="${r.x}" y="${r.y}" text-anchor="${r.ancla}" data-n="${esc(r.n.id)}"><tspan class="t">${esc(r.n.nombre)}</tspan><tspan class="v" x="${r.x}" dy="13">${miles(r.n.n)} · ${pct(r.n.n)}</tspan></text>`).join("")}</g>
+    </svg></div><div class="vj-sel" hidden></div>`;
+  const svg = caja.querySelector("svg"), lista = caja.querySelector(".vj-sel");
+  const enlace = i => enlaces[i], nodo = id => nodos.find(n=>n.id===id);
   let actual = null;
-  caja.addEventListener("click", ev=>{
-    const b = ev.target.closest("[data-vj-sel]"); if (!b) return;
-    const [k, destino] = b.dataset.vjSel.split("|");
-    if (destino === "sigue") return;
-    actual = actual === b.dataset.vjSel ? null : b.dataset.vjSel;
-    caja.querySelectorAll("[data-vj-sel]").forEach(x=>x.classList.toggle("on", x.dataset.vjSel === actual));
-    caja.querySelector(".vj-embudo").classList.toggle("filtrado", !!actual);
-    if (!actual){ lista.hidden = true; alElegir(null); return; }
-    const xs = L.filter(l=>l.etapa === +k && l.destino === destino).sort((a,b)=>b.d0-a.d0);
-    lista.hidden = false;
-    lista.innerHTML = `<h4>${xs.length} ${DESTINO[destino][1].toLowerCase()} · se quedaron en «${esc(COLUMNAS[+k])}»</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
-    alElegir({etapa:+k, destino});
+  const tipT = (titulo, n, extra="") => `<b>${esc(titulo)}</b><br>${miles(n)} ${n===1?"ley":"leyes"} · ${pct(n)} de las presentadas${extra}`;
+  svg.addEventListener("mousemove", ev=>{
+    const p = ev.target.closest("[data-e]"), r = ev.target.closest("[data-n]");
+    let html = "";
+    if (p){ const e = enlace(+p.dataset.e); html = tipT(`${e.a.nombre} → ${e.b.nombre}`, e.n); }
+    else if (r){ const n = nodo(r.dataset.n); html = tipT(n.tronco ? n.nombre : n.col === 0 ? `Presentadas por: ${n.nombre}` : `${n.nombre} ${n.desde === 0 ? "sin admitir a debate" : "tras: " + COLUMNAS[n.desde].toLowerCase()}`, n.n, n.filtro ? "<br><i>Pulsa para verlas</i>" : ""); }
+    tipVj(html, ev);
   });
-  lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b){ const l = L.find(x=>x.exp===b.dataset.vjLey); ficha.mostrar(l, b, true); } });
+  svg.addEventListener("mouseleave", ()=>tipVj(""));
+  svg.addEventListener("click", ev=>{
+    const r = ev.target.closest("[data-n]"), p = ev.target.closest("[data-e]");
+    const n = r ? nodo(r.dataset.n) : p ? enlace(+p.dataset.e).b : null;
+    const f = r ? n?.filtro : p ? enlace(+p.dataset.e).filtro : null;
+    if (!f) return;
+    const id = r ? n.id : "e"+p.dataset.e;
+    actual = actual === id ? null : id;
+    svg.classList.toggle("filtrado", !!actual);
+    svg.querySelectorAll("[data-n],[data-e]").forEach(x=>x.classList.remove("on"));
+    if (!actual){ lista.hidden = true; alElegir(null); return; }
+    if (r) svg.querySelectorAll("[data-n]").forEach(x=>{ if (x.dataset.n === n.id) x.classList.add("on"); });
+    enlaces.forEach((e,i)=>{ if (e.filtro === f || e.b === n || e.a === n) svg.querySelector(`[data-e="${i}"]`).classList.add("on"); });
+    const pasa = l => (f.origen ? l.origen === f.origen : true) && (f.etapa !== undefined ? l.etapa === f.etapa && f.destinos.includes(l.destino) : true);
+    const xs = L.filter(pasa).sort((a,b)=>b.d0-a.d0);
+    lista.hidden = false;
+    const titulo = f.origen ? `${xs.length} presentadas por: ${NOMBRE_ORIGEN_V[f.origen]}` : `${xs.length} ${n.nombre.toLowerCase()} · se quedaron en «${COLUMNAS[f.etapa]}»`;
+    lista.innerHTML = `<h4>${esc(titulo)}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
+    alElegir(pasa);
+  });
+  lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b, true); });
   lista.addEventListener("mouseover", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b && !ficha.fija()) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b); });
   lista.addEventListener("mouseleave", ()=>{ if (!ficha.fija()) ficha.ocultar(); });
+}
+let tipEl = null;
+function tipVj(html, ev){
+  if (!tipEl){ tipEl = document.createElement("div"); tipEl.className = "vj-tip"; document.body.appendChild(tipEl); }
+  if (!html){ tipEl.hidden = true; return; }
+  tipEl.innerHTML = html; tipEl.hidden = false;
+  const w = tipEl.offsetWidth, h = tipEl.offsetHeight, vw = document.documentElement.clientWidth;
+  let x = ev.clientX + 14, y = ev.clientY + 14; if (x + w > vw - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tipEl.style.left = Math.max(8, x) + "px"; tipEl.style.top = Math.max(8, y) + "px";
 }
 
 /* ---------- la guillotina ---------- */
