@@ -28,9 +28,11 @@ const CSS = `
 .vj-sankey .enlaces path{fill-opacity:.32;transition:fill-opacity .2s;cursor:pointer}
 .vj-sankey .enlaces path:hover{fill-opacity:.55}
 .vj-sankey rect{cursor:pointer}
-.vj-sankey svg.filtrado .enlaces path:not(.on){fill-opacity:.1}
-.vj-sankey svg.filtrado .enlaces path.on{fill-opacity:.6}
-.vj-sankey svg.filtrado rect:not(.on){opacity:.45}
+.vj-sankey svg.filtrado .enlaces path{fill-opacity:.09}
+.vj-sankey .rastro path{fill-opacity:.78;cursor:pointer}
+.vj-sankey svg.filtrado rect.off{opacity:.3}
+.vj-sankey svg.filtrado text.off{opacity:.45}
+.vj-sankey svg.filtrado text:not(.off) .v{fill:var(--ink);font-weight:700}
 .vj-sankey text{font:12px var(--sans);fill:var(--ink);pointer-events:none}
 .vj-sankey text .t{font-weight:600}
 .vj-sankey text .v{fill:var(--muted);font-family:var(--mono);font-size:11px}
@@ -138,11 +140,11 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   const grupos = Object.keys(cuenta).filter(q=>!["GOB","SEN","CCAA","VARIOS"].includes(q)).sort((a,b)=>cuenta[b]-cuenta[a]);
   const colorDe = q => q === "VARIOS" ? "#A7A9AE" : ctx.G?.[q]?.color || colorOrigen[q] || "var(--line-strong)";
   const origenes = ["GOB", ...grupos, "VARIOS", "SEN", "CCAA"].filter(q=>cuenta[q])
-    .map(q=>({id:"o-"+q, col:0, n:cuenta[q], nombre:NOMBRE_ORIGEN_V[q] || q, color:colorDe(q), filtro:{quien:q}, linea:true}));
-  const tronco = COLUMNAS.map((t,k)=>({id:"e-"+k, col:k+1, n:L.filter(l=>l.etapa>=k).length, nombre:t, color: k===5 ? "var(--si,#3C8C6A)" : "#7C8089", tronco:true, k}));
+    .map(q=>({id:"o-"+q, col:0, n:cuenta[q], nombre:NOMBRE_ORIGEN_V[q] || q, color:colorDe(q), filtro:{quien:q}, linea:true, de:l=>quienPresento(l)===q}));
+  const tronco = COLUMNAS.map((t,k)=>({id:"e-"+k, col:k+1, n:L.filter(l=>l.etapa>=k).length, nombre:t, color: k===5 ? "var(--si,#3C8C6A)" : "#7C8089", tronco:true, k, de:l=>l.etapa>=k}));
   const salidas = [];
   for (let k = 0; k < 5; k++) SALIDAS.forEach(([id, nombre, ds, color])=>{ const n = L.filter(l=>l.etapa===k && ds.includes(l.destino)).length;
-    if (n) salidas.push({id:`s-${k}-${id}`, col:k+2, n, nombre, color, desde:k, filtro:{etapa:k, destinos:ds}}); });
+    if (n) salidas.push({id:`s-${k}-${id}`, col:k+2, n, nombre, color, desde:k, filtro:{etapa:k, destinos:ds}, de:l=>l.etapa===k && ds.includes(l.destino)}); });
   const nodos = [...origenes, ...tronco, ...salidas];
   // Medidas.
   const W = Math.max(760, caja.clientWidth || 900), H = W < 900 ? 500 : 540, nodoW = 12, top = 46, gap = 14, gapO = 7;
@@ -153,16 +155,17 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   Object.values(porCol).forEach(ns=>{ let y = top; ns.forEach(n=>{ n.x = xCol(n.col); n.y = y; n.h = Math.max(1.5, n.n*k); y += n.h + (n.col === 0 ? gapO : gap); }); });
   // Enlaces: orígenes → presentadas; cada tronco → el siguiente tronco y sus salidas.
   const enlaces = [];
-  origenes.forEach(o=>enlaces.push({a:o, b:tronco[0], n:o.n, color:o.color, filtro:o.filtro}));
+  origenes.forEach(o=>enlaces.push({a:o, b:tronco[0], n:o.n, color:o.color, filtro:o.filtro, de:o.de, origen:true}));
   for (let e = 0; e < 5; e++){
-    enlaces.push({a:tronco[e], b:tronco[e+1], n:tronco[e+1].n, color:"#7C8089"});
-    salidas.filter(s=>s.desde===e).forEach(s=>enlaces.push({a:tronco[e], b:s, n:s.n, color:s.color, filtro:s.filtro}));
+    enlaces.push({a:tronco[e], b:tronco[e+1], n:tronco[e+1].n, color:"#7C8089", de:tronco[e+1].de});
+    salidas.filter(s=>s.desde===e).forEach(s=>enlaces.push({a:tronco[e], b:s, n:s.n, color:s.color, filtro:s.filtro, de:s.de}));
   }
   const salida = {}, entrada = {};   // dónde va por dentro de cada nodo el siguiente enlace (para apilarlos sin cruzarse)
   enlaces.forEach(e=>{ const y1 = e.a.y + (salida[e.a.id] || 0), y2 = e.b.y + (entrada[e.b.id] || 0), h = e.n*k;
     salida[e.a.id] = (salida[e.a.id] || 0) + h; entrada[e.b.id] = (entrada[e.b.id] || 0) + h;
     const x1 = e.a.x + nodoW, x2 = e.b.x, xm = (x1 + x2)/2;
-    e.d = `M${x1} ${y1}C${xm} ${y1} ${xm} ${y2} ${x2} ${y2}L${x2} ${y2+h}C${xm} ${y2+h} ${xm} ${y1+h} ${x1} ${y1+h}Z`; });
+    e.banda = h2 => `M${x1} ${y1}C${xm} ${y1} ${xm} ${y2} ${x2} ${y2}L${x2} ${y2+h2}C${xm} ${y2+h2} ${xm} ${y1+h2} ${x1} ${y1+h2}Z`;
+    e.d = e.banda(h); });
   // Rótulos: el tronco, encima; orígenes y salidas, a la derecha (empujando hacia abajo si se pisan).
   const rot = [];
   nodos.forEach(n=>{ if (n.tronco) rot.push({n, x:n.x, y:n.y - 22, ancla:"start", arriba:true}); else rot.push({n, x:n.x + nodoW + 6, y:n.y + n.h/2 + 4, ancla:"start"}); });
@@ -170,17 +173,19 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   laterales.forEach((r,i)=>{ const prev = laterales[i-1], min = r.n.linea ? 15 : 26; if (prev && prev.n.col === r.n.col && r.y - prev.y < min) r.y = prev.y + min; });
   caja.innerHTML = `<div class="vj-sankey"><svg viewBox="0 0 ${W} ${H + 20}" role="img" aria-label="De dónde vino y dónde acabó cada proyecto y proposición de ley de la legislatura">
       <g class="enlaces">${enlaces.map((e,i)=>`<path d="${e.d}" fill="${e.color}" data-e="${i}"/>`).join("")}</g>
+      <g class="rastro"></g>
       <g class="nodos">${nodos.map(n=>`<rect x="${n.x}" y="${n.y}" width="${nodoW}" height="${n.h.toFixed(1)}" rx="2" fill="${n.color}" data-n="${esc(n.id)}"/>`).join("")}</g>
       <g class="rotulos">${rot.map(r=>`<text x="${r.x}" y="${r.y}" text-anchor="${r.ancla}" data-n="${esc(r.n.id)}"><tspan class="t">${esc(r.n.nombre)}</tspan>${r.n.linea ? `<tspan class="v" dx="6">${miles(r.n.n)}</tspan>` : `<tspan class="v" x="${r.x}" dy="13">${miles(r.n.n)} · ${pct(r.n.n)}</tspan>`}</text>`).join("")}</g>
     </svg></div><div class="vj-sel" hidden></div>`;
   const svg = caja.querySelector("svg"), lista = caja.querySelector(".vj-sel");
   const enlace = i => enlaces[i], nodo = id => nodos.find(n=>n.id===id);
-  let actual = null;
+  let actual = null, selXs = null;
   const tipT = (titulo, n, extra="") => `<b>${esc(titulo)}</b><br>${miles(n)} ${n===1?"ley":"leyes"} · ${pct(n)} de las presentadas${extra}`;
   svg.addEventListener("mousemove", ev=>{
     const p = ev.target.closest("[data-e]"), r = ev.target.closest("[data-n]");
     let html = "";
-    if (p){ const e = enlace(+p.dataset.e); html = tipT(`${e.a.nombre} → ${e.b.nombre}`, e.n); }
+    if (p){ const e = enlace(+p.dataset.e), m = selXs && p.closest(".rastro") ? selXs.filter(e.de).length : null;
+      html = m != null ? `<b>${esc(e.a.nombre)} → ${esc(e.b.nombre)}</b><br>${miles(m)} de las ${miles(e.n)} ${e.n===1?"ley":"leyes"} de este tramo` : tipT(`${e.a.nombre} → ${e.b.nombre}`, e.n); }
     else if (r){ const n = nodo(r.dataset.n); html = tipT(n.tronco ? n.nombre : n.col === 0 ? `Presentadas por: ${n.nombre}` : `${n.nombre} ${n.desde === 0 ? "sin admitir a debate" : "tras: " + COLUMNAS[n.desde].toLowerCase()}`, n.n, n.filtro ? "<br><i>Pulsa para verlas</i>" : ""); }
     tipVj(html, ev);
   });
@@ -193,12 +198,11 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
     const id = r ? n.id : "e"+p.dataset.e;
     actual = actual === id ? null : id;
     svg.classList.toggle("filtrado", !!actual);
-    svg.querySelectorAll("[data-n],[data-e]").forEach(x=>x.classList.remove("on"));
-    if (!actual){ lista.hidden = true; alElegir(null); return; }
-    if (r) svg.querySelectorAll("[data-n]").forEach(x=>{ if (x.dataset.n === n.id) x.classList.add("on"); });
-    enlaces.forEach((e,i)=>{ if (e.filtro === f || e.b === n || e.a === n) svg.querySelector(`[data-e="${i}"]`).classList.add("on"); });
+    svg.querySelectorAll("[data-n]").forEach(x=>x.classList.remove("on","off"));
+    if (!actual){ rastro(null); lista.hidden = true; alElegir(null); return; }
     const pasa = l => (f.quien ? quienPresento(l) === f.quien : true) && (f.etapa !== undefined ? l.etapa === f.etapa && f.destinos.includes(l.destino) : true);
     const xs = L.filter(pasa).sort((a,b)=>b.d0-a.d0);
+    rastro(xs, f.quien ? n.color : null);
     lista.hidden = false;
     const titulo = f.quien ? `${xs.length} presentadas por: ${NOMBRE_ORIGEN_V[f.quien] || f.quien}` : `${xs.length} ${n.nombre.toLowerCase()} · se quedaron en «${COLUMNAS[f.etapa]}»`;
     lista.innerHTML = `<h4>${esc(titulo)}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
@@ -207,6 +211,20 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   lista.addEventListener("click", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b, true); });
   lista.addEventListener("mouseover", ev=>{ const b = ev.target.closest("[data-vj-ley]"); if (b && !ficha.fija()) ficha.mostrar(L.find(x=>x.exp===b.dataset.vjLey), b); });
   lista.addEventListener("mouseleave", ()=>{ if (!ficha.fija()) ficha.ocultar(); });
+  // El rastro de una selección: por cada enlace, la banda de las suyas (encima del enlace, con el color del grupo,
+  // o del de cada origen si se eligió una salida), y en cada nodo, «X de N».
+  const capa = svg.querySelector(".rastro"), valores = new Map([...svg.querySelectorAll(".rotulos text")].map(t=>[t.dataset.n, t.querySelector(".v")]));
+  function rastro(xs, color){
+    selXs = xs; capa.innerHTML = "";
+    nodos.forEach(n=>{ const v = valores.get(n.id); if (!v) return;
+      if (!xs){ v.textContent = n.linea ? miles(n.n) : `${miles(n.n)} · ${pct(n.n)}`; return; }
+      const m = xs.filter(n.de).length;
+      v.textContent = m ? `${miles(m)} de ${miles(n.n)}` : n.linea ? miles(n.n) : `${miles(n.n)} · ${pct(n.n)}`;
+      svg.querySelectorAll("rect[data-n]").forEach(r=>{ if (r.dataset.n === n.id) r.classList.add(m ? "on" : "off"); });
+      v.closest("text").classList.toggle("off", !m); });
+    if (!xs) return;
+    capa.innerHTML = enlaces.map((e,i)=>{ const m = xs.filter(e.de).length; return m ? `<path d="${e.banda(m*k)}" fill="${e.origen || !color ? e.origen ? e.color : "var(--ink)" : color}" data-e="${i}"/>` : ""; }).join("");
+  }
 }
 let tipEl = null;
 function tipVj(html, ev){
