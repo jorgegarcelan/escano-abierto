@@ -97,51 +97,60 @@ const CSS = `
 .pe-coste.ya .b i,.hi-ult.ya .b i{width:var(--w)}
 .pe-bar .b i{display:block;height:100%;border-radius:0 5px 5px 0}
 .pe-bar .v{font:12.5px var(--mono);text-align:right}
-.pu-t{font-size:clamp(19px,2.6vw,24px);margin:4px 0 6px}
-.pu-umbral{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;align-items:end;margin:10px 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-.pu-umbral label{font-size:14px;grid-column:1}
-.pu-umbral label b{font-family:var(--mono)}
-.pu-umbral input{grid-column:1;width:100%;accent-color:var(--no)}
-.pu-cifras{grid-column:2;grid-row:1/3;display:flex;gap:20px}
-.pu-cifras div{display:grid;gap:2px;max-width:15em}
-.pu-cifras b{font-family:var(--led,var(--display));font-size:clamp(28px,4vw,40px);line-height:1;font-weight:900;font-variant-numeric:tabular-nums}
-.pu-cifras span{font-size:12px;color:var(--muted);line-height:1.3}
-@media (max-width:640px){ .pu-umbral{grid-template-columns:1fr} .pu-cifras{grid-column:1;grid-row:auto} }
-.pu-c{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,1fr);gap:16px 22px;align-items:start}
-@media (max-width:820px){ .pu-c{grid-template-columns:1fr} }
-.pu-mapa{display:block;width:100%;height:auto;overflow:visible}
-.pu-mapa .fondo path{fill:var(--sunk);stroke:var(--surface);stroke-width:.8}
-.pu-mapa .fondo .can{fill:none;stroke:var(--line-strong)}
-.pu-mapa .d{transform:translate(var(--x),var(--y));cursor:pointer;transition:opacity .4s}
-.pu-mapa .d circle{stroke:var(--surface);stroke-width:1.5;transition:r .5s}
-.pu-mapa .d:hover circle:not(.anillo),.pu-mapa .d.sel circle:not(.anillo){stroke:var(--ink);stroke-width:3}
-.pu-mapa .d.fuera{opacity:.2}
-.pu-mapa .d:not(.fuera) .anillo{animation:pu-late 2.4s ease-in-out infinite}
-@keyframes pu-late{50%{opacity:.45}}
-@media (prefers-reduced-motion:reduce){ .pu-mapa .d .anillo{animation:none} }
-.pu-lado{display:grid;gap:12px;align-content:start}
-.pu-lado h4{margin:6px 0 0;font-size:14px}
-.pu-duelo{border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;background:var(--surface);display:grid;gap:10px}
-.pu-dh{display:flex;justify-content:space-between;align-items:baseline}
-.pu-dh b{font-size:18px}.pu-dh span{font-size:12px;color:var(--muted)}
-.pu-vs{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
-.pu-vs>div{display:grid;gap:2px;padding:8px 10px;border-radius:10px;border-left:5px solid var(--c);background:var(--sunk)}
-.pu-vs small{font-size:11px;color:var(--muted)}
-.pu-vs b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pu-vs .x{font:700 12px var(--mono);color:var(--muted)}
-.pu-falta{margin:0;font-size:14px;line-height:1.4}
-.pu-falta b{font-family:var(--led,var(--display));font-size:30px;font-weight:900;color:var(--no)}
-.pu-tally{display:grid;gap:4px}
-.pu-tt,.pu-tf{display:grid;grid-template-columns:minmax(0,7em) 1fr 1fr;gap:8px;align-items:center;font-size:12.5px}
-.pu-tt span{font-size:11px;color:var(--muted)}
-.pu-tf .n{display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pu-tf .n i{width:8px;height:8px;border-radius:50%;flex:none}
-.pu-tf .g,.pu-tf .p{display:flex;align-items:center;gap:5px;height:14px}
-.pu-tf .g i{display:block;height:100%;border-radius:2px;transition:width .5s}
-.pu-tf .p i{display:block;height:100%;border-radius:2px;border:1.5px dashed;box-sizing:border-box;transition:width .5s}
-.pu-tf b{font:600 11.5px var(--mono)}
 .pu-todas{margin-top:12px}
 .pu-todas summary{cursor:pointer;font-size:13.5px;color:var(--muted)}
+.pe-ve{display:block;width:100%;height:auto;overflow:visible}
+.pe-ve .ejes line{stroke:var(--line);stroke-width:1}
+.pe-ve .ejes text{font:10.5px var(--mono);fill:var(--muted)}
+.pe-ve .ejes text.t{font:600 11px var(--sans)}
+.pe-ve .diag{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;opacity:.6}
+.pe-ve .diag-t{font:italic 600 11px var(--sans);fill:var(--muted)}
+.pe-ve [data-ve]{transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .5s;opacity:0;cursor:pointer}
+.pe-ve [data-ve] circle{stroke:var(--surface);stroke-width:2;transition:fill .5s}
+.pe-ve [data-ve]:hover circle{stroke:var(--ink)}
+.pe-ve [data-ve] text{font:700 11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.pe-saldo{display:grid;gap:4px;margin-top:10px}
+.pe-sal-h{display:grid;grid-template-columns:6.5em 1fr 1fr 3em;font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pe-sal-h span:first-child{grid-column:2;text-align:right;padding-right:6px}
+.pe-sal{display:grid;grid-template-columns:6.5em 1fr 1fr 3em;align-items:center;font-size:12.5px}
+.pe-sal .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pe-sal .neg,.pe-sal .pos{height:12px;display:flex}
+.pe-sal .neg{justify-content:flex-end;border-right:1.5px solid var(--line-strong)}
+.pe-sal i{display:block;height:100%;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.pe-sal .neg i{border-radius:3px 0 0 3px}.pe-sal .pos i{border-radius:0 3px 3px 0}
+.pe-saldo.ya i{width:var(--w)}
+.pe-sal .v{font:600 12px var(--mono);text-align:right}
+.pe-sal .v.mas{color:var(--si)}.pe-sal .v.menos{color:var(--no)}
+.ps{background:linear-gradient(180deg,color-mix(in srgb,var(--no) 6%,var(--surface)),var(--surface))}
+.ps-t{font-size:clamp(20px,2.8vw,26px);margin:4px 0 6px}
+.ps-c{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,1fr);gap:14px 26px;align-items:center;margin-top:10px}
+@media (max-width:760px){ .ps-c{grid-template-columns:1fr} }
+.ps-hemi .hi-hemi{max-width:520px;margin:0 auto}
+.ps-cifras{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ps-cifras div{display:grid;gap:2px}
+.ps-cifras b{font-family:var(--led,var(--display));font-size:clamp(30px,4.4vw,46px);line-height:1;font-weight:900;font-variant-numeric:tabular-nums}
+.ps-cifras span{font-size:12.5px;color:var(--muted);line-height:1.3}
+.ps-g{display:grid;gap:3px;margin-top:12px}
+.ps-g div{display:grid;grid-template-columns:10px minmax(0,1fr) 3em 3em;gap:8px;align-items:center;font-size:13px;padding:3px 6px;border-radius:6px;transition:background .3s}
+.ps-g i{width:10px;height:10px;border-radius:50%}
+.ps-g b{font-family:var(--mono);text-align:right}
+.ps-g small{font:700 12px var(--mono);text-align:right}
+.ps-g .mas{background:color-mix(in srgb,var(--si) 14%,transparent)}.ps-g .mas small{color:var(--si)}
+.ps-g .menos{background:color-mix(in srgb,var(--no) 14%,transparent)}.ps-g .menos small{color:var(--no)}
+.ps-ctl{display:grid;gap:6px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.ps-ctl label{font-size:13px;color:var(--muted)}
+.ps-ctl input{width:100%;accent-color:var(--no)}
+.ps-curva svg{display:block;width:100%;height:auto;overflow:visible}
+.ps-curva .cur{fill:none;stroke:var(--no);stroke-width:2}
+.ps-curva text{font:10px var(--mono);fill:var(--muted)}
+.ps-curva .pto{fill:var(--ink);stroke:var(--surface);stroke-width:2;transition:cx .2s,cy .2s}
+.ps-lista{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;max-height:180px;overflow:auto}
+.ps-lista button{all:unset;cursor:pointer;display:grid;gap:1px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:12px;animation:pe-pop .3s ease}
+.ps-lista button:hover{border-color:var(--line-strong)}
+.ps-lista b{font-size:12.5px}
+.ps-lista span{display:flex;align-items:center;gap:4px;color:var(--muted)}
+.ps-lista i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ps-lista small{font:11px var(--mono);color:var(--no)}
 .pe-sim{min-width:0;max-width:100%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,#4F7AA6 7%,var(--surface)),var(--surface))}
 .pe-sim-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
 .pe-sim-h h3{font-size:clamp(18px,2.4vw,22px);margin:4px 0 4px;line-height:1.3}
@@ -849,6 +858,7 @@ export async function pintarReparto(sec, c){
 /* =====================================================================================================
    EL PRECIO DE UN ESCAÑO
    ===================================================================================================== */
+const CSS_ID = s => String(s).replace(/[^A-Za-z0-9]/g, "_");   // para usar unas siglas como atributo
 let selE = null, simProv = null, simVotos = null, heModo = "precio", tuProv = null, playE = null;
 /* Cuenta de un número a otro (para las cifras grandes). */
 function contar(el, a, b, f = fmt, dur = 700){
@@ -881,16 +891,14 @@ export async function pintarEscano(sec, c){
     <div class="hi-dos" style="margin-top:16px">
       <div class="chart"><h3 id="he-mapa-t">Votos por escaño en cada provincia</h3><div class="hi-seg" role="group" aria-label="Qué se pinta"><button data-he-modo="precio" aria-pressed="${heModo==="precio"}">Votos por escaño</button><button data-he-modo="perdidos" aria-pressed="${heModo==="perdidos"}">Votos que no sirvieron</button></div>
         <p class="sub" id="he-mapa-s"></p><div id="he-mapa"></div></div>
-      <div class="chart"><h3>Lo que costó cada escaño, por partido</h3><p class="sub">Votos de cada candidatura en toda España entre los escaños que sacó. Las que se presentan en pocas provincias compiten solo donde son fuertes.</p><div class="pe-coste" data-pe-coste></div></div>
+      <div class="chart"><h3>Votos y escaños: a quién favorece la ley</h3><p class="sub">Cada bola es un partido: sus votos en toda España y los escaños que sacó. La diagonal marca lo que le tocaría con un reparto proporcional: por encima, la ley le da más escaños que su parte de los votos; por debajo, menos.</p><svg class="pe-ve" data-pe-ve role="img" aria-label="Votos y escaños de cada partido frente al reparto proporcional"></svg><div class="pe-saldo" data-pe-ve-lado></div></div>
     </div>
-    <div class="chart pu" style="margin-top:16px"><div class="eyebrow">El último escaño</div><h3 class="pu-t">Escaños que se decidieron por un puñado de votos</h3>
-      <p class="sub">En cada provincia, el último escaño que reparte la ley D'Hondt y los votos que le faltaron a la candidatura siguiente para quitárselo. Cada círculo es una provincia, del color de quien lo ganó, con un anillo del color de quien se quedó a las puertas: cuanto más ajustado, más grande.</p>
-      <div class="pu-umbral"><label for="pu-u">Decididos por menos de <b data-pu-uv></b> votos</label><input type="range" id="pu-u" min="2" max="5" step="0.01" aria-label="Umbral de votos">
-        <div class="pu-cifras"><div><b data-pu-n>0</b><span>escaños</span></div><div><b data-pu-s>0</b><span>votos, bien repartidos, les habrían dado la vuelta a todos</span></div></div></div>
-      <div class="pu-c"><svg class="pu-mapa" data-pu-mapa role="img" aria-label="El último escaño de cada provincia"></svg>
-        <div class="pu-lado"><div class="pu-duelo" data-pu-duelo><p class="nota">Pulsa una provincia para ver su duelo.</p></div>
-          <h4>Quién ganó y quién perdió por la mínima</h4><div class="pu-tally" data-pu-tally></div></div></div>
-      <details class="pu-todas"><summary>Las 52, de la más ajustada a la menos</summary><div class="hi-ult" data-pe-ult></div></details></div>
+    <div class="chart ps" style="margin-top:16px"><div class="eyebrow">El último escaño</div><h3 class="ps-t">El Congreso que pudo ser</h3>
+      <p class="sub">En cada provincia, alguien se llevó el último escaño por unos pocos votos. Arrastra el deslizador: con esos votos, puestos justo donde hacían falta (del escaño más barato al más caro), estos escaños cambian de manos y el Congreso se recolorea.</p>
+      <div class="ps-c"><div class="ps-hemi" data-ps-hemi></div><div class="ps-lado"><div class="ps-cifras"><div><b data-ps-v>0</b><span>votos, <span data-ps-pct></span></span></div><div><b data-ps-n>0</b><span>escaños cambian de manos</span></div></div><div class="ps-g" data-ps-g></div></div></div>
+      <div class="ps-ctl"><label for="ps-r">Votos para repartir</label><input type="range" id="ps-r" min="2" max="6" step="0.01"><div class="ps-curva" data-ps-curva></div></div>
+      <div class="ps-lista" data-ps-lista></div>
+      <details class="pu-todas"><summary>El último escaño de las 52 provincias</summary><div class="hi-ult" data-pe-ult></div></details></div>
     <div class="chart pe-sim" id="he-sim" style="margin-top:16px"></div></section>`;
   const $ = s => sec.querySelector(s);
   let P = null, prev = {barato:0, caro:0, sin:0, mil:0, precio:0};
@@ -927,63 +935,86 @@ export async function pintarEscano(sec, c){
     $("[data-pe-frase]").innerHTML = tuProv === caroC ? `Es la provincia donde un escaño costó más votos. Un voto aquí pesa <b>${dec(caro/barato, 1)} veces menos</b> que uno de ${esc(nombreProv(baratoC))}.`
       : `${precio < media ? "Menos" : "Más"} que la media de España (${fmt(media)}). Un voto de ${esc(nombreProv(tuProv))} pesa <b>${dec(caro/precio, 1)} veces</b> uno de ${esc(nombreProv(caroC))}${tuProv === baratoC ? ", la que más" : ""}.`;
   }
+  /* Votos y escaños de cada partido: la diagonal es el reparto proporcional (escalas de raíz: la diagonal es recta). */
   function costes(e){
-    const coste = e.partidos.filter(x=>x[4]).map(x=>[x, x[3]/x[4]]).sort((a,b)=>a[1]-b[1]), max = Math.max(...coste.map(x=>x[1]));
-    const caja = $("[data-pe-coste]");
-    caja.innerHTML = coste.map(([x,v],k)=>`<div class="pe-bar" data-tip="${esc(`<b>${esc(x[1])}</b><br>${fmt(x[3])} votos · ${x[4]} escaños`)}"><span class="n">${esc(x[0])}</span><span class="b"><i style="--w:${(v/max*100).toFixed(1)}%;--d:${k*40}ms;background:${grupoDe(x[2]).color}"></i></span><span class="v">${fmt(v)}</span></div>`).join("");
-    requestAnimationFrame(()=>requestAnimationFrame(()=>caja.classList.add("ya")));
+    const svg = $("[data-pe-ve]"), lado = $("[data-pe-ve-lado]");
+    const W = Math.max(300, svg.parentNode.clientWidth || 520), H = Math.round(Math.min(420, W*0.78)), m = {l:44, r:16, t:14, b:34};
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const P = e.partidos.filter(x=>x[3] >= e.validos*0.003 || x[4]);   // los que cuentan: con escaño o con más del 0,3 %
+    const prop = x => x[3]/e.validos*350;
+    const maxV = Math.max(...P.map(x=>x[3])), maxE = Math.max(...P.map(x=>Math.max(x[4], prop(x))));
+    const X = v => m.l + Math.sqrt(v/maxV)*(W - m.l - m.r), Y = s => H - m.b - Math.sqrt(s/maxE)*(H - m.t - m.b);
+    const ticksV = [1e5, 5e5, 1e6, 2e6, 4e6, 8e6].filter(v=>v <= maxV*1.02), ticksE = [1, 5, 10, 25, 50, 100, 150].filter(s=>s <= maxE*1.02);
+    if (!svg.querySelector("g.bolas")) svg.innerHTML = `<g class="ejes"></g><line class="diag"/><text class="diag-t"></text><g class="bolas"></g>`;
+    svg.querySelector("g.ejes").innerHTML = ticksV.map(v=>`<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H - m.b}"/><text x="${X(v)}" y="${H - m.b + 16}" text-anchor="middle">${v >= 1e6 ? dec(v/1e6, 0) + " M" : fmt(v/1000) + " mil"}</text>`).join("")
+      + ticksE.map(s=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(s)}" y2="${Y(s)}"/><text x="${m.l - 6}" y="${Y(s) + 4}" text-anchor="end">${s}</text>`).join("")
+      + `<text x="${W - m.r}" y="${H - 2}" text-anchor="end" class="t">votos →</text><text x="${m.l - 6}" y="${m.t - 2}" text-anchor="end" class="t">escaños</text>`;
+    const d = svg.querySelector("line.diag"), x2 = Math.min(maxV, maxE*e.validos/350);
+    d.setAttribute("x1", X(0)); d.setAttribute("y1", Y(0)); d.setAttribute("x2", X(x2)); d.setAttribute("y2", Y(x2/e.validos*350));
+    const dt = svg.querySelector("text.diag-t"); dt.setAttribute("x", X(x2*0.55)); dt.setAttribute("y", Y(x2*0.55/e.validos*350) + 16); dt.textContent = "reparto proporcional"; dt.setAttribute("transform", "");
+    const g = svg.querySelector("g.bolas"), NS = "http://www.w3.org/2000/svg", vistos = new Set();
+    P.forEach(x=>{ const id = x[0]; vistos.add(id);
+      let b = g.querySelector(`[data-ve="${CSS_ID(id)}"]`);
+      if (!b){ b = document.createElementNS(NS, "g"); b.dataset.ve = CSS_ID(id); b.innerHTML = `<circle r="7"/><text dy="-11" text-anchor="middle"></text>`; b.style.transform = `translate(${X(0)}px, ${Y(0)}px)`; g.appendChild(b); }
+      b.querySelector("circle").style.fill = grupoDe(x[2]).color;
+      const t = b.querySelector("text"); t.textContent = x[4] >= 2 || x[3] > e.validos*0.03 ? x[0] : "";
+      b.dataset.tip = `<b>${esc(x[1])}</b><br>${fmt(x[3])} votos (${pct(x[3]/e.validos)}) · ${x[4]} ${x[4]===1?"escaño":"escaños"}<br>Con un reparto proporcional: ${dec(prop(x), 1)}<br>${x[4] ? `Cada escaño le costó ${fmt(x[3]/x[4])} votos` : "Ningún escaño"}`;
+      requestAnimationFrame(()=>{ b.style.transform = `translate(${X(x[3]).toFixed(1)}px, ${Y(x[4]).toFixed(1)}px)`; b.style.opacity = 1; }); });
+    g.querySelectorAll("[data-ve]").forEach(b=>{ if (![...vistos].map(CSS_ID).includes(b.dataset.ve)) b.style.opacity = 0; });
+    // Rótulos sin pisarse: cada uno, en el primer hueco libre (encima, debajo, a la derecha o a la izquierda de su bola).
+    const cajas = P.map(x=>{ const cx = X(x[3]), cy = Y(x[4]); return {x0: cx - 7, x1: cx + 7, y0: cy - 7, y1: cy + 7}; });   // las bolas también ocupan
+    P.filter(x=>x[4] >= 2 || x[3] > e.validos*0.03).sort((a,b)=>b[3]-a[3]).forEach(x=>{
+      const t = g.querySelector(`[data-ve="${CSS_ID(x[0])}"] text`); if (!t) return;
+      const cx = X(x[3]), cy = Y(x[4]), w = x[0].length*6.8 + 6, h = 14;
+      const opciones = [[0,-11,"middle"],[0,20,"middle"],[11,4,"start"],[-11,4,"end"],[7,-10,"start"],[-7,-10,"end"],[7,18,"start"],[-7,18,"end"],[0,-25,"middle"],[0,34,"middle"],[11,-10,"start"],[-11,-10,"end"]];
+      const caja = ([dx,dy,an]) => { const x0 = an === "middle" ? cx + dx - w/2 : an === "start" ? cx + dx : cx + dx - w; return {x0, x1: x0 + w, y0: cy + dy - h + 3, y1: cy + dy + 3}; };
+      const libre = o => { const c = caja(o); return c.x0 > 2 && c.x1 < W - 2 && cajas.every(k=>c.x1 < k.x0 || c.x0 > k.x1 || c.y1 < k.y0 || c.y0 > k.y1); };
+      const o = opciones.find(libre) || opciones[0];
+      cajas.push(caja(o)); t.setAttribute("x", o[0]); t.setAttribute("dy", o[1]); t.setAttribute("text-anchor", o[2]); });
+    conTip(svg, ev=>{ const b = ev.target.closest("[data-ve]"); return b && b.style.opacity !== "0" ? b.dataset.tip : ""; });
+    // Al lado: cuántos escaños de más o de menos frente al reparto proporcional.
+    const saldo = P.map(x=>[x, x[4] - prop(x)]).filter(([,s])=>Math.abs(s) >= .5).sort((a,b)=>b[1]-a[1]), mx = Math.max(1, ...saldo.map(([,s])=>Math.abs(s)));
+    lado.innerHTML = `<div class="pe-sal-h"><span>Le quita la ley</span><span>Le da la ley</span></div>` + saldo.map(([x,s])=>`<div class="pe-sal" data-tip="${esc(`<b>${esc(x[1])}</b><br>${x[4]} escaños; con un reparto proporcional, ${dec(prop(x),1)}`)}">
+      <span class="n">${esc(x[0])}</span><span class="neg">${s < 0 ? `<i style="--w:${(-s/mx*100).toFixed(0)}%;background:${grupoDe(x[2]).color}"></i>` : ""}</span><span class="pos">${s > 0 ? `<i style="--w:${(s/mx*100).toFixed(0)}%;background:${grupoDe(x[2]).color}"></i>` : ""}</span><span class="v ${s>0?"mas":"menos"}">${s > 0 ? "+" : "−"}${dec(Math.abs(s), 0)}</span></div>`).join("");
+    lado.classList.remove("ya"); requestAnimationFrame(()=>requestAnimationFrame(()=>lado.classList.add("ya")));
   }
-  function ultimo(D){
-    const ultimos = Object.entries(D.prov).filter(([,p])=>p.ultimo).sort((a,b)=>a[1].ultimo.faltan-b[1].ultimo.faltan);
-    const lg = x => Math.log10(Math.max(10, x)), mx = lg(Math.max(...ultimos.map(([,p])=>p.ultimo.faltan)));
-    const fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]).color;
+  /* El Congreso que pudo ser: los últimos escaños, del más barato al más caro, cambian de manos al mover los votos. */
+  let pudoVotos = null;
+  function ultimo(D, e){
+    const fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]);
+    const vueltas = Object.entries(D.prov).filter(([,p])=>p.ultimo).map(([cod,p])=>({cod, p, de: fam(p, p.ultimo.gana), a: fam(p, p.ultimo.segundo), f: p.ultimo.faltan}))
+      .sort((a,b)=>a.f-b.f);
+    let acum = 0; vueltas.forEach(v=>{ acum += v.f; v.acum = acum; });
+    const base = porGrupo(e.fam), votantes = e.votantes, maxLog = Math.log10(vueltas[vueltas.length-1].acum);
+    // Las listas (las 52 en barras) siguen en el desplegable.
+    const lg = x => Math.log10(Math.max(10, x)), mx = lg(vueltas[vueltas.length-1].f);
     const caja = $("[data-pe-ult]"); caja.classList.remove("ya");
-    caja.innerHTML = ultimos.map(([cod,p],k)=>`<button data-ult="${cod}" data-tip="${esc(`<b>${esc(nombreProv(cod))}</b><br>Ganó el último escaño <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron ${fmt(p.ultimo.faltan)} votos`)}"><span class="p">${esc(nombreProv(cod))}</span><span class="b"><i style="--w:${(lg(p.ultimo.faltan)/mx*100).toFixed(1)}%;--d:${Math.min(k, 30)*25}ms;background:linear-gradient(90deg,${fam(p, p.ultimo.gana)} 50%,${fam(p, p.ultimo.segundo)} 50%)"></i></span><span class="q"><b>${esc(p.ultimo.gana)}</b> · ${esc(p.ultimo.segundo)}</span><span class="m">${fmt(p.ultimo.faltan)}</span></button>`).join("");
+    caja.innerHTML = vueltas.map((v,k)=>`<button data-ult="${v.cod}" data-tip="${esc(`<b>${esc(nombreProv(v.cod))}</b><br>Ganó el último escaño <b>${esc(v.p.ultimo.gana)}</b>; a <b>${esc(v.p.ultimo.segundo)}</b> le faltaron ${fmt(v.f)} votos`)}"><span class="p">${esc(nombreProv(v.cod))}</span><span class="b"><i style="--w:${(lg(v.f)/mx*100).toFixed(1)}%;--d:${Math.min(k, 30)*25}ms;background:linear-gradient(90deg,${v.de.color} 50%,${v.a.color} 50%)"></i></span><span class="q"><b>${esc(v.p.ultimo.gana)}</b> · ${esc(v.p.ultimo.segundo)}</span><span class="m">${fmt(v.f)}</span></button>`).join("");
     requestAnimationFrame(()=>requestAnimationFrame(()=>caja.classList.add("ya")));
-    duelos(D, ultimos);
-    return ultimos;
-  }
-  let umbral = 4, dueloSel = null;   // umbral en potencias de 10 (4 = 10.000 votos)
-  function duelos(D, ultimos){
-    const svg = $("[data-pu-mapa]"), fam = (p, sig) => grupoDe((p.c.find(x=>x[0]===sig) || [])[1]);
-    const lg = x => Math.log10(Math.max(10, x)), mx = lg(Math.max(...ultimos.map(([,p])=>p.ultimo.faltan)));
-    svg.setAttribute("viewBox", `0 0 ${GEO.ancho} ${GEO.alto}`);
-    svg.innerHTML = `<g class="fondo">${Object.values(GEO.provincias).map(pr=>`<path d="${pr.d}"/>`).join("")}<path class="can" d="${GEO.canarias}"/></g>
-      <g class="duelos">${ultimos.slice().sort((a,b)=>b[1].ultimo.faltan-a[1].ultimo.faltan).map(([cod,p])=>{ const pr = GEO.provincias[cod]; if (!pr) return "";
-        const r = 9 + 34*Math.pow(1 - lg(p.ultimo.faltan)/mx, 1.6);
-        return `<g class="d" data-pu="${cod}" data-f="${p.ultimo.faltan}" style="--x:${pr.c[0]}px;--y:${pr.c[1]}px"><circle r="${(r+4).toFixed(1)}" class="anillo" style="fill:${fam(p, p.ultimo.segundo).color}"/><circle r="${r.toFixed(1)}" style="fill:${fam(p, p.ultimo.gana).color}"/></g>`; }).join("")}</g>`;
-    conTip(svg, ev=>{ const g = ev.target.closest("[data-pu]"); if (!g) return ""; const p = D.prov[g.dataset.pu];
-      return `<b>${esc(nombreProv(g.dataset.pu))}</b><br>Ganó el último escaño <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron ${fmt(p.ultimo.faltan)} votos<div style="color:var(--muted);margin-top:4px">Pulsa para ver el duelo</div>`; });
-    const filtrar = () => {
-      const lim = Math.round(Math.pow(10, umbral)), dentro = ultimos.filter(([,p])=>p.ultimo.faltan < lim);
-      $("[data-pu-uv]").textContent = fmt(lim);
-      contar($("[data-pu-n]"), +$("[data-pu-n]").dataset.v || 0, dentro.length); $("[data-pu-n]").dataset.v = dentro.length;
-      const suma = dentro.reduce((s,[,p])=>s + p.ultimo.faltan, 0);
-      contar($("[data-pu-s]"), +$("[data-pu-s]").dataset.v || 0, suma); $("[data-pu-s]").dataset.v = suma;
-      svg.querySelectorAll("[data-pu]").forEach(g=>g.classList.toggle("fuera", +g.dataset.f >= lim));
-      // Quién ganó y quién perdió por la mínima (dentro del umbral), por familias.
-      const t = {}; dentro.forEach(([,p])=>{ const a = fam(p, p.ultimo.gana), b = fam(p, p.ultimo.segundo); (t[a.id] ||= {g:a, gana:0, pierde:0}).gana++; (t[b.id] ||= {g:b, gana:0, pierde:0}).pierde++; });
-      const filas = Object.values(t).sort((a,b)=>(b.gana+b.pierde)-(a.gana+a.pierde)), max = Math.max(1, ...filas.map(f=>Math.max(f.gana, f.pierde)));
-      $("[data-pu-tally]").innerHTML = filas.length ? `<div class="pu-tt"><span></span><span>se los llevó</span><span>se le escaparon</span></div>` + filas.map(f=>`<div class="pu-tf"><span class="n"><i style="background:${f.g.color}"></i>${esc(CORTO[f.g.id] || f.g.nombre)}</span>
-          <span class="g">${f.gana ? `<i style="width:${(f.gana/max*100).toFixed(0)}%;background:${f.g.color}"></i><b>${f.gana}</b>` : ""}</span><span class="p">${f.pierde ? `<i style="width:${(f.pierde/max*100).toFixed(0)}%;border-color:${f.g.color}"></i><b>${f.pierde}</b>` : ""}</span></div>`).join("")
-        : `<p class="nota">Ningún escaño por debajo de ese umbral.</p>`;
+    const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiSVG(350, {etiqueta:"350"});
+    const rango = $("#ps-r"), curva = $("[data-ps-curva]");
+    // La curva: votos acumulados (eje logarítmico) frente a escaños que cambian.
+    const Wc = Math.max(260, curva.clientWidth || 400), Hc = 90, X = v => 8 + (Math.log10(Math.max(100, v)) - 2)/(maxLog - 2)*(Wc - 16), Y = n => Hc - 14 - n/vueltas.length*(Hc - 24);
+    curva.innerHTML = `<svg viewBox="0 0 ${Wc} ${Hc}"><path class="cur" d="${vueltas.map((v,i)=>`${i ? "L" : "M"}${X(v.acum).toFixed(1)} ${Y(i).toFixed(1)}L${X(v.acum).toFixed(1)} ${Y(i+1).toFixed(1)}`).join("")}"/>
+      ${[1e3, 1e4, 1e5, 1e6].filter(v=>v < Math.pow(10, maxLog)).map(v=>`<text x="${X(v)}" y="${Hc - 1}" text-anchor="middle">${fmt(v)}</text>`).join("")}<circle class="pto" r="5"/></svg>`;
+    const pto = curva.querySelector(".pto");
+    const pintar = () => {
+      const presu = Math.pow(10, +rango.value), hechas = vueltas.filter(v=>v.acum <= presu);
+      const g = Object.fromEntries(GRUPOS.map(x=>[x.id, base[x.id][1]])), cambio = Object.fromEntries(GRUPOS.map(x=>[x.id, 0]));
+      hechas.forEach(v=>{ g[v.de.id]--; g[v.a.id]++; cambio[v.de.id]--; cambio[v.a.id]++; });
+      const usados = hechas.length ? hechas[hechas.length-1].acum : 0;
+      pintarHemi(hemi.querySelector(".hi-hemi"), GRUPOS.filter(x=>g[x.id] > 0).map(x=>({color:x.color, n:g[x.id], tip:`<b>${esc(x.nombre)}</b><br>${g[x.id]} escaños${cambio[x.id] ? ` (${cambio[x.id] > 0 ? "+" : "−"}${Math.abs(cambio[x.id])})` : ""}`})), null);
+      contar($("[data-ps-v]"), pudoVotos?.v ?? 0, usados); contar($("[data-ps-n]"), pudoVotos?.n ?? 0, hechas.length);
+      pudoVotos = {v: usados, n: hechas.length};
+      $("[data-ps-pct]").textContent = hechas.length ? `el ${pct(usados/votantes, usados/votantes < .01 ? 2 : 1)} de los que votaron` : "mueve el deslizador";
+      $("[data-ps-g]").innerHTML = GRUPOS.filter(x=>base[x.id][1] || cambio[x.id]).map(x=>`<div class="${cambio[x.id] > 0 ? "mas" : cambio[x.id] < 0 ? "menos" : ""}"><i style="background:${x.color}"></i><span>${esc(CORTO[x.id] || x.nombre)}</span><b>${g[x.id]}</b><small>${cambio[x.id] ? (cambio[x.id] > 0 ? "+" : "−") + Math.abs(cambio[x.id]) : ""}</small></div>`).join("");
+      $("[data-ps-lista]").innerHTML = hechas.length ? hechas.map(v=>`<button data-ult="${v.cod}" title="Llevar al simulador"><b>${esc(nombreProv(v.cod))}</b><span><i style="background:${v.de.color}"></i>${esc(v.p.ultimo.gana)} → <i style="background:${v.a.color}"></i>${esc(v.p.ultimo.segundo)}</span><small>${fmt(v.f)}</small></button>`).join("") : `<p class="nota">Ningún escaño cambia aún.</p>`;
+      pto.setAttribute("cx", X(Math.max(100, usados)).toFixed(1)); pto.setAttribute("cy", Y(hechas.length).toFixed(1));
     };
-    const verDuelo = cod => { dueloSel = cod; const p = D.prov[cod]; if (!p?.ultimo) return;
-      svg.querySelectorAll("[data-pu]").forEach(g=>g.classList.toggle("sel", g.dataset.pu === cod));
-      const a = fam(p, p.ultimo.gana), b = fam(p, p.ultimo.segundo);
-      $("[data-pu-duelo]").innerHTML = `<div class="pu-dh"><b>${esc(nombreProv(cod))}</b><span>${p.e} escaños</span></div>
-        <div class="pu-vs"><div style="--c:${a.color}"><small>ganó el último</small><b>${esc(p.ultimo.gana)}</b></div><span class="x">vs</span><div style="--c:${b.color}"><small>se quedó a las puertas</small><b>${esc(p.ultimo.segundo)}</b></div></div>
-        <p class="pu-falta"><b data-pu-falta>0</b> votos más de ${esc(p.ultimo.segundo)} le habrían quitado el escaño a ${esc(p.ultimo.gana)}.</p>
-        <button class="btn primary" data-pu-vuelta="${cod}">Darle la vuelta →</button>`;
-      contar($("[data-pu-falta]"), 0, p.ultimo.faltan, fmt, 600); };
-    const rango = $("#pu-u"); rango.value = umbral;
-    rango.oninput = () => { umbral = +rango.value; filtrar(); };
-    svg.onclick = ev => { const g = ev.target.closest("[data-pu]"); if (g) verDuelo(g.dataset.pu); };
-    $("[data-pu-duelo]").onclick = ev => { const b = ev.target.closest("[data-pu-vuelta]"); if (!b) return; const cod = b.dataset.puVuelta, sig = D.prov[cod].ultimo.segundo;
-      simProv = cod; simVotos = null; simulador(sec, P); $("#he-sim").scrollIntoView({block:"start", behavior:"smooth"});
-      setTimeout(()=>{ [...$("#he-sim").querySelectorAll("[data-mas]")].find(x=>x.dataset.mas === sig)?.click(); }, 700); };
-    filtrar();
-    verDuelo(dueloSel && D.prov[dueloSel]?.ultimo ? dueloSel : ultimos[0][0]);
+    rango.max = maxLog.toFixed(2); if (!rango.dataset.puesto){ rango.value = 5.1; rango.dataset.puesto = 1; }
+    rango.oninput = pintar;
+    pintar();
+    return vueltas.map(v=>[v.cod, v.p]);
   }
   function mapa(){
     const perd = heModo === "perdidos", val = Object.fromEntries(Object.entries(P).map(([c2,x])=>[c2, perd ? x.sin_escano/x.validos : x.validos/x.e]));
@@ -1004,7 +1035,7 @@ export async function pintarEscano(sec, c){
     P = D.prov;
     const precio = Object.entries(P).map(([cod,p])=>[cod, p.validos/p.e]).sort((a,b)=>a[1]-b[1]);
     const barato = precio[0], caro = precio[precio.length-1], sinEsc = Object.values(P).reduce((s,p)=>s+p.sin_escano, 0);
-    const ultimos = ultimo(D), mil = ultimos.filter(([,p])=>p.ultimo.faltan < 1000).length;
+    const ultimos = ultimo(D, e), mil = ultimos.filter(([,p])=>p.ultimo.faltan < 1000).length;
     const K = {barato: barato[1], caro: caro[1], sin: sinEsc, mil};
     Object.entries(K).forEach(([k2,v])=>{ contar($(`[data-pe-k="${k2}"]`), prev[k2], v, k2 === "sin" ? fmtCorto : fmt); prev[k2] = v; });
     $('[data-pe-kl="barato"]').textContent = `votos por escaño en ${nombreProv(barato[0])}, la más barata`;
