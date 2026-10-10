@@ -422,6 +422,8 @@ def construir(con_ia: bool = True) -> dict:
     escribir_web(salida)
     from . import elecciones   # sección «Elecciones» (29N): calendario, lo que caduca, mapas e histórico
     elecciones.escribir(salida, SITIO / "datos" / "elecciones")
+    from . import geografia    # sección «Geografía»: comunidades y provincias con los datos del INE (python -m escano.geografia)
+    geografia.escribir(SITIO / "datos" / "geografia")
     try:
         from .paginas import generar
         generar(salida, mod_hemiciclo.leer())

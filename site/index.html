@@ -1034,6 +1034,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
       <nav class="tabs" aria-label="Secciones">
         <button id="tab-inicio" data-vista="inicio">Inicio</button>
         <button id="tab-elecciones" data-vista="elecciones">Elecciones<span class="tab-29n">29N</span></button>
+        <button id="tab-geografia" data-vista="geografia">Geografía</button>
         <button class="tab-menu" id="menu-actividad" aria-haspopup="menu" aria-expanded="false" aria-controls="m-actividad">Actividad<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="tab-menu" id="menu-quien" aria-haspopup="menu" aria-expanded="false" aria-controls="m-quien">Quién es quién<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
@@ -1060,6 +1061,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
   <main>
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
     <section class="view" id="elecciones" role="tabpanel" aria-labelledby="tab-elecciones" hidden></section>
+    <section class="view" id="geografia" role="tabpanel" aria-labelledby="tab-geografia" hidden></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
     <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
     <section class="view" id="explora" role="tabpanel" aria-labelledby="tab-explora" hidden></section>
@@ -3099,6 +3101,14 @@ function renderElecciones(){
   import("./elecciones.js").then(m=>m.render($("#elecciones"), ctxEl, sub))
     .catch(()=>{ $("#elecciones").innerHTML = `<p class="nota">No se ha podido cargar la sección de elecciones.</p>`; });
 }
+/* ---------- geografía (site/geografia.js, autocontenida: se carga al abrir la pestaña) ---------- */
+let geoSub = null, geoUltimo = null;
+function renderGeografia(){
+  const ctxGeo = {G, DIPS, ORDEN_HEMI, esc, fmt, slug, legible};
+  const sub = geoUltimo = geoSub; geoSub = null;
+  import("./geografia.js").then(m=>m.render($("#geografia"), ctxGeo, sub))
+    .catch(err=>{ console.error(err); $("#geografia").innerHTML = `<p class="nota">No se ha podido cargar la sección de geografía.</p>`; });
+}
 async function renderOrganigrama(){
   const el = $("#organigrama");
   if (!ORG){ el.innerHTML = `<p class="nota">Cargando el organigrama…</p>`; await cargarOrg(); }
@@ -3497,10 +3507,10 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","elecciones","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
+const TABS = ["inicio","elecciones","geografia","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {elecciones:renderElecciones, "quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {elecciones:renderElecciones, geografia:renderGeografia, "quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
 // la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
 let ultimaVista = null;
@@ -3524,6 +3534,8 @@ function show(id, push){
   if (id && id.startsWith("cargo-")){ const c=id.slice(6); if (orgSel!==c){ orgSel=c; rendered.organigrama=false; } id="organigrama"; push=false; }
   else if (id==="organigrama" && push && orgSel){ orgSel=null; rendered.organigrama=false; }
   if (id && id.startsWith("elecciones-")){ elSub = id.slice(11); rendered.elecciones=false; id="elecciones"; push=false; }
+  if (id && id.startsWith("geografia-")){ geoSub = id.slice(10); rendered.geografia=false; id="geografia"; push=false; }
+  else if (id==="geografia" && geoUltimo){ rendered.geografia=false; }   // de una ficha a la portada de la sección
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }
   if (id && id.startsWith("tema-")){ if (temaFijo!==id.slice(5)){ temaFijo=id.slice(5); rendered.tema=false; } id="tema"; push=false; }
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
@@ -3535,7 +3547,7 @@ function show(id, push){
   cerrarMenus();
   const nav = $("nav.tabs"), act = $("nav.tabs>button.activa");   // en el móvil la barra se desplaza: que se vea la sección actual
   if (act && (act.offsetLeft < nav.scrollLeft || act.offsetLeft + act.offsetWidth > nav.scrollLeft + nav.clientWidth)) nav.scrollLeft = act.offsetLeft - 8;
-  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo" || id==="elecciones";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
+  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo" || id==="elecciones" || id==="geografia";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   contarVista(id, hashOriginal);
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }

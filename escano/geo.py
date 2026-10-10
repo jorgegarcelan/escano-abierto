@@ -182,12 +182,14 @@ def _area_centroide(anillo: list[tuple[float, float]]) -> tuple[float, float, fl
     return a / 2, cx / (3 * a), cy / (3 * a)
 
 
-def _capa(topo: dict, objeto: str, tol: float, decimales: int, proj: Proyeccion | None = None) -> tuple[dict, Proyeccion]:
+def _capa(topo: dict, objeto: str, tol: float, decimales: int, proj: Proyeccion | None = None,
+          es_canarias=lambda cod: cod[:2] in CANARIAS) -> tuple[dict, Proyeccion]:
     arcos_ll = _arcos(topo)
     geoms = topo["objects"][objeto]["geometries"]
-    # Arcos de Canarias: los de las geometrías cuyo código empieza por 35 o 38 (provincia o municipio).
+    # Arcos de Canarias: por defecto, los de las geometrías cuyo código empieza por 35 o 38 (provincia o municipio);
+    # en la capa de comunidades, la de código 05.
     arcos_de = lambda gs: {(i if i >= 0 else ~i) for g in gs for pol in _anillos(g) for anillo in pol for i in anillo}
-    can = arcos_de(g for g in geoms if str(g.get("id", ""))[:2] in CANARIAS)
+    can = arcos_de(g for g in geoms if es_canarias(str(g.get("id", ""))))
     proj = proj or Proyeccion(arcos_ll, arcos_de(g for g in geoms if not str(g.get("id", "")).startswith("54")), can)
     arcos = [_douglas_peucker([proj(lon, lat, i in can) for lon, lat in a], tol) for i, a in enumerate(arcos_ll)]
     salida = {}
