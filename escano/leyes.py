@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import re
 
-from .config import BASE, DATOS
+from .config import BASE, DATOS, LEGISLATURA
 from .red import descargar
 
 URL_PAGINA = BASE + "/es/opendata/iniciativas"
@@ -22,7 +22,7 @@ AUTORES = [(r"socialista", "PSOE"), (r"popular", "PP"), (r"\bvox\b", "VOX"), (r"
            (r"mixto", "MIXTO"), (r"^gobierno", "GOB"), (r"^senado", "SEN"), (r"comunidad|ciudad aut", "CCAA"),
            (r"diputad", "DIP")]
 RESULTADOS = [("aprobad", "aprobada"), ("rechazad", "rechazada"), ("retirad", "retirada"), ("decaíd", "decaída"),
-              ("subsumid", "subsumida"), ("inadmitid", "inadmitida")]
+              ("subsumid", "subsumida"), ("inadmitid", "inadmitida"), ("caducad", "caducada")]
 # Etapas del embudo, de la presentación a la publicación como ley.
 ETAPAS = ["Presentadas", "Admitidas a debate", "Con informe en comisión", "Aprobadas en el Congreso",
           "Pasaron por el Senado", "Leyes"]
@@ -138,7 +138,7 @@ def actualizar() -> dict:
         return leer()
     bajar = lambda k: json.loads(descargar(BASE + enlaces[k], cache=False).decode("utf-8-sig"))
     iniciativas = [leer_iniciativa(d) for k in ("ProyectosDeLey", "ProposicionesDeLey") for d in bajar(k)
-                   if str(d.get("LEGISLATURA", "")).endswith("15")]
+                   if str(d.get("LEGISLATURA", "")).endswith(str(LEGISLATURA))]
     datos = {"iniciativas": sorted(iniciativas, key=lambda x: x["exp"]),
              "aprobadas": leer_aprobadas(bajar("IniciativasLegislativasAprobadas"))}
     FICHERO.write_text(json.dumps(datos, ensure_ascii=False, indent=1))

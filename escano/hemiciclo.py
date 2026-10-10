@@ -15,6 +15,7 @@ from .red import descargar
 
 URL = BASE + "/es/hemiciclo"
 FICHERO = DATOS / "hemiciclo.json"
+MINIMO_ESCANOS = 300
 RE_AREA = re.compile(r'<area\s+shape="circle"(?P<attrs>[^>]*)>', re.S)
 RE_COORDS = re.compile(r'coords="\s*(\d+)\s*,\s*(\d+)')
 RE_CODIGO = re.compile(r"getUrlFichaDiputado\((\d+)")
@@ -51,6 +52,11 @@ def actualizar() -> dict:
     if not pagina:
         return leer()
     plano = leer_plano(pagina.decode("utf-8", "replace"))
+    anterior = leer()
+    # Con las Cortes disueltas el plano puede llegar vacío o con muy pocos escaños: se conserva el último completo.
+    if len(plano["escanos"]) < MINIMO_ESCANOS and len(anterior["escanos"]) >= MINIMO_ESCANOS:
+        print(f"  Hemiciclo: el plano trae {len(plano['escanos'])} escaños; se conserva el anterior")
+        return anterior
     if plano["escanos"]:
         FICHERO.parent.mkdir(parents=True, exist_ok=True)
         FICHERO.write_text(json.dumps(plano, ensure_ascii=False, indent=1))
