@@ -231,3 +231,19 @@ def test_escanos_del_decreto_de_convocatoria():
     h = {x["hito"]: x for x in elecciones.calendario()}
     assert h["Constitución de las nuevas Cortes"]["fecha"] == "2026-12-23"
     assert elecciones.escanos_cambian() == [["11", 9, 8], ["28", 37, 38]]
+
+
+def test_viajes_de_las_leyes():
+    ley = {"exp": "121/000001", "titulo": "Ley de prueba", "tipo": "Proyecto de ley", "origen": "GOB", "autores": ["GOB"],
+           "presentada": "2023-12-07", "estado": "aprobada", "fecha_resultado": "2024-09-10", "etapa": 5,
+           "fases": [{"organo": "Comisión de Igualdad", "fase": "Enmiendas", "desde": "2023-12-15", "hasta": "2024-04-25"},
+                     {"organo": "Comisión de Igualdad", "fase": "Informe", "desde": "2024-04-25", "hasta": "2024-06-13"},
+                     {"organo": "Pleno", "fase": "Aprobación", "desde": "2024-06-20", "hasta": "2024-06-27"},
+                     {"organo": "Senado", "fase": "", "desde": "2024-06-27", "hasta": "2024-07-17"}]}
+    assert elecciones._fechas_etapas(ley) == ["2023-12-07", "2024-04-25", "2024-06-27", "2024-07-17", "2024-09-10"]
+    tomada = {**ley, "exp": "122/000001", "tipo": "Proposición de ley", "origen": "GRUPOS", "estado": "en trámite", "etapa": 1,
+              "fecha_resultado": "", "fases": [{"organo": "Pleno", "fase": "Toma en consideración", "desde": "2024-01-10", "hasta": "2024-02-20"},
+                                              {"organo": "Comisión de Justicia", "fase": "Enmiendas", "desde": "2024-02-27", "hasta": ""}]}
+    assert elecciones._fechas_etapas(tomada) == ["2024-02-27", "", "", "", ""]
+    v = elecciones.viajes({"iniciativas": [ley, tomada]})
+    assert [(x[0], x[8], x[9]) for x in v["leyes"]] == [("121/000001", "aprobada", "2024-09-10"), ("122/000001", "caduca", "2026-10-06")]

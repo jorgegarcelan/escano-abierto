@@ -241,7 +241,8 @@ export async function render(el, c, sub){
     cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
     montar350(cuerpo.querySelector(".el-350"));
     import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), ctx));
-  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo); }
+  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo);
+    import("./elecciones-viajes.js").then(m=>m.montarViajes(cuerpo, ctx, COLOR_ORIGEN)).catch(err=>console.error(err)); }
   else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`; }
   else if (sub === "repite"){ cuerpo.innerHTML = `<section class="sec" id="el-repite" style="padding-top:8px"><p class="nota">Cargando…</p></section>`; pintarRepite(cuerpo.querySelector("#el-repite")); }
   else if (sub === "escano") hist("pintarEscano");
@@ -533,7 +534,6 @@ function itemCaducada(x){
 }
 function caducan(){
   const {esc} = ctx, C = DATOS.caducan;
-  const filas = ETAPAS.map((t,k)=>[k, t, C.lista.filter(x=>x[6]===k)]).filter(f=>f[2].length).reverse();
   const cerca = C.lista.filter(x=>x[6]>=3);
   const congeladas = [...C.lista].sort((a,b)=>b[7]-a[7]).slice(0,5);
   const autores = Object.entries(C.por_autor), maxA = Math.max(...autores.map(a=>a[1]));
@@ -541,10 +541,10 @@ function caducan(){
     <div class="kpis"><div class="kpi alert"><b>${miles(C.total)}</b><span>leyes caducan sin terminar su tramitación</span></div>
       <div class="kpi"><b>${C.proyectos}</b><span>proyectos del Gobierno</span></div><div class="kpi"><b>${C.proposiciones}</b><span>proposiciones de grupos, Senado y comunidades</span></div>
       <div class="kpi"><b>${C.congelador}</b><span>con el plazo de enmiendas ampliado diez veces o más</span></div><div class="kpi"><b>${miles(C.dias_medio)}</b><span>días de media en el Congreso</span></div></div>
-    <div class="chart"><h3>Hasta dónde llegaron</h3><p class="sub">Un cuadrado por ley, según la última etapa que alcanzó. Pulsa uno para ver su tramitación.</p>
-      <div class="el-waffle">${filas.map(([k,t,xs])=>`<div class="fila"><div>${esc(t)}<small>${xs.length} ${xs.length===1?"ley":"leyes"}</small></div>
-        <div class="cel">${xs.map(x=>`<button style="--c:${COLOR_ORIGEN[x[3]]}" data-ini="${esc(x[0])}" aria-label="${esc(x[1])}" data-tip="${esc(`<b>${esc(x[1].slice(0,160))}</b><br>${esc(NOMBRE_ORIGEN[x[3]])} · ${miles(x[8])} días`)}"></button>`).join("")}</div></div>`).join("")}</div>
-      <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).filter(([o])=>C.por_origen[o]).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)} (${C.por_origen[o]})</span>`).join("")}</div></div>
+    <div class="chart"><h3>Del registro al BOE</h3><p class="sub">Todos los proyectos y proposiciones de ley de la legislatura: cuántos llegaron a cada etapa y dónde se quedó el resto. Pulsa un tramo para ver esas leyes.</p><div id="vj-embudo"><p class="nota">Cargando…</p></div></div>
+    <div class="chart"><h3>La guillotina</h3><p class="sub">Cada punto es una ley: entra el día en que se presentó y avanza a medida que pasa cada etapa. Dale al ▶ o arrastra la fecha. El 6 de octubre de 2026, con la disolución, todo lo que seguía en trámite cae. Pasa por un punto para ver su viaje.</p>
+      <div id="vj-guillotina"><p class="nota">Cargando…</p></div>
+      <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)}</span>`).join("")}</div></div>
     <div class="chart"><h3>De quién eran</h3><p class="sub">Leyes que caducan según quién las presentó (una proposición firmada por varios grupos cuenta para cada uno). Pulsa una barra para ver sus leyes.</p>
       <div class="el-barras">${autores.map(([a,n])=>`<button data-cad-autor="${esc(a)}"><span class="l">${esc(NOMBRE_AUTOR[a]||a)}</span><span class="b"><i style="width:${(n/maxA*100).toFixed(1)}%;background:${colorAutor(a)}"></i></span><span class="v">${n}</span></button>`).join("")}</div></div>
     <div class="grid2">

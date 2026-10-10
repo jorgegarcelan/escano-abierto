@@ -106,6 +106,46 @@ def caducan(leyes: dict, disolucion: date = CONVOCATORIA) -> dict:
     }
 
 
+def _fechas_etapas(ini: dict) -> list[str]:
+    """Cuándo llegó a cada etapa del embudo (las de escano.leyes.etapa): [admitida, informe, aprobada en el Congreso,
+    vuelta del Senado, ley]; "" si no llegó. La presentación es ini["presentada"]."""
+    fs = ini.get("fases") or []
+    f = lambda x, k: x.get(k) if isinstance(x, dict) else x[{"organo": 0, "fase": 1, "desde": 2, "hasta": 3}[k]]
+    primera = lambda cond, k="desde": next((f(x, k) or f(x, "desde") for x in fs if cond(f(x, "organo"), f(x, "fase"))), "")
+    e = ini.get("etapa", 0)
+    admitida = (ini.get("presentada", "") if ini["tipo"] == "Proyecto de ley" else
+                primera(lambda o, fa: fa.startswith("Acuerdo subsiguiente") or (o.startswith("Comisión") and fa in ("Enmiendas", "Publicación"))))
+    informe = primera(lambda o, fa: fa in ("Informe", "Dictamen", "Nuevo dictamen"))
+    aprobada = primera(lambda o, fa: o == "Senado") or primera(lambda o, fa: fa.startswith("Aprobación"), "hasta")
+    senado = primera(lambda o, fa: o == "Senado", "hasta") if ini.get("origen") != "SEN" else ""
+    ley = ini.get("fecha_resultado", "") if ini.get("estado") == "aprobada" else ""
+    fechas = [admitida, informe, aprobada, senado, ley]
+    # Solo las etapas a las que llegó, y nunca antes que la anterior.
+    salida, previa = [], ini.get("presentada", "")
+    for k, d in enumerate(fechas, start=1):
+        d = (d or previa) if k <= e else ""
+        if d and previa and d < previa:
+            d = previa
+        salida.append(d)
+        previa = d or previa
+    return salida
+
+
+def viajes(leyes: dict, disolucion: date = CONVOCATORIA) -> dict:
+    """El viaje de cada proyecto y proposición de ley de la legislatura, para la guillotina y el embudo de la web:
+    [exp, título, PL/PPL, origen, autores, comisión, presentada, [fechas de cada etapa], estado, fecha final, ampliaciones]."""
+    filas = []
+    for i in leyes.get("iniciativas", []):
+        if not i.get("presentada"):
+            continue
+        estado = "caduca" if i["estado"] in ("en trámite", "caducada") and not i.get("situacion", "").startswith("Concluido") else i["estado"]
+        fin = disolucion.isoformat() if estado == "caduca" else (i.get("fecha_resultado") or "")
+        filas.append([i["exp"], i["titulo"], "PL" if i["tipo"] == "Proyecto de ley" else "PPL", i["origen"], i["autores"],
+                      i.get("comision", ""), i["presentada"], _fechas_etapas(i), estado, fin, i.get("ampliaciones") or 0])
+    filas.sort(key=lambda x: (x[6], x[0]))
+    return {"inicio": "2023-08-17", "disolucion": disolucion.isoformat(), "leyes": filas}
+
+
 def pendientes_de_convalidar(leyes: dict, votaciones: list[dict], hoy: date | None = None) -> list[dict]:
     """Reales decretos-leyes publicados y aún sin votación de convalidación: los heredará la Diputación Permanente."""
     import re
@@ -179,6 +219,8 @@ def escribir(salida: dict, carpeta=None) -> None:
         "hay": {n: (CARPETA / f"{n}.json").exists() for n in ("candidaturas", "promesas", "resultados")},
     }
     (carpeta / "elecciones.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
+    # El viaje de cada ley (para «Lo que caduca»): aparte, porque solo lo pide ese apartado.
+    (carpeta / "viajes.json").write_text(json.dumps(viajes(leyes), ensure_ascii=False, separators=(",", ":")))
     for f in sorted(CARPETA.rglob("*.json")):   # con las subcarpetas (provincias/)
         destino = carpeta / f.relative_to(CARPETA)
         destino.parent.mkdir(parents=True, exist_ok=True)
