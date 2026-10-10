@@ -85,6 +85,13 @@ const CSS = `
   .elh-cal::after,.elh-cal .hoy{display:none}
   .elh-cal .h.proximo i{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 18%,transparent)}
 }
+.el-lead{margin:2px 0 4px;font-size:16px;line-height:1.5;max-width:68ch}
+.el-barras{display:grid;gap:3px}
+.el-barras button{all:unset;display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 3em;gap:10px;align-items:center;font-size:13px;padding:3px 6px;border-radius:6px;cursor:pointer}
+.el-barras button:hover,.el-barras button:focus-visible{background:var(--sunk)}
+.el-barras .b{height:12px;background:var(--sunk);border-radius:2px;overflow:hidden}
+.el-barras .b i{display:block;height:100%;border-radius:0 4px 4px 0}
+.el-barras .v{font:12px var(--mono);color:var(--muted);text-align:right}
 .el-350{position:relative;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);box-shadow:var(--sombra);overflow:hidden}
 .el-350 svg{display:block;width:100%;max-width:min(900px,calc(78vh * 1000 / 820));height:auto;margin:0 auto;touch-action:manipulation}
 .el-350 .prov{fill:var(--sunk);stroke:var(--line-strong);stroke-width:.6;transition:opacity .6s}
@@ -234,7 +241,7 @@ export async function render(el, c, sub){
     cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
     montar350(cuerpo.querySelector(".el-350"));
     import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), ctx));
-  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; }
+  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo); }
   else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`; }
   else if (sub === "repite"){ cuerpo.innerHTML = `<section class="sec" id="el-repite" style="padding-top:8px"><p class="nota">Cargando…</p></section>`; pintarRepite(cuerpo.querySelector("#el-repite")); }
   else if (sub === "escano") hist("pintarEscano");
@@ -509,25 +516,71 @@ function montar350(caja){
 const ETAPAS = ["Presentada, sin admitir a debate","Admitida a debate","Con informe en comisión","Aprobada en el Congreso","Pasó por el Senado"];
 const COLOR_ORIGEN = {GOB:"var(--c-gob,#7152A8)", GRUPOS:"var(--c-grupos,#2A7DB5)", SEN:"var(--c-sen,#C9962A)", CCAA:"var(--c-ccaa,#83AE6E)"};
 const NOMBRE_ORIGEN = {GOB:"Proyectos del Gobierno", GRUPOS:"Proposiciones de los grupos", SEN:"Proposiciones del Senado", CCAA:"Proposiciones autonómicas"};
+// Números con punto de miles también en los de cuatro cifras (toLocaleString en español no los agrupa).
+const miles = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+// «Proposición del Senado», «de un parlamento autonómico», «de ERC, Bildu y Sumar»…
+const NOMBRE_AUTOR = {GOB:"Gobierno", SEN:"Senado", CCAA:"Parlamentos autonómicos", MIXTO:"Grupo Mixto", SUMAR:"Sumar", VOX:"Vox", BILDU:"EH Bildu", JUNTS:"Junts"};
+const CON_ARTICULO = new Set(["GOB","SEN","MIXTO","PSOE","PP","PNV","BNG"]);   // «del PSOE», «de Sumar»
+const deAutores = xs => { const n = xs.map(a=>a==="CCAA" ? "de un parlamento autonómico" : (CON_ARTICULO.has(a) ? "del " : "de ") + (NOMBRE_AUTOR[a]||a));
+  return n.length > 1 ? n.slice(0,-1).join(", ") + " y " + n[n.length-1] : n[0] || ""; };
+const colorAutor = a => ctx.G?.[a]?.color || COLOR_ORIGEN[a] || "var(--line-strong)";
+const ORDENES_CAD = [["dias","Más tiempo en el Congreso"],["ampl","Más veces ampliado el plazo"],["etapa","Las que llegaron más lejos"],["recientes","Las más recientes"]];
+let selCad = {q:"", autor:"", etapa:"", orden:"dias", n:30};
+function itemCaducada(x){
+  const {esc} = ctx;
+  return `<li><button class="linklike t" data-ini="${esc(x[0])}">${esc(x[1].length>170?x[1].slice(0,168)+"…":x[1])}</button><span class="m">${esc(x[0])}</span>
+    <span class="s">${x[2]==="PL"?"Proyecto del Gobierno":"Proposición "+esc(deAutores(x[4]))} · ${esc(ETAPAS[x[6]] || "")} · presentada el ${esc(ctx.fechaCorta(x[5]))} · ${miles(x[8])} días en el Congreso${x[7]?` · plazo de enmiendas ampliado ${x[7]} ${x[7]===1?"vez":"veces"}`:""}</span></li>`;
+}
 function caducan(){
-  const {esc, fmt} = ctx, C = DATOS.caducan;
+  const {esc} = ctx, C = DATOS.caducan;
   const filas = ETAPAS.map((t,k)=>[k, t, C.lista.filter(x=>x[6]===k)]).filter(f=>f[2].length).reverse();
   const cerca = C.lista.filter(x=>x[6]>=3);
   const congeladas = [...C.lista].sort((a,b)=>b[7]-a[7]).slice(0,5);
-  const item = x => `<li><button class="linklike t" data-ini="${esc(x[0])}">${esc(x[1].length>170?x[1].slice(0,168)+"…":x[1])}</button><span class="m">${esc(x[0])}</span>
-    <span class="s">${x[2]==="PL"?"Proyecto del Gobierno":"Proposición de "+esc(x[4].map(a=>ctx.autorNombre(a)).join(", "))} · presentada el ${esc(ctx.fechaCorta(x[5]))} · ${fmt(x[8])} días en el Congreso${x[7]?` · plazo de enmiendas ampliado ${x[7]} ${x[7]===1?"vez":"veces"}`:""}</span></li>`;
-  return `<div class="sec-h"><h2>Lo que caduca con la disolución</h2><p>Al disolverse las Cortes caducan todos los asuntos que el Congreso no había terminado. Las leyes a medio tramitar tendrán que volver a presentarse en la próxima legislatura y empezar de cero.</p></div>
-    <div class="kpis"><div class="kpi alert"><b>${fmt(C.total)}</b><span>leyes caducan sin terminar su tramitación</span></div>
+  const autores = Object.entries(C.por_autor), maxA = Math.max(...autores.map(a=>a[1]));
+  return `<p class="el-lead">Al disolverse las Cortes caducan todos los asuntos que el Congreso no había terminado. Las leyes a medio tramitar tendrán que volver a presentarse en la próxima legislatura y empezar de cero.</p>
+    <div class="kpis"><div class="kpi alert"><b>${miles(C.total)}</b><span>leyes caducan sin terminar su tramitación</span></div>
       <div class="kpi"><b>${C.proyectos}</b><span>proyectos del Gobierno</span></div><div class="kpi"><b>${C.proposiciones}</b><span>proposiciones de grupos, Senado y comunidades</span></div>
-      <div class="kpi"><b>${C.congelador}</b><span>con el plazo de enmiendas ampliado diez veces o más</span></div><div class="kpi"><b>${fmt(C.dias_medio)}</b><span>días de media en el Congreso</span></div></div>
+      <div class="kpi"><b>${C.congelador}</b><span>con el plazo de enmiendas ampliado diez veces o más</span></div><div class="kpi"><b>${miles(C.dias_medio)}</b><span>días de media en el Congreso</span></div></div>
     <div class="chart"><h3>Hasta dónde llegaron</h3><p class="sub">Un cuadrado por ley, según la última etapa que alcanzó. Pulsa uno para ver su tramitación.</p>
       <div class="el-waffle">${filas.map(([k,t,xs])=>`<div class="fila"><div>${esc(t)}<small>${xs.length} ${xs.length===1?"ley":"leyes"}</small></div>
-        <div class="cel">${xs.map(x=>`<button style="--c:${COLOR_ORIGEN[x[3]]}" data-ini="${esc(x[0])}" aria-label="${esc(x[1])}" data-tip="${esc(`<b>${esc(x[1].slice(0,160))}</b><br>${esc(NOMBRE_ORIGEN[x[3]])} · ${x[8]} días`)}"></button>`).join("")}</div></div>`).join("")}</div>
+        <div class="cel">${xs.map(x=>`<button style="--c:${COLOR_ORIGEN[x[3]]}" data-ini="${esc(x[0])}" aria-label="${esc(x[1])}" data-tip="${esc(`<b>${esc(x[1].slice(0,160))}</b><br>${esc(NOMBRE_ORIGEN[x[3]])} · ${miles(x[8])} días`)}"></button>`).join("")}</div></div>`).join("")}</div>
       <div class="el-leyenda">${Object.entries(NOMBRE_ORIGEN).filter(([o])=>C.por_origen[o]).map(([o,n])=>`<span><i style="background:${COLOR_ORIGEN[o]};border-radius:2px"></i>${esc(n)} (${C.por_origen[o]})</span>`).join("")}</div></div>
+    <div class="chart"><h3>De quién eran</h3><p class="sub">Leyes que caducan según quién las presentó (una proposición firmada por varios grupos cuenta para cada uno). Pulsa una barra para ver sus leyes.</p>
+      <div class="el-barras">${autores.map(([a,n])=>`<button data-cad-autor="${esc(a)}"><span class="l">${esc(NOMBRE_AUTOR[a]||a)}</span><span class="b"><i style="width:${(n/maxA*100).toFixed(1)}%;background:${colorAutor(a)}"></i></span><span class="v">${n}</span></button>`).join("")}</div></div>
     <div class="grid2">
-      <div class="chart"><h3>Las que estaban más cerca</h3><p class="sub">Ya las había aprobado el Pleno del Congreso.</p><ul class="el-lista">${cerca.map(item).join("")}</ul></div>
-      <div class="chart"><h3>Las más congeladas</h3><p class="sub">Las de plazo de enmiendas más veces ampliado: <button class="linklike" data-gl="plazo-enmiendas">el congelador</button>.</p><ul class="el-lista">${congeladas.map(item).join("")}</ul></div>
-    </div>`;
+      <div class="chart"><h3>Las que estaban más cerca</h3><p class="sub">Ya las había aprobado el Pleno del Congreso.</p><ul class="el-lista">${cerca.map(itemCaducada).join("")}</ul></div>
+      <div class="chart"><h3>Las más congeladas</h3><p class="sub">Las de plazo de enmiendas más veces ampliado: <button class="linklike" data-gl="plazo-enmiendas">el congelador</button>.</p><ul class="el-lista">${congeladas.map(itemCaducada).join("")}</ul></div>
+    </div>
+    <div class="chart" id="el-cad-todas"><h3>Las ${miles(C.total)}, una a una</h3>
+      <div class="controls"><input type="search" data-cad="q" placeholder="Busca por título o expediente…" aria-label="Buscar una ley" value="${esc(selCad.q)}">
+        <select data-cad="autor" aria-label="Quién la presentó"><option value="">Todos los autores</option>${autores.map(([a])=>`<option value="${esc(a)}"${a===selCad.autor?" selected":""}>${esc(NOMBRE_AUTOR[a]||a)}</option>`).join("")}</select>
+        <select data-cad="etapa" aria-label="Hasta dónde llegó"><option value="">Todas las etapas</option>${ETAPAS.map((t,k)=>C.por_etapa[k]?`<option value="${k}"${String(k)===selCad.etapa?" selected":""}>${esc(t)}</option>`:"").join("")}</select>
+        <select data-cad="orden" aria-label="Orden">${ORDENES_CAD.map(([v,t])=>`<option value="${v}"${v===selCad.orden?" selected":""}>${esc(t)}</option>`).join("")}</select></div>
+      <div id="el-cad-lista"></div></div>`;
+}
+function montarCaducan(raiz){
+  const C = DATOS.caducan, caja = raiz.querySelector("#el-cad-lista"); if (!caja) return;
+  const norm = t => String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+  const pintar = () => {
+    const q = norm(selCad.q.trim());
+    const xs = C.lista.filter(x=>(!selCad.autor || x[4].includes(selCad.autor)) && (selCad.etapa==="" || x[6]===+selCad.etapa) && (!q || norm(x[1]+" "+x[0]).includes(q)));
+    const k = {dias:(a,b)=>b[8]-a[8], ampl:(a,b)=>b[7]-a[7]||b[8]-a[8], etapa:(a,b)=>b[6]-a[6]||b[8]-a[8], recientes:(a,b)=>b[5].localeCompare(a[5])}[selCad.orden];
+    xs.sort(k);
+    caja.innerHTML = `<p class="nota" style="margin:4px 0 0">${xs.length === C.total ? `Las ${miles(xs.length)} leyes.` : `${miles(xs.length)} de ${miles(C.total)} leyes.`}</p>
+      <ul class="el-lista">${xs.slice(0, selCad.n).map(itemCaducada).join("") || `<li class="nota">Ninguna ley coincide.</li>`}</ul>
+      ${xs.length > selCad.n ? `<button class="btn" data-cad-mas>Ver ${Math.min(30, xs.length - selCad.n)} más</button>` : ""}`;
+  };
+  let t0 = null;
+  raiz.addEventListener("input", e=>{ if (e.target.matches('[data-cad="q"]')){ selCad.q = e.target.value; selCad.n = 30; clearTimeout(t0); t0 = setTimeout(pintar, 200); } });
+  raiz.addEventListener("change", e=>{ const c = e.target.dataset.cad; if (c && c !== "q"){ selCad[c] = e.target.value; selCad.n = 30; pintar(); } });
+  raiz.addEventListener("click", e=>{
+    if (e.target.closest("[data-cad-mas]")){ selCad.n += 30; pintar(); return; }
+    const b = e.target.closest("[data-cad-autor]"); if (!b) return;
+    selCad = {...selCad, autor: b.dataset.cadAutor, etapa: "", q: "", n: 30};
+    raiz.querySelector('[data-cad="autor"]').value = selCad.autor; raiz.querySelector('[data-cad="etapa"]').value = ""; raiz.querySelector('[data-cad="q"]').value = "";
+    pintar(); raiz.querySelector("#el-cad-todas").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+  pintar();
 }
 function montarWaffle(){ /* los cuadrados usan los manejadores comunes de la web (data-ini, data-tip) */ }
 
