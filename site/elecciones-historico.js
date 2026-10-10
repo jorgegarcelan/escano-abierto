@@ -198,36 +198,71 @@ const CSS = `
 .ps-pv button:hover{border-color:var(--line-strong);color:var(--ink)}
 .ps-pv button.nuevo{animation:pe-pop .35s ease}
 @media (prefers-reduced-motion:reduce){ [data-ps-flujo] .hilo.nuevo{animation:none;stroke-dashoffset:0} }
-.pe-sim{min-width:0;max-width:100%;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,#4F7AA6 7%,var(--surface)),var(--surface))}
-.pe-sim-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;align-items:flex-start}
-.pe-sim-h h3{font-size:clamp(18px,2.4vw,22px);margin:4px 0 4px;line-height:1.3}
-.pe-sim-h select{font:inherit;font-weight:700;color:var(--ink);background:var(--sunk);border:1px solid var(--line-strong);border-radius:8px;padding:2px 8px}
-.pe-sim-c{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr);gap:16px 26px;align-items:center;margin-top:12px}
-@media (max-width:820px){ .pe-sim-c{grid-template-columns:1fr} .pe-sim-hemi{order:-1} }
-.pe-sim-filas{display:grid;gap:6px}
-.pe-fila{display:grid;grid-template-columns:minmax(0,6.5em) minmax(0,1fr) 5.2em minmax(0,5.5em) auto;gap:10px;align-items:center;font-size:13px;padding:6px 8px;border-radius:10px;background:var(--surface);border:1px solid var(--line);transition:opacity .3s}
-.pe-fila.fuera{opacity:.5}
-.pe-fila .nom{display:flex;align-items:center;gap:6px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pe-fila .nom i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
-.pe-fila input[type=range]{width:100%;accent-color:var(--c)}
-.pe-fila .v{font:12.5px var(--mono);text-align:right}
-.pe-fila .e{display:flex;flex-wrap:wrap;gap:2px;align-items:center}
-.pe-fila .e i{width:9px;height:9px;border-radius:50%;background:var(--c);animation:pe-pop .35s ease}
-.pe-fila .e small{font:11.5px var(--mono);color:var(--muted);margin-left:4px}
-.pe-fila .mas{appearance:none;font:600 11.5px var(--sans);color:var(--ink);background:none;border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:4px 9px;cursor:pointer;white-space:nowrap}
-.pe-fila .mas:hover{background:var(--ink);color:var(--bg)}
-.pe-fila .mas:disabled{opacity:.3;cursor:default;background:none;color:var(--ink)}
+.pe-sim{min-width:0;max-width:100%;overflow:hidden}
+.pe-sim-h h3{font-size:clamp(19px,2.6vw,24px);margin:4px 0 6px;line-height:1.3}
+.pe-sim-h select{font:inherit;font-weight:700;color:var(--ink);background:var(--sunk);border:1px solid var(--line-strong);border-radius:8px;padding:1px 6px}
+.pe-sim-h .sub{margin:0;max-width:64ch}
+.pe-sim-c{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(200px,1fr);gap:18px 32px;align-items:start;margin-top:16px}
+@media (max-width:820px){ .pe-sim-c{grid-template-columns:1fr} }
+.pe-ctl{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pe-ctl button{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font:600 12.5px var(--sans,inherit);border:1px solid var(--line-strong);color:var(--ink);white-space:nowrap}
+.pe-ctl button:hover{background:var(--sunk)}
+.pe-ctl .pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}.pe-ctl .pri:hover{background:var(--ink);opacity:.88}
+.pe-ctl button:focus-visible{outline:2px solid var(--no);outline-offset:2px}
+.pe-barras{display:grid;gap:5px;position:relative}
+.pe-b,.pe-b-h{display:grid;grid-template-columns:minmax(0,6.5em) minmax(0,1fr) minmax(4.5em,auto);gap:10px;align-items:center}
+.pe-b-h{font:600 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);min-height:14px}
+.pe-b-h > span:last-child{text-align:left}
+.pe-b .n{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pe-b .t,.pe-b-h .t{position:relative;height:22px;display:block}
+.pe-b-h .t{height:14px}
+.pe-b .t i{position:absolute;left:0;top:3px;bottom:3px;width:var(--w,0%);background:var(--c);border-radius:2px;transition:width .5s cubic-bezier(.3,.7,.3,1),box-shadow .25s,opacity .3s}
+.pe-b .t small{position:absolute;left:calc(var(--w,0%) + 8px);top:50%;transform:translateY(-50%);font:11.5px var(--mono);color:var(--muted);white-space:nowrap;transition:left .5s cubic-bezier(.3,.7,.3,1)}
+.pe-b .t small b{color:var(--ink);font-weight:600}
+.pe-b .s{display:flex;flex-wrap:wrap;gap:2px;align-content:center}
+.pe-b .s i{width:8px;height:8px;border-radius:1.5px;background:var(--c);animation:pe-pop .3s ease}
+.pe-b.fuera .t i{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 45%,transparent) 0 3px,transparent 3px 6px)}
+.pe-b.fuera .n{color:var(--muted)}
+.pe-b.toca .t i{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--c)}
+.pe-b.toca .n{color:var(--c)}
+.pe-barras.fin .pe-b .t::after,.pe-barras.fin .pe-b-h .t::after{content:"";position:absolute;left:var(--l);top:-3px;bottom:-3px;border-left:1.5px dashed var(--ink);opacity:.55}
+.pe-barras.fin .pe-b-h .t::after{display:none}
+.pe-barras.fin .pe-b:not(.fuera) .t small{left:calc(var(--l) + 10px)}   /* al final, los números en columna, pasada la línea */
+.lin-t{position:absolute;left:var(--l,0%);transform:translateX(-50%);white-space:nowrap;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:600}
+.pe-paso{min-height:2.8em;margin:12px 0 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.pe-paso b{color:var(--ink)}
+.pe-paso-n{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink);background:var(--sunk);border-radius:999px;padding:2px 8px;margin-right:4px}
+.pe-sim-hemi{position:relative;text-align:center;align-self:center}
+.pe-sim-hemi .hi-hemi{max-width:var(--hw,340px);margin:0 auto}
+.pe-votos{margin-top:22px;border-top:1px solid var(--line)}
+.pe-votos-h{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:12px 0 6px;font-size:13px;color:var(--muted)}
+.pe-votos-h > b{color:var(--ink);font-size:14px}
+.pe-voto{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 7.5em auto;gap:14px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;transition:opacity .3s}
+.pe-voto.fuera{opacity:.55}
+.pe-voto .n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px}
+.pe-voto .n::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.pe-voto .v{display:flex;gap:6px;justify-content:flex-end;align-items:baseline;font-family:var(--mono)}
+.pe-voto .v b{font-weight:600;font-size:12.5px}
+.pe-voto .v small{font-size:10.5px;font-weight:600}.pe-voto .v .sube{color:var(--si)}.pe-voto .v .baja{color:var(--no)}
+.pe-voto input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;margin:0;background:linear-gradient(90deg,var(--c) var(--p,50%),var(--line-strong) var(--p,50%));outline:none;cursor:pointer}
+.pe-voto input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid var(--surface);cursor:grab}
+.pe-voto input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:var(--c);border:2px solid var(--surface);cursor:grab}
+.pe-voto input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 40%,transparent)}
+.pe-voto .mas{all:unset;cursor:pointer;font:600 12px var(--sans,inherit);color:var(--muted);white-space:nowrap;padding:2px 0;border-bottom:1px dashed var(--line-strong)}
+.pe-voto .mas:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.pe-voto .mas:disabled{opacity:.35;cursor:default}
+.pe-voto .mas:focus-visible{outline:2px solid var(--no);outline-offset:2px}
+@media (max-width:560px){ .pe-voto{grid-template-columns:minmax(0,1fr) auto auto;gap:6px 12px} .pe-voto input{grid-column:1/-1;grid-row:2} }
+.pe-votos .nota{margin:8px 0 0}
 @keyframes pe-pop{from{transform:scale(0)}to{transform:scale(1)}}
-@media (max-width:560px){ .pe-fila{grid-template-columns:minmax(0,1fr) auto auto} .pe-fila input{grid-column:1/-1;grid-row:2} .pe-fila .e{grid-column:1/3;grid-row:3} .pe-fila .mas{grid-row:3} }
-.pe-sim-hemi{position:relative;text-align:center}
-.pe-sim-hemi .hi-hemi{max-width:340px;margin:0 auto}
 .pe-flip{min-height:30px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;opacity:0;transform:translateY(6px)}
 .pe-flip.si{animation:pe-flip 2.6s ease forwards}
 .pe-flip span{font:700 14px var(--mono);padding:4px 10px;border-radius:var(--r-pill);background:var(--sunk)}
 .pe-flip .mas{background:color-mix(in srgb,var(--si) 25%,var(--surface));color:var(--ink)}
 .pe-flip .menos{background:color-mix(in srgb,var(--no) 25%,var(--surface));color:var(--ink)}
 @keyframes pe-flip{0%{opacity:0;transform:translateY(6px) scale(.96)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:.0}}
-.pe-sim-hemi .q{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.hi-coc td.ahora{outline:2px solid var(--no);outline-offset:1px;color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .pe-b .t i,.pe-b .t small{transition:none} }
 .hi-coc td{transition:background .3s,color .3s}
 .hi-seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r-pill);overflow:hidden;background:var(--surface);margin:2px 0 4px}
 .hi-seg button{appearance:none;border:0;background:none;font:500 12.5px var(--sans);color:var(--muted);padding:5px 12px;cursor:pointer}
@@ -363,6 +398,18 @@ function asientos(N){
   out.sort((p,q)=>q.a-p.a || p.r-q.r);
   const paso = Math.min(...radios.map((r,i)=>n[i]>1 ? Math.PI*r*100/(n[i]-1) : 60), filas>1 ? (1-r0)*100/(filas-1) : 60);
   return _asientos[N] = {pts: out, rad: Math.min(paso*.42, 9)};
+}
+/* El hemiciclo de verdad: los 350 escaños en su sitio del plano del Congreso, ordenados de izquierda a derecha
+   para que pintarHemi() los pinte por cuñas, como se sientan los grupos. Si el plano no está completo, null. */
+function hemiReal(etiqueta = "350"){
+  const P = ctx?.PLANO, D = ctx?.DIPS; if (!P || !D) return null;
+  const vistos = new Set(), cx = P.ancho/2, cy = P.alto*1.3;   // el centro, algo por debajo del plano: así los escaños de la primera fila no se mezclan
+  const pts = D.filter(d=>!d[8] && d[5] != null).map(d=>({x: +d[5], y: +d[6]})).filter(p=>{ const k = p.x + "," + p.y; if (vistos.has(k)) return false; vistos.add(k); return true; });
+  if (pts.length !== 350) return null;
+  pts.forEach(p=>{ p.a = Math.atan2(cy - p.y, p.x - cx); p.r = Math.hypot(p.x - cx, p.y - cy); });
+  pts.sort((a,b)=>b.a - a.a || a.r - b.r);
+  return `<svg class="hi-hemi hi-real" viewBox="-4 -4 ${P.ancho + 8} ${P.alto + 4}" role="img" aria-label="Hemiciclo del Congreso, con los escaños en su sitio">${pts.map((p,k)=>`<circle cx="${p.x}" cy="${p.y}" r="5.3" style="--k:${k}"></circle>`).join("")}
+    <text class="anio" x="${cx}" y="${P.alto*.8}" text-anchor="middle" style="font-size:${(P.ancho*.075).toFixed(0)}px">${esc(etiqueta)}</text></svg>`;
 }
 /* Un hemiciclo como SVG vacío; pintarHemi() le pone color (con transición) a partir de segmentos {color, n, tip}. */
 function hemiSVG(N, {etiqueta="", clase=""}={}){
@@ -1042,7 +1089,7 @@ export async function pintarEscano(sec, c){
     const vueltas = Object.entries(D.prov).filter(([,p])=>p.ultimo).map(([cod,p])=>({cod, p, de: fam(p, p.ultimo.gana), a: fam(p, p.ultimo.segundo), f: p.ultimo.faltan}))
       .sort((a,b)=>a.f-b.f);
     const base = porGrupo(e.fam), votantes = e.votantes, maxLog = Math.log10(vueltas[vueltas.length-1].f);
-    const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiSVG(350, {etiqueta:"350"});
+    const hemi = $("[data-ps-hemi]"); if (!hemi.querySelector("svg")) hemi.innerHTML = hemiReal() || hemiSVG(350, {etiqueta:"350"});   // el plano real del Congreso
     $("[data-ps-esc]")._parar?.();   // la animación de la elección anterior, fuera
     const rango = $("#ps-r"), svg = $("[data-ps-esc]"), N = vueltas.length, quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
     // La escalera: los votos que le faltaron a cada escaño (eje logarítmico) frente a cuántos se decidieron por menos; cada punto, un escaño: con el contorno de quien se lo llevaría, relleno cuando cambia.
@@ -1203,7 +1250,7 @@ export async function pintarEscano(sec, c){
     if (ev.target.closest("[data-he-play]")){ if (playE){ parar(); return; } $("[data-he-play]").textContent = "❚❚ Pausa"; let k = selE >= E.length-1 ? 0 : selE + 1; pintar(k);
       playE = setInterval(()=>{ k++; if (k >= E.length || !document.body.contains(sec)){ parar(); return; } pintar(k); }, 2200); return; }
     const m = ev.target.closest("[data-he-modo]"); if (m){ heModo = m.dataset.heModo; mapa(); return; }
-    const u = ev.target.closest("[data-ult]"); if (u){ simProv = u.dataset.ult; simVotos = null; simulador(sec, P); $("#he-sim").scrollIntoView({block:"start", behavior:"smooth"}); return; }
+    const u = ev.target.closest("[data-ult]"); if (u){ simProv = u.dataset.ult; simVotos = null; simulador(sec, P, {explicar: true}); $("#he-sim").scrollIntoView({block:"start", behavior:"smooth"}); return; }
     const pr = ev.target.closest("#he-mapa [data-p]"); if (pr){ elegirProv(pr.dataset.p); $("#he-sim").scrollIntoView({block:"nearest", behavior:"smooth"}); return; }
     const bo = ev.target.closest("[data-pe-c]"); if (bo){ elegirProv(bo.dataset.peC); }
   });
@@ -1221,63 +1268,128 @@ export function dhondt(votos, escanos, validos, barrera=.03){
   gan.forEach(x=>rep[x.c]=(rep[x.c]||0)+1);
   return {rep, gan, fuera: coc.slice(escanos, escanos+4), barrera: barrera*validos};
 }
-function simulador(sec, P){
+let simVisto = false;   // la explicación por rondas se reproduce sola la primera vez que se ve
+function simulador(sec, P, {explicar = false} = {}){
   const caja = sec.querySelector("#he-sim"); if (!caja || !P?.[simProv]) return;
-  const p = P[simProv];
+  caja._parar?.();
+  const p = P[simProv], quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lista = p.c.filter(x=>x[2] >= p.validos*0.005).slice(0, 10);   // las que pasan del 0,5 %: el resto no cambia nada
   simVotos ||= Object.fromEntries(lista.map(x=>[x[0], x[2]]));
   const resto = p.validos - lista.reduce((s,x)=>s+x[2],0);
   const validosDe = V => resto + Object.values(V).reduce((s,v)=>s+v,0);
+  const real = Object.fromEntries(lista.map(x=>[x[0], x[2]])), color = Object.fromEntries(lista.map(x=>[x[0], grupoDe(x[1]).color]));
   const opciones = Object.keys(P).sort((a,b)=>nombreProv(a).localeCompare(nombreProv(b),"es")).map(c2=>`<option value="${c2}"${c2===simProv?" selected":""}>${esc(nombreProv(c2))}</option>`).join("");
-  caja.innerHTML = `<div class="pe-sim-h"><div><div class="eyebrow">Juega con los votos</div><h3>¿Cuántos votos cambian un escaño en <select data-sim-prov aria-label="Provincia">${opciones}</select>?</h3>
-      <p class="sub">Mueve los votos de cada candidatura, o pulsa <b>+1 escaño</b> para que la web calcule cuántos le faltan. Para entrar en el reparto hace falta el 3 % de los votos válidos.</p></div>
-      <button class="btn" data-sim-reset>↺ Resultado real</button></div>
-    <div class="pe-sim-c"><div class="pe-sim-filas">${lista.map(x=>{ const gr = grupoDe(x[1]); return `<div class="pe-fila" data-fila="${esc(x[0])}" style="--c:${gr.color}">
-        <span class="nom"><i></i>${esc(x[0])}</span>
+  caja.innerHTML = `<div class="pe-sim-h"><div class="eyebrow">Juega con los votos</div><h3>¿Cuántos votos cambian un escaño en <select data-sim-prov aria-label="Provincia">${opciones}</select>?</h3>
+      <p class="sub">${p.e === 1 ? "Aquí se reparte un solo escaño: se lo lleva quien más votos tiene." : `Los ${p.e} escaños se reparten por rondas. En cada una, el escaño es para la barra más larga; y esa barra se divide entre uno más (÷2, ÷3…) para la ronda siguiente.`}</p></div>
+    <div class="pe-sim-c"><div class="pe-rondas">
+        <div class="pe-ctl"><button type="button" class="pri" data-sim-play>▶ Ver el reparto</button><button type="button" data-sim-paso>Siguiente escaño →</button><button type="button" data-sim-reset>↺ Resultado real</button></div>
+        <div class="pe-barras" data-barras><div class="pe-b-h"><span></span><span class="t"><span class="lin-t" data-lin-t></span></span><span>Escaños</span></div>
+          ${lista.map(x=>`<div class="pe-b" data-b="${esc(x[0])}" style="--c:${color[x[0]]}"><span class="n">${esc(x[0])}</span><span class="t"><i></i><small data-bq></small></span><span class="s" data-bs></span></div>`).join("")}</div>
+        <p class="pe-paso" data-paso aria-live="polite"></p></div>
+      <div class="pe-sim-hemi" style="--hw:${p.e <= 4 ? 170 : p.e <= 10 ? 250 : 340}px">${hemiSVG(p.e, {etiqueta: String(p.e)})}<div class="pe-flip" aria-live="polite"></div></div></div>
+    <div class="pe-votos"><div class="pe-votos-h"><b>Los votos</b><span>Arrástralos, o pide <b>+1 escaño</b> y la web calcula cuántos faltan.</span></div>
+      ${lista.map(x=>`<div class="pe-voto" data-fila="${esc(x[0])}" style="--c:${color[x[0]]}"><span class="n">${esc(x[0])}</span>
         <input type="range" min="0" max="${Math.round(x[2]*2+p.validos*0.02)}" step="${Math.max(1, Math.round(p.validos/2000))}" value="${simVotos[x[0]] ?? x[2]}" data-sim="${esc(x[0])}" aria-label="Votos de ${esc(x[0])}">
-        <span class="v" data-v></span><span class="e" data-e></span><button class="mas" data-mas="${esc(x[0])}" title="Cuántos votos le faltan para un escaño más">+1 escaño</button></div>`; }).join("")}</div>
-      <div class="pe-sim-hemi">${hemiSVG(p.e, {etiqueta: String(p.e)})}<div class="pe-flip" aria-live="polite"></div><p class="q" data-q></p></div></div>
-    <div class="hi-coc-c"><h4>La tabla de cocientes</h4><p class="sub">Los votos de cada candidatura entre 1, 2, 3… Los ${p.e} cocientes más altos se llevan los escaños (en color); el recuadro marca el último y el discontinuo, el primero que se queda fuera.</p><div class="hi-coc" data-coc></div></div>`;
-  let antes = null;
-  const flip = caja.querySelector(".pe-flip");
-  caja.querySelector(".hi-hemi")?.setAttribute("viewBox", "-112 -112 224 126");   // que no se corte la fila de abajo
+        <span class="v"><b data-v></b><small data-dv></small></span><button type="button" class="mas" data-mas="${esc(x[0])}" title="Cuántos votos le faltan para un escaño más">+1 escaño</button></div>`).join("")}
+      <p class="nota" data-q></p></div>
+    <div class="hi-coc-c"><h4>La tabla de cocientes</h4><p class="sub">Las mismas rondas, en números: los votos de cada candidatura entre 1, 2, 3… Los ${p.e} cocientes más altos se llevan los escaños (en color); el recuadro marca el último y el discontinuo, el primero que se queda fuera.</p><div class="hi-coc" data-coc></div></div>`;
+  let antes = null, anim = null, k = null, fase = 0, enVista = null;   // k: escaños ya repartidos en la explicación (null = reparto completo)
+  const flip = caja.querySelector(".pe-flip"), hemi = caja.querySelector(".hi-hemi"), pasoEl = caja.querySelector("[data-paso]"), barrasEl = caja.querySelector("[data-barras]");
+  hemi.setAttribute("viewBox", "-112 -112 224 126");   // que no se corte la fila de abajo
+  const cuenta = (r, n) => { const rep = {}; r.gan.slice(0, n).forEach(y=>rep[y.c] = (rep[y.c]||0) + 1); return rep; };
+  const segsDe = rep => lista.filter(x=>rep[x[0]]).map(x=>({color: color[x[0]], n: rep[x[0]], tip: `<b>${esc(x[0])}</b><br>${rep[x[0]]} ${rep[x[0]]===1?"escaño":"escaños"}`}));
+  // Las barras: lo que pide cada candidatura para el escaño siguiente (sus votos entre los escaños que ya tiene más uno).
+  function barras(r, n, toca){
+    const rep = cuenta(r, n), max = Math.max(...lista.map(x=>simVotos[x[0]]), 1), w = q => q/max*72;   // la barra más larga ocupa el 72 %: a la derecha, el número
+    lista.forEach(x=>{ const c2 = x[0], fila = [...barrasEl.querySelectorAll("[data-b]")].find(f=>f.dataset.b === c2), v = simVotos[c2], pasa = v > 0 && v >= r.barrera, d = (rep[c2]||0) + 1;
+      if (!fila) return;
+      fila.classList.toggle("fuera", !pasa); fila.classList.toggle("toca", !!toca && toca.c === c2);
+      fila.style.setProperty("--w", `${w(pasa ? v/d : v).toFixed(2)}%`);
+      fila.querySelector("[data-bq]").innerHTML = pasa ? `${fmt(v)} ÷ ${d} = <b>${fmt(v/d)}</b>` : `${fmt(v)} · no llega al 3 %`;
+      const s = fila.querySelector("[data-bs]"), ya = s.children.length, quiere = rep[c2]||0;
+      if (ya < quiere) s.insertAdjacentHTML("beforeend", Array.from({length: quiere - ya}, ()=>`<i></i>`).join("")); else while (s.children.length > quiere) s.lastChild.remove(); });
+    // El listón del final: el último cociente que se llevó escaño. Todas las barras quedan por debajo.
+    const fin = n >= r.gan.length && r.gan.length, ult = r.gan[r.gan.length - 1];
+    barrasEl.classList.toggle("fin", !!fin); barrasEl.style.setProperty("--l", fin ? `${w(ult.q).toFixed(2)}%` : "0%");
+    caja.querySelector("[data-lin-t]").textContent = fin ? `último escaño: ${fmt(ult.q)}` : "";
+  }
+  function tabla(r, n, cur){
+    const ganan = new Set(r.gan.slice(0, n).map(x=>x.c+"|"+x.d)), cols = Math.min(p.e, 12), fin = n >= r.gan.length;
+    const ult = fin ? r.gan[r.gan.length-1] : null, sig = fin ? r.fuera[0] : null;
+    const filas = lista.filter(x=>simVotos[x[0]] >= r.barrera && simVotos[x[0]] > 0).sort((a,b)=>simVotos[b[0]]-simVotos[a[0]]);
+    caja.querySelector("[data-coc]").innerHTML = filas.length ? `<table><thead><tr><th></th>${Array.from({length:cols},(_,d)=>`<th>÷${d+1}</th>`).join("")}</tr></thead><tbody>${filas.map(x=>{ const c = color[x[0]];
+      return `<tr><th><i style="background:${c}"></i>${esc(x[0])}</th>${Array.from({length:cols},(_,d)=>{ const kk = x[0]+"|"+(d+1), q = simVotos[x[0]]/(d+1);
+        const cls = [ganan.has(kk) ? "si" : "", ult && ult.c === x[0] && ult.d === d+1 ? "ult" : "", sig && sig.c === x[0] && sig.d === d+1 ? "sig" : "", cur && cur.c === x[0] && cur.d === d+1 ? "ahora" : ""].join(" ");
+        return `<td class="${cls}" style="${ganan.has(kk) ? `background:${c};color:${textoSobre(c)}` : ""}">${fmt(q)}</td>`; }).join("")}</tr>`; }).join("")}</tbody></table>${p.e > cols ? `<p class="nota">Se muestran los ${cols} primeros divisores.</p>` : ""}` : `<p class="nota">Ninguna candidatura pasa la barrera.</p>`;
+  }
+  const final = r => { const u = r.gan[r.gan.length-1], s = r.fuera[0];
+    const f = q => s && u && fmt(u.q) === fmt(s.q) ? q.toLocaleString("es-ES", {minimumFractionDigits:2, maximumFractionDigits:2}) : fmt(q);   // en un empate a la vista, con decimales
+    return u ? `El último escaño fue para <b>${esc(u.c)}</b>, con ${f(u.q)} (÷${u.d}).${s ? ` La barra más larga que se queda sin escaño es la de <b>${esc(s.c)}</b>: ${f(s.q)}.` : ""}` : "Ninguna candidatura pasa la barrera."; };
+  // Un momento de la explicación: n escaños repartidos; si «toca», se señala la barra que se lleva el siguiente.
+  function momento(r, n, toca){
+    barras(r, n, toca); tabla(r, n, toca); pintarHemi(hemi, segsDe(cuenta(r, n)), n >= r.gan.length ? String(p.e) : String(n));
+    if (n >= r.gan.length) pasoEl.innerHTML = final(r);
+    else if (toca) pasoEl.innerHTML = `<span class="pe-paso-n">Escaño ${n+1} de ${p.e}</span> La barra más larga es la de <b style="color:${color[toca.c]}">${esc(toca.c)}</b>: ${fmt(toca.q)}.`;
+    else if (n) { const x = r.gan[n-1], d = cuenta(r, n)[x.c] + 1; pasoEl.innerHTML = `<span class="pe-paso-n">Escaño ${n} de ${p.e}</span> Para <b style="color:${color[x.c]}">${esc(x.c)}</b>. Su barra pasa a ÷${d}: ${fmt(simVotos[x.c]/d)}.`; }
+    else pasoEl.innerHTML = `Al empezar, cada barra es el total de votos (÷1). Las que no llegan al 3 % no juegan.`;
+  }
   const pintar = () => {
     const validos = validosDe(simVotos), r = dhondt(simVotos, p.e, validos);
-    caja.querySelectorAll("[data-fila]").forEach(f=>{ const c2 = f.dataset.fila, n = r.rep[c2]||0, x = lista.find(y=>y[0]===c2);
+    caja.querySelectorAll("[data-fila]").forEach(f=>{ const c2 = f.dataset.fila, n = r.rep[c2]||0, inp = f.querySelector("[data-sim]"), dv = simVotos[c2] - real[c2];
       f.querySelector("[data-v]").textContent = fmt(simVotos[c2]);
-      f.querySelector("[data-e]").innerHTML = `${Array.from({length:n},()=>`<i></i>`).join("")}<small>${n}${n!==x[3]?` <s>${x[3]}</s>`:""}</small>`;
+      const dvEl = f.querySelector("[data-dv]"); dvEl.textContent = dv ? `${dv > 0 ? "+" : "−"}${fmt(Math.abs(dv))}` : ""; dvEl.className = dv > 0 ? "sube" : dv < 0 ? "baja" : "";
+      inp.style.setProperty("--p", `${(simVotos[c2]/(+inp.max || 1)*100).toFixed(1)}%`);
       f.classList.toggle("fuera", simVotos[c2] < r.barrera);
       f.querySelector("[data-mas]").disabled = n >= p.e; });
-    // El hemiciclo de la provincia, por partidos en el orden de la lista.
-    pintarHemi(caja.querySelector(".hi-hemi"), lista.filter(x=>r.rep[x[0]]).map(x=>({color: grupoDe(x[1]).color, n: r.rep[x[0]], tip: `<b>${esc(x[0])}</b><br>${r.rep[x[0]]} ${r.rep[x[0]]===1?"escaño":"escaños"}`})));
-    // ¿Ha cambiado algún escaño de manos? Aviso.
+    if (k == null) momento(r, r.gan.length);
     if (antes){ const cambios = lista.map(x=>[x[0], (r.rep[x[0]]||0) - (antes[x[0]]||0)]).filter(([,d])=>d);
       if (cambios.length){ flip.innerHTML = cambios.sort((a,b)=>b[1]-a[1]).map(([cn,d])=>`<span class="${d>0?"mas":"menos"}">${esc(cn)} ${d>0?"+":"−"}${Math.abs(d)}</span>`).join(" ");
         flip.classList.remove("si"); void flip.offsetWidth; flip.classList.add("si"); } }
     antes = {...r.rep};
-    const ult = r.gan[r.gan.length-1], sig = r.fuera[0];
-    caja.querySelector("[data-q]").innerHTML = ult ? `Último escaño: <b>${esc(ult.c)}</b> (${fmt(ult.q)}). ${sig?`Se queda fuera <b>${esc(sig.c)}</b> (${fmt(sig.q)}).`:""} Barrera: ${fmt(r.barrera)} votos.` : "";
-    const ganan = new Set(r.gan.map(x=>x.c+"|"+x.d)), cols = Math.min(p.e, 12);
-    const filas = lista.filter(x=>simVotos[x[0]] >= r.barrera && simVotos[x[0]] > 0).sort((a,b)=>simVotos[b[0]]-simVotos[a[0]]);
-    caja.querySelector("[data-coc]").innerHTML = filas.length ? `<table><thead><tr><th></th>${Array.from({length:cols},(_,d)=>`<th>÷${d+1}</th>`).join("")}</tr></thead><tbody>${filas.map(x=>{ const gr = grupoDe(x[1]);
-      return `<tr><th><i style="background:${gr.color}"></i>${esc(x[0])}</th>${Array.from({length:cols},(_,d)=>{ const k = x[0]+"|"+(d+1), q = simVotos[x[0]]/(d+1);
-        const cls = [ganan.has(k) ? "si" : "", ult && ult.c === x[0] && ult.d === d+1 ? "ult" : "", sig && sig.c === x[0] && sig.d === d+1 ? "sig" : ""].join(" ");
-        return `<td class="${cls}" style="${ganan.has(k) ? `background:${gr.color};color:${textoSobre(gr.color)}` : ""}">${fmt(q)}</td>`; }).join("")}</tr>`; }).join("")}</tbody></table>${p.e > cols ? `<p class="nota">Se muestran los ${cols} primeros divisores.</p>` : ""}` : `<p class="nota">Ninguna candidatura pasa la barrera.</p>`;
+    const bajo = lista.filter(x=>simVotos[x[0]] > 0 && simVotos[x[0]] < r.barrera).map(x=>x[0]);
+    caja.querySelector("[data-q]").innerHTML = `Para entrar en el reparto hace falta el 3 % de los votos válidos: <b>${fmt(r.barrera)}</b>.${bajo.length ? ` No llegan: ${bajo.map(esc).join(", ")}.` : ""}`;
   };
+  // La explicación por rondas: primero se señala la barra más larga; luego se lleva el escaño y su barra se divide.
+  const bPlay = caja.querySelector("[data-sim-play]");
+  const rActual = () => dhondt(simVotos, p.e, validosDe(simVotos));
+  function parar(){ if (anim){ clearTimeout(anim); anim = null; } enVista?.disconnect(); caja.classList.remove("explicando"); bPlay.textContent = k != null && k < rActual().gan.length ? "▶ Seguir" : "▶ Ver el reparto"; }
+  caja._parar = () => { parar(); };
+  function avanzar(r){   // un medio paso: señalar (fase 0) o adjudicar (fase 1)
+    if (k == null){ k = 0; fase = 0; momento(r, 0); return true; }
+    if (k >= r.gan.length) return false;
+    if (fase === 0){ momento(r, k, r.gan[k]); fase = 1; }
+    else { k++; fase = 0; momento(r, k); if (k >= r.gan.length){ k = null; } }
+    return k != null;
+  }
+  function reproducir(){
+    const r = rActual(), N = r.gan.length; if (!N){ pintar(); return; }
+    if (quieto){ k = null; pintar(); return; }
+    if (k == null || (k === 0 && fase === 0)){ k = 0; fase = 0; momento(r, 0); }   // desde el principio: las barras, enteras
+    caja.classList.add("explicando"); bPlay.textContent = "❚❚ Pausa";
+    const t = N > 12 ? Math.max(130, 4200/N) : 520;
+    const paso = () => { if (avanzar(r)) anim = setTimeout(paso, fase === 1 ? t : t*.9); else { anim = null; caja.classList.remove("explicando"); bPlay.textContent = "↻ Repetir el reparto"; } };
+    anim = setTimeout(paso, k === 0 && fase === 0 ? 1300 : t);
+  }
   // +1 escaño: los votos mínimos que necesita esa candidatura (con los demás quietos), buscados con la propia regla.
   const faltan = c2 => { const n0 = dhondt(simVotos, p.e, validosDe(simVotos)).rep[c2] || 0; let lo = simVotos[c2], hi = simVotos[c2] + p.validos*2;
     const gana = v => { const V = {...simVotos, [c2]: v}; return (dhondt(V, p.e, validosDe(V)).rep[c2] || 0) > n0; };
     if (!gana(hi)) return null; while (hi - lo > 1){ const mid = Math.floor((lo + hi)/2); if (gana(mid)) hi = mid; else lo = mid; } return hi; };
-  const animar = (c2, destino) => { const ini = simVotos[c2], t0 = performance.now(), dur = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 900, inp = [...caja.querySelectorAll("[data-sim]")].find(i=>i.dataset.sim === c2);
+  const animar = (c2, destino) => { const ini = simVotos[c2], t0 = performance.now(), dur = quieto ? 1 : 900, inp = [...caja.querySelectorAll("[data-sim]")].find(i=>i.dataset.sim === c2);
     if (inp && destino > +inp.max) inp.max = Math.ceil(destino*1.1);
     const paso = ahora => { const t = Math.min(1, (ahora - t0)/dur), e2 = 1 - Math.pow(1 - t, 3); simVotos[c2] = Math.round(ini + (destino - ini)*e2); if (inp) inp.value = simVotos[c2]; pintar(); if (t < 1) requestAnimationFrame(paso); };
     requestAnimationFrame(paso); };
-  caja.oninput = ev=>{ const i = ev.target.closest("[data-sim]"); if (i){ simVotos[i.dataset.sim] = +i.value; pintar(); } };
-  caja.onclick = ev=>{ const m = ev.target.closest("[data-mas]"); if (m){ const c2 = m.dataset.mas, v = faltan(c2);
+  const alReparto = () => { parar(); k = null; fase = 0; };   // cualquier cambio de votos vuelve al reparto completo
+  caja.oninput = ev=>{ const i = ev.target.closest("[data-sim]"); if (i){ alReparto(); simVotos[i.dataset.sim] = +i.value; pintar(); } };
+  caja.onclick = ev=>{
+    if (ev.target.closest("[data-sim-play]")){ if (anim) parar(); else { if (k == null) { k = 0; fase = 0; } reproducir(); } return; }
+    if (ev.target.closest("[data-sim-paso]")){ parar(); const r = rActual(); if (k == null){ k = 0; fase = 0; momento(r, 0); } else { avanzar(r); if (fase === 1) avanzar(r); } bPlay.textContent = k == null ? "↻ Repetir el reparto" : "▶ Seguir"; return; }
+    if (ev.target.closest("[data-sim-reset]")){ simVotos = null; simulador(sec, P); return; }
+    const m = ev.target.closest("[data-mas]"); if (m){ alReparto(); const c2 = m.dataset.mas, v = faltan(c2);
       if (v != null){ flip.innerHTML = `<span>${esc(c2)} necesita ${fmt(v - simVotos[c2])} votos más</span>`; flip.classList.remove("si"); void flip.offsetWidth; flip.classList.add("si"); setTimeout(()=>animar(c2, v), 500); } return; } };
-  caja.querySelector("[data-sim-prov]").addEventListener("change", ev=>{ simProv = ev.target.value; simVotos = null; simulador(sec, P); });
-  caja.querySelector("[data-sim-reset]").addEventListener("click", ()=>{ simVotos = null; simulador(sec, P); });
-  requestAnimationFrame(pintar);
+  caja.querySelector("[data-sim-prov]").addEventListener("change", ev=>{ simProv = ev.target.value; simVotos = null; simulador(sec, P, {explicar: true}); });
+  requestAnimationFrame(()=>{ pintar();
+    if (explicar && simVisto){ k = 0; fase = 0; reproducir(); }
+    else if (!simVisto && "IntersectionObserver" in window && !quieto){ enVista = new IntersectionObserver(es=>{ if (es.some(x=>x.isIntersecting)){ enVista.disconnect(); simVisto = true; k = 0; fase = 0; reproducir(); } }, {threshold:.4}); enVista.observe(barrasEl); } });
 }
 
 /* =====================================================================================================
