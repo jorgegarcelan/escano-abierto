@@ -15,6 +15,7 @@ const FUERA = {
   diputados: circ => `#provincia-${sl(circ)}`,
   elecciones: circ => `#elecciones-provincia-${sl(circ)}`,
   diputado: nombre => `#diputado-${sl(nombre)}`,
+  voto: "#elecciones-voto",   // la geografía del voto (geografiaDelVoto, más abajo), en la sección de elecciones
 };
 
 const CSS = `
@@ -128,6 +129,7 @@ svg.geo-linea{display:block;width:100%;height:auto;overflow:visible}
 .geo-indice button{appearance:none;font:500 12px var(--sans);color:var(--muted);background:none;border:1px solid var(--line);border-radius:var(--r-pill,999px);padding:3px 10px;cursor:pointer;white-space:nowrap}
 .geo-indice button:hover{color:var(--ink);border-color:var(--line-strong)}
 .geo-indice button[aria-current="step"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.geo-indice b{font-family:var(--mono);font-weight:600;margin-right:5px;opacity:.7}
 .geo-pasos{grid-column:1;grid-row:1;padding-bottom:30vh}
 .geo-paso{min-height:92vh;display:flex;align-items:center;padding-block:4vh}
 .geo-paso:first-child{min-height:70vh;align-items:flex-start;padding-top:6vh}
@@ -613,7 +615,8 @@ function irAMunicipio(el, ine){
 }
 
 /* =====================================================================================================
-   HISTORIA: los ejes de la España municipal, con un mapa fijo de los ocho mil municipios que cambia al bajar.
+   LA GEOGRAFÍA DEL VOTO: los ejes de la España municipal y cómo vota cada uno, con un mapa fijo de los ocho mil
+   municipios que cambia al bajar. Vive en la sección de elecciones (#elecciones-voto), que la importa de aquí.
    Cada eje agrupa los municipios (por tamaño, por cuánto se vacían, por edad, por renta…), cuenta cómo votan
    y, al pasar por un grupo, lo ilumina en el mapa. «Presentar» la recorre con el teclado, para un directo.
    ===================================================================================================== */
@@ -644,8 +647,11 @@ function resumen(lista){
   return r;
 }
 
-async function historia(el){
-  el.innerHTML = `<nav class="geo-migas" aria-label="Estás en"><a href="#geografia">Geografía</a></nav><p class="nota">Cargando los municipios…</p>`;
+export async function geografiaDelVoto(el, c){
+  ctx = c || {}; estilos();
+  el.innerHTML = `<p class="nota">Cargando los municipios…</p>`;
+  if (!T) await base();
+  if (!T){ el.innerHTML = `<p class="nota">No se han podido cargar los datos de geografía.</p>`; return; }
   const [M, V23, V19] = await Promise.all([pedir(RUTAS.datos + "municipios.json"), pedir(RUTAS.voto23), pedir(RUTAS.voto19)]);
   if (!M){ el.innerHTML = `<p class="nota">No se han podido cargar los municipios.</p>`; return; }
   const F = M.familias, ORD = M.orden;
@@ -766,13 +772,12 @@ async function historia(el){
     {id: "peso", n: "El peso del voto", k: "Eje 7 · El peso del voto", t: "Un voto, distinto peso", html: () => `
       <p>Los escaños no se reparten por municipios ni por territorio, sino por provincias. Cada una tiene dos fijos y el resto va por población.</p>
       <p>Por eso en ${esc(nombreP(ps[0].c))} un diputado representa a ${n(fmt(ps[0].h))} habitantes, y en ${esc(nombreP(ps[ps.length - 1].c))}, a ${n(fmt(ps[ps.length - 1].h))}: un voto de ${esc(nombreP(ps[0].c))} pesa ${dec(ps[ps.length - 1].h / ps[0].h, 1)} veces más.</p>`},
-    {id: "fichas", n: "Las fichas", k: "Y ahora, tu provincia", t: "Cada comunidad, cada provincia", html: () => `
-      <p>Detrás de cada punto hay un municipio con su ficha: pulsa cualquiera en el mapa. Y cada comunidad y cada provincia tiene la suya, con su evolución, sus datos frente a España y sus diputados.</p><p><a href="#geografia">Ver todas las comunidades y provincias →</a></p>`},
+    {id: "fichas", n: "Las fichas", k: "Y ahora, tu provincia", t: "Cada provincia, cada municipio", html: () => `
+      <p>Detrás de cada punto hay un municipio con su ficha: pulsa cualquiera en el mapa. Cada provincia tiene además su historia electoral desde 1977, y cada comunidad y provincia, su ficha geográfica.</p><p><a href="#elecciones-provincias">Las 52 circunscripciones →</a><br><a href="#geografia">La geografía de España, sin votos →</a></p>`},
   ];
   const caja = (p, i) => `<div class="geo-kicker">${esc(p.k)}</div><h3>${esc(p.t)}</h3>${p.html()}`;
 
-  el.innerHTML = `<nav class="geo-migas" aria-label="Estás en"><a href="#geografia">Geografía</a> <span>›</span> <span>La España que no sale en el mapa</span></nav>
-    <div class="view-intro"><div><div class="eyebrow">Geografía · ${fmt(N)} municipios</div><h2>La España que no sale en el mapa</h2><p>Siete ejes para entender España municipio a municipio: ciudad y campo, la España vacía, la edad, el dinero, las Españas que no salen en el mapa autonómico, el giro del voto y su peso. Baja, pasa el cursor por los gráficos o pulsa Presentar para recorrerla en directo.</p></div>
+  el.innerHTML = `<div class="geo-ctl" style="justify-content:space-between;margin-top:4px"><p class="nota" style="margin:0;max-width:70ch">Un mapa de los ${fmt(N)} municipios que se queda quieto mientras bajas. Pasa el cursor por los gráficos para iluminar cada grupo, o pulsa Presentar para recorrerlo en directo.</p>
       <button class="geo-pres-btn" data-presentar>Presentar ▶</button></div>
     <div class="geo-story"><div class="geo-pasos">${PASOS.map((p, i) => `<section class="geo-paso" data-paso="${i}" id="geo-paso-${i}"><div class="caja geo-caja">${caja(p, i)}</div></section>`).join("")}</div>
       <div class="geo-fijo"><nav class="geo-indice" aria-label="Ejes de la historia">${PASOS.map((p, i) => `<button data-ir-paso="${i}">${esc(p.n)}</button>`).join("")}</nav><canvas aria-label="Mapa de los municipios de España" role="img"></canvas><div class="pie" id="geo-pie"></div></div>
@@ -952,3 +957,141 @@ async function historia(el){
 }
 const modo = {paso: -1, cubo: null, tam: "mun", espana: "laponia"};
 const rgbDe = s => s.startsWith("#") ? hexRgb(s) : s.match(/\d+/g).slice(0, 3).map(Number);
+
+/* =====================================================================================================
+   HISTORIA: un mapa fijo de los ocho mil municipios que cambia mientras se baja
+   ===================================================================================================== */
+async function historia(el){
+  el.innerHTML = `<nav class="geo-migas" aria-label="Estás en"><a href="#geografia">Geografía</a></nav><p class="nota">Cargando los municipios…</p>`;
+  const M = await pedir(RUTAS.datos + "municipios.json");
+  if (!M){ el.innerHTML = `<p class="nota">No se han podido cargar los municipios.</p>`; return; }
+  const D = Object.entries(M.m).map(([c, r]) => ({c, n: r[0], x: r[1], y: r[2], km2: r[3] || 0, pob: r[4], pob0: r[5], renta: r[6], edad: r[7], may65: r[8], gana: r[9]}));
+  // Cifras de la historia, calculadas aquí con los mismos datos que se pintan.
+  const N = D.length, total = D.reduce((s, d) => s + d.pob, 0), kmTot = D.reduce((s, d) => s + d.km2, 0);
+  const porPob = D.slice().sort((a, b) => b.pob - a.pob);
+  let acum = 0, mitad = 0; for (const d of porPob){ acum += d.pob; mitad++; if (acum >= total / 2) break; }
+  const peq = D.filter(d => d.pob < 1000), muyPeq = D.filter(d => d.pob < 100);
+  const pobPeq = peq.reduce((s, d) => s + d.pob, 0), kmPeq = peq.reduce((s, d) => s + d.km2, 0);
+  const con0 = D.filter(d => d.pob0), pierden = con0.filter(d => d.pob < d.pob0), total0 = con0.reduce((s, d) => s + d.pob0, 0);
+  const pierdenKm = pierden.reduce((s, d) => s + d.km2, 0);
+  const conEdad = D.filter(d => d.may65 != null), tercio = conEdad.filter(d => d.may65 >= 100 / 3), mitadMay = conEdad.filter(d => d.may65 >= 50);
+  const conRenta = D.filter(d => d.renta != null && d.pob >= 1000).sort((a, b) => a.renta - b.renta);
+  const rMin = conRenta[0], rMax = conRenta[conRenta.length - 1];
+  const n = x => `<span class="num">${x}</span>`;
+  const PASOS = [
+    {n: "Un punto, un municipio", t: `${fmt(N)} municipios`, p: [`Cada punto es un municipio de España, colocado en su sitio. Vistos así, todos iguales, el país parece lleno: hay un pueblo en casi cada rincón.`, `Baja para ver qué pasa cuando cada punto pesa lo que pesa su gente.`]},
+    {n: "Dónde vive la gente", t: `La mitad de España vive en ${fmt(mitad)} municipios`, p: [`Ahora cada círculo tiene el tamaño de su población. Los ${n(fmt(mitad))} municipios más grandes —el ${pct(mitad / N)} del total— reúnen a la mitad de los ${millones(total)} de habitantes. La otra mitad se reparte entre los ${fmt(N - mitad)} restantes.`]},
+    {n: "Los pueblos pequeños", t: `${pct(peq.length / N, 0)} de los municipios no llegan a mil habitantes`, p: [`Son ${n(fmt(peq.length))}, en naranja. Ocupan el ${n(pct(kmPeq / kmTot, 0))} del territorio, pero ahí vive solo el ${n(pct(pobPeq / total))} de la gente.`, `${fmt(muyPeq.length)} de ellos no llegan ni a cien vecinos.`]},
+    {n: "Desde 1996", t: `${fmt(pierden.length)} municipios tienen menos gente que en ${M.anio0}`, p: [`En ${M.anio0} España tenía ${millones(total0)} de habitantes en estos municipios; hoy, ${millones(con0.reduce((s, d) => s + d.pob, 0))}. Pero el crecimiento no llegó a todas partes: en naranja, los que han perdido población (el ${pct(pierden.length / con0.length, 0)}), que suman el ${n(pct(pierdenKm / kmTot, 0))} del territorio. En azul, los que ganan, sobre todo en la costa, en las islas y alrededor de Madrid.`]},
+    {n: "Los mayores", t: `En ${fmt(tercio.length)} municipios, uno de cada tres vecinos tiene 65 años o más`, p: [`Cuanto más intenso el color, más mayores. En ${n(fmt(mitadMay.length))} municipios los de 65 o más ya son la mitad. El envejecimiento dibuja casi el mismo mapa que la pérdida de población: donde se van los jóvenes, quedan los mayores.`]},
+    {n: "La renta", t: `La renta, de ${fmt(rMin.renta)} a ${fmt(rMax.renta)} euros por persona`, p: [`Entre los municipios de más de mil habitantes, la renta neta media va de los ${fmt(rMin.renta)} € de ${esc(rMin.n)} (${esc(nombreP(rMin.c.slice(0, 2)))}) a los ${fmt(rMax.renta)} € de ${esc(rMax.n)} (${esc(nombreP(rMax.c.slice(0, 2)))}). La media de España, ponderada por población, es de ${fmt(T.espana.renta)} €.`, `Se nota una línea norte-sur, y el empuje de las grandes ciudades.`]},
+    {n: "Las fichas", t: `Cada comunidad, cada provincia`, p: [`Detrás de cada punto hay un municipio con su ficha: pulsa cualquiera en el mapa. Y cada comunidad y cada provincia tiene la suya, con su evolución y sus datos frente a España.`, `<a href="#geografia">Ver todas las comunidades y provincias →</a>${FUERA.voto ? `<br><a href="${FUERA.voto}">Y cómo vota cada una: la geografía del voto →</a>` : ""}`]},
+  ];
+  el.innerHTML = `<nav class="geo-migas" aria-label="Estás en"><a href="#geografia">Geografía</a> <span>›</span> <span>La España que no sale en el mapa</span></nav>
+    <div class="view-intro"><div><div class="eyebrow">Geografía · historia</div><h2>La España que no sale en el mapa</h2><p>Un mapa de los ${fmt(N)} municipios que se queda quieto mientras bajas. Datos del INE: padrón de ${M.anio} y Atlas de renta (${T.fuentes.renta}).</p></div></div>
+    <div class="geo-story"><div class="geo-pasos">${PASOS.map((p, i) => `<div class="geo-paso" data-paso="${i}" id="geo-paso-${i}"><div class="caja geo-caja"><div class="geo-kicker">${i + 1} de ${PASOS.length} · ${esc(p.n)}</div><h3>${p.t}</h3>${p.p.map(x => `<p>${x}</p>`).join("")}</div></div>`).join("")}</div>
+      <div class="geo-fijo"><nav class="geo-indice" aria-label="Pasos de la historia">${PASOS.map((p, i) => `<button data-ir-paso="${i}"><b>${i + 1}</b>${esc(p.n)}</button>`).join("")}</nav><canvas aria-label="Mapa de los municipios de España" role="img"></canvas><div class="pie" id="geo-pie"></div></div></div>
+    ${fuentes()}`;
+
+  // ---------- el lienzo ----------
+  const canvas = el.querySelector("canvas"), g = canvas.getContext("2d"), pie = el.querySelector("#geo-pie");
+  const W0 = GP.ancho, H0 = GP.alto, provincias = Object.values(GP.provincias).map(p => new Path2D(p.d)), recuadro = new Path2D(GP.canarias);
+  const tinta = () => hexRgb(cssVar("--muted", "#5C6069")), linea = () => cssVar("--line", "#DCDDD8");
+  const naranja = hexRgb(TONO.calido), azul = hexRgb(TONO.neutro);
+  const rPob = d => Math.max(.5, Math.sqrt(d.pob) * .025);
+  const rgbDe = s => s.startsWith("#") ? hexRgb(s) : s.match(/\d+/g).slice(0, 3).map(Number);
+  const rampaRgb = hex => { const f = rampa(hex); return t => rgbDe(f(t)); };
+  const rEdad = rampaRgb(TONO.edad), rRenta = rampaRgb(TONO.renta);
+  const rentas = conRenta.map(d => d.renta), q = p => rentas[Math.floor(p * (rentas.length - 1))], r05 = q(.05), r95 = q(.95);
+  const gris = () => hexRgb(cssVar("--line-strong", "#82868E"));
+  // Estado de cada paso: radio, color y opacidad de cada punto, y la leyenda del pie.
+  const ESTADOS = [
+    () => ({r: () => 1.7, c: () => tinta(), a: () => .75, pie: `<div class="geo-ley"><span><i style="background:var(--muted)"></i>Un municipio</span></div>`}),
+    () => ({r: rPob, c: () => azul, a: () => .5, pie: `<div class="geo-ley"><span>Círculos del tamaño de la población: el mayor, Madrid (${millones(porPob[0].pob)})</span></div>`}),
+    () => ({r: d => d.pob < 1000 ? 2 : 1.3, c: d => d.pob < 1000 ? naranja : gris(), a: d => d.pob < 1000 ? .85 : .35,
+      pie: `<div class="geo-ley"><span><i style="background:${TONO.calido}"></i>Menos de 1.000 habitantes</span><span><i style="background:var(--line-strong)"></i>El resto</span></div>`}),
+    () => ({r: () => 1.9, c: d => d.pob0 ? rgbDe(divergente(Math.max(-1, Math.min(1, (d.pob / d.pob0 - 1) / .5)))) : gris(), a: () => .9,
+      pie: `<div class="geo-rampa"><span>−50 % o más</span><span class="r" style="background:linear-gradient(90deg,${divergente(-1)},${divergente(0)},${divergente(1)})"></span><span>+50 % o más desde ${M.anio0}</span></div>`}),
+    () => ({r: () => 1.9, c: d => d.may65 == null ? gris() : rEdad((d.may65 - 10) / 40), a: d => d.may65 == null ? .25 : .9,
+      pie: `<div class="geo-rampa"><span>10 % o menos</span><span class="r" style="background:linear-gradient(90deg,${rampa(TONO.edad)(0)},${rampa(TONO.edad)(1)})"></span><span>50 % o más de mayores de 65</span><span>· gris: sin dato</span></div>`}),
+    () => ({r: () => 1.9, c: d => d.renta == null ? gris() : rRenta((d.renta - r05) / (r95 - r05)), a: d => d.renta == null ? .25 : .9,
+      pie: `<div class="geo-rampa"><span>${fmt(r05)} €</span><span class="r" style="background:linear-gradient(90deg,${rampa(TONO.renta)(0)},${rampa(TONO.renta)(1)})"></span><span>${fmt(r95)} € por persona</span><span>· gris: sin dato</span></div>`}),
+    () => ({r: rPob, c: () => azul, a: () => .5, pie: ""}),
+  ];
+  // Orden de dibujo: de mayor a menor, para que los pequeños queden encima.
+  const orden = D.map((d, i) => i).sort((a, b) => D[b].pob - D[a].pob);
+  const cur = D.map(() => ({r: 1.7, c: [128, 128, 128], a: .75})), desde = cur.map(x => ({...x})), hacia = cur.map(x => ({...x}));
+  let paso = -1, anim = null, k = 1, ox = 0, oy = 0, dpr = 1;
+  const medir = () => {
+    const r = canvas.getBoundingClientRect(); dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    k = Math.min(r.width / W0, r.height / H0); ox = (r.width - W0 * k) / 2; oy = (r.height - H0 * k) / 2;
+  };
+  const dibujar = () => {
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, canvas.width, canvas.height);
+    g.save(); g.translate(ox, oy); g.scale(k, k);
+    g.strokeStyle = linea(); g.lineWidth = .7 / k * 1.2;
+    provincias.forEach(p => g.stroke(p)); g.stroke(recuadro);
+    const esc2 = Math.max(.75, Math.min(1.4, 1 / (k * 1.3)));   // en pantallas pequeñas los puntos no encogen tanto
+    for (const i of orden){
+      const s = cur[i]; if (s.a <= 0.01) continue;
+      g.globalAlpha = s.a; g.fillStyle = `rgb(${s.c[0]},${s.c[1]},${s.c[2]})`;
+      g.beginPath(); g.arc(D[i].x, D[i].y, Math.max(.45, s.r * (s.r > 3 ? 1 : esc2)), 0, Math.PI * 2); g.fill();
+    }
+    g.restore(); g.globalAlpha = 1;
+  };
+  const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ir = j => {
+    if (j === paso) return; paso = j;
+    el.querySelectorAll(".geo-paso").forEach(p => p.classList.toggle("activo", +p.dataset.paso === j));
+    el.querySelectorAll("[data-ir-paso]").forEach(b => { const si = +b.dataset.irPaso === j; if (si){ b.setAttribute("aria-current", "step"); const nav = b.parentNode; if (b.offsetLeft < nav.scrollLeft || b.offsetLeft + b.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollLeft = b.offsetLeft - 8; } else b.removeAttribute("aria-current"); });
+    const E = ESTADOS[j]();
+    D.forEach((d, i) => { desde[i] = {...cur[i], c: [...cur[i].c]}; hacia[i] = {r: E.r(d), c: E.c(d), a: E.a(d)}; });
+    pie.innerHTML = E.pie;
+    if (anim) cancelAnimationFrame(anim);
+    const t0 = performance.now(), dur = reducido ? 1 : 900, ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const frame = ahora => {
+      const t = ease(Math.min(1, (ahora - t0) / dur));
+      for (let i = 0; i < D.length; i++){
+        const a = desde[i], b = hacia[i], s = cur[i];
+        s.r = a.r + (b.r - a.r) * t; s.a = a.a + (b.a - a.a) * t;
+        s.c = [0, 1, 2].map(q => Math.round(a.c[q] + (b.c[q] - a.c[q]) * t));
+      }
+      dibujar();
+      if (t < 1) anim = requestAnimationFrame(frame);
+    };
+    anim = requestAnimationFrame(frame);
+  };
+  medir();
+  const ro = new ResizeObserver(() => { medir(); dibujar(); }); ro.observe(canvas);
+  const io = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) ir(+e.target.dataset.paso); }); }, {rootMargin: "-45% 0px -45% 0px"});
+  el.querySelectorAll(".geo-paso").forEach(p => io.observe(p));
+  // El índice lleva a cada paso: su tarjeta, a media pantalla.
+  el.querySelector(".geo-indice").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-ir-paso]"); if (!b) return;
+    const caja = el.querySelector(`#geo-paso-${b.dataset.irPaso} .caja`), r = caja.getBoundingClientRect();
+    window.scrollTo({top: scrollY + r.top - (innerHeight - r.height) / 2, behavior: reducido ? "auto" : "smooth"});
+  });
+  // Si se sale de la historia, se dejan de vigilar los pasos.
+  const limpiar = new MutationObserver(() => { if (!el.contains(canvas)){ io.disconnect(); ro.disconnect(); limpiar.disconnect(); } });
+  limpiar.observe(el, {childList: true});
+  ir(0);
+  // Tooltip y clic: el municipio más cercano al puntero.
+  const cercano = ev => {
+    const r = canvas.getBoundingClientRect(), mx = (ev.clientX - r.left - ox) / k, my = (ev.clientY - r.top - oy) / k;
+    let mejor = -1, dm = Infinity;
+    for (let i = 0; i < D.length; i++){
+      if (cur[i].a < .3) continue;
+      const dx = D[i].x - mx, dy = D[i].y - my, d2 = dx * dx + dy * dy, lim = Math.max(cur[i].r, 5 / k);
+      if (d2 < lim * lim && d2 - cur[i].r * cur[i].r < dm){ dm = d2 - cur[i].r * cur[i].r; mejor = i; }
+    }
+    return mejor;
+  };
+  canvas.addEventListener("mousemove", ev => {
+    const i = cercano(ev); if (i < 0){ tip(""); return; }
+    const d = D[i];
+    tip(`<b>${esc(d.n)}</b> <small>${esc(nombreP(d.c.slice(0, 2)))}</small><br>${fmt(d.pob)} habitantes${d.pob0 ? ` (${signo(d.pob / d.pob0 - 1, 0)} desde ${M.anio0})` : ""}${d.may65 != null ? `<br>${dec(d.may65, 0)} % mayores de 65` : ""}${d.renta != null ? ` · ${fmt(d.renta)} € por persona` : ""}<br><small>Pulsa para ver su ficha</small>`, ev);
+  });
+  canvas.addEventListener("mouseleave", () => tip(""));
+  canvas.addEventListener("click", ev => { const i = cercano(ev); if (i >= 0) location.hash = `geografia-municipio-${D[i].c}`; });
+}
