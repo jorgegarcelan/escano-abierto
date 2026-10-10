@@ -247,3 +247,20 @@ def test_viajes_de_las_leyes():
     assert elecciones._fechas_etapas(tomada) == ["2024-02-27", "", "", "", ""]
     v = elecciones.viajes({"iniciativas": [ley, tomada]})
     assert [(x[0], x[8], x[9]) for x in v["leyes"]] == [("121/000001", "aprobada", "2024-09-10"), ("122/000001", "caduca", "2026-10-06")]
+
+
+def test_decretos_leyes_y_su_convalidacion():
+    leyes = {"aprobadas": [
+        {"tipo": "Real decreto-ley", "numero": "1/2026", "titulo": "Real Decreto-ley 1/2026, de 2 de enero, de prueba.", "fecha": "2026-01-03"},
+        {"tipo": "Real decreto-ley", "numero": "2/2026", "titulo": "Real Decreto-ley 2/2026, de 3 de febrero, de prueba.", "fecha": "2026-02-04"},
+        {"tipo": "Real decreto-ley", "numero": "3/2026", "titulo": "Real Decreto-ley 3/2026, de 29 de septiembre, de prueba.", "fecha": "2026-09-29"},
+        {"tipo": "Real decreto-ley", "numero": "", "titulo": "Resolución de convalidación del Real Decreto-ley 1/2026.", "fecha": "2026-01-30"}]}
+    votos = [
+        {"id": "1-1", "fecha": "2026-01-29", "tipo": "Convalidación o derogación de Reales Decretos-leyes", "titulo": "Real Decreto-ley 1/2026, de 2 de enero", "si": "180", "no": "170", "abst": "0", "aprobada": "True"},
+        {"id": "1-2", "fecha": "2026-01-29", "tipo": "Convalidación o derogación de Reales Decretos-leyes", "titulo": "Tramitación como proyecto de ley del Real Decreto-ley 1/2026", "si": "300", "no": "0", "abst": "50", "aprobada": "True"},
+        {"id": "2-1", "fecha": "2026-02-26", "tipo": "Convalidación o derogación de Reales Decretos-leyes", "titulo": "Real Decreto-ley 2/2026, de 3 de febrero", "si": "172", "no": "177", "abst": "0", "aprobada": "False"}]
+    d = {x["numero"]: x for x in elecciones.decretos(leyes, votos)}
+    assert list(d) == ["1/2026", "2/2026", "3/2026"]
+    assert (d["1/2026"]["estado"], d["1/2026"]["voto"]["si"], d["1/2026"]["proyecto"]) == ("convalidado", 180, True)
+    assert (d["2/2026"]["estado"], d["2/2026"]["proyecto"]) == ("derogado", None)
+    assert d["3/2026"]["estado"] == "pendiente" and d["3/2026"]["voto"] is None

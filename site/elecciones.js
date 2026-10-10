@@ -122,6 +122,25 @@ const CSS = `
 .el-barras .b{height:12px;background:var(--sunk);border-radius:2px;overflow:hidden}
 .el-barras .b i{display:block;height:100%;border-radius:0 4px 4px 0}
 .el-barras .v{font:12px var(--mono);color:var(--muted);text-align:right}
+.el-rdl-svg{display:block;width:100%;height:auto;overflow:visible}
+.el-rdl-svg .franja{fill:color-mix(in srgb,#E0A410 10%,transparent)}
+.el-rdl-svg .eje{stroke:var(--line);stroke-width:1}
+.el-rdl-svg .cero{stroke:var(--line-strong);stroke-width:1.5}
+.el-rdl-svg text{font:11px var(--mono);fill:var(--muted)}
+.el-rdl-svg .rot{font:600 11px var(--sans)}
+.el-rdl-svg circle{stroke:var(--surface);stroke-width:1.5;cursor:pointer;fill-opacity:.9}
+.el-rdl-svg circle:hover{stroke:var(--ink);stroke-width:2}
+.el-rdl-svg circle.pendiente{stroke:#E0A410;stroke-width:2;stroke-dasharray:3 2;animation:el-pend 1.6s ease-in-out infinite}
+@keyframes el-pend{50%{stroke-opacity:.35}}
+@media (prefers-reduced-motion:reduce){.el-rdl-svg circle.pendiente{animation:none}}
+.el-tip{position:fixed;z-index:65;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.18);padding:8px 10px;font-size:12.5px;line-height:1.4;max-width:320px}
+.el-tip[hidden]{display:none}
+.el-rdl-pend{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.el-rdl-card{display:grid;gap:6px;align-content:start;text-decoration:none;color:var(--ink);border:1px dashed #E0A410;border-radius:10px;padding:12px 14px;background:var(--surface)}
+.el-rdl-card:hover{border-style:solid;text-decoration:none}
+.el-rdl-card .n{font:600 11px var(--mono);color:#E0A410;letter-spacing:.03em}
+.el-rdl-card .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.el-rdl-card .f{font-size:12px;color:var(--muted)}
 .el-350{position:relative;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);box-shadow:var(--sombra);overflow:hidden}
 .el-350 svg{display:block;width:100%;max-width:min(900px,calc(78vh * 1000 / 820));height:auto;margin:0 auto;touch-action:manipulation}
 .el-350 .prov{fill:var(--sunk);stroke:var(--line-strong);stroke-width:.6;transition:opacity .6s}
@@ -271,7 +290,7 @@ export async function render(el, c, sub){
     cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${bloque350()}</section><section class="sec" id="el-reparto"><p class="nota">Cargando…</p></section>`;
     montar350(cuerpo.querySelector(".el-350"));
     import("./elecciones-historico.js").then(m=>m.pintarReparto(cuerpo.querySelector("#el-reparto"), ctx));
-  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo);
+  } else if (sub === "caducan"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${caducan()}</section>${convalidar()}`; montarCaducan(cuerpo); montarDecretos(cuerpo);
     import("./elecciones-viajes.js").then(m=>m.montarViajes(cuerpo, ctx, COLOR_ORIGEN)).catch(err=>console.error(err)); }
   else if (sub === "legislatura"){ cuerpo.innerHTML = `<section class="sec" style="padding-top:8px">${balance()}</section>`; }
   else if (sub === "repite"){ cuerpo.innerHTML = `<section class="sec" id="el-repite" style="padding-top:8px"><p class="nota">Cargando…</p></section>`; pintarRepite(cuerpo.querySelector("#el-repite")); }
@@ -630,10 +649,58 @@ function montarWaffle(){ /* los cuadrados usan los manejadores comunes de la web
 
 /* ---------- decretos-leyes pendientes ---------- */
 function convalidar(){
-  const {esc} = ctx, L = DATOS.convalidar || [];
-  if (!L.length) return "";
-  return `<section class="sec" id="el-convalidar"><div class="sec-h"><h2>Lo que no caduca: los decretos-leyes</h2><p>Un real decreto-ley rige desde que se publica, pero el Congreso tiene que convalidarlo en 30 días hábiles. Con las Cortes disueltas, lo vota la Diputación Permanente.</p></div>
-    <div class="chart"><ul class="el-lista">${L.map(r=>`<li><a class="t" href="${esc(r.pdf)}" target="_blank" rel="noopener">${esc(r.titulo)}</a><span class="m">BOE ${esc(ctx.fechaCorta(r.fecha))}</span></li>`).join("")}</ul></div></section>`;
+  const {esc} = ctx, D = DATOS.decretos || [], P = DATOS.convalidar || [];
+  if (!D.length && !P.length) return "";
+  const n = e => D.filter(d=>d.estado===e).length, proyecto = D.filter(d=>d.proyecto).length;
+  const justos = D.filter(d=>d.voto && Math.abs(d.voto.si - d.voto.no) <= 10);
+  return `<section class="sec" id="el-convalidar"><div class="sec-h"><h2>Lo que no caduca: los decretos-leyes</h2><p>Un real decreto-ley rige desde que el Gobierno lo publica, pero el Congreso tiene que convalidarlo en 30 días hábiles o queda derogado. La disolución no los toca: los pendientes los vota la Diputación Permanente.</p></div>
+    <div class="kpis"><div class="kpi"><b>${D.length}</b><span>decretos-leyes en la legislatura</span></div>
+      <div class="kpi"><b>${n("convalidado")}</b><span>convalidados</span></div><div class="kpi alert"><b>${n("derogado")}</b><span>derogados por el Congreso</span></div>
+      <div class="kpi"><b>${n("pendiente")}</b><span>pendientes, para la Diputación Permanente</span></div><div class="kpi"><b>${proyecto}</b><span>tramitados además como proyecto de ley</span></div></div>
+    <div class="chart"><h3>Por cuánto se salvó cada uno</h3><p class="sub">Cada punto es un decreto-ley, en la fecha en que se publicó. Cuanto más arriba, más votos de ventaja tuvo su convalidación; por debajo de la raya, los derogados. ${justos.length} se decidieron por 10 votos o menos (la franja). Pasa por un punto para ver cuál es; púlsalo para ver su votación.</p>
+      <div id="el-rdl"></div>
+      <div class="el-leyenda"><span><i style="background:var(--si)"></i>Convalidado</span><span><i style="background:var(--no)"></i>Derogado</span><span><i style="background:transparent;border:2px dashed #E0A410;box-sizing:border-box"></i>Pendiente</span></div></div>
+    ${P.length ? `<div class="chart"><h3>Los ${P.length === 1 ? "pendiente" : P.length + " pendientes"}</h3><p class="sub">Publicados poco antes de la disolución y aún sin votar. Los convalidará o derogará la Diputación Permanente, que sigue en funciones hasta que se constituyan las nuevas Cortes.</p>
+      <div class="el-rdl-pend">${P.map(r=>`<a class="el-rdl-card" href="${esc(r.pdf)}" target="_blank" rel="noopener"><span class="n">RDL ${esc(r.numero)} · BOE ${esc(ctx.fechaCorta(r.fecha))}</span><span class="t">${esc(r.titulo.replace(/^Real Decreto-ley \d+\/\d{4}, de \d+ de \w+, /, "").replace(/^./, c=>c.toUpperCase()))}</span><span class="f">Plazo para votarlo: hasta el ${esc(ctx.fechaCorta(r.limite_aprox))} aprox.</span></a>`).join("")}</div></div>` : ""}</section>`;
+}
+// El gráfico de márgenes: x, la fecha de publicación; y, sí menos no (escala de raíz para que se lean los ajustados).
+function montarDecretos(raiz){
+  const caja = raiz.querySelector("#el-rdl"), D = DATOS.decretos || []; if (!caja || !D.length) return;
+  const {esc} = ctx, W = Math.max(320, caja.clientWidth || 800), H = W < 600 ? 260 : 320, m = {l:44, r:14, t:14, b:26};
+  const dia = iso => Date.parse(iso)/864e5, x0 = dia("2023-08-17"), x1 = dia(DATOS.convocatoria || "2026-10-06") + 20;
+  const marg = d => d.voto ? d.voto.si - d.voto.no : 0, raiz2 = v => Math.sign(v)*Math.sqrt(Math.abs(v));
+  const vs = D.map(marg), lo = Math.min(-30, ...vs), hi = Math.max(30, ...vs);
+  const X = iso => m.l + (dia(iso) - x0)/(x1 - x0)*(W - m.l - m.r), Y = v => m.t + (raiz2(hi) - raiz2(v))/(raiz2(hi) - raiz2(lo))*(H - m.t - m.b);
+  const ticks = [-20, -10, 0, 10, 50, 100, 200, 300].filter(v=>v >= lo && v <= hi);
+  const anios = [2024, 2025, 2026].map(a=>`${a}-01-01`);
+  const color = d => d.estado === "convalidado" ? "var(--si)" : d.estado === "derogado" ? "var(--no)" : "transparent";
+  // Los pendientes, juntos en su fecha: se apilan un poco para que se vean los tres.
+  let kp = 0;
+  caja.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="el-rdl-svg" role="img" aria-label="Margen de la votación de cada decreto-ley">
+    <rect x="${m.l}" y="${Y(10)}" width="${W - m.l - m.r}" height="${Y(-10) - Y(10)}" class="franja"/>
+    ${ticks.map(v=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="${v === 0 ? "cero" : "eje"}"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v > 0 ? "+" + v : v}</text>`).join("")}
+    ${anios.map(a=>`<line x1="${X(a)}" x2="${X(a)}" y1="${m.t}" y2="${H - m.b}" class="eje"/><text x="${X(a)}" y="${H - 8}" text-anchor="middle">${a.slice(0,4)}</text>`).join("")}
+    <text x="${m.l + 6}" y="${Y(0) - 6}" class="rot">convalidados ↑</text><text x="${m.l + 6}" y="${Y(0) + 14}" class="rot">derogados ↓</text>
+    ${D.map((d,i)=>{ const cy = d.estado === "pendiente" ? Y(0) - 14 + 14*(kp++) : Y(marg(d)), cx = X(d.fecha);
+      return `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${W < 600 ? 5 : 6.5}" fill="${color(d)}" class="${d.estado}" data-rdl="${i}"/>`; }).join("")}
+  </svg>`;
+  const svg = caja.querySelector("svg");
+  const tipRdl = d => `<b>Real Decreto-ley ${esc(d.numero)}</b> · BOE ${esc(ctx.fechaCorta(d.fecha))}<br>${esc(d.titulo.replace(/^Real Decreto-ley \d+\/\d{4}, de \d+ de \w+, /, "").slice(0, 160))}${d.titulo.length > 200 ? "…" : ""}<br>`
+    + (d.voto ? `<b>${d.estado === "convalidado" ? "Convalidado" : "Derogado"}</b> el ${esc(ctx.fechaCorta(d.voto.fecha))}: ${d.voto.si} sí, ${d.voto.no} no, ${d.voto.abst} abst. (${marg(d) > 0 ? "+" : ""}${marg(d)})${d.proyecto ? "<br>Se tramitó además como proyecto de ley" : ""}<br><i>Pulsa para ver la votación</i>` : `<b>Pendiente</b>: lo votará la Diputación Permanente`);
+  svg.addEventListener("mousemove", ev=>{ const c = ev.target.closest("[data-rdl]"); if (!c){ tipEl(""); return; } tipEl(tipRdl(D[+c.dataset.rdl]), ev); });
+  svg.addEventListener("mouseleave", ()=>tipEl(""));
+  svg.addEventListener("click", ev=>{ const c = ev.target.closest("[data-rdl]"); if (!c) return; const d = D[+c.dataset.rdl];
+    if (d.voto?.id) location.hash = "votacion-" + d.voto.id; else if (d.pdf) window.open(d.pdf, "_blank", "noopener"); });
+}
+// Tooltip propio (como el de la portada): la web usa data-tip en el HTML, aquí va dibujado en SVG.
+let tipCaja = null;
+function tipEl(html, ev){
+  if (!tipCaja){ tipCaja = document.createElement("div"); tipCaja.className = "el-tip"; document.body.appendChild(tipCaja); }
+  if (!html){ tipCaja.hidden = true; return; }
+  tipCaja.innerHTML = html; tipCaja.hidden = false;
+  const w = tipCaja.offsetWidth, h = tipCaja.offsetHeight, vw = document.documentElement.clientWidth;
+  let x = ev.clientX + 14, y = ev.clientY + 14; if (x + w > vw - 8) x = ev.clientX - w - 14; if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tipCaja.style.left = Math.max(8, x) + "px"; tipCaja.style.top = Math.max(8, y) + "px";
 }
 
 /* ---------- la legislatura en cifras ---------- */

@@ -169,6 +169,35 @@ def pendientes_de_convalidar(leyes: dict, votaciones: list[dict], hoy: date | No
     return out
 
 
+def decretos(leyes: dict, votaciones: list[dict], hoy: date | None = None) -> list[dict]:
+    """Cada real decreto-ley de la legislatura con su votación de convalidación (o derogación) y, si la hubo, la de
+    tramitarlo como proyecto de ley. Los que aún no se han votado van como «pendiente»."""
+    import re
+    rdl = lambda t: (re.search(r"Real Decreto-ley\s+(\d+/\d{4})", t or "") or [None, None])[1]
+    conv, tram = {}, {}
+    for v in sorted(votaciones, key=lambda v: (v["fecha"], v.get("id", ""))):
+        if not v.get("tipo", "").startswith("Convalidación"):
+            continue
+        n = rdl(v.get("titulo", "")) or rdl(v.get("texto", ""))
+        if not n:
+            continue
+        num = lambda k: int(v.get(k) or 0)
+        voto = {"id": v.get("id"), "fecha": v["fecha"], "si": num("si"), "no": num("no"), "abst": num("abst"),
+                "aprobada": str(v.get("aprobada")) == "True"}
+        (tram if v.get("titulo", "").startswith("Tramitación") else conv)[n] = voto
+    hoy = hoy or date.today()
+    out = []
+    for a in leyes.get("aprobadas", []):
+        if not _es_rdl(a) or not a.get("fecha"):
+            continue
+        n = a.get("numero") or rdl(a["titulo"])
+        c, t = conv.get(n), tram.get(n)
+        estado = ("convalidado" if c["aprobada"] else "derogado") if c else "pendiente"
+        out.append({"numero": n, "titulo": a["titulo"], "fecha": a["fecha"], "pdf": a.get("pdf", ""), "estado": estado,
+                    "voto": c, "proyecto": t["aprobada"] if t else None, "voto_proyecto": t})
+    return sorted(out, key=lambda d: (d["fecha"], int(d["numero"].split("/")[0]) if d["numero"] else 0))
+
+
 def _es_rdl(a: dict) -> bool:
     """El texto de un real decreto-ley (no las resoluciones que publican su convalidación o derogación)."""
     return a["tipo"] == "Real decreto-ley" and a["titulo"].startswith("Real Decreto-ley")
@@ -214,6 +243,7 @@ def escribir(salida: dict, carpeta=None) -> None:
         "escanos_cambian": escanos_cambian(),
         "caducan": caducan(leyes),
         "convalidar": pendientes_de_convalidar(leyes, salida["datos"]["votaciones"]),
+        "decretos": decretos(leyes, salida["datos"]["votaciones"]),
         "balance": balance(salida),
         # Qué piezas que llegan más tarde ya están (la web no pide lo que no existe).
         "hay": {n: (CARPETA / f"{n}.json").exists() for n in ("candidaturas", "promesas", "resultados")},
