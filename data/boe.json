@@ -1,4 +1,4 @@
-{"hasta": "2026-10-06",
+{"hasta": "2026-10-10",
 "eventos": [
 {"boe": "BOE-A-2018-7400", "fecha": "2018-06-02", "disposicion": "Real Decreto 354/2018", "departamento": "Jefatura del Estado", "tipo": "nombramiento", "cargo": "Presidente del Gobierno", "persona": "Pedro Sánchez Pérez-Castejón", "genero": "m"},
 {"boe": "BOE-A-2018-7402", "fecha": "2018-06-02", "disposicion": "Real Decreto 353/2018", "departamento": "Presidencia del Gobierno", "tipo": "cese", "cargo": "Presidente del Gobierno", "persona": "Mariano Rajoy Brey", "genero": "m"},
@@ -3954,7 +3954,8 @@
 {"boe": "BOE-A-2026-20294", "fecha": "2026-09-30", "disposicion": "Real Decreto 788/2026", "departamento": "Ministerio de Asuntos Exteriores, Unión Europea y Cooperación", "tipo": "nombramiento", "cargo": "Embajador de España en la República de Sudán del Sur", "persona": "Daniel Losada Millar", "genero": "m"},
 {"boe": "BOE-A-2026-20303", "fecha": "2026-09-30", "disposicion": "Real Decreto 792/2026", "departamento": "Ministerio de Transportes y Movilidad Sostenible", "tipo": "cese", "cargo": "Director General de Carreteras", "persona": "Juan Pedro Fernández Palomino", "genero": "m"},
 {"boe": "BOE-A-2026-20304", "fecha": "2026-09-30", "disposicion": "Real Decreto 793/2026", "departamento": "Ministerio de Transportes y Movilidad Sostenible", "tipo": "nombramiento", "cargo": "Director General de Carreteras", "persona": "Guillermo Llopis Serrano", "genero": "m"},
-{"boe": "BOE-A-2026-20305", "fecha": "2026-09-30", "disposicion": "Real Decreto 794/2026", "departamento": "Ministerio de Trabajo y Economía Social", "tipo": "cese", "cargo": "Subsecretario de Trabajo y Economía Social", "persona": "José Ramón del Prado Cortés", "genero": "m"}
+{"boe": "BOE-A-2026-20305", "fecha": "2026-09-30", "disposicion": "Real Decreto 794/2026", "departamento": "Ministerio de Trabajo y Economía Social", "tipo": "cese", "cargo": "Subsecretario de Trabajo y Economía Social", "persona": "José Ramón del Prado Cortés", "genero": "m"},
+{"boe": "BOE-A-2026-20829", "fecha": "2026-10-07", "disposicion": "Orden ITU/1055/2026", "departamento": "Ministerio de Industria y Turismo", "tipo": "nombramiento", "cargo": "Directora del Gabinete de la Secretaria de Estado de Turismo", "persona": "Raquel Santos Lacueva", "genero": "f"}
 ],
 "sin_leer": [
 {"boe": "BOE-A-2018-7918", "fecha": "2018-06-13", "titulo": "Real Decreto 412/2018, de 8 de junio, por el que se dispone el cese por renuncia al cargo de Vocal del Consejo General del Poder Judicial de don Fernando Grande-Marlaska Gómez."},

@@ -3523,6 +3523,10 @@
 "sanciones",
 "exteriores"
 ],
+"bloqueo institucional": [
+"bloqueo institucional",
+"democracia"
+],
 "bloqueo judicial": [
 "CGPJ",
 "justicia"
@@ -8439,6 +8443,10 @@
 "democracia",
 "democracia"
 ],
+"democratización de la justicia": [
+"democratización de la justicia",
+"justicia"
+],
 "democratización deportiva": [
 "deporte",
 "cultura"
@@ -8689,6 +8697,10 @@
 ],
 "derecho civil catalán": [
 "Cataluña",
+"justicia"
+],
+"derecho civil gallego": [
+"derecho civil gallego",
 "justicia"
 ],
 "derecho civil valenciano": [
@@ -10022,6 +10034,10 @@
 "drogas": [
 "adicciones",
 "sanidad"
+],
+"drogas al volante": [
+"seguridad vial",
+"seguridad"
 ],
 "drogas y alcohol": [
 "adicciones",
@@ -11670,6 +11686,10 @@
 "estado de las autonomías": [
 "comunidades autónomas",
 "territorial"
+],
+"estado de las carreteras": [
+"carreteras",
+"transporte"
 ],
 "estado del bienestar": [
 "estado del bienestar",
@@ -16517,6 +16537,10 @@
 ],
 "justicia de menores": [
 "justicia de menores",
+"justicia"
+],
+"justicia en cataluña": [
+"justicia en cataluña",
 "justicia"
 ],
 "justicia especializada": [
@@ -26535,6 +26559,10 @@
 "sindicatos",
 "empleo"
 ],
+"sindicato de inquilinas": [
+"sindicato de inquilinas",
+"vivienda"
+],
 "sindicatos": [
 "sindicatos",
 "empleo"
@@ -27717,6 +27745,10 @@
 ],
 "territorios extrapeninsulares": [
 "insularidad",
+"territorial"
+],
+"territorios frontera": [
+"fronteras",
 "territorial"
 ],
 "territorios no peninsulares": [

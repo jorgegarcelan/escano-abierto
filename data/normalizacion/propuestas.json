@@ -1229,7 +1229,7 @@
 }
 ],
 "tema": "campo",
-"total": 385,
+"total": 386,
 "total_sintesis": 356
 },
 "campo|PSOE": {
@@ -4433,7 +4433,7 @@
 }
 ],
 "tema": "cultura",
-"total": 83,
+"total": 84,
 "total_sintesis": 83
 },
 "cultura|PNV": {
@@ -7352,7 +7352,7 @@
 }
 ],
 "tema": "democracia",
-"total": 130,
+"total": 131,
 "total_sintesis": 127
 },
 "democracia|GOB": {
@@ -8291,7 +8291,7 @@
 }
 ],
 "tema": "democracia",
-"total": 303,
+"total": 304,
 "total_sintesis": 297
 },
 "democracia|PSOE": {
@@ -9248,7 +9248,7 @@
 }
 ],
 "tema": "educacion",
-"total": 78,
+"total": 79,
 "total_sintesis": 72
 },
 "educacion|GOB": {
@@ -9665,7 +9665,7 @@
 }
 ],
 "tema": "educacion",
-"total": 114,
+"total": 116,
 "total_sintesis": 114
 },
 "educacion|PNV": {
@@ -9854,7 +9854,7 @@
 }
 ],
 "tema": "educacion",
-"total": 49,
+"total": 50,
 "total_sintesis": 49
 },
 "educacion|PP": {
@@ -12797,7 +12797,7 @@
 }
 ],
 "tema": "energia",
-"total": 64,
+"total": 68,
 "total_sintesis": 61
 },
 "energia|ERC": {
@@ -12998,7 +12998,7 @@
 }
 ],
 "tema": "energia",
-"total": 93,
+"total": 96,
 "total_sintesis": 91
 },
 "energia|GOB": {
@@ -13361,7 +13361,7 @@
 }
 ],
 "tema": "energia",
-"total": 121,
+"total": 123,
 "total_sintesis": 119
 },
 "energia|PNV": {
@@ -14129,7 +14129,7 @@
 }
 ],
 "tema": "energia",
-"total": 133,
+"total": 135,
 "total_sintesis": 132
 },
 "energia|VOX": {
@@ -14330,7 +14330,7 @@
 }
 ],
 "tema": "energia",
-"total": 166,
+"total": 167,
 "total_sintesis": 168
 },
 "exteriores|BILDU": {
@@ -15068,7 +15068,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 63,
+"total": 64,
 "total_sintesis": 59
 },
 "exteriores|MIXTO": {
@@ -15659,7 +15659,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 393,
+"total": 394,
 "total_sintesis": 371
 },
 "exteriores|PSOE": {
@@ -17105,7 +17105,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 112,
+"total": 113,
 "total_sintesis": 109
 },
 "igualdad|PNV": {
@@ -18263,7 +18263,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 132,
+"total": 134,
 "total_sintesis": 131
 },
 "impuestos|ERC": {
@@ -18464,7 +18464,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 367,
+"total": 370,
 "total_sintesis": 365
 },
 "impuestos|GOB": {
@@ -18848,7 +18848,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 173,
+"total": 177,
 "total_sintesis": 175
 },
 "impuestos|MIXTO": {
@@ -19049,7 +19049,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 379,
+"total": 387,
 "total_sintesis": 383
 },
 "impuestos|PNV": {
@@ -19250,7 +19250,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 219,
+"total": 221,
 "total_sintesis": 217
 },
 "impuestos|PP": {
@@ -19451,7 +19451,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 946,
+"total": 951,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -19652,7 +19652,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 228,
+"total": 229,
 "total_sintesis": 227
 },
 "impuestos|SUMAR": {
@@ -19853,7 +19853,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 544,
+"total": 547,
 "total_sintesis": 545
 },
 "impuestos|VOX": {
@@ -20054,7 +20054,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 582,
+"total": 583,
 "total_sintesis": 586
 },
 "inmigracion|BILDU": {
@@ -20237,7 +20237,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 61,
+"total": 63,
 "total_sintesis": 61
 },
 "inmigracion|ERC": {
@@ -20408,7 +20408,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 70,
+"total": 71,
 "total_sintesis": 69
 },
 "inmigracion|GOB": {
@@ -20630,7 +20630,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 72,
+"total": 74,
 "total_sintesis": 69
 },
 "inmigracion|MIXTO": {
@@ -20831,7 +20831,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 187,
+"total": 190,
 "total_sintesis": 187
 },
 "inmigracion|PNV": {
@@ -21026,7 +21026,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 78,
+"total": 80,
 "total_sintesis": 77
 },
 "inmigracion|PP": {
@@ -21227,7 +21227,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 258,
+"total": 260,
 "total_sintesis": 256
 },
 "inmigracion|PSOE": {
@@ -21629,7 +21629,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 235,
+"total": 238,
 "total_sintesis": 232
 },
 "inmigracion|VOX": {
@@ -21830,7 +21830,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 345,
+"total": 350,
 "total_sintesis": 332
 },
 "justicia|BILDU": {
@@ -22196,7 +22196,7 @@
 }
 ],
 "tema": "justicia",
-"total": 93,
+"total": 94,
 "total_sintesis": 91
 },
 "justicia|GOB": {
@@ -22520,7 +22520,7 @@
 }
 ],
 "tema": "justicia",
-"total": 103,
+"total": 105,
 "total_sintesis": 100
 },
 "justicia|MIXTO": {
@@ -22721,7 +22721,7 @@
 }
 ],
 "tema": "justicia",
-"total": 165,
+"total": 166,
 "total_sintesis": 153
 },
 "justicia|PNV": {
@@ -22910,7 +22910,7 @@
 }
 ],
 "tema": "justicia",
-"total": 72,
+"total": 73,
 "total_sintesis": 71
 },
 "justicia|PP": {
@@ -23111,7 +23111,7 @@
 }
 ],
 "tema": "justicia",
-"total": 385,
+"total": 387,
 "total_sintesis": 353
 },
 "justicia|PSOE": {
@@ -23288,11 +23288,11 @@
 }
 ],
 "tema": "justicia",
-"total": 106,
+"total": 107,
 "total_sintesis": 100
 },
 "justicia|SUMAR": {
-"firma": "735f3d3f30fd0c70d69a9762c52ff3f8f2c97371",
+"firma": "0d0a7bef2bf1258c785c43c63e79e83864e928dc",
 "grupo": "SUMAR",
 "lineas": [
 {
@@ -23304,20 +23304,44 @@
 "2026-09-10"
 ],
 [
-"Crear en el CGPJ una comisión de derechos humanos o de combate contra la impunidad",
-"Santiago Romero",
-"DSCD-15-CO-152",
-"2024-07-16"
+"Democratizar el Consejo General del Poder Judicial para eliminar el sesgo clasista",
+"Pisarello Prados",
+"DSCD-15-PL-52",
+"2024-06-25"
 ],
 [
-"Activar la Comisión Disciplinaria del CGPJ frente a manifestaciones indebidas de jueces",
+"Modificar el procedimiento de renovación del Consejo General del Poder Judicial.",
 "Santiago Romero",
-"DSCD-15-CO-152",
-"2024-07-16"
+"DSCD-15-PL-43",
+"2024-05-28"
 ]
 ],
-"n": 14,
-"titulo": "Renovar y reformar el Consejo General del Poder Judicial"
+"n": 11,
+"titulo": "Reformar el sistema de elección, renovación y competencias del Consejo General del Poder Judicial"
+},
+{
+"ejemplos": [
+[
+"Que la formación pública forme parte del propio proceso de acceso a la judicatura",
+"Martínez Barbero",
+"DSCD-15-PL-208",
+"2026-09-29"
+],
+[
+"Establecer una formación teórica y práctica con evaluación continuada en la selección de jueces",
+"Martínez Barbero",
+"DSCD-15-PL-208",
+"2026-09-29"
+],
+[
+"mejorar la formación y actuación de jueces y abogacía de oficio",
+"Boada Danés",
+"DSCD-15-CO-628",
+"2026-09-24"
+]
+],
+"n": 8,
+"titulo": "Reformar y democratizar el acceso y la formación en la carrera judicial"
 },
 {
 "ejemplos": [
@@ -23340,32 +23364,8 @@
 "2026-06-23"
 ]
 ],
-"n": 8,
-"titulo": "Derogar del Código Penal los delitos contra la libertad de expresión y de opinión"
-},
-{
-"ejemplos": [
-[
-"Reformar y democratizar el acceso a las altas carreras jurídicas del Estado",
-"Santiago Romero",
-"DSCD-15-CO-278",
-"2025-02-27"
-],
-[
-"Cambiar el sistema de oposiciones de acceso a la carrera judicial",
-"Martínez Barbero",
-"DSCD-15-PL-74",
-"2024-10-29"
-],
-[
-"Adaptar el acceso a las carreras jurídicas del Estado a una sociedad democrática y moderna",
-"Santiago Romero",
-"DSCD-15-CO-152",
-"2024-07-16"
-]
-],
-"n": 5,
-"titulo": "Reformar el sistema de acceso a la carrera judicial para democratizarlo"
+"n": 7,
+"titulo": "Despenalizar los delitos contra la libertad de expresión y de opinión en el Código Penal"
 },
 {
 "ejemplos": [
@@ -23413,7 +23413,7 @@
 ]
 ],
 "n": 5,
-"titulo": "Dotar a la Administración de Justicia de mayores medios materiales y humanos"
+"titulo": "Aumentar los recursos materiales y humanos de la Administración de Justicia"
 },
 {
 "ejemplos": [
@@ -23437,7 +23437,31 @@
 ]
 ],
 "n": 4,
-"titulo": "Recuperar la exigencia de responsabilidad civil a los jueces"
+"titulo": "Exigir responsabilidad civil directa a los jueces por sus actuaciones"
+},
+{
+"ejemplos": [
+[
+"Homologar la instrucción penal para que los jueces asuman funciones de garantías",
+"Santiago Romero",
+"DSCD-15-CO-278",
+"2025-02-27"
+],
+[
+"Trasladar la instrucción penal a la Fiscalía",
+"Santiago Romero",
+"DSCD-15-PL-58",
+"2024-07-23"
+],
+[
+"Cambiar el modelo de instrucción penal a cargo de la Fiscalía con jueces de garantías",
+"Santiago Romero",
+"DSCD-15-CO-152",
+"2024-07-16"
+]
+],
+"n": 4,
+"titulo": "Atribuir la instrucción penal a la Fiscalía con jueces de garantías"
 },
 {
 "ejemplos": [
@@ -23462,35 +23486,11 @@
 ],
 "n": 3,
 "titulo": "Recuperar el subsidio por excarcelación"
-},
-{
-"ejemplos": [
-[
-"Crear una Agencia Independiente de Integridad Pública",
-"Martínez Hierro",
-"DSCD-15-PL-133",
-"2025-08-26"
-],
-[
-"Crear una agencia de integridad pública independiente y sancionadora.",
-"Martín Urriza",
-"DSCD-15-PL-132",
-"2025-07-22"
-],
-[
-"Crear una agencia antifraude siguiendo las recomendaciones del GRECO",
-"Vidal Sáez",
-"DSCD-15-PL-86",
-"2024-12-10"
-]
-],
-"n": 3,
-"titulo": "Crear una agencia independiente de integridad pública y antifraude"
 }
 ],
 "tema": "justicia",
-"total": 190,
-"total_sintesis": 176
+"total": 193,
+"total_sintesis": 193
 },
 "justicia|VOX": {
 "firma": "6ff5af55a24d68e5f0ca3934b1ac83b895727132",
@@ -23690,7 +23690,7 @@
 }
 ],
 "tema": "justicia",
-"total": 180,
+"total": 183,
 "total_sintesis": 180
 },
 "pensiones|BILDU": {
@@ -24050,7 +24050,7 @@
 }
 ],
 "tema": "pensiones",
-"total": 70,
+"total": 71,
 "total_sintesis": 69
 },
 "pensiones|GOB": {
@@ -28277,7 +28277,7 @@
 }
 ],
 "tema": "seguridad",
-"total": 325,
+"total": 326,
 "total_sintesis": 322
 },
 "seguridad|PSOE": {
@@ -29138,7 +29138,7 @@
 }
 ],
 "tema": "social",
-"total": 100,
+"total": 101,
 "total_sintesis": 99
 },
 "social|GOB": {
@@ -30260,7 +30260,7 @@
 }
 ],
 "tema": "social",
-"total": 263,
+"total": 264,
 "total_sintesis": 260
 },
 "social|SUMAR": {
@@ -33341,7 +33341,7 @@
 }
 ],
 "tema": "territorial",
-"total": 170,
+"total": 172,
 "total_sintesis": 167
 },
 "territorial|PSOE": {
@@ -34268,7 +34268,7 @@
 }
 ],
 "tema": "transporte",
-"total": 185,
+"total": 187,
 "total_sintesis": 180
 },
 "transporte|GOB": {
@@ -34514,7 +34514,7 @@
 }
 ],
 "tema": "transporte",
-"total": 141,
+"total": 142,
 "total_sintesis": 141
 },
 "transporte|MIXTO": {
@@ -35117,7 +35117,7 @@
 }
 ],
 "tema": "transporte",
-"total": 531,
+"total": 534,
 "total_sintesis": 520
 },
 "transporte|PSOE": {
@@ -35306,7 +35306,7 @@
 }
 ],
 "tema": "transporte",
-"total": 169,
+"total": 170,
 "total_sintesis": 164
 },
 "transporte|SUMAR": {
@@ -35507,7 +35507,7 @@
 }
 ],
 "tema": "transporte",
-"total": 384,
+"total": 385,
 "total_sintesis": 374
 },
 "transporte|VOX": {
@@ -35708,7 +35708,7 @@
 }
 ],
 "tema": "transporte",
-"total": 276,
+"total": 278,
 "total_sintesis": 265
 },
 "vivienda|BILDU": {
@@ -36713,7 +36713,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 326,
+"total": 327,
 "total_sintesis": 325
 },
 "vivienda|PNV": {
@@ -37316,7 +37316,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 299,
+"total": 300,
 "total_sintesis": 296
 },
 "vivienda|SUMAR": {
@@ -37517,7 +37517,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 532,
+"total": 536,
 "total_sintesis": 526
 },
 "vivienda|VOX": {
