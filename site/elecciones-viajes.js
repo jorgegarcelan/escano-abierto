@@ -143,7 +143,7 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   const colorDe = q => q === "VARIOS" ? "#A7A9AE" : ctx.G?.[q]?.color || colorOrigen[q] || "var(--line-strong)";
   const origenes = ["GOB", ...grupos, "VARIOS", "SEN", "CCAA"].filter(q=>cuenta[q])
     .map(q=>({id:"o-"+q, col:0, n:cuenta[q], nombre:NOMBRE_ORIGEN_V[q] || q, color:colorDe(q), filtro:{quien:q}, linea:true, de:l=>quienPresento(l)===q}));
-  const tronco = COLUMNAS.map((t,k)=>({id:"e-"+k, col:k+1, n:L.filter(l=>l.etapa>=k).length, nombre:t, color: k===5 ? "var(--si,#3C8C6A)" : "#7C8089", tronco:true, k, de:l=>l.etapa>=k}));
+  const tronco = COLUMNAS.map((t,k)=>({id:"e-"+k, col:k+1, n:L.filter(l=>l.etapa>=k).length, nombre:t, color: k===5 ? "var(--si,#3C8C6A)" : "#7C8089", tronco:true, k, de:l=>l.etapa>=k, filtro:{minimo:k}}));
   const salidas = [];
   for (let k = 0; k < 5; k++) SALIDAS.forEach(([id, nombre, ds, color])=>{ const n = L.filter(l=>l.etapa===k && ds.includes(l.destino)).length;
     if (n) salidas.push({id:`s-${k}-${id}`, col:k+2, n, nombre, color, desde:k, filtro:{etapa:k, destinos:ds}, de:l=>l.etapa===k && ds.includes(l.destino)}); });
@@ -166,7 +166,8 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   enlaces.forEach(e=>{ const y1 = e.a.y + (salida[e.a.id] || 0), y2 = e.b.y + (entrada[e.b.id] || 0), h = e.n*k;
     salida[e.a.id] = (salida[e.a.id] || 0) + h; entrada[e.b.id] = (entrada[e.b.id] || 0) + h;
     const x1 = e.a.x + nodoW, x2 = e.b.x, xm = (x1 + x2)/2;
-    e.banda = h2 => `M${x1} ${y1}C${xm} ${y1} ${xm} ${y2} ${x2} ${y2}L${x2} ${y2+h2}C${xm} ${y2+h2} ${xm} ${y1+h2} ${x1} ${y1+h2}Z`;
+    e.tramo = (o, h2) => { const a = y1 + o, b = y2 + o; return `M${x1} ${a}C${xm} ${a} ${xm} ${b} ${x2} ${b}L${x2} ${b+h2}C${xm} ${b+h2} ${xm} ${a+h2} ${x1} ${a+h2}Z`; };
+    e.banda = h2 => e.tramo(0, h2);
     e.d = e.banda(h); });
   // Rótulos: el tronco, encima; orígenes y salidas, a la derecha (empujando hacia abajo si se pisan).
   const rot = [];
@@ -187,8 +188,8 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
   svg.addEventListener("mousemove", ev=>{
     const p = ev.target.closest("[data-e]"), r = ev.target.closest("[data-n]");
     let html = "";
-    if (p){ const e = enlace(+p.dataset.e), m = selXs && p.closest(".rastro") ? selXs.filter(e.de).length : null;
-      html = m != null ? `<b>${esc(e.a.nombre)} → ${esc(e.b.nombre)}</b><br>${miles(m)} de las ${miles(e.n)} ${e.n===1?"ley":"leyes"} de este tramo` : tipT(`${e.a.nombre} → ${e.b.nombre}`, e.n); }
+    if (p){ const e = enlace(+p.dataset.e), q = p.dataset.q, m = selXs && p.closest(".rastro") ? selXs.filter(l=>e.de(l) && (!q || quienPresento(l)===q)).length : null;
+      html = m != null ? `<b>${esc(e.a.nombre)} → ${esc(e.b.nombre)}</b><br>${q ? `${esc(NOMBRE_ORIGEN_V[q] || q)}: ` : ""}${miles(m)} de las ${miles(e.n)} ${e.n===1?"ley":"leyes"} de este tramo` : tipT(`${e.a.nombre} → ${e.b.nombre}`, e.n); }
     else if (r){ const n = nodo(r.dataset.n); html = tipT(n.tronco ? n.nombre : n.col === 0 ? `Presentadas por: ${n.nombre}` : `${n.nombre} ${n.desde === 0 ? "sin admitir a debate" : "tras: " + COLUMNAS[n.desde].toLowerCase()}`, n.n, n.filtro ? "<br><i>Pulsa para verlas</i>" : ""); }
     tipVj(html, ev);
   });
@@ -204,12 +205,14 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
     svg.classList.toggle("filtrado", !!actual);
     svg.querySelectorAll("[data-n]").forEach(x=>x.classList.remove("on","off"));
     if (!actual){ rastro(null); lista.hidden = true; alElegir(null); return; }
-    const pasa = l => (f.quien ? quienPresento(l) === f.quien : true) && (f.etapa !== undefined ? l.etapa === f.etapa && f.destinos.includes(l.destino) : true);
+    const pasa = l => (f.quien ? quienPresento(l) === f.quien : true) && (f.etapa !== undefined ? l.etapa === f.etapa && f.destinos.includes(l.destino) : true)
+      && (f.minimo !== undefined ? l.etapa >= f.minimo : true);
     const xs = L.filter(pasa).sort((a,b)=>b.d0-a.d0);
     // Los grupos de color gris (el Mixto, «varios») se confundirían con el fondo: su rastro va con el color del texto.
     rastro(xs, f.quien ? (["MIXTO","VARIOS"].includes(f.quien) ? "var(--ink)" : n.color) : null);
     lista.hidden = false;
-    const titulo = f.quien ? `${xs.length} presentadas por: ${NOMBRE_ORIGEN_V[f.quien] || f.quien}` : `${xs.length} ${n.nombre.toLowerCase()} · se quedaron en «${COLUMNAS[f.etapa]}»`;
+    const titulo = f.quien ? `${xs.length} presentadas por: ${NOMBRE_ORIGEN_V[f.quien] || f.quien}` :
+      f.minimo !== undefined ? (f.minimo === 0 ? `Las ${xs.length} presentadas` : f.minimo === 5 ? `${xs.length} acabaron en ley` : `${xs.length} llegaron a «${COLUMNAS[f.minimo]}»`) : `${xs.length} ${n.nombre.toLowerCase()} · se quedaron en «${COLUMNAS[f.etapa]}»`;
     lista.innerHTML = `<h4>${esc(titulo)}</h4><ul>${xs.map(l=>`<li><button data-vj-ley="${esc(l.exp)}"><span>${esc(l.titulo.length > 110 ? l.titulo.slice(0,108)+"…" : l.titulo)}</span><span class="m">${esc(l.exp)}</span></button></li>`).join("")}</ul>`;
     alElegir(pasa);
   });
@@ -240,7 +243,10 @@ function sankey(caja, L, ctx, colorOrigen, ficha, alElegir){
       rects(n.id).forEach(r=>{ r.classList.toggle("on", !!m); r.classList.toggle("off", m === 0); });
       v.closest("text").classList.toggle("off", m === 0); };
     if (!xs){ nodos.forEach(n=>{ pintarNodo(n); rects(n.id).forEach(r=>r.classList.remove("on","off")); }); return; }
-    capa.innerHTML = enlaces.map((e,i)=>{ const m = xs.filter(e.de).length; return m ? `<path d="${e.banda(m*k)}" fill="${e.origen && (!color || color !== "var(--ink)") ? e.color : color || "var(--ink)"}" data-e="${i}"/>` : ""; }).join("");
+    const colorGrupo = q => color === "var(--ink)" ? color : colorDe(q);   // el Mixto o «varios» solos, con el color del texto
+    capa.innerHTML = enlaces.map((e,i)=>{ const sub = xs.filter(e.de); if (!sub.length) return ""; let o = 0;
+      return origenes.map(og=>{ const q = og.filtro.quien, m = sub.filter(l=>quienPresento(l)===q).length; if (!m) return "";
+        const d = e.tramo(o*k, m*k); o += m; return `<path d="${d}" fill="${colorGrupo(q)}" data-e="${i}" data-q="${q}"/>`; }).join(""); }).join("");
     // Mientras el rastro no llega a un nodo, ese nodo se queda apagado.
     nodos.forEach(n=>{ const v = valores.get(n.id); if (v) v.closest("text").classList.add("off"); rects(n.id).forEach(r=>r.classList.add("off")); });
     const hechos = new Set();
