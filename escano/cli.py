@@ -22,7 +22,7 @@ from datetime import date, timedelta
 
 import json
 
-from . import agenda, boe, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
+from . import agenda, boe, calidad, diario, diputados, hemiciclo, intereses, leyes, llamamiento, organos, preguntas, votaciones
 from .config import CRUDOS, PROVEEDOR, SITIO, VOTACIONES
 from .construir import construir
 
@@ -66,6 +66,9 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
             print(f"  {ses['id']}: {ses['fecha']} · {ses['organo']} · {len(ses['intervenciones'])} turnos")
             estado[serie] = max(estado[serie], numero)
     diario.guardar_estado(estado)
+    # Las votaciones por llamamiento no están en los datos abiertos: salen del Diario de Sesiones.
+    for v in llamamiento.actualizar():
+        print(f"  Votación por llamamiento {v['id']} ({v['fecha']}): {v['si']} a favor, {v['no']} en contra")
 
     if con_ia and PROVEEDOR == "gemini":
         print("· Pestaña Explora: temas, lugares y propuestas nuevos")
@@ -104,6 +107,9 @@ def reprocesar(con_ia: bool) -> None:
     for f in sorted(VOTACIONES.glob("*.json")):
         nuevas = []
         for v in votaciones.leer_dia(f):
+            if v.get("llamamiento"):   # sale del Diario de Sesiones: se rehace después, con los Diarios
+                nuevas.append(v)
+                continue
             crudo = descargar_cache(v.get("json", ""))
             nuevas.append(votaciones.leer_votacion(json.loads(crudo.decode("utf-8-sig")), v["json"]) if crudo else v)
         votaciones.guardar_dia(f.stem, nuevas)
@@ -116,6 +122,7 @@ def reprocesar(con_ia: bool) -> None:
         for ses in ex.map(_procesar, rutas, [mapa] * len(rutas), chunksize=4):
             if ses:
                 print(f"  {ses['id']}: {ses['fecha']} · {ses['organo']} · {len(ses['intervenciones'])} turnos")
+    print(f"· Votaciones por llamamiento: {len(llamamiento.actualizar())}")
     print("· Construyendo la web" + (" (sin IA)" if not con_ia else ""))
     construir(con_ia=con_ia)
     calidad.imprimir(calidad.informe())

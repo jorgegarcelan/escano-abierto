@@ -307,11 +307,15 @@ def construir(con_ia: bool = True) -> dict:
         for i, asunto in enumerate(asuntos):
             seccion = next((iv["seccion"] for iv in ivs if (iv["item"] or iv["seccion"]) == asunto), None)
             hay_analisis = any(iv["orden"] in analisis for iv in ivs if (iv["item"] or iv["seccion"]) == asunto)
-            enlazados = [v["id"] for v in votos_dia if parecido(v["texto"], asunto) >= 0.5]
+            exp = next((iv["exp"] for iv in ivs if iv["item"] == asunto and iv["exp"]), None)
+            # Con número de expediente en los dos lados, manda el número: dos decretos-leyes del mismo día tienen
+            # títulos casi iguales. Si falta en alguno, el parecido del texto.
+            enlazados = [v["id"] for v in votos_dia
+                         if (v["exp"] == exp if exp and v.get("exp") else parecido(v["texto"], asunto) >= 0.5)]
             puntos.append({
                 "tipo": (seccion or "Asunto").capitalize(),
                 "titulo": titulos[i] if i < len(titulos) else titulo_votacion(titulo_legible(asunto)),
-                "exp": next((iv["exp"] for iv in ivs if iv["item"] == asunto and iv["exp"]), None),
+                "exp": exp,
                 "estado": "analizado" if hay_analisis else "pendiente",
                 "itemId": asunto,
                 "votos": enlazados,
