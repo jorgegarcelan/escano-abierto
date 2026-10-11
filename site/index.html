@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-marca="marcador">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Plenos y comparecencias del Congreso de los Diputados resumidos: qué se dijo, en qué tono y cómo votó cada grupo.">
 <title>Escaño Abierto</title>
-<link rel="icon" href="marca/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="marcas/marcador-favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="Escaño Abierto" href="rss.xml">
 <script>
 // Vercel Web Analytics y Speed Insights: sin cookies ni identificadores persistentes. Solo existen en el
@@ -18,25 +18,7 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
   }
 }
 </script>
-<script>
-// Marca de la web: Marcador por defecto. ?marca=<nombre> (o el selector del pie) prueba otra;
-// ?marca=tinta vuelve a Tinta y papel, que es la base de index.html sin hoja extra.
-(function(){
-  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico","neobrutal","bento","tenebrismo","modular","vineta","tinta"];
-  var POR_DEFECTO = "marcador", m = null;
-  try { m = new URLSearchParams(location.search).get("marca"); if (m) localStorage.setItem("marca", m); else m = localStorage.getItem("marca"); } catch(e) {}
-  if (MARCAS.indexOf(m) < 0) m = POR_DEFECTO;
-  document.documentElement.dataset.marca = m;
-  if (m === "tinta") return;
-  document.write('<link rel="stylesheet" href="marcas/' + m + '.css">');
-  if (m === "marcador") {
-    document.querySelector('link[rel="icon"]').href = "marcas/marcador-favicon.svg";
-    document.write('<meta name="theme-color" content="#08090B">');
-  }
-})();
-</script>
-<meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#08090B">
 <meta property="og:title" content="Escaño Abierto">
 <meta property="og:description" content="Qué se dijo en el Congreso y cómo se votó.">
 <meta property="og:type" content="website">
@@ -46,7 +28,8 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="marcas/marcador.css">
 <style>
 :root{
   --bg:#F7F7F4; --surface:#FFFFFF; --sunk:#EDEEEA; --ink:#16181D; --muted:#5C6069; --line:#DCDDD8; --line-strong:#82868E;
@@ -266,9 +249,30 @@ td .tonebar{min-width:140px}
 .method h3{font-size:18px;margin-top:6px}
 .method p,.method li{max-width:68ch}
 .method ul{margin:0;padding-left:20px;display:grid;gap:6px}
-.marca-sel{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12.5px}
-.marca-sel select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:3px 6px}
-footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+/* pie: la marca y el estado de los datos, el mapa de la web en cuatro columnas y, debajo, de dónde sale todo */
+footer.pie{margin-top:64px;padding:32px 0 28px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+footer.pie a{color:var(--muted);text-decoration:none}
+footer.pie a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.pie-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,3fr);gap:32px}
+.pie-marca{display:grid;gap:14px;align-content:start;justify-items:start}
+footer.pie .pie-logo{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
+.pie-logo .logo{width:52px;height:28px;background:url(marcas/marcador.svg) left center/contain no-repeat}
+.pie-logo b{font-family:var(--led,var(--display));font-weight:900;font-size:17px;letter-spacing:.03em;text-transform:uppercase}
+.pie-lema{margin:0;max-width:26ch;text-wrap:balance;color:var(--ink);font-size:15px;line-height:1.45}
+.pie-estado{display:inline-flex;align-items:center;gap:8px;margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.02em}
+.pie-estado i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--si);box-shadow:0 0 10px var(--si)}
+.pie-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
+footer.pie .pie-nav h2{margin:0 0 14px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.pie-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pie-notas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 32px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6}
+.pie-notas p{margin:0;max-width:52ch}
+.pie-notas b{display:block;margin-bottom:6px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+footer.pie .pie-notas a{text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:2px}
+@media (max-width:900px){
+  .pie-top{grid-template-columns:1fr}
+  .pie-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pie-notas{grid-template-columns:1fr}
+}
 
 /* hemiciclo */
 .hemi{display:block;width:100%;height:auto;overflow:visible}
@@ -759,7 +763,6 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .vote-acc .btn-img span{display:none}
 .btn-rss{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font:600 12px var(--sans);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:var(--r-pill);padding:3px 10px;white-space:nowrap;vertical-align:middle}
 .btn-rss:hover{color:var(--ink);border-color:var(--line-strong)}
-.rss-pie{color:inherit}
 .vote-acc{display:inline-flex;gap:8px;align-items:center}
 .ficha-acc{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 #aviso{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:600;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1083,7 +1086,62 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados, y nombramientos y ceses del BOE. Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave generados por IA a partir del texto oficial; las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="#quien-lo-dijo" class="rss-pie">¿Quién lo dijo?</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
+  <footer class="pie">
+    <div class="pie-top">
+      <div class="pie-marca">
+        <a class="pie-logo" href="#inicio"><span class="logo" aria-hidden="true"></span><b>Escaño Abierto</b></a>
+        <p class="pie-lema">Qué se dijo en el Congreso y cómo se votó.</p>
+        <p class="pie-estado"><i aria-hidden="true"></i><span id="gen">Datos oficiales, cada día</span></p>
+      </div>
+      <nav class="pie-nav" aria-label="Mapa de la web">
+      <div>
+        <h2>Actividad</h2>
+        <ul>
+          <li><a href="#dias">Por día</a></li>
+          <li><a href="#votaciones">Votaciones</a></li>
+          <li><a href="#leyes">Leyes</a></li>
+          <li><a href="#temas">Temas</a></li>
+          <li><a href="#preguntas">Preguntas al Gobierno</a></li>
+          <li><a href="#explora">Explora</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Quién es quién</h2>
+        <ul>
+          <li><a href="#diputados">Diputados</a></li>
+          <li><a href="#grupos">Grupos</a></li>
+          <li><a href="#oradores">Por orador</a></li>
+          <li><a href="#organigrama">Organigrama del Estado</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Además</h2>
+        <ul>
+          <li><a href="#elecciones">Elecciones 29N</a></li>
+          <li><a href="#geografia">Geografía</a></li>
+          <li><a href="#quien-lo-dijo">¿Quién lo dijo?</a></li>
+          <li><a href="#como-ley">Cómo se hace una ley</a></li>
+          <li><a href="#glosario">Glosario</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>El proyecto</h2>
+        <ul>
+          <li><a href="#sobre">Sobre el proyecto</a></li>
+          <li><a href="#metodo">Método</a></li>
+          <li><a href="#aviso-legal">Aviso legal</a></li>
+          <li><a href="rss.xml">Seguir por RSS</a></li>
+          <li><a href="https://github.com/jorgegarcelan/escano-abierto" target="_blank" rel="noopener">Código abierto ↗</a></li>
+        </ul>
+      </div>
+      </nav>
+    </div>
+    <div class="pie-notas">
+      <p><b>Fuentes</b>Diario de Sesiones y datos abiertos de votaciones del <a href="https://www.congreso.es" target="_blank" rel="noopener">Congreso de los Diputados</a>, nombramientos y ceses del <a href="https://www.boe.es" target="_blank" rel="noopener">BOE</a>, resultados electorales del Ministerio del Interior y datos del INE. Las encuestas, de la recopilación de Wikipedia; los mercados, de Polymarket.</p>
+      <p><b>Con IA, comprobado</b>Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave los genera una IA a partir del texto oficial. Las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado.</p>
+      <p><b>Independiente</b>Escaño Abierto no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.</p>
+    </div>
+  </footer>
 </div>
 
 <script>
@@ -1136,8 +1194,6 @@ async function arrancar(clave){
   document.getElementById("periodo-info").textContent = `${DATA.meta.periodo} · ${sesiones.length} sesiones · ${votaciones.length} votaciones`;
   iniciar(DATA, ivs);
 }
-(function(){ const sel=document.getElementById("marca-sel"); sel.value=document.documentElement.dataset.marca||"marcador";
-  sel.addEventListener("change", ()=>{ const u=new URL(location.href); u.searchParams.set("marca", sel.value); location.href=u.toString(); }); })();
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
   INDICE = j;
   let clave = "reciente"; try{ clave = localStorage.getItem("periodo") || clave; }catch(e){}
@@ -1325,7 +1381,7 @@ document.addEventListener("pointerover", e=>{
 }, SIG);
 window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true, signal:ctl.signal});
 
-$("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
+if (DATA.meta.generado){ const [y,m,d] = DATA.meta.generado.split("-").map(Number); $("#gen").textContent = `Actualizado el ${d} de ${MESES_LARGOS[m-1]} de ${y}`; }
 
 /* ---------- temas ---------- */
 const COLS_TEMA = [...ORDEN_HEMI, "GOB"];

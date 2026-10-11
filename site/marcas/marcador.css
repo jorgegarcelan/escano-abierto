@@ -1,8 +1,7 @@
-/* Marca en prueba: Marcador.
+/* Marca de la web: Marcador.
    El panel de votaciones del hemiciclo: un tablero oscuro donde las cifras se encienden en matriz de
    puntos. Negro profundo, LED blanco cálido y el color solo para el sentido del voto.
-   Se carga con ?marca=marcador encima de la marca actual. */
-@import url("https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap");
+   index.html la carga siempre, sobre su hoja base (sus fuentes, Geist y Doto, van en el <head>). */
 
 html:root[data-marca="marcador"]{
   color-scheme:dark;
@@ -126,7 +125,6 @@ html[data-marca="marcador"] .tile{background:#111318;border-color:rgba(255,255,2
 html[data-marca="marcador"] .tile .ab{font-family:var(--mono);font-weight:600}
 html[data-marca="marcador"] .date .d{font-size:52px}
 html[data-marca="marcador"] #tip{background:#EEEEE8;color:#08090B;font-family:var(--mono);font-size:12px;border-radius:8px}
-html[data-marca="marcador"] footer{border-top-color:rgba(255,255,255,.06);font-family:var(--mono);font-size:11.5px;line-height:1.7}
 @media (max-width:720px){
   html[data-marca="marcador"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   html[data-marca="marcador"] .kpi{border-bottom:1px solid rgba(255,255,255,.06)}
