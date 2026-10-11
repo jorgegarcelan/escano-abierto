@@ -37,3 +37,19 @@ def test_veda_del_24_al_29_a_las_20():
     assert en.en_veda(datetime(2026, 11, 24, 0, 1))
     assert en.en_veda(datetime(2026, 11, 29, 19, 59))
     assert not en.en_veda(datetime(2026, 11, 29, 20, 0))
+
+
+def test_proyeccion_reproduce_2023():
+    """Con el resultado de 2023 como «media» y los escaños de 2023, el modelo devuelve el Congreso de 2023."""
+    import json
+    from escano import proyeccion as pr
+    from escano.config import DATOS
+    base = pr.base_2023()
+    D = json.loads((DATOS / "elecciones" / "historico-202307.json").read_text())
+    _, tot = pr.proyectar({p: v for p, v in base["nacional"].items() if p != "OTROS"}, base, escanos={c: p["e"] for c, p in D["prov"].items()})
+    assert tot == {"PP": 137, "PSOE": 121, "VOX": 33, "SUMAR": 31, "ERC": 7, "JUNTS": 7, "BILDU": 6, "PNV": 5, "BNG": 1, "UPN": 1, "CC": 1}
+
+
+def test_dhondt_y_barrera():
+    from escano import proyeccion as pr
+    assert pr.dhondt({"A": .40, "B": .30, "C": .20, "D": .025}, 5) == {"A": 2, "B": 2, "C": 1}

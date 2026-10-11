@@ -181,3 +181,169 @@ export async function pintarEncuestas(sec){
   });
   sec.querySelector("#enc-emp").addEventListener("change", ev=>{ empresa = ev.target.value; cuantas = 25; tabla(); });
 }
+
+/* =====================================================================================================
+   LA PROYECCIÓN: los escaños que salen de la media (escano/proyeccion.py)
+   ===================================================================================================== */
+const ORDEN_PROY = ["SUMAR","PODEMOS","BILDU","ERC","BNG","PSOE","CC","PNV","JUNTS","ALIANCA","AA","UPN","PP","SALF","VOX"];   // de izquierda a derecha, para el hemiciclo
+const CSS_PROY = `
+.pr-top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(240px,1fr);gap:16px;align-items:stretch}
+@media (max-width:820px){ .pr-top{grid-template-columns:1fr} }
+.pr-hemi{display:grid;align-content:center;gap:8px}
+.pr-hemi .hi-hemi{max-width:560px;margin:0 auto}
+.pr-ley{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:center;font-size:12.5px;color:var(--muted)}
+.pr-ley span{display:inline-flex;align-items:center;gap:5px}.pr-ley b{color:var(--ink)}
+.pr-ley i{width:9px;height:9px;border-radius:50%}
+.pr-probs{display:grid;gap:10px;align-content:start}
+.pr-p{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.pr-p b{grid-row:span 2;font:800 clamp(26px,3.4vw,36px)/1 var(--led,var(--display));font-variant-numeric:tabular-nums;min-width:3.2em;text-align:right}
+.pr-p span{font-size:13.5px;font-weight:600;line-height:1.25}
+.pr-p small{font-size:12px;color:var(--muted)}
+.pr-filas{display:grid;gap:6px}
+.pr-f{display:grid;grid-template-columns:minmax(0,7em) minmax(0,1fr) 3.4em;gap:10px;align-items:center;font-size:13px}
+.pr-f .n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+.pr-f .n i{width:9px;height:9px;border-radius:50%;flex:none}
+.pr-f .t{position:relative;height:18px}
+.pr-f .t::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed var(--line)}
+.pr-f .rg{position:absolute;top:5px;height:8px;border-radius:99px;opacity:.38;transition:left .6s ease,width .6s ease}
+.pr-f .md{position:absolute;top:2px;width:3px;height:14px;border-radius:2px;transform:translateX(-50%);transition:left .6s ease}
+.pr-f .v23{position:absolute;top:4px;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);border:1.5px solid var(--ink);background:var(--surface)}
+.pr-f b{font:700 14px var(--mono);text-align:right}
+.pr-esc-ley{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:10px}
+.pr-esc-ley span{display:inline-flex;align-items:center;gap:6px}
+.pr-esc-ley .r{width:22px;height:8px;border-radius:99px;background:var(--muted);opacity:.4}.pr-esc-ley .m{width:3px;height:12px;border-radius:2px;background:var(--ink)}
+.pr-esc-ley .d{width:8px;height:8px;transform:rotate(45deg);border:1.5px solid var(--ink)}
+svg.pr-hist{display:block;width:100%;height:auto;overflow:visible}
+svg.pr-hist rect{transition:opacity .2s}
+svg.pr-hist .eje text,svg.pr-serie .eje text{font:10.5px var(--mono);fill:var(--muted)}
+svg.pr-hist .m176 line,svg.pr-serie .m176 line{stroke:var(--ink);stroke-dasharray:4 3}
+svg.pr-hist .m176 text,svg.pr-serie .m176 text{font:600 11px var(--sans,inherit);fill:var(--ink)}
+svg.pr-serie{display:block;width:100%;height:auto;overflow:visible}
+svg.pr-serie .ejes line{stroke:var(--line);stroke-dasharray:2 4}
+svg.pr-serie .l{fill:none;stroke-width:2.2;stroke-linejoin:round}
+svg.pr-serie .bl{fill:none;stroke-width:2.6;stroke-dasharray:6 4}
+svg.pr-serie .fin text{font:700 11.5px var(--sans,inherit)}
+svg.pr-serie .cruz{stroke:var(--ink);opacity:0;pointer-events:none}
+.pr-mapa-w{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr);gap:16px;align-items:start}
+@media (max-width:820px){ .pr-mapa-w{grid-template-columns:1fr} }
+svg.pr-mapa{display:block;width:100%;height:auto}
+svg.pr-mapa path{stroke:var(--surface);stroke-width:1;cursor:pointer;transition:fill .4s}
+svg.pr-mapa path:hover,svg.pr-mapa path.sel{stroke:var(--ink);stroke-width:2.5}
+svg.pr-mapa path.aire{stroke:var(--ink);stroke-width:1.6;stroke-dasharray:3 2}
+.pr-aire{display:grid;gap:3px}
+.pr-aire button{all:unset;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:6px 8px;border-radius:8px;border:1px solid var(--line);font-size:12.5px}
+.pr-aire button:hover{border-color:var(--line-strong)}
+.pr-aire span{display:inline-flex;align-items:center;gap:4px;color:var(--muted)}
+.pr-aire i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.pr-aire small{font:700 11.5px var(--mono);color:var(--no);grid-row:span 2;align-self:center}
+.pr-prov h3{margin:0 0 6px}
+.pr-prov .pr-f{grid-template-columns:minmax(0,6em) minmax(0,1fr) 6.4em}
+.pr-prov .cmp{font:12px var(--mono);color:var(--muted);text-align:right}
+.pr-metodo{font-size:13.5px;line-height:1.6;color:var(--muted)}
+.pr-metodo ol{padding-left:20px;margin:6px 0}
+.pr-metodo b{color:var(--ink)}
+`;
+export async function pintarProyeccion(sec, ctx){
+  estilos(); if (!document.getElementById("enc-css-pr")){ const st = document.createElement("style"); st.id = "enc-css-pr"; st.textContent = CSS_PROY; document.head.appendChild(st); }
+  const [D, PR, GEO] = await Promise.all([pedir("datos/encuestas/encuestas.json"), pedir("datos/encuestas/proyeccion.json"), pedir("datos/elecciones/geo-provincias.json")]);
+  if (!D || !PR){ sec.innerHTML = `<p class="nota">No se ha podido cargar la proyección.</p>`; return; }
+  if (enVeda(D)){ sec.innerHTML = `<section class="sec" style="padding-top:8px">${avisoVeda()}</section>`; return; }
+  const P = Object.fromEntries(D.partidos.map(p=>[p.id, p])), S = PR.simulacion, C = PR.central;
+  const col = id => P[id]?.color || "#888", nom = id => P[id]?.nombre || id;
+  const r23 = D.resultado2023?.e || {}, en23 = id => r23[id]?.[0] ?? (id === "PODEMOS" || id === "SALF" || id === "ALIANCA" || id === "AA" ? null : 0);
+  const pc = x => `${Math.round(x*100)} %`, probTxt = x => x >= .995 ? "> 99 %" : x <= .005 ? "< 1 %" : pc(x);
+  const ids = ORDEN_PROY.filter(id=>C[id]);
+  const porEscanos = Object.keys(S.partidos).filter(id=>S.partidos[id].p95 > 0).sort((a,b)=>(S.partidos[b].med - S.partidos[a].med) || (C[b]||0) - (C[a]||0));
+  const B = S.bloques, bPPV = B["PP + Vox"], bSoc = B["PSOE y sus socios de 2023"], primero = Object.entries(S.primero).sort((a,b)=>b[1]-a[1])[0];
+  sec.innerHTML = `<section class="sec" style="padding-top:8px">
+      <div class="sec-h"><h2>Si las elecciones fueran hoy</h2><p>Los escaños que salen de la media de las encuestas del ${esc(fLarga(PR.fecha))}, provincia a provincia y con la ley D'Hondt; y lo probable que es cada cosa, en ${fmt(S.n)} simulaciones.</p></div>
+      <div class="pr-top"><div class="chart pr-hemi"><div id="pr-hemi"></div><div class="pr-ley">${ids.map(id=>`<span><i style="background:${col(id)}"></i>${esc(nom(id))} <b>${C[id]}</b></span>`).join("")}</div></div>
+        <div class="pr-probs">
+          <div class="pr-p"><b>${probTxt(primero[1])}</b><span>${esc(nom(primero[0]))}, primera fuerza</span><small>en ${probTxt(primero[1])} de las simulaciones saca más escaños que nadie</small></div>
+          <div class="pr-p"><b>${probTxt(bPPV.p176)}</b><span>PP y Vox suman mayoría absoluta</span><small>${bPPV.med} escaños (entre ${bPPV.p05} y ${bPPV.p95}); hacen falta 176</small></div>
+          <div class="pr-p"><b>${probTxt(Math.max(0, ...Object.values(S.solo176 || {}), 0))}</b><span>Un partido solo, mayoría absoluta</span><small>el PP, con ${S.partidos.PP?.med ?? "–"} escaños (entre ${S.partidos.PP?.p05} y ${S.partidos.PP?.p95})</small></div>
+          <div class="pr-p"><b>${probTxt(bSoc.p176)}</b><span>Los socios de la investidura de 2023 repiten mayoría</span><small>PSOE, Sumar, Podemos, ERC, Junts, Bildu, PNV, BNG y CC: ${bSoc.med} (entre ${bSoc.p05} y ${bSoc.p95})</small></div>
+        </div></div></section>
+    <section class="sec"><div class="sec-h"><h2>Escaños por partido</h2><p>La raya es lo más probable; la barra, el margen en 9 de cada 10 simulaciones; el rombo, lo que sacó en 2023.</p></div>
+      <div class="chart"><div class="pr-filas" id="pr-filas"></div><div class="pr-esc-ley"><span><i class="m"></i>lo más probable</span><span><i class="r"></i>9 de cada 10 simulaciones</span><span><i class="d"></i>escaños en 2023</span></div></div></section>
+    <section class="sec"><div class="sec-h"><h2>¿Llegan a 176?</h2><p>Cuántas simulaciones acaban con cada número de escaños. A la derecha de la línea, mayoría absoluta.</p></div>
+      <div class="chart"><div class="hi-seg" role="group" aria-label="Bloque">${Object.keys(B).map((b,k)=>`<button data-pr-b="${esc(b)}" aria-pressed="${k===0}">${esc(b)}</button>`).join("")}</div><div id="pr-hist"></div></div></section>
+    <section class="sec"><div class="sec-h"><h2>Semana a semana</h2><p>La proyección con la media de cada semana desde 2023 (sin simulaciones: lo más probable).</p></div>
+      <div class="chart"><div id="pr-serie"></div></div></section>
+    <section class="sec"><div class="sec-h"><h2>Provincia a provincia</h2><p>Quién se llevaría más escaños en cada una. Con borde discontinuo, donde el último escaño está a menos de medio punto. Pulsa una provincia.</p></div>
+      <div class="pr-mapa-w"><div class="chart"><div id="pr-mapa"></div></div><div class="chart" id="pr-lado"></div></div></section>
+    <section class="sec"><div class="sec-h"><h2>Cómo se hace</h2></div><div class="chart pr-metodo">
+      <ol><li><b>La media de las encuestas</b> (la de <a href="#elecciones-encuestas">Las encuestas</a>) da el voto de cada partido en toda España.</li>
+        <li><b>A cada provincia</b>, desde su resultado de 2023: si un partido sube un 50 % en España, sube un 50 % en cada provincia. Podemos, que en 2023 fue dentro de Sumar, hereda su reparto provincial; Se Acabó La Fiesta, a medias uniforme y como Vox; Aliança Catalana y Adelante Andalucía, solo en su comunidad.</li>
+        <li><b>La ley D'Hondt</b> en cada provincia, con los escaños de 2026 (Cádiz pierde uno y Madrid gana uno) y la barrera del 3 %. Con el resultado de 2023, el modelo devuelve exactamente el Congreso de 2023.</li>
+        <li><b>${fmt(S.n)} simulaciones</b>: en cada una, cada partido se desvía de su media lo que suelen fallar las encuestas (unos ±2 puntos el PP o el PSOE, menos de uno los pequeños) y cada provincia, un poco más. Las probabilidades son la parte de simulaciones en que pasa cada cosa.</li></ol>
+      <p>No es un pronóstico: es lo que dirían las urnas si votáramos hoy como dicen las encuestas, que pueden fallar todas en la misma dirección. El código está en <a href="https://github.com/jorgegarcelan/escano-abierto/blob/main/escano/proyeccion.py">proyeccion.py</a>.</p></div></section>`;
+  // El hemiciclo, de izquierda a derecha.
+  import("./elecciones-historico.js").then(m=>m.hemicicloReal(sec.querySelector("#pr-hemi"), ctx, ids.map(id=>({color: col(id), n: C[id], tip: `<b>${esc(nom(id))}</b><br>${C[id]} escaños (entre ${S.partidos[id]?.p05 ?? C[id]} y ${S.partidos[id]?.p95 ?? C[id]})`})), "350")).catch(err=>console.error(err));
+  // Escaños por partido: rango, lo más probable y 2023, en una escala común.
+  { const max = Math.max(...porEscanos.map(id=>Math.max(S.partidos[id].p95, en23(id) || 0)), 10), X = v => `${(v/max*100).toFixed(2)}%`;
+    sec.querySelector("#pr-filas").innerHTML = porEscanos.map(id=>{ const s = S.partidos[id], a = en23(id);
+      return `<div class="pr-f" data-tip="${esc(`<b>${esc(nom(id))}</b><br>Lo más probable: ${s.med} escaños<br>9 de cada 10 simulaciones: entre ${s.p05} y ${s.p95}${a != null ? `<br>En 2023: ${a}` : "<br>No se presentó en 2023"}`)}"><span class="n"><i style="background:${col(id)}"></i>${esc(nom(id))}</span>
+        <span class="t"><span class="rg" style="left:${X(s.p05)};width:calc(${X(s.p95 - s.p05)} + 3px);background:${col(id)}"></span>${a != null ? `<span class="v23" style="left:${X(a)}"></span>` : ""}<span class="md" style="left:${X(s.med)};background:${col(id)}"></span></span><b>${s.med}</b></div>`; }).join(""); }
+  // ¿Llegan a 176? El histograma de un bloque.
+  function hist(nombre){
+    const b = B[nombre], h = b.hist, caja = sec.querySelector("#pr-hist"), W = Math.max(300, caja.clientWidth || 700), H = 220, m = {l: 30, r: 10, t: 28, b: 24};
+    const lo = Math.max(0, Math.min(b.p05 - 15, 150)), hi = Math.max(b.p95 + 15, 200), X = v => m.l + (v - lo)/(hi - lo)*(W - m.l - m.r), bw = Math.max(1, (W - m.l - m.r)/(hi - lo) - 1);
+    const max = Math.max(...h.slice(lo, hi + 1), 1), Y = c => H - m.b - c/max*(H - m.t - m.b), color = b.partidos.length === 2 ? col("PP") : col("PSOE");
+    const barras = h.map((c,v)=>v < lo || v > hi || !c ? "" : `<rect x="${X(v).toFixed(1)}" y="${Y(c).toFixed(1)}" width="${bw.toFixed(1)}" height="${(H - m.b - Y(c)).toFixed(1)}" fill="${color}" opacity="${v >= 176 ? 1 : .45}" data-tip="${esc(`<b>${v} escaños</b><br>${dec(c/S.n*100)} % de las simulaciones`)}"/>`).join("");
+    const ticks = []; for (let v = Math.ceil(lo/10)*10; v <= hi; v += (hi - lo) > 80 ? 20 : 10) ticks.push(v);
+    caja.innerHTML = `<svg class="pr-hist" viewBox="0 0 ${W} ${H}" role="img" aria-label="Escaños de ${esc(nombre)} en las simulaciones">${barras}
+      <g class="eje">${ticks.map(v=>`<text x="${X(v) + bw/2}" y="${H - 6}" text-anchor="middle">${v}</text>`).join("")}</g>
+      ${176 >= lo && 176 <= hi ? `<g class="m176"><line x1="${X(176) - .5}" x2="${X(176) - .5}" y1="${m.t - 6}" y2="${H - m.b}"/><text x="${X(176) + 4}" y="${m.t - 10}">176 · mayoría: ${probTxt(b.p176)}</text></g>` : ""}</svg>`;
+  }
+  hist(Object.keys(B)[0]);
+  // Semana a semana: los principales partidos y el bloque PP + Vox.
+  function serie(){
+    const caja = sec.querySelector("#pr-serie"), W = Math.max(320, caja.clientWidth || 800), estrecho = W < 640, H = estrecho ? 280 : 340, m = {l: 32, r: estrecho ? 80 : 110, t: 18, b: 24};
+    const Sr = PR.serie, t0 = dias(Sr[0][0]), t1 = dias(D.eleccion), X = iso => m.l + (dias(iso) - t0)/(t1 - t0)*(W - m.l - m.r), Y = v => m.t + (1 - v/240)*(H - m.t - m.b);
+    const prin = ["PP","PSOE","VOX","SUMAR"].filter(id=>Sr.some(([,t])=>t[id])), bloque = Sr.map(([d,t])=>[d, (t.PP||0) + (t.VOX||0)]);
+    const linea = pts => pts.map(([d,v],i)=>`${i?"L":"M"}${X(d).toFixed(1)} ${Y(v).toFixed(1)}`).join("");
+    const ult = Sr[Sr.length-1], finales = [...prin.map(id=>({t:`${nom(id)} ${ult[1][id]||0}`, c:col(id), y:Y(ult[1][id]||0)})), {t:`PP + Vox ${bloque[bloque.length-1][1]}`, c:"var(--ink)", y:Y(bloque[bloque.length-1][1])}].sort((a,b)=>a.y-b.y);
+    for (let i = 1; i < finales.length; i++) finales[i].y = Math.max(finales[i].y, finales[i-1].y + 14);
+    const anios = ["2024-01-01","2025-01-01","2026-01-01"].filter(d=>dias(d) > t0);
+    caja.innerHTML = `<svg class="pr-serie" viewBox="0 0 ${W} ${H}" role="img" aria-label="Proyección de escaños semana a semana">
+      <g class="ejes eje">${[0,50,100,150,200].map(v=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`).join("")}${anios.map(d=>`<text x="${X(d)}" y="${H - 6}" text-anchor="middle">${d.slice(0,4)}</text>`).join("")}</g>
+      <g class="m176"><line x1="${m.l}" x2="${W - m.r}" y1="${Y(176)}" y2="${Y(176)}"/><text x="${m.l + 4}" y="${Y(176) - 5}">176</text></g>
+      <path class="bl" d="${linea(bloque)}" stroke="var(--ink)" opacity=".7"/>${prin.map(id=>`<path class="l" d="${linea(Sr.map(([d,t])=>[d, t[id]||0]))}" stroke="${col(id)}"/>`).join("")}
+      <g class="fin">${finales.map(f=>`<text x="${X(ult[0]) + 6}" y="${(f.y + 4).toFixed(1)}" fill="${f.c}">${esc(f.t)}</text>`).join("")}</g><line class="cruz" y1="${m.t}" y2="${H - m.b}"/></svg>`;
+    const svg = caja.querySelector("svg"), cruz = svg.querySelector(".cruz");
+    svg.onmousemove = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left)/r.width*W; let k = 0, d = 1e9; Sr.forEach(([f],i)=>{ const dd = Math.abs(X(f) - x); if (dd < d){ d = dd; k = i; } });
+      const [f, t] = Sr[k]; cruz.setAttribute("x1", X(f)); cruz.setAttribute("x2", X(f)); cruz.style.opacity = .5;
+      tip(`<b>Semana del ${esc(fLarga(f))}</b>${Object.entries(t).sort((a,b)=>b[1]-a[1]).map(([id,v])=>filaTip(col(id), nom(id), v)).join("")}${filaTip("var(--ink)", "PP + Vox", (t.PP||0) + (t.VOX||0))}`, ev); };
+    svg.onmouseleave = () => { cruz.style.opacity = 0; tip(""); };
+  }
+  serie();
+  // Provincia a provincia: el que más escaños se llevaría y los escaños en el aire.
+  let selP = null;
+  const vp = cod => PR.votos?.[cod] || {};   // el voto proyectado en la provincia, para desempatar y para enseñarlo
+  const ganaProv = cod => { const r = PR.provincias[cod] || {}; return Object.entries(r).sort((a,b)=>b[1]-a[1] || (vp(cod)[b[0]]||0) - (vp(cod)[a[0]]||0))[0]?.[0]; };
+  const aire = Object.entries(PR.ultimos).filter(([,u])=>u.falta < .5).sort((a,b)=>a[1].falta - b[1].falta);
+  if (GEO){ sec.querySelector("#pr-mapa").innerHTML = `<svg class="pr-mapa" viewBox="0 0 ${GEO.ancho} ${GEO.alto}" role="img" aria-label="Quién ganaría cada provincia">${Object.entries(GEO.provincias).map(([cod,g])=>`<path d="${g.d}" data-p="${cod}" class="${PR.ultimos[cod]?.falta < .5 ? "aire" : ""}" fill="${col(ganaProv(cod))}"/>`).join("")}<path d="${GEO.canarias}" fill="none" stroke="var(--line-strong)"/></svg>`; }
+  const nomProv = cod => GEO?.provincias?.[cod]?.circ || cod;
+  function lado(){
+    const el = sec.querySelector("#pr-lado");
+    if (!selP){ el.innerHTML = `<div class="eyebrow">Escaños en el aire</div><p class="enc-nota" style="margin:2px 0 8px">El último escaño de estas provincias se decide por menos de medio punto de voto.</p><div class="pr-aire">${aire.map(([cod,u])=>`<button type="button" data-pr-p="${cod}"><b>${esc(nomProv(cod))}</b><small>${dec(u.falta, 2)} pt</small><span><i style="background:${col(u.gana)}"></i>${esc(nom(u.gana))} → <i style="background:${col(u.segundo)}"></i>${esc(nom(u.segundo))}</span></button>`).join("") || `<p class="nota">Ninguno.</p>`}</div>`; return; }
+    const r = PR.provincias[selP] || {}, u = PR.ultimos[selP], n = PR.escanos2026[selP], v = vp(selP);
+    const filas = Object.keys({...v, ...r}).map(id=>[id, r[id] || 0]).filter(([id,e])=>e || (v[id] || 0) >= 3).sort((a,b)=>b[1]-a[1] || (v[b[0]]||0) - (v[a[0]]||0)), max = Math.max(...filas.map(x=>x[1]), 1);
+    el.innerHTML = `<div class="pr-prov"><div class="eyebrow">${n} ${n === 1 ? "escaño" : "escaños"} · proyección</div><h3>${esc(nomProv(selP))}</h3><div class="pr-filas">${filas.map(([id,e])=>`<div class="pr-f"><span class="n"><i style="background:${col(id)}"></i>${esc(nom(id))}</span><span class="t"><span class="rg" style="left:0;width:${(e/max*100).toFixed(1)}%;background:${col(id)};opacity:.85"></span></span><b>${e} <span class="cmp">${dec(v[id] || 0)} %</span></b></div>`).join("")}</div>
+      ${u ? `<p class="enc-nota">El último escaño sería de <b>${esc(nom(u.gana))}</b>; a ${esc(nom(u.segundo))} le faltarían ${dec(u.falta, 2)} puntos de voto en la provincia para quitárselo.</p>` : ""}
+      <p><button class="btn" type="button" data-pr-x>← Escaños en el aire</button> <a class="btn" href="#elecciones-provincia-${esc(slugP(selP))}">Su historia →</a></p></div>`;
+  }
+  const slugP = cod => ctx.slug(nomProv(cod));   // el mismo enlace que usa la web para cada provincia
+  lado();
+  const mapa = sec.querySelector("#pr-mapa svg");
+  if (mapa){ mapa.addEventListener("mousemove", ev=>{ const p = ev.target.closest("[data-p]"); if (!p) return tip(""); const cod = p.dataset.p, r = PR.provincias[cod] || {};
+      tip(`<b>${esc(nomProv(cod))}</b> · ${PR.escanos2026[cod]} escaños${Object.entries(r).sort((a,b)=>b[1]-a[1] || (vp(cod)[b[0]]||0) - (vp(cod)[a[0]]||0)).map(([id,v])=>filaTip(col(id), nom(id), `${v} <span style="color:var(--muted);font-weight:400">· ${dec(vp(cod)[id] || 0)} %</span>`)).join("")}`, ev); });
+    mapa.addEventListener("mouseleave", ()=>tip("")); }
+  const elegir = cod => { selP = cod; mapa?.querySelectorAll("path[data-p]").forEach(p=>p.classList.toggle("sel", p.dataset.p === cod)); lado(); };
+  sec.addEventListener("click", ev=>{
+    const b = ev.target.closest("[data-pr-b]"); if (b){ sec.querySelectorAll("[data-pr-b]").forEach(x=>x.setAttribute("aria-pressed", String(x === b))); hist(b.dataset.prB); return; }
+    const p = ev.target.closest("#pr-mapa [data-p], [data-pr-p]"); if (p){ elegir(p.dataset.p || p.dataset.prP); return; }
+    if (ev.target.closest("[data-pr-x]")) elegir(null);
+  });
+}

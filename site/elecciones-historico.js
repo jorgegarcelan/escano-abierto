@@ -594,6 +594,13 @@ function hemiReal(etiqueta = "350", {clase = ""} = {}){
   return `<svg class="hi-hemi hi-real ${clase}" viewBox="-4 -4 ${P.ancho + 8} ${P.alto + 4}" role="img" aria-label="Hemiciclo del Congreso, con los escaños en su sitio">${pts.map((p,k)=>`<circle cx="${p.x}" cy="${p.y}" r="5.3" style="--k:${k}"></circle>`).join("")}
     ${etiqueta ? `<text class="anio" x="${cx}" y="${P.alto*.8}" text-anchor="middle" style="font-size:${(P.ancho*.075).toFixed(0)}px">${esc(etiqueta)}</text>` : ""}</svg>`;
 }
+/* Para otros módulos (las encuestas): el hemiciclo real en `el`, pintado con segmentos {color, n, tip} ya ordenados
+   de izquierda a derecha. */
+export function hemicicloReal(el, c, segs, etiqueta = ""){
+  ctx = ctx || c; estilos();
+  if (!el.querySelector(".hi-hemi")) el.innerHTML = hemiReal(etiqueta) || hemiSVG(350, {etiqueta});
+  requestAnimationFrame(()=>pintarHemi(el.querySelector(".hi-hemi"), segs, etiqueta));
+}
 /* Un hemiciclo como SVG vacío; pintarHemi() le pone color (con transición) a partir de segmentos {color, n, tip}. */
 function hemiSVG(N, {etiqueta="", clase=""}={}){
   const {pts, rad} = asientos(N);

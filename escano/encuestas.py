@@ -2,6 +2,8 @@
 
 - `encuestas.json`: las encuestas publicadas desde las generales de 2023 (la tabla «Voting intention estimates» de
   Wikipedia, que recoge la estimación de voto y de escaños de cada encuestadora) y la media de todas ellas día a día.
+- `proyeccion.json`: los escaños que salen de esa media (proyeccion.py): la proyección central, las simulaciones y
+  la central semana a semana.
 
     python -m escano.encuestas        # descarga lo último y escribe data/encuestas/*.json
 
@@ -241,6 +243,9 @@ def escribir_datos() -> dict:
     datos = construir_datos()
     CARPETA.mkdir(parents=True, exist_ok=True)
     (CARPETA / "encuestas.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
+    from . import proyeccion   # la proyección de escaños, con la media de hoy
+    proy = proyeccion.construir(datos["media"], [p["id"] for p in datos["partidos"]], datos["actualizado"])
+    (CARPETA / "proyeccion.json").write_text(json.dumps(proy, ensure_ascii=False, separators=(",", ":")))
     return datos
 
 
