@@ -98,6 +98,31 @@ nav.tabs .tab-menu[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .tab-item:hover,.tab-item:focus-visible{background:var(--sunk);outline:none}
 .tab-item.activa b::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 @media (prefers-reduced-motion:no-preference){ .tab-panel:not([hidden]){animation:tab-panel .15s ease} @keyframes tab-panel{from{opacity:0;transform:translateY(-4px)}} }
+/* menú ☰: cuando la barra no cabe (≤1200 px), las secciones van en un panel a pantalla completa bajo la barra */
+.btn-menu{display:none;position:relative;appearance:none;flex:none;width:36px;height:36px;align-items:center;justify-content:center;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-ctl);color:var(--ink);cursor:pointer}
+.btn-menu:hover{border-color:var(--line-strong)}
+.hamb{position:relative;width:16px;height:12px}
+.hamb i{position:absolute;left:0;width:100%;height:1.6px;border-radius:2px;background:currentColor;transition:transform .2s,opacity .2s,top .2s}
+.hamb i:nth-child(2){top:5.2px} .hamb i:nth-child(3){top:10.4px}
+.btn-menu[aria-expanded="true"] .hamb i:nth-child(1){top:5.2px;transform:rotate(45deg)}
+.btn-menu[aria-expanded="true"] .hamb i:nth-child(2){opacity:0}
+.btn-menu[aria-expanded="true"] .hamb i:nth-child(3){top:5.2px;transform:rotate(-45deg)}
+.btn-menu .tab-punto{position:absolute;top:4px;right:4px;margin:0}
+.btn-menu[aria-expanded="true"] .tab-punto{display:none}
+.menu-movil{position:fixed;left:0;right:0;bottom:0;z-index:60;overflow-y:auto;overscroll-behavior:contain;padding:6px 16px calc(40px + env(safe-area-inset-bottom,0px));background:var(--bg)}
+.menu-movil[hidden]{display:none}
+.menu-movil>*{max-width:560px;margin-inline:auto}
+.mm-item{appearance:none;display:flex;align-items:center;gap:8px;width:100%;min-height:52px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 4px;color:var(--ink);font:600 17px var(--sans);cursor:pointer}
+.mm-sub{display:grid;gap:2px;align-content:center;min-height:58px}
+.mm-sub b{display:flex;align-items:center;gap:8px;font:600 15.5px var(--sans)}
+.mm-sub small{font:400 13px var(--sans);color:var(--muted)}
+.mm-item:not(.mm-sub).activa::after,.mm-sub.activa b::after{content:"";flex:none;width:7px;height:7px;margin-left:auto;border-radius:50%;background:var(--si);box-shadow:0 0 10px var(--si)}
+.mm-item:hover,.mm-item:focus-visible{background:var(--sunk);outline:none}
+.menu-movil .mm-grupo h2{margin:24px 4px 0;padding-bottom:8px;border-bottom:1px solid var(--line);font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mm-grupo+.mm-item{margin-top:12px}
+html.menu-abierto{overflow:hidden}
+@media (prefers-reduced-motion:no-preference){ .menu-movil:not([hidden]){animation:tab-panel .18s ease} }
+@media (max-width:1200px){ .topbar-in nav.tabs{display:none} .btn-menu{display:inline-flex} }
 .kpis{display:flex;flex-wrap:wrap;gap:8px 32px;padding-block:14px;border-block:1px solid var(--line)}
 .kpi{display:flex;align-items:baseline;gap:8px}
 .kpi b{font-family:var(--display);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
@@ -1043,6 +1068,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
         <button id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
         <button id="tab-metodo" data-vista="metodo">Método</button>
       </nav>
+      <button class="btn-menu" id="btn-menu" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Menú"><span class="hamb" aria-hidden="true"><i></i><i></i><i></i></span><i class="tab-punto" hidden></i></button>
     </div>
   </header>
   <!-- Fuera de la barra: un backdrop-filter en .topbar (algunas marcas) haría que position:fixed fuera relativo a ella -->
@@ -1059,6 +1085,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
     <button class="tab-item" id="tab-oradores" data-vista="oradores" role="menuitem"><b>Por orador</b><small>Busca a quien habla, por nombre o por tema</small></button>
     <button class="tab-item" id="tab-organigrama" data-vista="organigrama" role="menuitem"><b>Organigrama</b><small>Los altos cargos del Estado, con su BOE</small></button>
   </div>
+  <nav class="menu-movil" id="menu-movil" aria-label="Secciones" hidden></nav>
 
   <div class="periodo-bar"><label for="periodo">Periodo</label><select id="periodo" aria-label="Periodo que se muestra"></select><span id="periodo-info"></span></div>
   <main>
@@ -2857,7 +2884,7 @@ const franjaJuego = () => { const st=qldLeer(), hecho=st.dia?.fecha===hoyISO();
 // Aviso del reto diario: mientras no se haya jugado hoy, un punto en la pestaña y un botón discreto en la esquina
 // (fuera del juego). La ✕ lo quita hasta el día siguiente. Sin servidor no hay notificaciones push.
 const retoPendiente = () => qldLeer().dia?.fecha!==hoyISO();
-function puntoReto(){ const p=$("#tab-quien-lo-dijo .tab-punto"); if (p) p.hidden = !retoPendiente(); }
+function puntoReto(){ const no = !retoPendiente(); document.querySelectorAll(".tab-punto").forEach(p=>p.hidden = no); }
 function avisoReto(vista){
   const a = document.getElementById("qld-aviso");
   const toca = vista!=="quien-lo-dijo" && retoPendiente() && qldLeer().avisado!==hoyISO();
@@ -3602,6 +3629,8 @@ function show(id, push){
   VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; const b=$("#tab-"+t); if (b){ b.classList.toggle("activa", t===id); if (t===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); } });
   document.querySelectorAll(".tab-menu").forEach(m=>m.classList.toggle("activa", !!$("#"+m.getAttribute("aria-controls")+" .activa")));
   cerrarMenus();
+  document.querySelectorAll("#menu-movil [data-go]").forEach(b=>{ b.classList.toggle("activa", b.dataset.go===id); if (b.dataset.go===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+  menuMovil(false);
   const nav = $("nav.tabs"), act = $("nav.tabs>button.activa");   // en el móvil la barra se desplaza: que se vea la sección actual
   if (act && (act.offsetLeft < nav.scrollLeft || act.offsetLeft + act.offsetWidth > nav.scrollLeft + nav.clientWidth)) nav.scrollLeft = act.offsetLeft - 8;
   $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo" || id==="elecciones" || id==="geografia";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
@@ -3644,6 +3673,23 @@ document.querySelectorAll(".tab-panel").forEach(p=>p.addEventListener("keydown",
 document.addEventListener("click", e=>{ if (!e.target.closest(".tab-panel")) cerrarMenus(); }, SIG);
 window.addEventListener("resize", ()=>cerrarMenus(), SIG);
 $("nav.tabs").addEventListener("scroll", ()=>cerrarMenus(), SIG);
+// Menú ☰: el panel se construye con la propia barra y sus menús, para que no haya dos listas que mantener.
+// Cada sección es un [data-go]; al elegir una, show() la marca y cierra el panel.
+$("#menu-movil").innerHTML = [...$("nav.tabs").children].map(b=>{
+  if (b.dataset.vista) return `<button class="mm-item" type="button" data-go="${b.dataset.vista}">${b.innerHTML}</button>`;
+  const its = [...$("#"+b.getAttribute("aria-controls")).querySelectorAll(".tab-item")];
+  return `<div class="mm-grupo"><h2>${esc(b.textContent)}</h2>${its.map(it=>`<button class="mm-item mm-sub" type="button" data-go="${it.dataset.vista}">${it.innerHTML}</button>`).join("")}</div>`;
+}).join("");
+function menuMovil(abrir){
+  const m = $("#menu-movil"), btn = $("#btn-menu");
+  if (m.hidden === !abrir) return;
+  m.hidden = !abrir; btn.setAttribute("aria-expanded", String(abrir));
+  document.documentElement.classList.toggle("menu-abierto", abrir);
+  if (abrir){ m.style.top = Math.round($(".topbar").getBoundingClientRect().bottom) + "px"; m.scrollTop = 0; }
+}
+$("#btn-menu").addEventListener("click", e=>{ e.stopPropagation(); cerrarMenus(); menuMovil($("#menu-movil").hidden); }, SIG);
+document.addEventListener("keydown", e=>{ if (e.key==="Escape" && !$("#menu-movil").hidden){ menuMovil(false); $("#btn-menu").focus(); } }, SIG);
+matchMedia("(min-width:1201px)").addEventListener("change", e=>{ if (e.matches) menuMovil(false); }, SIG);
 document.addEventListener("click", e=>{
   const g = e.target.closest("[data-go]");
   if (g){ e.preventDefault(); ir(g.dataset.go, g.dataset.anchor); return; }
@@ -3654,7 +3700,7 @@ document.addEventListener("click", e=>{
   const om = e.target.closest("[data-org-mas]");
   if (om){ document.getElementById("org-panel").innerHTML = ultimosCambiosOrg(+om.dataset.orgMas); return; }
   if (e.target.closest("[data-org-volver]")){ orgSel=null; pintarPanelOrg(); Org.resaltar(); try{ history.replaceState(null,"","#organigrama"); }catch(e){} return; }
-  if (e.target.closest("#btn-buscar")){ abrirBuscador(); return; }
+  if (e.target.closest("#btn-buscar")){ menuMovil(false); abrirBuscador(); return; }
   const bu = e.target.closest("[data-bu]");
   if (bu){ irResultado(buscaRes[+bu.dataset.bu]); return; }
   const cp = e.target.closest("[data-compartir]");
