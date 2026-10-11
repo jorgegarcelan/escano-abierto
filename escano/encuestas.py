@@ -297,9 +297,15 @@ def construir_datos(hoy: date | None = None) -> dict:
     }
 
 
+def congeladas(ahora: datetime | None = None) -> bool:
+    """Desde el 24-N no se actualiza nada: primero la veda; después, ya hay resultados y las encuestas son historia."""
+    ahora = ahora or datetime.now(timezone(timedelta(hours=1)))
+    return ahora.date() >= VEDA[0]
+
+
 def escribir_datos() -> dict:
-    if en_veda():
-        print("Veda electoral (LOREG, art. 69.7): no se actualizan las encuestas hasta las 20.00 del 29-N.")
+    if congeladas():
+        print("Encuestas congeladas desde el 24-N (veda electoral, LOREG art. 69.7, y después los resultados): no se actualizan.")
         return json.loads((CARPETA / "encuestas.json").read_text())
     datos = construir_datos()
     CARPETA.mkdir(parents=True, exist_ok=True)
@@ -332,7 +338,9 @@ def escribir(carpeta: Path) -> None:
 
 
 if __name__ == "__main__":
+    from .config import SITIO
     d = escribir_datos()
+    escribir(SITIO / "datos" / "encuestas")   # y a la web, sin esperar a reconstruir todo
     print(f"{len(d['encuestas'])} encuestas, de {d['encuestas'][-1]['fin']} a {d['encuestas'][0]['fin']}")
     ult = {p: s["m"][-1] for p, s in d["media"]["partidos"].items() if s["m"] and s["m"][-1] is not None}
     print("media de hoy:", ", ".join(f"{p} {v:.1f}" for p, v in sorted(ult.items(), key=lambda t: -t[1])))

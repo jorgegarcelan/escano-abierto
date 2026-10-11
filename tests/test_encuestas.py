@@ -66,3 +66,9 @@ def test_error_de_una_encuesta():
     res = {"PP": 33.1, "PSOE": 31.7, "VOX": 12.4, "IZQ": 12.3}
     assert ac._error({"PP": 34.1, "PSOE": 28.7, "VOX": 12.4, "IZQ": 13.3}, res, list(res)) == 1.25
     assert ac._error({"PP": 34.1}, res, list(res)) is None   # con un solo partido no se mide
+
+
+def test_congeladas_desde_el_24():
+    assert not en.congeladas(datetime(2026, 11, 23, 21, 0))
+    assert en.congeladas(datetime(2026, 11, 24, 0, 0))
+    assert en.congeladas(datetime(2026, 12, 3, 9, 0))
