@@ -214,7 +214,7 @@ export async function geografiaDelVoto(el){
       <p>Los escaños no se reparten por municipios ni por territorio, sino por provincias. Cada una tiene dos fijos y el resto va por población.</p>
       <p>Por eso en ${esc(nombreP(ps[0].c))} un diputado representa a ${n(fmt(ps[0].h))} habitantes, y en ${esc(nombreP(ps[ps.length - 1].c))}, a ${n(fmt(ps[ps.length - 1].h))}: un voto de ${esc(nombreP(ps[0].c))} pesa ${dec(ps[ps.length - 1].h / ps[0].h, 1)} veces más.</p>`},
     {id: "fichas", n: "Las fichas", k: "Y ahora, tu provincia", t: "Cada provincia, cada municipio", html: () => `
-      <p>Detrás de cada punto hay un municipio con su ficha: pulsa cualquiera en el mapa. Cada provincia tiene además su historia electoral desde 1977, y cada comunidad y provincia, su ficha geográfica.</p><p><a href="#elecciones-provincias">Las 52 circunscripciones →</a><br><a href="#geografia">La geografía de España, sin votos →</a></p>`},
+      <p>Detrás de cada punto hay un municipio con su ficha: pulsa cualquiera en el mapa. Cada provincia tiene además su historia electoral desde 1977, y cada comunidad y provincia, su ficha geográfica.</p><p><a href="/elecciones/provincias/">Las 52 circunscripciones →</a><br><a href="/geografia/">La geografía de España, sin votos →</a></p>`},
   ];
   const caja = (p, i) => `<div class="geo-kicker">${esc(p.k)}</div><h3>${esc(p.t)}</h3>${p.html()}`;
 
@@ -394,7 +394,7 @@ export async function geografiaDelVoto(el){
     tip(`<b>${esc(d.n)}</b> <small>${esc(nombreP(d.c.slice(0, 2)))}</small><br>${fmt(d.pob)} habitantes${d.pob0 ? ` (${signo(d.pob / d.pob0 - 1, 0)} desde ${M.anio0})` : ""}${d.may65 != null ? `<br>${dec(d.may65, 0)} % con 65 años o más` : ""}${d.renta != null ? ` · ${fmt(d.renta)} € por persona` : ""}${d.v ? `<br>23J: ${BLOQUES.slice(0, 4).map(([k2, t2]) => `${t2} ${pct(d.v[k2] / d.v.val, 0)}`).join(" · ")}` : ""}${d.giro != null && PASOS[modo.paso].id === "giro" ? `<br>Giro 2019→2023: ${d.giro > 0 ? "+" : "−"}${dec(Math.abs(d.giro), 1)} puntos hacia ${d.giro > 0 ? "PP, Vox y Cs" : "PSOE y Sumar"}` : ""}<br><small>Pulsa para ver su ficha</small>`, ev);
   });
   canvas.addEventListener("mouseleave", () => tip(""));
-  canvas.addEventListener("click", ev => { const i = cercano(ev); if (i >= 0){ presentar(false); location.hash = `geografia-municipio-${D[i].c}`; } });
+  canvas.addEventListener("click", ev => { const i = cercano(ev); if (i >= 0){ presentar(false); irA(`geografia-municipio-${D[i].c}`); } });
 }
 const modo = {paso: -1, cubo: null, tam: "mun", espana: "laponia"};
 const rgbDe = s => s.startsWith("#") ? hexRgb(s) : s.match(/\d+/g).slice(0, 3).map(Number);

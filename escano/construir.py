@@ -393,11 +393,16 @@ def construir(con_ia: bool = True) -> dict:
         escribir_retos(todos)
 
     fechas = sorted({s["fecha"] for s in sesiones_web})
+    # «Datos hasta»: lo más reciente que hay (una sesión, una votación o un nombramiento o cese del BOE), no el día
+    # en que se construye la web, que cambia aunque no haya nada nuevo.
+    boe = json.loads((DATOS / "boe.json").read_text()) if (DATOS / "boe.json").exists() else {}
+    hasta = max([*fechas[-1:], *(v["fecha"] for v in web_votos if v.get("fecha")),
+                 *(e["fecha"] for e in boe.get("eventos", []) if e.get("fecha"))], default="")
     grupos = {g: {**INFO_GRUPOS[g], "codigo": g, "escanos": escanos.get(g, 0)} for g in INFO_GRUPOS}
     salida = {
         "datos": {
             "meta": {"periodo": f"{fechas[0]} – {fechas[-1]}" if fechas else "",
-                     "generado": date.today().isoformat(), "legislatura": LEGISLATURA_ROMANA},
+                     "generado": date.today().isoformat(), "datos_hasta": hasta, "legislatura": LEGISLATURA_ROMANA},
             "grupos": grupos,
             "sesiones": sesiones_web,
             "votaciones": web_votos,

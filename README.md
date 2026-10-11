@@ -65,7 +65,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 python -m escano construir --sin-ia       # web a partir de los datos del repositorio
-python -m http.server 8000 -d site        # http://localhost:8000
+python scripts/servir.py 8000 site       # http://localhost:8000 (sirve las rutas de la web, como Vercel)
 ```
 
 El repositorio ya incluye los datos de la legislatura, así que no hace falta descargar nada para empezar. Para traer lo nuevo del Congreso:

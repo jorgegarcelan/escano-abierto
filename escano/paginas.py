@@ -1,10 +1,11 @@
 """Páginas para compartir: una por diputado, votación, sesión e iniciativa, con su tarjeta Open Graph.
 
-La web es una sola página que se mueve con el #fragmento, y los enlaces con # no tienen título ni imagen
-propios cuando se comparten. Este módulo genera, para cada cosa que merece un enlace, una página estática
-(site/diputado/<slug>/index.html…) con el título, la descripción y la imagen que leen WhatsApp, X o
-Google, y que redirige a la vista de la web. La imagen (1200×630) se dibuja aquí con Pillow, con la
-estética de la marca Marcador.
+La web es una sola página (index.html) y cada vista tiene su ruta (/diputado/<slug>/, /votacion/<id>/…). Para lo
+que merece un enlace propio, este módulo escribe en esa ruta la misma página con su cabecera: el título, la
+descripción y la imagen que leen WhatsApp, X o Google (que no ejecutan la web para sacarlos). Lleva en data-ruta
+la vista que abre. Las demás rutas (/votaciones/, /elecciones/…) las sirve index.html tal cual (vercel.json).
+Estas páginas no se versionan: se escriben en cada construcción. La imagen (1200×630) se dibuja aquí con Pillow,
+con la estética de la marca Marcador.
 
 Las tarjetas solo llevan datos que no cambian (una votación ya votada, el escaño de un diputado), así
 que se regeneran igual y solo se reescriben si su contenido cambia.
@@ -409,16 +410,22 @@ def tarjeta_juego(grupos: dict) -> "Tarjeta":
 
 # ---------------------------------------------------------------- páginas
 
+# Las secciones de la web (sus rutas, para el sitemap): las sirve index.html tal cual.
+SECCIONES = ["elecciones", "geografia", "dias", "votaciones", "leyes", "temas", "explora", "diputados",
+             "grupos", "organigrama", "oradores", "metodo", "glosario", "como-ley", "preguntas"]
+INDEX = SITIO / "index.html"   # la plantilla: la propia web (fijada aquí; los tests cambian SITIO)
+_PLANTILLA: list[str] = []
+_META = re.compile(r"<!--meta.*?<!--/meta-->", re.S)
+
+
 def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: bool = False) -> bytes:
-    raiz = "../../"
+    """index.html con la cabecera de esta página y, en data-ruta, la vista que abre."""
+    if not _PLANTILLA:
+        _PLANTILLA.append(INDEX.read_text())
     url = f"{URL_SITIO}/{ruta}/" if URL_SITIO else f"/{ruta}/"
     img = f"{URL_SITIO}/{imagen}" if URL_SITIO else f"/{imagen}"
     e = lambda s: html.escape(s, quote=True)
-    return f"""<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    meta = f"""<!--meta-->
 <title>{e(titulo)} · Escaño Abierto</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{e(url)}">
@@ -433,19 +440,13 @@ def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: 
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#08090B">
-<link rel="icon" href="{raiz}marcas/marcador-favicon.svg" type="image/svg+xml">
-<meta http-equiv="refresh" content="0; url={raiz}#{hashweb}">
-<script>location.replace("{raiz}" + location.search + "#{hashweb}");</script>
-<style>body{{margin:0;padding:48px 24px;background:#08090B;color:#EEEEE8;font:16px/1.5 system-ui,sans-serif}}a{{color:#EEEEE8}}</style>
-</head>
-<body>
-<h1>{e(titulo)}</h1>
-<p>{e(desc)}</p>
-<p><a href="{raiz}#{hashweb}">Abrir en Escaño Abierto</a></p>
-</body>
-</html>
-""".encode()
+<!--/meta-->"""
+    pagina, n = _META.subn(lambda _: meta, _PLANTILLA[0], count=1)
+    if not n:
+        raise SystemExit("paginas: index.html no tiene el bloque <!--meta--> … <!--/meta-->")
+    pagina = pagina.replace('<html lang="es" data-marca="marcador">',
+                            f'<html lang="es" data-marca="marcador" data-ruta="{e(hashweb)}">', 1)
+    return pagina.encode()
 
 
 # ---------------------------------------------------------------- RSS
@@ -532,7 +533,8 @@ def generar(salida: dict, plano: dict) -> dict:
     datos = salida["datos"]
     dips, grupos = datos["diputados"], datos["grupos"]
     escritas = {"paginas": 0, "tarjetas": 0, "rss": 0}
-    urls = [""]
+    _PLANTILLA.clear()
+    urls = ["", *(f"{v}/" for v in SECCIONES)]
 
     def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta, clave: str = "") -> None:
         """clave: resumen de lo que dibuja la tarjeta cuando puede cambiar (una ley que avanza, la semana en

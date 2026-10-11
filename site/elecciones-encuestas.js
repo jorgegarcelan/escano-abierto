@@ -85,7 +85,7 @@ export function enVeda(datos, ahora = new Date()){
 }
 export const avisoVeda = () => `<div class="enc-veda"><div class="eyebrow">Veda electoral</div><h3>Hasta las 20.00 del domingo, sin encuestas</h3>
   <p>La ley electoral (LOREG, art. 69.7) prohíbe publicar, difundir o reproducir encuestas durante los cinco días anteriores a la votación, del 24 de noviembre al cierre de los colegios. Por eso esta página no las enseña ahora: ni las nuevas ni las de antes.</p>
-  <p>Volverán a verse a las 20.00 del 29 de noviembre. Mientras, puedes ver <a href="#elecciones-historico">cómo fueron las dieciséis elecciones anteriores</a>.</p></div>`;
+  <p>Volverán a verse a las 20.00 del 29 de noviembre. Mientras, puedes ver <a href="/elecciones/historico/">cómo fueron las dieciséis elecciones anteriores</a>.</p></div>`;
 
 export async function pintarEncuestas(sec){
   estilos();
@@ -273,7 +273,7 @@ export async function pintarProyeccion(sec, ctx){
     <section class="sec"><div class="sec-h"><h2>Provincia a provincia</h2><p>Quién se llevaría más escaños en cada una. Con borde discontinuo, donde el último escaño está a menos de medio punto. Pulsa una provincia.</p></div>
       <div class="pr-mapa-w"><div class="chart"><div id="pr-mapa"></div></div><div class="chart" id="pr-lado"></div></div></section>
     <section class="sec"><div class="sec-h"><h2>Cómo se hace</h2></div><div class="chart pr-metodo">
-      <ol><li><b>La media de las encuestas</b> (la de <a href="#elecciones-encuestas">Las encuestas</a>) da el voto de cada partido en toda España.</li>
+      <ol><li><b>La media de las encuestas</b> (la de <a href="/elecciones/encuestas/">Las encuestas</a>) da el voto de cada partido en toda España.</li>
         <li><b>A cada provincia</b>, desde su resultado de 2023: si un partido sube un 50 % en España, sube un 50 % en cada provincia. Podemos, que en 2023 fue dentro de Sumar, hereda su reparto provincial; Se Acabó La Fiesta, a medias uniforme y como Vox; Aliança Catalana y Adelante Andalucía, solo en su comunidad.</li>
         <li><b>La ley D'Hondt</b> en cada provincia, con los escaños de 2026 (Cádiz pierde uno y Madrid gana uno) y la barrera del 3 %. Con el resultado de 2023, el modelo devuelve exactamente el Congreso de 2023.</li>
         <li><b>${fmt(S.n)} simulaciones</b>: en cada una, cada partido se desvía de su media lo que suelen fallar las encuestas (unos ±2 puntos el PP o el PSOE, menos de uno los pequeños) y cada provincia, un poco más. Las probabilidades son la parte de simulaciones en que pasa cada cosa.</li></ol>
@@ -332,7 +332,7 @@ export async function pintarProyeccion(sec, ctx){
     const filas = Object.keys({...v, ...r}).map(id=>[id, r[id] || 0]).filter(([id,e])=>e || (v[id] || 0) >= 3).sort((a,b)=>b[1]-a[1] || (v[b[0]]||0) - (v[a[0]]||0)), max = Math.max(...filas.map(x=>x[1]), 1);
     el.innerHTML = `<div class="pr-prov"><div class="eyebrow">${n} ${n === 1 ? "escaño" : "escaños"} · proyección</div><h3>${esc(nomProv(selP))}</h3><div class="pr-filas">${filas.map(([id,e])=>`<div class="pr-f"><span class="n"><i style="background:${col(id)}"></i>${esc(nom(id))}</span><span class="t"><span class="rg" style="left:0;width:${(e/max*100).toFixed(1)}%;background:${col(id)};opacity:.85"></span></span><b>${e} <span class="cmp">${dec(v[id] || 0)} %</span></b></div>`).join("")}</div>
       ${u ? `<p class="enc-nota">El último escaño sería de <b>${esc(nom(u.gana))}</b>; a ${esc(nom(u.segundo))} le faltarían ${dec(u.falta, 2)} puntos de voto en la provincia para quitárselo.</p>` : ""}
-      <p><button class="btn" type="button" data-pr-x>← Escaños en el aire</button> <a class="btn" href="#elecciones-provincia-${esc(slugP(selP))}">Su historia →</a></p></div>`;
+      <p><button class="btn" type="button" data-pr-x>← Escaños en el aire</button> <a class="btn" href="/elecciones/provincia-${esc(slugP(selP))}/">Su historia →</a></p></div>`;
   }
   const slugP = cod => ctx.slug(nomProv(cod));   // el mismo enlace que usa la web para cada provincia
   lado();
@@ -406,7 +406,7 @@ export async function pintarMercados(sec){
         return `<div class="me-k"><span class="q">${esc(m.pregunta)}</span><b>${pc(o.p)}</b><span class="r">${esc(titular[t](m))}</span>${chispa(o.hist)}<small>${usd(m.volumen)} apostados</small></div>`; }).join("")}</div></section>
     ${orden.map(t=>{ const m = por[t]; return `<section class="sec"><div class="sec-h"><h2>${esc(m.pregunta)}</h2><p>${t === "fuera" ? "Sánchez sigue en funciones hasta que el nuevo Congreso invista presidente: las Cortes se constituyen el 23 de diciembre y la investidura puede no llegar antes de Año Nuevo." : t === "presidente" ? "Quién sale investido después del 29N. Las opciones con menos del 0,5 % van juntas." : "El partido con más escaños el 29N."}</p></div>
       <div class="me-bl"><div class="chart"><div class="me-op" data-me-op="${t}"></div><p class="me-vol">${usd(m.volumen)} apostados desde el ${esc(fLarga(m.inicio))} · <a href="${esc(m.url)}">el mercado en Polymarket</a></p></div><div class="chart"><div data-me-g="${t}"></div></div></div></section>`; }).join("")}
-    <section class="sec"><div class="sec-h"><h2>Las apuestas y la proyección</h2><p>Lo que dice el mercado al lado de lo que sale de nuestra <a href="#elecciones-proyeccion">proyección</a> con la media de las encuestas.</p></div>
+    <section class="sec"><div class="sec-h"><h2>Las apuestas y la proyección</h2><p>Lo que dice el mercado al lado de lo que sale de nuestra <a href="/elecciones/proyeccion/">proyección</a> con la media de las encuestas.</p></div>
       <div class="chart"><table class="me-cmp"><thead><tr><th></th><th>Polymarket</th><th>Proyección</th></tr></thead><tbody id="me-cmp"></tbody></table>
       <p class="enc-nota">Las dos cosas no miden lo mismo: la proyección dice qué pasaría si se votara hoy como dicen las encuestas; el mercado apuesta por lo que pasará el 29N y después (pactos, investidura). Un mercado con poco dinero se mueve con pocas apuestas.</p></div></section>`;
   // Las opciones, en barras (las de menos del 0,5 %, juntas).
@@ -513,7 +513,7 @@ export async function pintarAcierto(sec){
       <div class="chart" style="overflow-x:auto"><table class="ac-mat" id="ac-mat"></table></div></section>
     <section class="sec"><div class="sec-h"><h2>Las encuestadoras</h2><p>El error medio de la última encuesta de cada empresa (en puntos por partido), en las generales en que publicó. Arriba, las que estuvieron en más elecciones y más acertaron.</p></div>
       <div class="chart" style="overflow-x:auto"><table class="ac-rk" id="ac-rk"></table></div></section>
-    ${A.escenarios && PR ? `<section class="sec"><div class="sec-h"><h2>Si fallan como entonces</h2><p>La <a href="#elecciones-proyeccion">proyección</a> de hoy, corrigiendo la media con el error que tuvo cada vez en el PP, el PSOE, Vox y la izquierda de Sumar y Podemos.</p></div>
+    ${A.escenarios && PR ? `<section class="sec"><div class="sec-h"><h2>Si fallan como entonces</h2><p>La <a href="/elecciones/proyeccion/">proyección</a> de hoy, corrigiendo la media con el error que tuvo cada vez en el PP, el PSOE, Vox y la izquierda de Sumar y Podemos.</p></div>
       <div class="chart" style="overflow-x:auto"><table class="ac-esc" id="ac-esc"></table></div></section>` : ""}
     <p class="enc-nota">Las encuestas, de las tablas de Wikipedia de cada elección: de cada empresa, la última publicada en las tres semanas anteriores (sin los sondeos a pie de urna). El error es la media de la diferencia, en puntos, en los partidos que pasaron del 2,5 %. La media se hace como la de hoy: sin el CIS ni KeyData. El código está en <a href="https://github.com/jorgegarcelan/escano-abierto/blob/main/escano/aciertos.py">aciertos.py</a>.</p>`;
   // Una elección: media frente a resultado, con cada encuesta.

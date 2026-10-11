@@ -385,7 +385,7 @@ function crearFicha(ctx){
   const api = {
     fija: () => fija,
     pulsar(l, ancla){ if (!l) return;
-      if (conRaton){ api.ocultar(); location.hash = "iniciativa-" + l.exp.replace("/", "-"); }
+      if (conRaton){ api.ocultar(); irA("iniciativa-" + l.exp.replace("/", "-")); }
       else api.mostrar(l, ancla, true); },
     mostrar(l, ancla, fijar=false){ if (!l) return; fija = fijar; el.innerHTML = contenido(l); el.hidden = false; colocar(ancla); },
     ocultar(){ fija = false; el.hidden = true; },

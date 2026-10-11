@@ -12,3 +12,9 @@ site/og/
 
 # Home provisional construida en local (python -m escano.teaser)
 dist-teaser/
+
+# Páginas de cada diputado, votación, sesión… (escano/paginas.py): index.html con su cabecera. Se escriben en cada
+# construcción, también en Vercel, y no se versionan: cambian todas a la vez cada vez que cambia index.html.
+site/*/*/index.html
+site/sobre/index.html
+site/quien-lo-dijo/index.html
