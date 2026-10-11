@@ -1,0 +1,17 @@
+name: Una idea
+description: Algo que echas en falta o que se podría contar mejor.
+title: "[Idea] "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: La idea
+      description: Qué te gustaría ver y para qué te serviría.
+    validations:
+      required: true
+  - type: textarea
+    id: datos
+    attributes:
+      label: De dónde saldrían los datos
+      description: Si lo sabes, la fuente pública con la que se podría hacer (Congreso, BOE, INE…).

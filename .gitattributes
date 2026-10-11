@@ -1,0 +1,7 @@
+# Datos que escriben el pipeline (python -m escano …) y el bot diario: GitHub los pliega en los diffs de los PR y no
+# cuentan en las estadísticas de lenguajes. Se corrigen arreglando el código que los genera, no a mano.
+data/** linguist-generated
+site/datos/** linguist-generated
+site/*/*/rss.xml linguist-generated
+site/rss.xml linguist-generated
+site/sitemap.xml linguist-generated

@@ -1,0 +1,24 @@
+name: Algo no funciona
+description: Un error en la web o en el código (una página que no carga, un gráfico roto, el pipeline que falla…).
+title: "[Fallo] "
+labels: ["fallo"]
+body:
+  - type: textarea
+    id: que
+    attributes:
+      label: Qué pasa
+      description: Qué esperabas y qué ocurre en su lugar.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Cómo reproducirlo
+      description: El enlace o la orden (`python -m escano …`) y los pasos hasta el error. Si hay un mensaje de error, pégalo entero.
+    validations:
+      required: true
+  - type: input
+    id: entorno
+    attributes:
+      label: Navegador o entorno
+      placeholder: Safari en iPhone · Python 3.12 en Ubuntu…
