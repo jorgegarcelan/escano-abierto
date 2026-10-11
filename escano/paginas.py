@@ -712,6 +712,19 @@ def generar(salida: dict, plano: dict) -> dict:
     portada = SITIO / "og" / "portada.png"
     if DIBUJAR and not portada.exists():
         escritas["tarjetas"] += _escribir_si_cambia(portada, tarjeta_portada(plano, dips).png())
+    # La portada (index.html) también necesita URLs absolutas: X no resuelve una og:image relativa y se queda con la
+    # tarjeta que tenía en caché. Solo con URL_SITIO (en Vercel); en local, index.html no se toca.
+    if URL_SITIO:
+        cab = INDEX.read_text()
+        nueva = cab.replace('<meta property="og:image" content="/og/portada.png">',
+                            f'<meta property="og:url" content="{URL_SITIO}/">\n'
+                            f'<meta property="og:site_name" content="Escaño Abierto">\n'
+                            f'<meta property="og:locale" content="es_ES">\n'
+                            f'<meta property="og:image" content="{URL_SITIO}/og/portada.png">', 1)
+        nueva = nueva.replace('<meta name="twitter:card" content="summary_large_image">\n<!--/meta-->',
+                              f'<meta name="twitter:card" content="summary_large_image">\n'
+                              f'<meta name="twitter:image" content="{URL_SITIO}/og/portada.png">\n<!--/meta-->', 1)
+        _escribir_si_cambia(INDEX, nueva.encode())
 
     base = URL_SITIO or ""
     sitemap = "".join(f"<url><loc>{esc_xml(base + '/' + u)}</loc></url>" for u in urls)
