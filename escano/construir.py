@@ -31,6 +31,7 @@ TIPOS = [
     (r"moci[oó]n", "Moción"),
     (r"decreto", "Convalidación RDL"),
     (r"enmiendas? del senado", "Enmiendas del Senado"),
+    (r"veto del senado", "Veto del Senado"),
     (r"dictamen", "Dictamen"),
     (r"proposici[oó]n(es)? de ley|toma en consideraci", "Toma en consideración"),
     (r"proyecto de ley", "Proyecto de ley"),
