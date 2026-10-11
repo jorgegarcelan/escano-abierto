@@ -347,3 +347,103 @@ export async function pintarProyeccion(sec, ctx){
     if (ev.target.closest("[data-pr-x]")) elegir(null);
   });
 }
+
+/* =====================================================================================================
+   LOS MERCADOS: lo que apuestan en Polymarket (escano/encuestas.py → mercados.json)
+   ===================================================================================================== */
+const CSS_MERC = `
+.me-top{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.me-k{display:grid;gap:4px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.me-k .q{font-size:12.5px;color:var(--muted);line-height:1.3}
+.me-k b{font:800 clamp(30px,4vw,42px)/1 var(--led,var(--display));font-variant-numeric:tabular-nums}
+.me-k .r{font-size:14px;font-weight:600}
+.me-k small{font-size:11.5px;color:var(--muted)}
+.me-k svg{display:block;width:100%;height:34px;margin-top:4px}
+.me-k svg path{fill:none;stroke:var(--ink);stroke-width:1.6}
+.me-k svg .a{fill:color-mix(in srgb,var(--ink) 10%,transparent);stroke:none}
+.me-bl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:start}
+@media (max-width:820px){ .me-bl{grid-template-columns:1fr} }
+.me-op{display:grid;gap:6px}
+.me-o{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 3.6em;gap:10px;align-items:center;font-size:13px}
+.me-o .n{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-o .t{height:12px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.me-o .t i{display:block;height:100%;border-radius:99px;width:0;transition:width .8s cubic-bezier(.3,.7,.3,1)}
+.me-o b{font:700 13px var(--mono);text-align:right}
+.me-vol{font-size:12px;color:var(--muted);margin:8px 0 0}
+svg.me-g{display:block;width:100%;height:auto;overflow:visible}
+svg.me-g .ejes line{stroke:var(--line);stroke-dasharray:2 4}
+svg.me-g .ejes text{font:10.5px var(--mono);fill:var(--muted)}
+svg.me-g .l{fill:none;stroke-width:2.2;stroke-linejoin:round}
+svg.me-g .fin text{font:700 11.5px var(--sans,inherit)}
+svg.me-g .hito line{stroke:var(--muted);stroke-dasharray:3 3}
+svg.me-g .hito text{font:600 10.5px var(--sans,inherit);fill:var(--muted)}
+svg.me-g .cruz{stroke:var(--ink);opacity:0;pointer-events:none}
+.me-cmp{width:100%;border-collapse:collapse;font-size:13.5px}
+.me-cmp th{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line-strong)}
+.me-cmp th:first-child,.me-cmp td:first-child{text-align:left}
+.me-cmp td{padding:8px;border-bottom:1px solid var(--line);text-align:right;font:700 15px var(--mono)}
+.me-cmp td:first-child{font:500 13.5px var(--sans,inherit)}
+.me-cmp td small{display:block;font:400 11.5px var(--sans,inherit);color:var(--muted)}
+`;
+// Colores de las opciones: los de su partido (las personas, el del suyo).
+const COLOR_OPCION = {"PP":"#2C7BC4","PSOE":"#D8342B","Alberto Núñez Feijóo":"#2C7BC4","Pedro Sánchez":"#D8342B","Santiago Abascal":"#5BA83A","Carlos Cuerpo":"#E07A73","Isabel Díaz Ayuso":"#7FB2E5","Yolanda Díaz":"#C92F72"};
+const colorOp = (n, i) => COLOR_OPCION[n] || ["#8A8F98","#B98A16","#7B4BA8","#1FA8A0"][i % 4];
+export async function pintarMercados(sec){
+  estilos(); if (!document.getElementById("enc-css-me")){ const st = document.createElement("style"); st.id = "enc-css-me"; st.textContent = CSS_MERC; document.head.appendChild(st); }
+  const [M, PR] = await Promise.all([pedir("datos/encuestas/mercados.json"), pedir("datos/encuestas/proyeccion.json")]);
+  if (!M?.mercados?.length){ sec.innerHTML = `<p class="nota">No se han podido cargar los mercados.</p>`; return; }
+  if (enVeda(M)){ sec.innerHTML = `<section class="sec" style="padding-top:8px">${avisoVeda()}</section>`; return; }
+  const por = Object.fromEntries(M.mercados.map(m=>[m.tipo, m])), pc = p => p >= .995 ? "> 99 %" : p < .005 ? "< 1 %" : `${Math.round(p*100)} %`;
+  const usd = n => `${fmt(n)} $`;
+  const titular = {ganador: m=>`${m.opciones[0].nombre} gana las elecciones`, presidente: m=>`${m.opciones[0].nombre.split(" ").slice(-1)[0]}, próximo presidente`, fuera: m=>`Sánchez, fuera antes del ${m.opciones[0].nombre.replace(/ de 20\d\d$/, "")}`};
+  const chispa = h => { if (!h || h.length < 2) return ""; const xs = h.map(x=>x[1]), W = 100, H = 34;
+    const d = h.map(([,p],i)=>`${i?"L":"M"}${(i/(h.length-1)*W).toFixed(1)} ${(H - 2 - p*(H-4)).toFixed(1)}`).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path class="a" d="${d}L${W} ${H}L0 ${H}Z"/><path d="${d}"/></svg>`; };
+  const orden = ["ganador","presidente","fuera"].filter(t=>por[t]);
+  sec.innerHTML = `<section class="sec" style="padding-top:8px">
+      <div class="sec-h"><h2>Lo que apuestan</h2><p>En Polymarket se apuesta dinero a lo que pasará; el precio de cada apuesta es la probabilidad que le da el mercado. No es una encuesta: es lo que creen, con dinero, quienes apuestan. Datos del ${esc(fLarga(M.actualizado))}.</p></div>
+      <div class="me-top">${orden.map(t=>{ const m = por[t], o = m.opciones[0];
+        return `<div class="me-k"><span class="q">${esc(m.pregunta)}</span><b>${pc(o.p)}</b><span class="r">${esc(titular[t](m))}</span>${chispa(o.hist)}<small>${usd(m.volumen)} apostados</small></div>`; }).join("")}</div></section>
+    ${orden.map(t=>{ const m = por[t]; return `<section class="sec"><div class="sec-h"><h2>${esc(m.pregunta)}</h2><p>${t === "fuera" ? "Sánchez sigue en funciones hasta que el nuevo Congreso invista presidente: las Cortes se constituyen el 23 de diciembre y la investidura puede no llegar antes de Año Nuevo." : t === "presidente" ? "Quién sale investido después del 29N. Las opciones con menos del 0,5 % van juntas." : "El partido con más escaños el 29N."}</p></div>
+      <div class="me-bl"><div class="chart"><div class="me-op" data-me-op="${t}"></div><p class="me-vol">${usd(m.volumen)} apostados desde el ${esc(fLarga(m.inicio))} · <a href="${esc(m.url)}">el mercado en Polymarket</a></p></div><div class="chart"><div data-me-g="${t}"></div></div></div></section>`; }).join("")}
+    <section class="sec"><div class="sec-h"><h2>Las apuestas y la proyección</h2><p>Lo que dice el mercado al lado de lo que sale de nuestra <a href="#elecciones-proyeccion">proyección</a> con la media de las encuestas.</p></div>
+      <div class="chart"><table class="me-cmp"><thead><tr><th></th><th>Polymarket</th><th>Proyección</th></tr></thead><tbody id="me-cmp"></tbody></table>
+      <p class="enc-nota">Las dos cosas no miden lo mismo: la proyección dice qué pasaría si se votara hoy como dicen las encuestas; el mercado apuesta por lo que pasará el 29N y después (pactos, investidura). Un mercado con poco dinero se mueve con pocas apuestas.</p></div></section>`;
+  // Las opciones, en barras (las de menos del 0,5 %, juntas).
+  orden.forEach(t=>{ const m = por[t], vis = m.opciones.filter(o=>o.p >= .005), resto = m.opciones.filter(o=>o.p < .005).reduce((s,o)=>s + o.p, 0);
+    const filas = [...vis.map((o,i)=>({n:o.nombre, p:o.p, c:colorOp(o.nombre, i)})), ...(resto > 0 ? [{n:`Otros (${m.opciones.length - vis.length})`, p:resto, c:"var(--muted)"}] : [])];
+    const el = sec.querySelector(`[data-me-op="${t}"]`);
+    el.innerHTML = filas.map(f=>`<div class="me-o"><span class="n" title="${esc(f.n)}">${esc(f.n)}</span><span class="t"><i data-w="${(f.p*100).toFixed(1)}" style="background:${f.c}"></i></span><b>${pc(f.p)}</b></div>`).join("");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll("i[data-w]").forEach(i=>i.style.width = i.dataset.w + "%")));
+    lineas(sec.querySelector(`[data-me-g="${t}"]`), m.opciones.filter(o=>o.hist?.length > 1).slice(0, 4).map((o,i)=>({n: t === "fuera" ? "Sánchez fuera" : o.nombre, c: t === "fuera" ? "var(--ink)" : colorOp(o.nombre, i), h:o.hist}))); });
+  // Comparación con la proyección.
+  if (PR){ const S = PR.simulacion, filas = [];
+    if (por.ganador){ const pp = por.ganador.opciones.find(o=>o.nombre === "PP"); if (pp) filas.push(["El PP saca más escaños que nadie", pp.p, S.primero.PP || 0]); }
+    if (por.presidente){ const f = por.presidente.opciones.find(o=>/Feijóo/.test(o.nombre)); if (f) filas.push(["Feijóo, presidente <small>en la proyección: PP y Vox suman 176</small>", f.p, S.bloques["PP + Vox"].p176]); }
+    if (por.presidente){ const s = por.presidente.opciones.find(o=>/Sánchez/.test(o.nombre)); if (s) filas.push(["Sánchez, presidente <small>en la proyección: él y sus socios de 2023 suman 176</small>", s.p, S.bloques["PSOE y sus socios de 2023"].p176]); }
+    sec.querySelector("#me-cmp").innerHTML = filas.map(([t,a,b])=>`<tr><td>${t}</td><td>${pc(a)}</td><td>${pc(b)}</td></tr>`).join(""); }
+}
+/* La probabilidad de cada opción, día a día (0-100 %), con la disolución marcada. */
+function lineas(caja, series){
+  if (!caja || !series.length){ if (caja) caja.innerHTML = `<p class="nota">Aún no hay historia.</p>`; return; }
+  const W = Math.max(300, caja.clientWidth || 600), H = 240, m = {l: 36, r: 92, t: 18, b: 24};
+  const fechas = series.flatMap(s=>s.h.map(x=>x[0])).sort(), ini = fechas[0], fin = fechas[fechas.length-1];
+  const t0 = dias(ini), t1 = Math.max(dias(fin), t0 + 1), X = iso => m.l + (dias(iso) - t0)/(t1 - t0)*(W - m.l - m.r), Y = p => m.t + (1 - p)*(H - m.t - m.b);
+  const finales = series.map(s=>({n:s.n, c:s.c, p:s.h[s.h.length-1][1], y:Y(s.h[s.h.length-1][1]) + 4})).sort((a,b)=>a.y - b.y);
+  for (let i = 1; i < finales.length; i++) finales[i].y = Math.max(finales[i].y, finales[i-1].y + 14);
+  const corto = n => n.length > 14 ? n.split(" ").slice(-1)[0] : n;
+  const meses = []; { let [y, mo] = ini.split("-").map(Number); mo++; if (mo > 12){ mo = 1; y++; } while (`${y}-${String(mo).padStart(2,"0")}-01` <= fin){ meses.push(`${y}-${String(mo).padStart(2,"0")}-01`); mo++; if (mo > 12){ mo = 1; y++; } } }
+  const salto = Math.ceil(meses.length / 6);
+  const dis = "2026-10-06";
+  caja.innerHTML = `<svg class="me-g" viewBox="0 0 ${W} ${H}" role="img" aria-label="Probabilidad de cada opción, día a día">
+    <g class="ejes">${[0,.25,.5,.75,1].map(p=>`<line x1="${m.l}" x2="${W - m.r}" y1="${Y(p)}" y2="${Y(p)}"/><text x="${m.l - 6}" y="${Y(p) + 4}" text-anchor="end">${p*100} %</text>`).join("")}${meses.filter((d,i)=>i % salto === 0).map(d=>`<text x="${X(d).toFixed(1)}" y="${H - 6}" text-anchor="middle">${MESES[+d.slice(5,7)-1]}</text>`).join("")}</g>
+    ${dis > ini && dis <= fin ? `<g class="hito"><line x1="${X(dis)}" x2="${X(dis)}" y1="${m.t}" y2="${H - m.b}"/><text x="${X(dis) - 4}" y="${m.t + 10}" text-anchor="end">Disolución</text></g>` : ""}
+    ${series.map(s=>`<path class="l" d="${s.h.map(([d,p],i)=>`${i?"L":"M"}${X(d).toFixed(1)} ${Y(p).toFixed(1)}`).join("")}" stroke="${s.c}"/>`).join("")}
+    <g class="fin">${finales.map(f=>`<text x="${W - m.r + 6}" y="${f.y.toFixed(1)}" fill="${f.c}">${esc(corto(f.n))} ${Math.round(f.p*100)} %</text>`).join("")}</g><line class="cruz" y1="${m.t}" y2="${H - m.b}"/></svg>`;
+  const svg = caja.querySelector("svg"), cruz = svg.querySelector(".cruz");
+  svg.onmousemove = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left)/r.width*W, t = t0 + (x - m.l)/(W - m.l - m.r)*(t1 - t0);
+    const filas = series.map(s=>{ let best = s.h[0]; s.h.forEach(p=>{ if (Math.abs(dias(p[0]) - t) < Math.abs(dias(best[0]) - t)) best = p; }); return [s, best]; });
+    const dia = filas[0][1][0]; cruz.setAttribute("x1", X(dia)); cruz.setAttribute("x2", X(dia)); cruz.style.opacity = .5;
+    tip(`<b>${esc(fLarga(dia))}</b>${filas.map(([s,p])=>filaTip(s.c, s.n, `${Math.round(p[1]*100)} %`)).join("")}`, ev); };
+  svg.onmouseleave = () => { cruz.style.opacity = 0; tip(""); };
+}

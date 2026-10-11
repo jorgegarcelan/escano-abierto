@@ -4,6 +4,7 @@
   Wikipedia, que recoge la estimación de voto y de escaños de cada encuestadora) y la media de todas ellas día a día.
 - `proyeccion.json`: los escaños que salen de esa media (proyeccion.py): la proyección central, las simulaciones y
   la central semana a semana.
+- `mercados.json`: lo que apuestan en Polymarket (quién gana, quién preside, cuándo se va Sánchez), hoy y día a día.
 
     python -m escano.encuestas        # descarga lo último y escribe data/encuestas/*.json
 
@@ -210,6 +211,64 @@ def media(encuestas: list[dict], hasta: date, desde: date = date(2023, 8, 1), ta
     return {"dias": dias, "partidos": series}
 
 
+# ---------- los mercados (Polymarket) ----------
+
+POLYMARKET = "https://gamma-api.polymarket.com/events?slug={}"
+HISTORIA = "https://clob.polymarket.com/prices-history?market={}&interval=max&fidelity=1440"
+# Los mercados abiertos sobre las generales: su pregunta en castellano y qué es cada uno.
+MERCADOS = [
+    ("spain-general-election-winner", "¿Qué partido gana las elecciones?", "ganador"),
+    ("next-prime-minister-of-spain-20260625005215443", "¿Quién será el próximo presidente del Gobierno?", "presidente"),
+    ("pedro-snchez-out-as-pm-of-spain-by", "¿Deja Sánchez de ser presidente antes de 2027?", "fuera"),
+]
+MESES_EN = {m: i for i, m in enumerate(("January", "February", "March", "April", "May", "June", "July", "August", "September",
+                                         "October", "November", "December"), 1)}
+MESES_ES = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+
+
+def _opcion_es(nombre: str) -> str:
+    """«December 31, 2026» → «31 de diciembre de 2026»; los nombres de personas y partidos, igual."""
+    m = re.fullmatch(r"([A-Z][a-z]+) (\d{1,2}), (\d{4})", nombre or "")
+    return f"{int(m.group(2))} de {MESES_ES[MESES_EN[m.group(1)] - 1]} de {m.group(3)}" if m and m.group(1) in MESES_EN else nombre
+
+
+def mercados() -> list[dict]:
+    """Cada mercado: la probabilidad que le dan las apuestas a cada opción hoy, su historia día a día y el dinero
+    apostado. Solo las opciones que alguien ha apostado y que siguen abiertas."""
+    out = []
+    for slug, pregunta, tipo in MERCADOS:
+        try:
+            ev = json.loads(_bajar(POLYMARKET.format(slug)))[0]
+        except Exception as e:   # sin red o sin mercado: se queda fuera, sin romper lo demás
+            print(f"Polymarket: no se ha podido leer {slug} ({e})")
+            continue
+        opciones = []
+        for m in ev.get("markets", []):
+            if float(m.get("volume") or 0) <= 0 or m.get("closed"):
+                continue
+            precio = float(json.loads(m.get("outcomePrices") or "[0]")[0])
+            token = (json.loads(m.get("clobTokenIds") or "[]") or [None])[0]
+            opciones.append({"nombre": _opcion_es(m.get("groupItemTitle") or m.get("question")), "p": round(precio, 4),
+                             "vol": round(float(m.get("volume") or 0)), "token": token})
+        opciones.sort(key=lambda o: -o["p"])
+        for o in opciones[:6]:   # la historia, de las que cuentan
+            try:
+                h = json.loads(_bajar(HISTORIA.format(o["token"]))).get("history", [])
+                dias = {}
+                for x in h:
+                    dias[datetime.fromtimestamp(x["t"], timezone.utc).date().isoformat()] = round(float(x["p"]), 4)
+                o["hist"] = sorted(dias.items())
+            except Exception:
+                o["hist"] = []
+        for o in opciones:
+            o.pop("token", None)
+        out.append({"slug": slug, "pregunta": pregunta, "tipo": tipo, "titulo": ev.get("title"),
+                    "url": f"https://polymarket.com/event/{slug}", "volumen": round(float(ev.get("volume") or 0)),
+                    "inicio": (ev.get("creationDate") or ev.get("startDate") or "")[:10], "fin": (ev.get("endDate") or "")[:10],
+                    "opciones": opciones})
+    return out
+
+
 # ---------- escribir ----------
 
 def _bajar(url: str) -> str:
@@ -243,6 +302,10 @@ def escribir_datos() -> dict:
     datos = construir_datos()
     CARPETA.mkdir(parents=True, exist_ok=True)
     (CARPETA / "encuestas.json").write_text(json.dumps(datos, ensure_ascii=False, separators=(",", ":")))
+    merc = mercados()
+    if merc:
+        (CARPETA / "mercados.json").write_text(json.dumps({"actualizado": datos["actualizado"], "veda": datos["veda"], "mercados": merc},
+                                                           ensure_ascii=False, separators=(",", ":")))
     from . import proyeccion   # la proyección de escaños, con la media de hoy
     proy = proyeccion.construir(datos["media"], [p["id"] for p in datos["partidos"]], datos["actualizado"])
     (CARPETA / "proyeccion.json").write_text(json.dumps(proy, ensure_ascii=False, separators=(",", ":")))

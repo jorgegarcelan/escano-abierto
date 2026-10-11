@@ -53,3 +53,9 @@ def test_proyeccion_reproduce_2023():
 def test_dhondt_y_barrera():
     from escano import proyeccion as pr
     assert pr.dhondt({"A": .40, "B": .30, "C": .20, "D": .025}, 5) == {"A": 2, "B": 2, "C": 1}
+
+
+def test_opciones_de_polymarket_en_castellano():
+    assert en._opcion_es("December 31, 2026") == "31 de diciembre de 2026"
+    assert en._opcion_es("Alberto Núñez Feijóo") == "Alberto Núñez Feijóo"
+    assert en._opcion_es("PP") == "PP"
