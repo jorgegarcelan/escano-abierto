@@ -335,9 +335,9 @@ export async function render(el, c, sub){
   const actual = eleccion || provincia ? "historico" : sub;
   const p = PAG[sub];
   const g = NAV.findIndex(x=>x.ids.includes(actual)), i = ORDEN_NAV.indexOf(actual);
-  const grupos = NAV.map((x,k)=>`<div class="g${k===g?" act":""}"><span class="gt">${String(k+1).padStart(2,"0")} · ${esc(x.n)}</span><div class="gi">${x.ids.map(id=>`<a href="#elecciones-${id}"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div></div>`).join("");
-  const vecino = (id, cls, flecha) => id ? `<a class="${cls}" href="#elecciones-${id}"><small>${cls==="ant"?"← Anterior":"Siguiente →"}</small><b>${esc(PAG[id].t)}</b></a>` : `<span></span>`;
-  el.innerHTML = `<nav class="el-migas" aria-label="Estás en"><a href="#elecciones">Elecciones 29N</a>${g>=0?` <span>›</span> <span>${esc(NAV[g].n)}</span>`:""}${eleccion||provincia?` <span>›</span> <a href="#elecciones-${actual}">${esc(PAG[actual].t)}</a>`:""}</nav>
+  const grupos = NAV.map((x,k)=>`<div class="g${k===g?" act":""}"><span class="gt">${String(k+1).padStart(2,"0")} · ${esc(x.n)}</span><div class="gi">${x.ids.map(id=>`<a href="/elecciones/${id}/"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div></div>`).join("");
+  const vecino = (id, cls, flecha) => id ? `<a class="${cls}" href="/elecciones/${id}/"><small>${cls==="ant"?"← Anterior":"Siguiente →"}</small><b>${esc(PAG[id].t)}</b></a>` : `<span></span>`;
+  el.innerHTML = `<nav class="el-migas" aria-label="Estás en"><a href="/elecciones/">Elecciones 29N</a>${g>=0?` <span>›</span> <span>${esc(NAV[g].n)}</span>`:""}${eleccion||provincia?` <span>›</span> <a href="/elecciones/${actual}/">${esc(PAG[actual].t)}</a>`:""}</nav>
     <nav class="el-nav" aria-label="Apartados de las elecciones"><div class="el-nav-grupos">${grupos}</div>
       <details class="el-nav-movil"><summary><span>Apartado</span><b>${esc(PAG[actual].t)}</b></summary><div class="el-nav-grupos">${grupos}</div></details></nav>
     <div id="el-pagina">${p ? `<div class="view-intro"><div><h2>${esc(p.t)}</h2><p>${esc(p.d)}</p></div></div>` : ""}<div class="el-cuerpo"><p class="nota">Cargando…</p></div>
@@ -414,7 +414,7 @@ function home(el){
   const {esc, fmt} = ctx;
   const F = FASES[fase()], faltan = diasHasta(DATOS.votacion);
   const C = DATOS.caducan, B = DATOS.balance;
-  const tarjeta = (id, cifra, pie, visual="") => `<a class="el-tarjeta" href="#elecciones-${id}"><span class="t">${esc(PAG[id].t)} <span aria-hidden="true">→</span></span><span class="d">${esc(PAG[id].d)}</span>
+  const tarjeta = (id, cifra, pie, visual="") => `<a class="el-tarjeta" href="/elecciones/${id}/"><span class="t">${esc(PAG[id].t)} <span aria-hidden="true">→</span></span><span class="d">${esc(PAG[id].d)}</span>
     ${cifra?`<span class="c">${cifra}</span><span class="p">${pie}</span>`:""}<span class="v" data-mini="${id}">${visual}</span></a>`;
   const TARJETAS = {
     caducan: ()=>tarjeta("caducan", fmt(C.total), "leyes caducan sin terminar", miniWaffle()),
@@ -442,7 +442,7 @@ function home(el){
       <div class="elh-txt"><div class="eyebrow">Elecciones generales · domingo 29 de noviembre de 2026</div>
         <span class="elh-fase">${esc(F.etq)}</span>
         <h2>${esc(F.h)}</h2><p>${esc(F.p)}</p>
-        <div class="elh-ctas">${F.cta.map(([id,t],k)=>`<a class="btn${k?"":" primary"}" href="#elecciones-${id}">${esc(t)} →</a>`).join("")}<button class="btn" type="button" data-elh-prov>Tu provincia ↓</button></div></div>
+        <div class="elh-ctas">${F.cta.map(([id,t],k)=>`<a class="btn${k?"":" primary"}" href="/elecciones/${id}/">${esc(t)} →</a>`).join("")}<button class="btn" type="button" data-elh-prov>Tu provincia ↓</button></div></div>
       <div class="elh-cuenta">
         <div class="n">${faltan > 0 ? `<b>${faltan}</b><span>${faltan === 1 ? "día: mañana se vota" : "días para votar"}</span>` : faltan === 0 ? `<b>HOY</b><span>se vota de 9.00 a 20.00</span>` : `<b>29N</b><span>elecciones generales</span>`}</div>
         ${ahora ? `<div class="f"><small>Ahora</small><b>${esc(ahora.hito)}</b>${ahora.hasta?`<span>hasta el ${esc(fechaLarga(ahora.hasta))}</span>`:""}</div>` : ""}
@@ -452,7 +452,7 @@ function home(el){
     <section class="sec elh-sec"><div class="sec-h"><h2>En qué punto estamos</h2><p>Los plazos los fija la Ley Orgánica del Régimen Electoral General y se cuentan desde que el BOE publica el decreto de convocatoria${DATOS.decreto?` (${esc(DATOS.decreto.rd)})`:""}.</p></div>${calendario()}</section>
     <section class="sec elh-sec" id="elh-provincia"><div class="sec-h"><h2>Tu provincia</h2><p>Cuántos diputados elige, cómo se repartieron en 2023 y quiénes la representan hoy.</p></div><div class="chart elh-prov"><p class="nota">Cargando…</p></div></section>
     ${GRUPOS_PAG.map((g,k)=>`<section class="sec elh-grupo"><div class="elh-grupo-h"><span class="k">${String(k+1).padStart(2,"0")}</span><div><h2>${esc(g.t)}</h2><p>${esc(g.d)}</p></div></div>
-      ${g.los350 ? `<div class="elh-350">${bloque350()}<p class="nota"><a href="#elecciones-350">Cómo ha cambiado el reparto de escaños por provincia desde 1977 →</a>${cambios.length ? ` · En 2026, ${cambios.map(([c,a,b])=>`${esc(GEO.provincias[c].corto)} ${b > a ? "gana" : "pierde"} ${Math.abs(b-a) === 1 ? "un escaño" : `${Math.abs(b-a)} escaños`}`).join(" y ")} respecto a 2023.` : ""}</p></div>` : ""}
+      ${g.los350 ? `<div class="elh-350">${bloque350()}<p class="nota"><a href="/elecciones/350/">Cómo ha cambiado el reparto de escaños por provincia desde 1977 →</a>${cambios.length ? ` · En 2026, ${cambios.map(([c,a,b])=>`${esc(GEO.provincias[c].corto)} ${b > a ? "gana" : "pierde"} ${Math.abs(b-a) === 1 ? "un escaño" : `${Math.abs(b-a)} escaños`}`).join(" y ")} respecto a 2023.` : ""}</p></div>` : ""}
       <div class="el-tarjetas">${g.ids.map(id=>TARJETAS[id]()).join("")}
         ${g.pronto ? `<div class="el-tarjeta elh-pronto"><span class="t">Qué prometieron y qué votaron</span><span class="d">Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.</span><span class="p">Más adelante</span></div>` : ""}</div></section>`).join("")}`;
   montar350(el.querySelector(".el-350"));
@@ -493,11 +493,11 @@ async function pintarTuProvincia(caja){
           ${d.ultimo ? `<li><b>${fmt(d.ultimo.faltan)} votos</b> le faltaron a ${esc(d.ultimo.segundo)} para quitarle el último escaño a ${esc(d.ultimo.gana)} en 2023.</li>` : ""}
           <li><b>${fmt(vpe)} votos</b> costó cada escaño en 2023 (en el conjunto de España, ${fmt(vpeE)}).</li>
           <li><b>${pct(partP)}</b> de participación en 2023 (España: ${pct(partE)}).</li>
-          <li>${DATOS.hay?.candidaturas ? `<a href="#elecciones-repite">Quién repite en ${esc(nombre)} →</a>` : `Las listas de cada partido se publican en el BOE el <b>28 de octubre</b>.`}</li>
+          <li>${DATOS.hay?.candidaturas ? `<a href="/elecciones/repite/">Quién repite en ${esc(nombre)} →</a>` : `Las listas de cada partido se publican en el BOE el <b>28 de octubre</b>.`}</li>
         </ul>
       </div>
-      ${dips.length ? `<div class="elh-dips"><small>Sus ${dips.length} diputados en la XV legislatura</small><div>${dips.slice(0, MAX_DIPS).map(x=>`<a href="#diputado-${esc(slug(x[0]))}"><i style="background:${ctx.G[x[1]]?.color||"#888"}"></i>${esc(ctx.legible(x[0]))}</a>`).join("")}${dips.length > MAX_DIPS ? `<a href="#provincia-${esc(sl)}" class="mas">y ${dips.length - MAX_DIPS} más →</a>` : ""}</div></div>` : ""}
-      <p class="elh-links"><a href="#elecciones-provincia-${esc(sl)}">Su historia electoral desde 1977 →</a><a href="#provincia-${esc(sl)}">Qué hicieron sus diputados →</a><a href="#geografia-provincia-${esc(sl)}">Su geografía →</a></p>`;
+      ${dips.length ? `<div class="elh-dips"><small>Sus ${dips.length} diputados en la XV legislatura</small><div>${dips.slice(0, MAX_DIPS).map(x=>`<a href="/diputado/${esc(slug(x[0]))}/"><i style="background:${ctx.G[x[1]]?.color||"#888"}"></i>${esc(ctx.legible(x[0]))}</a>`).join("")}${dips.length > MAX_DIPS ? `<a href="/provincia/${esc(sl)}/" class="mas">y ${dips.length - MAX_DIPS} más →</a>` : ""}</div></div>` : ""}
+      <p class="elh-links"><a href="/elecciones/provincia-${esc(sl)}/">Su historia electoral desde 1977 →</a><a href="/provincia/${esc(sl)}/">Qué hicieron sus diputados →</a><a href="/geografia/provincia-${esc(sl)}/">Su geografía →</a></p>`;
     caja.querySelector("#elh-prov").addEventListener("change", e=>{ cod = e.target.value; try{ localStorage.setItem("provincia", slug(P[cod].circ)); }catch(err){} pintar(); });
   };
   pintar();
@@ -659,7 +659,7 @@ function simulador350(sec){
       <div><b>${cambian}</b><span>${cambian === 1 ? "escaño cambiaría" : "escaños cambiarían"} de provincia respecto al reparto del 29N</span></div>`;
     sec.querySelector(".el-regla-filas").innerHTML = cods.map(c=>{ const r = R[c], h = ESC[c], n = Math.max(r, h);
       const cel = Array.from({length:n}, (_,j)=>`<i class="${j < Math.min(r,h) ? "" : r > h ? "gana" : "pierde"}"></i>`).join("");
-      return `<div class="fila"><a href="#elecciones-provincia-${esc(ctx.slug(GEO.provincias[c]?.circ || ""))}">${esc(nombre(c))}</a><span class="cel">${cel}</span><span class="v">${r}${r !== h ? ` <small class="${r > h ? "mas" : "menos"}">${r > h ? "+" : "−"}${Math.abs(r - h)}</small>` : ""}</span></div>`; }).join("");
+      return `<div class="fila"><a href="/elecciones/provincia-${esc(ctx.slug(GEO.provincias[c]?.circ || ""))}/">${esc(nombre(c))}</a><span class="cel">${cel}</span><span class="v">${r}${r !== h ? ` <small class="${r > h ? "mas" : "menos"}">${r > h ? "+" : "−"}${Math.abs(r - h)}</small>` : ""}</span></div>`; }).join("");
   };
   sec.addEventListener("click", ev=>{
     const m = ev.target.closest("[data-min]"); if (m){ regla.minimo = +m.dataset.min; sec.querySelectorAll("[data-min]").forEach(b=>b.setAttribute("aria-pressed", String(b === m))); pintar(); return; }

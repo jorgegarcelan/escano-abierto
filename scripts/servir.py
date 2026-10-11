@@ -3,18 +3,29 @@
 `http.server` no manda Cache-Control y el navegador guarda los módulos que la web carga al abrir una pestaña
 (elecciones.js, geografia.js…): tras un cambio, seguía usando la versión vieja. Aquí todo va con `no-store`.
 
+Y como en Vercel (vercel.json), una ruta de la web que no es un fichero (/votaciones/, /elecciones/provincia-madrid/…)
+devuelve index.html, que enseña la vista que toca.
+
     python scripts/servir.py            # http://localhost:8000, sirviendo site/
     python scripts/servir.py 8020 site
 """
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 
 class SinCache(SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()
+
+    def send_head(self):
+        ruta = self.path.split("?", 1)[0].split("#", 1)[0]
+        fichero = Path(self.translate_path(ruta))
+        if not fichero.exists() and "." not in ruta.rsplit("/", 1)[-1] and not ruta.startswith(("/datos/", "/api/")):
+            self.path = "/index.html"
+        return super().send_head()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,9 @@
 #!/bin/sh
 # Construye la web en Vercel: datos de site/datos, páginas para compartir, RSS y tarjetas Open Graph.
 # Todo sale de data/ (versionado); no descarga nada del Congreso ni llama a la IA.
+# Las páginas de cada diputado, votación, sesión… (site/diputado/<slug>/index.html…) se escriben aquí, no se versionan.
+# vercel.json manda a index.html las rutas de la web que no son un fichero (/votaciones/, /elecciones/…): la web
+# enseña la vista según la ruta. Vercel sirve antes el fichero si existe.
 set -e
 # Home provisional («muy pronto»): con ESCANO_MODO=teaser (solo en Production) se publica una única página con
 # el vídeo en lugar de la web. Para abrir la web completa, quita la variable y vuelve a desplegar.

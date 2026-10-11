@@ -522,10 +522,10 @@ const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto"
 const anio = e => e.fecha.slice(0,4) + (e.id==="201904" ? "-A" : e.id==="201911" ? "-N" : "");
 const anioLargo = e => { const [y,m,d]=e.fecha.split("-").map(Number); return `${d} de ${MESES[m-1]} de ${y}`; };
 export const slugE = e => e.fecha.slice(0,4) + (e.id==="201904" ? "-abril" : e.id==="201911" ? "-noviembre" : "");
-const enlaceE = e => `#elecciones-${slugE(e)}`;
+const enlaceE = e => `/elecciones/${slugE(e)}/`;
 const nombreProv = cod => GEO?.provincias[cod]?.circ || cod;
 const slugProv = cod => ctx.slug(nombreProv(cod));
-const enlaceProv = cod => `#elecciones-provincia-${slugProv(cod)}`;
+const enlaceProv = cod => `/elecciones/provincia-${slugProv(cod)}/`;
 const duracion = (a, b) => { const d = (new Date(b) - new Date(a))/864e5, anos = Math.floor(d/365.25), meses = Math.round((d - anos*365.25)/30.44);
   return anos ? `${anos} ${anos===1?"año":"años"}${meses?` y ${meses} ${meses===1?"mes":"meses"}`:""}` : `${meses} ${meses===1?"mes":"meses"}`; };
 
@@ -695,7 +695,7 @@ function graficoLinea(E, series, {min=0, max=1, ancho=480, alto=200, formato=v=>
   const datos = esc(JSON.stringify({series: series.map(s=>({n:s.nombre, c:s.color, v:s.valores})), xs: E.map((_,k)=>x(k)), et: E.map(anioLargo), w: W}));
   return `<svg class="hi-svg hi-linea clic" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(series.map(s=>s.nombre).join(" y "))} en cada elección" data-serie="${datos}">${rejilla}${lineas}${etiquetasFin}${anios}<line class="cruz" x1="0" x2="0" y1="${mt}" y2="${H-mb}"/></svg>`;
 }
-function montarLineas(raiz, E, formato=v=>pct(v), alPulsar=k=>{ location.hash = enlaceE(E[k]).slice(1); }){
+function montarLineas(raiz, E, formato=v=>pct(v), alPulsar=k=>{ irA(enlaceE(E[k])); }){
   raiz.querySelectorAll(".hi-linea:not([data-montada])").forEach(svg=>{
     svg.dataset.montada = "1";
     const D = JSON.parse(svg.dataset.serie), cruz = svg.querySelector(".cruz");
@@ -1053,7 +1053,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
     const y = ev.target.closest("[data-hi]"); if (y){ pararH(); ir(+y.dataset.hi); return; }
     const cel = ev.target.closest("#pv-tira i[data-j]"); if (cel){ pararH(); ir(+cel.dataset.j); return; }
     const o = ev.target.closest("[data-orden]"); if (o){ const c2 = o.dataset.orden; ordenProv = {col:c2, asc: ordenProv.col===c2 ? !ordenProv.asc : c2==="nombre"||c2==="margen"}; tabla(); return; }
-    const tr = ev.target.closest("tr[data-ir]"); if (tr && !ev.target.closest("a")) location.hash = tr.dataset.ir.slice(1);
+    const tr = ev.target.closest("tr[data-ir]"); if (tr && !ev.target.closest("a")) irA(tr.dataset.ir);
   });
   $("#pv-busca").addEventListener("input", ev=>{ buscaProv = ev.target.value; tabla(); });
   const rio = rioLegislaturas($("#hi-rio"), E, {sel: k, elegir: j=>{ pararH(); ir(j); }});
@@ -1074,7 +1074,7 @@ export async function pintarFicha(sec, c, slug){
   ctx = c; estilos();
   await base(); if (!HIST){ sec.innerHTML = `<p class="nota">No se ha podido cargar el histórico.</p>`; return; }
   const E = HIST.elecciones, k = E.findIndex(e=>slugE(e)===slug);
-  if (k < 0){ sec.innerHTML = `<p class="nota">No hay elecciones generales con esa fecha. <a href="#elecciones-historico">Ver todas</a></p>`; return; }
+  if (k < 0){ sec.innerHTML = `<p class="nota">No hay elecciones generales con esa fecha. <a href="/elecciones/historico/">Ver todas</a></p>`; return; }
   const e = E[k], prev = E[k-1], next = E[k+1], g = porGrupo(e.fam), p1 = primera(g);
   recordarAnio(e.id);
   const D = await pedir(`datos/elecciones/historico-${e.id}.json`);
@@ -1090,7 +1090,7 @@ export async function pintarFicha(sec, c, slug){
   const filas = e.partidos.filter(p=>p[4] || p[3] >= 0.005*e.validos);
   const maxPct = Math.max(...filas.map(p=>p[3]/e.validos));
   sec.innerHTML = `
-    <nav class="hi-pasos">${prev?`<a href="${enlaceE(prev)}">← ${anio(prev)}</a>`:"<span></span>"}${next?`<a href="${enlaceE(next)}">${anio(next)} →</a>`:`<a href="#elecciones">29N →</a>`}</nav>
+    <nav class="hi-pasos">${prev?`<a href="${enlaceE(prev)}">← ${anio(prev)}</a>`:"<span></span>"}${next?`<a href="${enlaceE(next)}">${anio(next)} →</a>`:`<a href="/elecciones/">29N →</a>`}</nav>
     <div class="view-intro"><div><div class="eyebrow">Elecciones generales · ${esc(leg)}</div><h2>${esc(anioLargo(e))}</h2>
       <p>${mayoria ? `${esc(mayor[0])} logró la mayoría absoluta con ${mayor[4]} escaños.` : `Sin mayoría absoluta: ${esc(mayor[0])} fue la primera fuerza con ${mayor[4]} escaños, a ${176-mayor[4]} de los 176.`} Votó el ${pct(part)} del censo${partPrev!=null?` (${conSigno((part-partPrev)*100, v=>dec(v,1))} puntos respecto a ${anio(prev)})`:""}.</p></div></div>
     <div class="kpis"><div class="kpi"><b>${pct(part)}</b><span>participación</span></div><div class="kpi"><b>${fmtCorto(e.votantes)}</b><span>votantes</span></div>
@@ -1099,7 +1099,7 @@ export async function pintarFicha(sec, c, slug){
     <div class="hi-top" style="margin-top:14px">
       <div class="chart"><h3>El hemiciclo</h3><p class="sub">Un punto por escaño, por candidatura y de izquierda a derecha según su familia. Pasa por encima para ver cada una.</p>${hemiReal("") || hemiSVG(350)}${leyendaGrupos(GRUPOS.filter(x=>g[x.id][1]).map(x=>x.id))}</div>
       <div class="chart"><h3>La legislatura</h3><dl class="hi-caja"><dt>Legislatura</dt><dd>${esc(leg)}</dd><dt>Presidencia del Gobierno</dt><dd>${presidentes}</dd><dt>Duración</dt><dd>${esc(tituloLeg)}</dd></dl>
-        ${e.id==="202307"?`<p><a href="#elecciones-legislatura">La XV legislatura en cifras →</a><br><a href="#inicio">Toda su actividad en Escaño Abierto →</a></p>`:""}</div>
+        ${e.id==="202307"?`<p><a href="/elecciones/legislatura/">La XV legislatura en cifras →</a><br><a href="/">Toda su actividad en Escaño Abierto →</a></p>`:""}</div>
     </div>
     <section class="sec"><div class="sec-h"><h2>Resultados</h2><p>Candidaturas con escaño o con más del 0,5 % de los votos válidos. Votos válidos: ${fmt(e.validos)}, de ellos ${fmt(e.blancos)} en blanco; nulos: ${fmt(e.nulos)}.</p></div>
       <div class="chart hi-desliza"><table class="hi-tabla"><thead><tr><th>Candidatura</th><th class="n">Votos</th><th class="n">%</th><th></th><th class="n">Escaños</th>${prev?`<th class="n">Δ ${anio(prev)}</th>`:""}</tr></thead><tbody>
@@ -1111,7 +1111,7 @@ export async function pintarFicha(sec, c, slug){
     </div>
     <section class="sec"><div class="sec-h"><h2 id="fi-mapa-t">Por provincia</h2><div class="controls"><select id="fi-modo" aria-label="Qué se pinta en el mapa">${MODOS.map(([v,l])=>`<option value="${v}">${esc(l)}</option>`).join("")}</select></div></div>
       <div class="chart"><div id="fi-mapa"></div><p class="nota">Pulsa una provincia para ver su ficha.</p></div></section>
-    ${D?`<section class="sec"><div class="sec-h"><h2>Los últimos escaños más ajustados</h2><p>El último diputado que repartió la ley D'Hondt en cada provincia y los votos que le faltaron a la siguiente candidatura. <a href="#elecciones-escano">Más en «El precio de un escaño»</a>.</p></div>
+    ${D?`<section class="sec"><div class="sec-h"><h2>Los últimos escaños más ajustados</h2><p>El último diputado que repartió la ley D'Hondt en cada provincia y los votos que le faltaron a la siguiente candidatura. <a href="/elecciones/escano/">Más en «El precio de un escaño»</a>.</p></div>
       <div class="chart"><ul class="hi-ultimo">${Object.entries(D.prov).filter(([,p])=>p.ultimo).sort((a,b)=>a[1].ultimo.faltan-b[1].ultimo.faltan).slice(0,8).map(([cod,p])=>`<li><a href="${enlaceProv(cod)}">${esc(nombreProv(cod))}</a><span>Lo ganó <b>${esc(p.ultimo.gana)}</b>; a <b>${esc(p.ultimo.segundo)}</b> le faltaron</span><span class="m">${fmt(p.ultimo.faltan)} votos</span></li>`).join("")}</ul></div></section>`:""}`;
   requestAnimationFrame(()=>pintarHemi(sec.querySelector(".hi-top .hi-hemi"), segsLista(e.partidos.map(p=>[p[0], p[2], p[3], p[4]]), e.validos)));
   const modo = sec.querySelector("#fi-modo"); modo.value = "primera";
@@ -1162,7 +1162,7 @@ export async function pintarProvincia(sec, c, sub){
   ctx = c; estilos();
   await base(); if (!HIST){ sec.innerHTML = `<p class="nota">No se ha podido cargar el histórico.</p>`; return; }
   const sl = sub.replace(/^provincia-/, ""), cod = Object.keys(GEO.provincias).find(k=>slugProv(k)===sl);
-  if (!cod){ sec.innerHTML = `<p class="nota">No existe esa circunscripción. <a href="#elecciones-provincias">Ver las 52</a></p>`; return; }
+  if (!cod){ sec.innerHTML = `<p class="nota">No existe esa circunscripción. <a href="/elecciones/provincias/">Ver las 52</a></p>`; return; }
   const P = await pedir(`datos/elecciones/provincias/${cod}.json`);
   if (!P){ sec.innerHTML = `<p class="nota">No se ha podido cargar la ficha.</p>`; return; }
   const E = HIST.elecciones.filter(e=>P[e.id]), nombre = nombreProv(cod);
@@ -1171,7 +1171,7 @@ export async function pintarProvincia(sec, c, sub){
   const diputados = ctx.DIPS.filter(d=>!d[8] && d[2]===nombre);
   sec.innerHTML = `
     <div class="view-intro"><div><div class="eyebrow">Circunscripción electoral</div><h2>${esc(nombre)}</h2>
-      <p>Elige ${ult.e} ${ult.e===1?"diputado":"diputados"} al Congreso (${pri.e} en 1977). <a href="#provincia-${esc(sl)}">Sus diputados de la XV legislatura</a> · <a href="#elecciones-escano" data-sim-prov="${cod}">Simular su reparto D'Hondt</a></p></div></div>
+      <p>Elige ${ult.e} ${ult.e===1?"diputado":"diputados"} al Congreso (${pri.e} en 1977). <a href="/provincia/${esc(sl)}/">Sus diputados de la XV legislatura</a> · <a href="/elecciones/escano/" data-sim-prov="${cod}">Simular su reparto D'Hondt</a></p></div></div>
     <section class="sec" style="padding-top:10px">${chipsAnios(E, k, "pr")}</section>
     <div id="pr-kpis" style="margin-top:10px"></div>
     <div class="hi-top" style="margin-top:12px">
@@ -1189,7 +1189,7 @@ export async function pintarProvincia(sec, c, sub){
       <div class="chart"><h3>Votos por escaño</h3><p class="sub">Votos válidos entre escaños en ${esc(nombre)} y en el conjunto de España.</p><div id="pr-precio"></div></div>
     </div>
     <section class="sec" id="pr-muni"><div class="sec-h"><h2>Municipio a municipio</h2><p>El voto en cada municipio de ${esc(nombre)} (sin el voto desde el extranjero).</p></div><p class="nota">Cargando…</p></section>
-    ${diputados.length?`<section class="sec"><div class="sec-h"><h2>Sus diputados en la XV legislatura</h2></div><div class="hi-chips">${diputados.sort((a,b)=>ctx.ORDEN_HEMI.indexOf(a[1])-ctx.ORDEN_HEMI.indexOf(b[1])).map(d=>`<a href="#diputado-${esc(ctx.slug(d[0]))}"><i style="background:${ctx.G[d[1]]?.color}"></i>${esc(ctx.legible(d[0]))}</a>`).join("")}</div></section>`:""}`;
+    ${diputados.length?`<section class="sec"><div class="sec-h"><h2>Sus diputados en la XV legislatura</h2></div><div class="hi-chips">${diputados.sort((a,b)=>ctx.ORDEN_HEMI.indexOf(a[1])-ctx.ORDEN_HEMI.indexOf(b[1])).map(d=>`<a href="/diputado/${esc(ctx.slug(d[0]))}/"><i style="background:${ctx.G[d[1]]?.color}"></i>${esc(ctx.legible(d[0]))}</a>`).join("")}</div></section>`:""}`;
   // Series de toda la historia de la provincia.
   const Gv = E.map(e=>porGrupoLista(P[e.id].c)), validos = E.map(e=>P[e.id].validos);
   const apilado = () => { const cont = sec.querySelector("#pr-apilado"), vals = Gv.map(g=>Object.fromEntries(Object.entries(g).map(([a,b])=>[a,b[1]])));
@@ -1330,7 +1330,7 @@ export async function pintarReparto(sec, c){
   }
   conTip(svg, ev=>{ const ci = ev.target.closest("circle[data-p]"); if (!ci) return ""; const e = E[selR], p = e.prov[ci.dataset.p], g = porGrupo(p.fam);
     return `<b>${esc(nombreProv(ci.dataset.p))}</b> · ${p.e} escaños en ${anio(e)}${GRUPOS.filter(x=>g[x.id][1]).map(x=>filaTip(x.color, x.nombre, g[x.id][1])).join("")}`; });
-  svg.addEventListener("click", ev=>{ const ci = ev.target.closest("circle[data-p]"); if (ci){ recordarAnio(E[selR].id); location.hash = enlaceProv(ci.dataset.p).slice(1); } });
+  svg.addEventListener("click", ev=>{ const ci = ev.target.closest("circle[data-p]"); if (ci){ recordarAnio(E[selR].id); irA(enlaceProv(ci.dataset.p)); } });
   sec.addEventListener("click", ev=>{
     const b = ev.target.closest("[data-re]"); if (b){ parar(); pintar(+b.dataset.re); return; }
     if (ev.target.closest("[data-re-play]")){ playR ? parar() : reproducir(); }

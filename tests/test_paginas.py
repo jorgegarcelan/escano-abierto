@@ -14,7 +14,9 @@ def test_pagina_con_open_graph(monkeypatch):
     assert '<meta property="og:image" content="https://ejemplo.es/og/votacion/198-16.png">' in h
     assert '<meta property="og:title" content="RDL 21/2026">' in h
     assert 'twitter:card" content="summary_large_image"' in h
-    assert '../../#votacion-198-16' in h                      # lleva a la vista de la web
+    assert '<link rel="canonical" href="https://ejemplo.es/votacion/198-16/">' in h
+    assert 'data-ruta="votacion-198-16"' in h                # es la propia web, abierta en esa vista
+    assert 'http-equiv="refresh"' not in h and '<script src="/app.js"></script>' in h
 
 
 def test_resultado():
