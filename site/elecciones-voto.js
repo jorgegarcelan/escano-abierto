@@ -1,6 +1,6 @@
 /* Apartado «La geografía del voto» de la sección de elecciones (#elecciones-voto).
-   Los ejes de la España municipal —ciudad y campo, la España vacía, la edad, el dinero, las Españas, el giro y el
-   peso del voto— y cómo vota cada uno, con un mapa fijo de los ocho mil municipios que cambia al bajar.
+   Los ejes de la España municipal —ciudad y campo, la España vacía, la edad (y cómo vota cada edad, del CIS), el
+   dinero, las Españas, el giro y el peso del voto— y cómo vota cada uno, con un mapa fijo de los ocho mil municipios que cambia al bajar.
    Los datos del INE, los mapas y las utilidades comunes (formatos, colores, tooltip) son de la sección de geografía
    (site/geografia.js); los votos de cada municipio, de datos/elecciones/. elecciones.js llama a geografiaDelVoto. */
 
@@ -9,6 +9,7 @@ import {datosGeo, RUTAS, pedir, tip, esc, fmt, dec, pct, signo, millones, habita
 const VOTOS = {
   v23: "datos/elecciones/municipios-202307.json",
   v19: "datos/elecciones/municipios-201911.json",
+  edad: "datos/elecciones/voto-edad.json",   // el voto por edad, de la encuesta postelectoral del CIS (escano/edad_voto.py)
 };
 
 const CSS = `
@@ -27,6 +28,16 @@ const CSS = `
 .geo-partidos{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:11.5px;color:var(--muted);margin-top:6px}
 .geo-partidos span{display:inline-flex;align-items:center;gap:4px}
 .geo-partidos i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.geo-edad{display:grid;gap:5px;margin-top:12px}
+.geo-edad-f{display:grid;grid-template-columns:4.6em minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12.5px}
+.geo-edad-f .e{color:var(--muted);font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.geo-edad-f .b{grid-column:2/-1;display:flex;height:20px;border-radius:4px;overflow:hidden;gap:1px}
+.geo-edad-f .b i{display:grid;place-items:center;font:700 10.5px var(--mono);font-style:normal;color:#fff;min-width:1px;transition:width .6s ease}
+.geo-edad-t{font:600 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.geo-edad-nv .nv{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.geo-edad-nv .nv i{display:block;height:100%;background:var(--muted);border-radius:99px}
+.geo-edad-nv b{font:600 11.5px var(--mono);text-align:right;min-width:2.6em}
+.geo-edad-nota{font-size:12px;color:var(--muted);margin-top:10px}
 .geo-esp-chips{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
 .geo-esp-chips button{appearance:none;font:500 12.5px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill,999px);padding:4px 10px;cursor:pointer}
 .geo-esp-chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -93,7 +104,7 @@ export async function geografiaDelVoto(el){
   el.innerHTML = `<p class="nota">Cargando los municipios…</p>`;
   ({T, GP} = await datosGeo());
   if (!T){ el.innerHTML = `<p class="nota">No se han podido cargar los datos de geografía.</p>`; return; }
-  const [M, V23, V19] = await Promise.all([pedir(RUTAS.datos + "municipios.json"), pedir(VOTOS.v23), pedir(VOTOS.v19)]);
+  const [M, V23, V19, ED] = await Promise.all([pedir(RUTAS.datos + "municipios.json"), pedir(VOTOS.v23), pedir(VOTOS.v19), pedir(VOTOS.edad)]);
   if (!M){ el.innerHTML = `<p class="nota">No se han podido cargar los municipios.</p>`; return; }
   const F = M.familias, ORD = M.orden;
   const colorBloque = k => k === "OTROS" ? OTROS_COLOR : F[k]?.[1] || OTROS_COLOR;
@@ -188,6 +199,25 @@ export async function geografiaDelVoto(el){
     return `<h4>${esc(e.t)}${e.aprox ? ` <small>· límites aproximados: provincias enteras</small>` : ""}</h4><p style="margin:0 0 6px;font-size:13.5px">${e.d(r)}</p>
       <p style="margin:0;font-size:13px;color:var(--muted)">El 23J: PP ${sh(r, "PP")}, PSOE ${sh(r, "PSOE")}, Vox ${sh(r, "VOX")}, Sumar ${sh(r, "IZQ")}, otros ${sh(r, "OTROS")}.${r.crec != null ? ` Población desde ${M.anio0}: ${signo(r.crec, 0)}.` : ""}</p>`; };
 
+  // Cómo vota cada edad (CIS): los partidos de cada grupo, sus colores y unas frases que salen de los datos.
+  const PART_ED = [["PP", "PP"], ["PSOE", "PSOE"], ["VOX", "Vox"], ["SUMAR", "Sumar"], ["OTROS", "Otros"]];
+  const colEd = k => colorBloque(k === "SUMAR" ? "IZQ" : k);
+  const edadTxt = () => {
+    const A = ED.ajustado, E2 = ED.edades, nTot = ED.n.reduce((s, x) => s + x, 0);
+    const jov = [0, 1].reduce((s, j) => s + (A[j].VOX + A[j].SUMAR) * ED.n[j], 0) / (ED.n[0] + ED.n[1]), may = A[6].VOX + A[6].SUMAR;
+    const gana = A.map(a => Object.entries(a).filter(([k]) => k !== "OTROS").sort((x, y) => y[1] - x[1])[0][0]);
+    // Las edades seguidas en que gana el mismo, juntas: «de 18 a 34», «de 55 a 74», «los de 75 y más».
+    const tramos = {}; gana.forEach((g, j) => { const l = (tramos[g] ||= []), u = l[l.length - 1]; if (u && u[1] === j - 1) u[1] = j; else l.push([j, j]); });
+    const desde = j => E2[j].split(/[-+]/)[0], hasta = j => E2[j].includes("+") ? null : E2[j].split("-")[1];
+    const tramo = ([a, b]) => hasta(b) ? `de ${desde(a)} a ${hasta(b)}` : `de ${desde(a)} o más`;
+    const lista = l => l.length > 1 ? l.slice(0, -1).join(", ") + " y " + l[l.length - 1] : l[0];
+    return {nTot, jov, may, frase: Object.entries(tramos).map(([g, l]) => `${g === "PP" ? "el PP" : g === "PSOE" ? "el PSOE" : g} gana ${lista(l.map(tramo))} años`).join("; ")};
+  };
+  const barrasEdad = () => `<div class="geo-edad">${ED.edades.map((e, j) => { const a = ED.ajustado[j], c = ED.crudo[j];
+      return `<div class="geo-edad-f" data-tip="${esc(`<b>De ${e.replace("75+", "75 o más").replace("-", " a ")} años</b>${PART_ED.map(([k, t]) => `<br>${t}: ${dec(a[k], 1)} % <span style='color:var(--muted)'>(dicen: ${dec(c[k], 1)} %)</span>`).join("")}`)}"><span class="e">${esc(e.replace("75+", "75 y más"))}</span>
+        <span class="b">${PART_ED.map(([k]) => `<i style="width:${a[k]}%;background:${colEd(k)}">${a[k] >= 9 ? Math.round(a[k]) : ""}</i>`).join("")}</span></div>`; }).join("")}
+      <div class="geo-partidos">${PART_ED.map(([k, t]) => `<span><i style="background:${colEd(k)}"></i>${t}</span>`).join("")}</div></div>`;
+  const abstencionEdad = () => ED.no_voto ? `<div class="geo-edad geo-edad-nv"><div class="geo-edad-t">Dicen que no votaron</div>${ED.edades.map((e, j) => `<div class="geo-edad-f"><span class="e">${esc(e.replace("75+", "75 y más"))}</span><span class="nv"><i style="width:${(ED.no_voto[j] / Math.max(...ED.no_voto) * 100).toFixed(0)}%"></i></span><b>${dec(ED.no_voto[j], 0)} %</b></div>`).join("")}</div>` : "";
   const [cG, cCm, , , cRu] = R("ciudad"), [vVa, , , vCm] = R("vacia"), [eJ, , , eMe] = R("edad"), [dA, , , dB] = R("dinero");
   const mitadMay = D.filter(d => d.may65 >= 50).length;
   const PASOS = [
@@ -202,6 +232,10 @@ export async function geografiaDelVoto(el){
     {id: "edad", n: "La edad", k: "Eje 3 · La edad", t: "Los pueblos que envejecen", html: () => `
       <p>En ${n(fmt(eMe.n))} municipios al menos uno de cada tres vecinos tiene 65 años o más, y en ${fmt(mitadMay)} ya son la mitad. El envejecimiento dibuja casi el mismo mapa que la pérdida de población: donde se van los jóvenes, quedan los mayores.</p>
       <p>Donde más mayores hay, el PP sacó el ${sh(eMe, "PP")} de los votos; en los municipios más jóvenes, el ${sh(eJ, "PP")}.</p>${cubos("edad")}`},
+    {id: "generaciones", n: "Cada edad", k: "Eje 3 · La edad", t: "Cómo vota cada edad", html: () => { if (!ED) return `<p class="nota">No se ha podido cargar el voto por edad.</p>`; const x = edadTxt(); return `
+      <p>El mapa enseña pueblos que envejecen, pero no cómo vota la gente según su edad. Eso lo dice la encuesta postelectoral del CIS, con ${n(fmt(x.nTot))} votantes entrevistados después del 23J.</p>
+      <p>Entre los menores de 35, Vox y Sumar se llevaron juntos el ${n(dec(x.jov, 0) + " %")} de los votos; entre los mayores de 75, el ${dec(x.may, 0)} %. Por edades, ${x.frase}.</p>${barrasEdad()}${abstencionEdad()}
+      <p class="geo-edad-nota">El recuerdo de voto del CIS se queda corto con el PP y Vox y largo con Sumar: cada partido se ha escalado para que el total cuadre con el resultado del 23J, sin tocar la diferencia entre edades. Al pasar por cada fila, lo que dijeron sin ajustar. <a href="${esc(ED.url)}">La tabla del CIS</a>.</p>`; }},
     {id: "dinero", n: "El dinero", k: "Eje 4 · El dinero", t: "La renta", html: () => `
       <p>Ordenados por renta neta por persona (Atlas de renta del INE, ${T.fuentes.renta}), cada grupo reúne a una cuarta parte de la población. El cuarto con más renta vive en ${n(fmt(dA.n))} municipios; el de menos, en ${fmt(dB.n)}.</p>
       <p>En los municipios de renta alta el PP sacó el ${sh(dA, "PP")} y el PSOE el ${sh(dA, "PSOE")}; en los de renta baja, el ${sh(dB, "PP")} y el ${sh(dB, "PSOE")}.</p>${cubos("dinero")}`},
@@ -237,7 +271,7 @@ export async function geografiaDelVoto(el){
   const leyCubos = id => `<div class="geo-ley">${EJES[id].cubos.map(c => `<span><i style="background:${c.col}"></i>${esc(c.t)}</span>`).join("")}<span><i style="background:var(--line-strong)"></i>Sin dato</span></div>`;
   // Lo que pinta cada paso: radio, color y opacidad de cada punto, flechas sí o no, y la leyenda.
   function estado(){
-    const p = PASOS[modo.paso].id;
+    const p0 = PASOS[modo.paso].id, p = p0 === "generaciones" ? "edad" : p0;   // «Cada edad» deja el mapa de la edad
     if (p === "engana") return {r: modo.tam === "pob" ? rPob : () => 1.8, c: colGana, a: () => modo.tam === "pob" ? .65 : .85, pie: leyGana()};
     if (EJES[p]){
       const cs = EJES[p].cubos, de = d => cs.find(c => c.f(d)), sel = cs.find(c => c.k === modo.cubo);

@@ -418,8 +418,9 @@ _PLANTILLA: list[str] = []
 _META = re.compile(r"<!--meta.*?<!--/meta-->", re.S)
 
 
-def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: bool = False) -> bytes:
-    """index.html con la cabecera de esta página y, en data-ruta, la vista que abre."""
+def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: bool = False, fecha: str = "") -> bytes:
+    """index.html con la cabecera de esta página y, en data-ruta, la vista que abre. Las votaciones y sesiones llevan
+    su fecha (data-fecha): si no caen en el periodo que carga la web, carga su mes."""
     if not _PLANTILLA:
         _PLANTILLA.append(INDEX.read_text())
     url = f"{URL_SITIO}/{ruta}/" if URL_SITIO else f"/{ruta}/"
@@ -445,7 +446,8 @@ def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: 
     if not n:
         raise SystemExit("paginas: index.html no tiene el bloque <!--meta--> … <!--/meta-->")
     pagina = pagina.replace('<html lang="es" data-marca="marcador">',
-                            f'<html lang="es" data-marca="marcador" data-ruta="{e(hashweb)}">', 1)
+                            f'<html lang="es" data-marca="marcador" data-ruta="{e(hashweb)}"'
+                            + (f' data-fecha="{e(fecha)}"' if fecha else "") + ">", 1)
     return pagina.encode()
 
 
@@ -536,14 +538,14 @@ def generar(salida: dict, plano: dict) -> dict:
     _PLANTILLA.clear()
     urls = ["", *(f"{v}/" for v in SECCIONES)]
 
-    def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta, clave: str = "") -> None:
+    def poner(ruta: str, hashweb: str, titulo: str, desc: str, tarjeta, clave: str = "", fecha: str = "") -> None:
         """clave: resumen de lo que dibuja la tarjeta cuando puede cambiar (una ley que avanza, la semana en
         curso). Va en el nombre del fichero, así que un cambio da una tarjeta nueva y las redes no se quedan
         con la vieja en caché."""
         imagen = f"og/{ruta}-{hashlib.sha1(clave.encode()).hexdigest()[:8]}.png" if clave else f"og/{ruta}.png"
         feed = ruta.startswith(("diputado/", "iniciativa/", "tema/"))
         escritas["paginas"] += _escribir_si_cambia(SITIO / ruta / "index.html",
-                                                   _pagina(ruta, hashweb, titulo, desc, imagen, feed))
+                                                   _pagina(ruta, hashweb, titulo, desc, imagen, feed, fecha))
         destino = SITIO / imagen
         # Una tarjeta ya dibujada no se vuelve a dibujar: su contenido no cambia.
         if DIBUJAR and not destino.exists():
@@ -566,14 +568,14 @@ def generar(salida: dict, plano: dict) -> dict:
         desc = (f"{resultado(v)} por {v['si']} votos a favor y {v['no']} en contra ({v['abst']} abstenciones). "
                 f"{v['tipo']}, {fecha_larga(v['fecha'])}.")
         poner(f"votacion/{v['id']}", f"votacion-{v['id']}", v["titulo"], desc,
-              lambda v=v: tarjeta_votacion(v, dips, plano))
+              lambda v=v: tarjeta_votacion(v, dips, plano), fecha=v["fecha"])
 
     for s in datos["sesiones"]:
         vs = [votos_por_id[x] for p in s.get("puntos", []) for x in p.get("votos", []) if x in votos_por_id]
         titulo = f"{s['organo']}, {fecha_larga(s['fecha'])}"
         desc = s.get("titular") or (s.get("resumen") or "")[:220] or f"{len(s.get('puntos', []))} asuntos en el orden del día."
         poner(f"sesion/{slug(s['id'])}", f"sesion-{s['id']}", titulo, desc,
-              lambda s=s, vs=vs: tarjeta_sesion(s, vs, dips, plano))
+              lambda s=s, vs=vs: tarjeta_sesion(s, vs, dips, plano), fecha=s["fecha"])
 
     leyes = {l["exp"]: l for l in (salida.get("leyes") or {}).get("iniciativas", [])}
     iniciativas: dict[str, dict] = {}

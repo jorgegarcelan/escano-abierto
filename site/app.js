@@ -21,6 +21,7 @@ function idDeRuta(ruta){
 }
 window.rutaDe = rutaDe;
 let ultimaVista = null;   // la última vista contada en la analítica (fuera de iniciar: cambiar de periodo no es otra visita)
+let mesCargado = null;    // el mes que se cargó para abrir una votación o sesión de otro periodo (solo una vez)
 
 /* ---------- carga por meses ---------- */
 // datos/indice.json trae lo común y la lista de meses; cada mes está en datos/AAAA-MM.json.
@@ -127,7 +128,7 @@ function voteRow(v, compact){
     ${significa(v)?`<p class="significa"><b>¿Qué significa?</b> ${esc(significa(v))}</p>`:""}
     <div class="stack" role="img" aria-label="Sí ${v.si}, No ${v.no}, Abstenciones ${v.abst}, No votan ${v.novota}">
       <i style="width:${w(v.si)};background:var(--si)"></i><i style="width:${w(v.abst)};background:var(--abst)"></i><i style="width:${w(v.novota)};background:var(--nv)"></i><i style="width:${w(v.no)};background:var(--no)"></i><span class="half"></span></div>
-    <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">JSON oficial</a></div>
+    <div class="counts num"><span><i class="dot" style="background:var(--si)"></i>Sí <b>${v.si}</b></span><span><i class="dot" style="background:var(--no)"></i>No <b>${v.no}</b></span><span><i class="dot" style="background:var(--abst)"></i>Abst. <b>${v.abst}</b></span><span><i class="dot" style="background:var(--nv)"></i>No votan <b>${v.novota}</b></span><a href="${v.json}" target="_blank" rel="noopener">${/\.pdf$/i.test(v.json||"")?"Diario de Sesiones (votación por llamamiento)":"JSON oficial"}</a></div>
     <div class="gpos">${gp}</div>
     ${porqueVoto(v)}
     ${decideNota(v)}
@@ -2644,7 +2645,12 @@ document.addEventListener("change", e=>{ const ps=e.target.closest(".prov-sel");
   let id = esRuta(h) ? h : dr && rutaDe(dr) === location.pathname ? dr : idDeRuta(location.pathname);
   if (!esRuta(id)) id = "inicio";
   if (location.pathname !== rutaDe(id) || esRuta(h)) try{ history.replaceState(null, "", rutaDe(id) + location.search); }catch(e){}
-  show(id, false); }
+  // La página de una votación o sesión que no cae en el periodo cargado: se carga su mes (una vez) y se abre ahí.
+  const mes = id === dr && (document.documentElement.dataset.fecha || "").slice(0,7);
+  const falta = (id.startsWith("votacion-") && !VOTES[id.slice(9)])
+             || (id.startsWith("sesion-") && !DATA.sesiones.some(s=>s.id.toLowerCase()===id.slice(7).toLowerCase()));
+  if (mes && falta && mesCargado !== mes){ mesCargado = mes; arrancar(mes); }
+  else show(id, false); }
 puntoReto();
 window.addEventListener("hashchange", ()=>{ const h = location.hash.slice(1); if (!esRuta(h)) return; fijarRuta(h, false); show(h, true); window.scrollTo(0,0); }, SIG);
 // Atrás y adelante. Los saltos dentro de la página (#exp-radar…) no cambian de vista.
