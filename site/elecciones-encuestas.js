@@ -447,3 +447,111 @@ function lineas(caja, series){
     tip(`<b>${esc(fLarga(dia))}</b>${filas.map(([s,p])=>filaTip(s.c, s.n, `${Math.round(p[1]*100)} %`)).join("")}`, ev); };
   svg.onmouseleave = () => { cruz.style.opacity = 0; tip(""); };
 }
+
+/* =====================================================================================================
+   CUÁNTO ACERTARON: las encuestas de 2015 a 2023 frente al resultado (escano/aciertos.py → aciertos.json)
+   ===================================================================================================== */
+const COLOR_LIN = {PP:"#2C7BC4", PSOE:"#D8342B", VOX:"#5BA83A", IZQ:"#7B4BA8", CS:"#EB6109", IU:"#A4243B", ERC:"#E0A410", JUNTS:"#1FA8A0", PNV:"#2F7A4A", BILDU:"#86A832", MP:"#2FA77A", BNG:"#6FB2DE", UPYD:"#E0388C"};
+const NOMBRE_LIN = {PP:"PP", PSOE:"PSOE", VOX:"Vox", IZQ:"Podemos / Sumar", CS:"Ciudadanos", IU:"IU", ERC:"ERC"};
+const CSS_AC = `
+.ac-top{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.ac-k{all:unset;cursor:pointer;display:grid;gap:3px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);transition:border-color .2s}
+.ac-k:hover{border-color:var(--line-strong)}.ac-k[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.ac-k .e{font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ac-k b{font:800 26px/1.05 var(--led,var(--display))}
+.ac-k span{font-size:12.5px;color:var(--muted);line-height:1.3}.ac-k span em{font-style:normal;color:var(--ink);font-weight:600}
+.ac-k:focus-visible{outline:2px solid var(--no);outline-offset:2px}
+svg.ac-g{display:block;width:100%;height:auto;overflow:visible}
+svg.ac-g .eje line{stroke:var(--line);stroke-dasharray:2 4}
+svg.ac-g .eje text{font:10.5px var(--mono);fill:var(--muted)}
+svg.ac-g .n{font:600 12.5px var(--sans,inherit);fill:var(--ink)}
+svg.ac-g .enc{opacity:.35}
+svg.ac-g .med{fill:var(--surface);stroke-width:2.2}
+svg.ac-g .dif{font:700 12px var(--mono)}
+.ac-ley{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:6px}
+.ac-ley span{display:inline-flex;align-items:center;gap:6px}
+.ac-ley i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.ac-mat{border-collapse:separate;border-spacing:3px;font-size:12.5px;width:100%}
+.ac-mat th{font:600 11px var(--mono);color:var(--muted);padding:4px;text-align:center}
+.ac-mat th:first-child{text-align:left}
+.ac-mat td{text-align:center;padding:8px 4px;border-radius:6px;font:700 12.5px var(--mono)}
+.ac-mat td:first-child{text-align:left;font:600 12.5px var(--sans,inherit);background:none}
+.ac-mat td.v{color:var(--ink)}
+.ac-rk{width:100%;border-collapse:collapse;font-size:13px}
+.ac-rk th{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+.ac-rk th:first-child,.ac-rk td:first-child{text-align:left}
+.ac-rk td{padding:6px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.ac-rk td b{font:700 13px var(--mono)}
+.ac-rk .pts{display:inline-flex;gap:3px}
+.ac-rk .pts i{display:inline-block;min-width:34px;padding:2px 4px;border-radius:5px;font:600 11px var(--mono);font-style:normal;text-align:center}
+.ac-rk .ag{font:600 10px var(--mono);color:var(--muted);border:1px solid var(--line-strong);border-radius:999px;padding:0 6px;margin-left:6px}
+.ac-esc{width:100%;border-collapse:collapse;font-size:13px}
+.ac-esc th{font:600 10.5px var(--mono);text-transform:uppercase;color:var(--muted);text-align:right;padding:6px;border-bottom:1px solid var(--line-strong)}
+.ac-esc th:first-child,.ac-esc td:first-child{text-align:left}
+.ac-esc td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right;font:700 13.5px var(--mono)}
+.ac-esc td:first-child{font:500 13px var(--sans,inherit)}
+.ac-esc td small{font:500 11px var(--mono);margin-left:4px}
+.ac-esc .base td{background:var(--sunk)}
+.ac-esc .si{color:var(--si)}.ac-esc .no{color:var(--no)}
+`;
+export async function pintarAcierto(sec){
+  estilos(); if (!document.getElementById("enc-css-ac")){ const st = document.createElement("style"); st.id = "enc-css-ac"; st.textContent = CSS_AC; document.head.appendChild(st); }
+  let [A, PR] = await Promise.all([pedir("datos/encuestas/aciertos.json"), pedir("datos/encuestas/proyeccion.json")]);
+  if (!A?.elecciones?.length){ sec.innerHTML = `<p class="nota">No se ha podido cargar el análisis.</p>`; return; }
+  if (enVeda(null)) PR = null;   // en la veda, lo de 2015-2023 se puede ver; la proyección de hoy (hecha con encuestas de ahora), no
+  const E = A.elecciones, nomL = (el, p) => el.rotulos?.[p] && p === "IZQ" ? el.rotulos[p].replace("Unidas", "Unidas").replace("Unidos", "Unidos") : (NOMBRE_LIN[p] || p);
+  const colL = (p, el) => p === "IZQ" && el?.id === "202307" ? "#C92F72" : (COLOR_LIN[p] || "#888"), d1 = x => (x > 0 ? "+" : x < 0 ? "−" : "±") + dec(Math.abs(x));
+  const peor = el => Object.entries(el.media_dif).sort((a,b)=>Math.abs(b[1]) - Math.abs(a[1]))[0];
+  const errMedio = E.reduce((s,el)=>s + el.media_mae, 0)/E.length;
+  let sel = 0;
+  sec.innerHTML = `<section class="sec" style="padding-top:8px">
+      <div class="sec-h"><h2>¿Aciertan las encuestas?</h2><p>En las cinco últimas generales, la media de las encuestas de las tres semanas anteriores se equivocó, de media, en <b>${dec(errMedio)} puntos</b> por partido. Pero no siempre con los mismos ni hacia el mismo lado.</p></div>
+      <div class="ac-top">${E.map((el,i)=>{ const [p, d] = peor(el); return `<button type="button" class="ac-k" data-ac="${i}" aria-pressed="${i===0}"><span class="e">${esc(el.nombre)}</span><b>${dec(el.media_mae)} pt</b><span>de error medio · el mayor, <em>${esc(nomL(el, p))} ${d1(d)}</em></span></button>`; }).join("")}</div></section>
+    <section class="sec"><div class="sec-h"><h2 id="ac-t"></h2><p>Cada fila, un partido: el círculo hueco es la media de las encuestas; el lleno, lo que votó la gente; los puntos claros, la última encuesta de cada empresa.</p></div>
+      <div class="chart"><div id="ac-g"></div><div class="ac-ley"><span><i style="border:2px solid var(--ink)"></i>media de las encuestas</span><span><i style="background:var(--ink)"></i>resultado</span><span><i style="background:var(--ink);opacity:.35;width:7px;height:7px"></i>cada encuesta</span></div></div></section>
+    <section class="sec"><div class="sec-h"><h2>Hacia dónde fallan</h2><p>Puntos de más (sobrestimado) o de menos (infravalorado) que la media de las encuestas le dio a cada partido.</p></div>
+      <div class="chart" style="overflow-x:auto"><table class="ac-mat" id="ac-mat"></table></div></section>
+    <section class="sec"><div class="sec-h"><h2>Las encuestadoras</h2><p>El error medio de la última encuesta de cada empresa (en puntos por partido), en las generales en que publicó. Arriba, las que estuvieron en más elecciones y más acertaron.</p></div>
+      <div class="chart" style="overflow-x:auto"><table class="ac-rk" id="ac-rk"></table></div></section>
+    ${A.escenarios && PR ? `<section class="sec"><div class="sec-h"><h2>Si fallan como entonces</h2><p>La <a href="#elecciones-proyeccion">proyección</a> de hoy, corrigiendo la media con el error que tuvo cada vez en el PP, el PSOE, Vox y la izquierda de Sumar y Podemos.</p></div>
+      <div class="chart" style="overflow-x:auto"><table class="ac-esc" id="ac-esc"></table></div></section>` : ""}
+    <p class="enc-nota">Las encuestas, de las tablas de Wikipedia de cada elección: de cada empresa, la última publicada en las tres semanas anteriores (sin los sondeos a pie de urna). El error es la media de la diferencia, en puntos, en los partidos que pasaron del 2,5 %. La media se hace como la de hoy: sin el CIS ni KeyData. El código está en <a href="https://github.com/jorgegarcelan/escano-abierto/blob/main/escano/aciertos.py">aciertos.py</a>.</p>`;
+  // Una elección: media frente a resultado, con cada encuesta.
+  function eleccion(i){
+    sel = i; const el = E[i], caja = sec.querySelector("#ac-g");
+    sec.querySelectorAll("[data-ac]").forEach(b=>b.setAttribute("aria-pressed", String(+b.dataset.ac === i)));
+    const [p0, d0] = peor(el); sec.querySelector("#ac-t").textContent = `${el.nombre}: ${nomL(el, p0)}, ${d0 > 0 ? "sobrestimado" : "infravalorado"} en ${dec(Math.abs(d0))} puntos`;
+    const ps = el.partidos, W = Math.max(320, caja.clientWidth || 700), fila = 44, H = ps.length*fila + 34, m = {l: W < 520 ? 92 : 130, r: 56, t: 10, b: 24};
+    const todos = ps.flatMap(p=>[el.resultado[p], el.media[p], ...el.encuestas.map(e=>e.v[p]).filter(v=>v != null)]), hi = Math.ceil((Math.max(...todos) + 2)/5)*5;
+    const X = v => m.l + v/hi*(W - m.l - m.r), Y = k => m.t + k*fila + fila/2;
+    const ticks = []; for (let v = 0; v <= hi; v += hi > 30 ? 10 : 5) ticks.push(v);
+    caja.innerHTML = `<svg class="ac-g" viewBox="0 0 ${W} ${H}" role="img" aria-label="Media de las encuestas y resultado de ${esc(el.nombre)}">
+      <g class="eje">${ticks.map(v=>`<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H - m.b}"/><text x="${X(v)}" y="${H - 6}" text-anchor="middle">${v} %</text>`).join("")}</g>
+      ${ps.map((p,k)=>{ const y = Y(k), c = colL(p, el), r = el.resultado[p], md = el.media[p], d = md - r;
+        return `<g data-tip="${esc(`<b>${esc(nomL(el, p))}</b><br>Media de las encuestas: ${dec(md)} %<br>Resultado: ${dec(r)} %<br>${d > 0 ? "Sobrestimado" : "Infravalorado"} en ${dec(Math.abs(d))} puntos`)}">
+          <text class="n" x="${m.l - 10}" y="${y + 4}" text-anchor="end">${esc(nomL(el, p))}</text>
+          ${el.encuestas.filter(e=>e.v[p] != null).map(e=>`<circle class="enc" cx="${X(e.v[p]).toFixed(1)}" cy="${(y + ((e.empresa.length*7) % 11) - 5).toFixed(1)}" r="3" fill="${c}"/>`).join("")}
+          <line x1="${X(Math.min(r, md))}" x2="${X(Math.max(r, md))}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="3" opacity=".5"/>
+          <circle cx="${X(r)}" cy="${y}" r="6.5" fill="${c}"/><circle class="med" cx="${X(md)}" cy="${y}" r="6" stroke="${c}"/>
+          <text class="dif" x="${W - m.r + 8}" y="${y + 4}" fill="${Math.abs(d) >= 2 ? "var(--no)" : "var(--muted)"}">${d1(d)}</text></g>`; }).join("")}</svg>`;
+  }
+  eleccion(0);
+  // La matriz de errores: partidos de siempre × elecciones.
+  { const lins = ["PP","PSOE","VOX","IZQ","CS"], max = 5;
+    const fondo = d => { const a = Math.min(1, Math.abs(d)/max); return d > 0 ? `color-mix(in srgb,#D8342B ${Math.round(a*60)}%,var(--surface))` : `color-mix(in srgb,#2C7BC4 ${Math.round(a*60)}%,var(--surface))`; };
+    sec.querySelector("#ac-mat").innerHTML = `<thead><tr><th></th>${E.map(el=>`<th>${esc(el.nombre)}</th>`).join("")}</tr></thead><tbody>${lins.map(p=>`<tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${colL(p)};margin-right:6px"></span>${esc(NOMBRE_LIN[p])}</td>${E.map(el=>{ const d = el.media_dif[p]; return d == null ? `<td style="color:var(--muted)">–</td>` : `<td class="v" style="background:${fondo(d)}" title="${esc(nomL(el, p))}">${d1(d)}</td>`; }).join("")}</tr>`).join("")}</tbody>
+      <tfoot><tr><td colspan="${E.length + 1}" class="enc-nota" style="text-align:left;font:400 12px var(--sans,inherit);padding-top:8px">En rojo, sobrestimado (las encuestas le daban más); en azul, infravalorado.</td></tr></tfoot>`; }
+  // Las encuestadoras.
+  { const colE = x => x == null ? "var(--sunk)" : `color-mix(in srgb,${x < 1.5 ? "var(--si)" : x < 2.5 ? "#E0A410" : "var(--no)"} 28%,var(--surface))`;
+    const R = A.ranking.filter(r=>r.n >= 2);
+    sec.querySelector("#ac-rk").innerHTML = `<thead><tr><th>Empresa</th><th>Elecciones</th><th>Error medio</th><th>${E.map(el=>esc(el.nombre.split(" ")[0])).join(" · ")}</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${esc(r.empresa)}</b>${r.empresa === "KeyData" ? `<span class="ag" title="Es una media de encuestas">media</span>` : ""}</td><td>${r.n}</td><td><b>${dec(r.mae)}</b></td>
+      <td><span class="pts">${E.map(el=>{ const x = r.elecciones.find(y=>y.id === el.id)?.mae; return `<i style="background:${colE(x)}" title="${esc(el.nombre)}">${x == null ? "–" : dec(x)}</i>`; }).join("")}</span></td></tr>`).join("")}</tbody>`; }
+  // Si fallan como entonces.
+  if (A.escenarios && PR){ const C = PR.central, base = {PP: C.PP||0, PSOE: C.PSOE||0, VOX: C.VOX||0, ppvox: (C.PP||0) + (C.VOX||0)};
+    const celda = (v, b) => `${v}${v !== b ? `<small class="${v > b ? "si" : "no"}">${v > b ? "+" : "−"}${Math.abs(v - b)}</small>` : ""}`;
+    sec.querySelector("#ac-esc").innerHTML = `<thead><tr><th></th><th>PP</th><th>PSOE</th><th>Vox</th><th>PP + Vox</th></tr></thead><tbody>
+      <tr class="base"><td>La proyección de hoy</td><td>${base.PP}</td><td>${base.PSOE}</td><td>${base.VOX}</td><td>${base.ppvox}</td></tr>
+      ${E.map(el=>{ const s = A.escenarios[el.id]; if (!s) return ""; const e2 = s.escanos;
+        return `<tr><td>Si fallan como en ${esc(el.nombre)}</td><td>${celda(e2.PP||0, base.PP)}</td><td>${celda(e2.PSOE||0, base.PSOE)}</td><td>${celda(e2.VOX||0, base.VOX)}</td><td>${celda(s.ppvox, base.ppvox)}</td></tr>`; }).join("")}</tbody>`; }
+  sec.addEventListener("click", ev=>{ const b = ev.target.closest("[data-ac]"); if (b) eleccion(+b.dataset.ac); });
+}

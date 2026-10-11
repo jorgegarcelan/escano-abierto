@@ -5,6 +5,8 @@
 - `proyeccion.json`: los escaños que salen de esa media (proyeccion.py): la proyección central, las simulaciones y
   la central semana a semana.
 - `mercados.json`: lo que apuestan en Polymarket (quién gana, quién preside, cuándo se va Sánchez), hoy y día a día.
+- `aciertos.json`: cuánto acertaron las encuestas en las generales de 2015 a 2023 (aciertos.py), y la proyección de
+  hoy si fallaran como entonces.
 
     python -m escano.encuestas        # descarga lo último y escribe data/encuestas/*.json
 
@@ -306,6 +308,14 @@ def escribir_datos() -> dict:
     if merc:
         (CARPETA / "mercados.json").write_text(json.dumps({"actualizado": datos["actualizado"], "veda": datos["veda"], "mercados": merc},
                                                            ensure_ascii=False, separators=(",", ":")))
+    from . import aciertos     # cuánto acertaron las encuestas de 2015 a 2023 (páginas que ya no cambian: caché)
+    try:
+        ac = aciertos.analizar()
+        hoy_m = {p: s["m"][-1] for p, s in datos["media"]["partidos"].items() if s["m"] and s["m"][-1]}
+        ac["escenarios"] = aciertos.escenarios(ac, hoy_m)
+        (CARPETA / "aciertos.json").write_text(json.dumps(ac, ensure_ascii=False, separators=(",", ":")))
+    except Exception as e:
+        print(f"Aciertos: no se ha podido analizar ({e})")
     from . import proyeccion   # la proyección de escaños, con la media de hoy
     proy = proyeccion.construir(datos["media"], [p["id"] for p in datos["partidos"]], datos["actualizado"])
     (CARPETA / "proyeccion.json").write_text(json.dumps(proy, ensure_ascii=False, separators=(",", ":")))

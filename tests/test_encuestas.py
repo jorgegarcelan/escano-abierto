@@ -59,3 +59,10 @@ def test_opciones_de_polymarket_en_castellano():
     assert en._opcion_es("December 31, 2026") == "31 de diciembre de 2026"
     assert en._opcion_es("Alberto Núñez Feijóo") == "Alberto Núñez Feijóo"
     assert en._opcion_es("PP") == "PP"
+
+
+def test_error_de_una_encuesta():
+    from escano import aciertos as ac
+    res = {"PP": 33.1, "PSOE": 31.7, "VOX": 12.4, "IZQ": 12.3}
+    assert ac._error({"PP": 34.1, "PSOE": 28.7, "VOX": 12.4, "IZQ": 13.3}, res, list(res)) == 1.25
+    assert ac._error({"PP": 34.1}, res, list(res)) is None   # con un solo partido no se mide

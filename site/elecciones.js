@@ -316,6 +316,7 @@ const PAGINAS = [
   {id:"encuestas", c:"Encuestas", t:"Las encuestas", d:"Todas las encuestas desde 2023 y su media día a día: cómo ha cambiado la intención de voto camino del 29N."},
   {id:"proyeccion", c:"Proyección", t:"La proyección", d:"Los escaños que salen de la media de las encuestas, provincia a provincia, y lo probable que es cada mayoría."},
   {id:"mercados", c:"Mercados", t:"Los mercados", d:"Lo que apuestan en Polymarket: quién gana, quién preside y cuándo se va Sánchez, día a día."},
+  {id:"acierto", c:"¿Aciertan?", t:"Cuánto acertaron", d:"Las encuestas de las cinco últimas generales frente al resultado: quién falló, cuánto y hacia dónde."},
   {id:"noche", c:"En directo", t:"La noche electoral", d:"El escrutinio del 29N en directo, provincia a provincia, con los escaños que aún están en el aire."},
 ];
 const PAG = Object.fromEntries(PAGINAS.map(p=>[p.id, p]));
@@ -358,7 +359,7 @@ export async function render(el, c, sub){
   else if (sub === "metricas") hist("pintarMetricas");
   else if (sub === "mapa") hist("pintarMunicipios");
   else if (sub === "noche") hist("pintarNoche");
-  else if (["encuestas", "proyeccion", "mercados"].includes(sub)) import("./elecciones-encuestas.js").then(m=>m[{encuestas:"pintarEncuestas", proyeccion:"pintarProyeccion", mercados:"pintarMercados"}[sub]](cuerpo, ctx)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
+  else if (["encuestas", "proyeccion", "mercados", "acierto"].includes(sub)) import("./elecciones-encuestas.js").then(m=>m[{encuestas:"pintarEncuestas", proyeccion:"pintarProyeccion", mercados:"pintarMercados", acierto:"pintarAcierto"}[sub]](cuerpo, ctx)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   else if (sub === "voto") import("./elecciones-voto.js").then(m=>m.geografiaDelVoto(cuerpo)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   else if (eleccion) hist("pintarFicha");
   else if (provincia) hist("pintarProvincia");
@@ -371,7 +372,7 @@ const GRUPOS_PAG = [
   {n:"Los escaños", t:"Cómo se reparten los 350", d:"Cada provincia elige sus diputados por separado, con la ley D'Hondt: por eso unos votos pesan más que otros.", ids:["escano"], los350:true},
   {n:"La historia", t:"Cuarenta y nueve años de elecciones", d:"Las dieciséis generales desde 1977, una a una, provincia a provincia y en cifras.", ids:["historico","metricas"]},
   {n:"El mapa", t:"El mapa del voto", d:"Quién gana dónde, municipio a municipio, y cómo vota cada España.", ids:["mapa","voto"]},
-  {n:"Las encuestas", t:"Lo que dicen las encuestas", d:"Las encuestas y su media hasta el 23 de noviembre: desde el 24, la ley prohíbe publicarlas.", ids:["encuestas","proyeccion","mercados"]},
+  {n:"Las encuestas", t:"Lo que dicen las encuestas", d:"Las encuestas y su media hasta el 23 de noviembre: desde el 24, la ley prohíbe publicarlas.", ids:["encuestas","proyeccion","mercados","acierto"]},
   {n:"La noche", t:"La noche del 29N", d:"El escrutinio en directo desde que cierran los colegios.", ids:["noche"], pronto:true},
 ];
 NAV = GRUPOS_PAG.map(g=>({n:g.n, ids: g.los350 ? ["350", ...g.ids] : g.ids}));
@@ -427,6 +428,7 @@ function home(el){
     encuestas: ()=>tarjeta("encuestas", "", ""),
     proyeccion: ()=>tarjeta("proyeccion", "", ""),
     mercados: ()=>tarjeta("mercados", "", ""),
+    acierto: ()=>tarjeta("acierto", "", ""),
     noche: ()=>tarjeta("noche", "20.00", "del 29 de noviembre: empieza el escrutinio. Antes, un ensayo con el 23J"),
   };
   // Lo que pasa ahora y lo siguiente del calendario.
