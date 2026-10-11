@@ -101,7 +101,7 @@ escano/
   construir.py    une todo en site/datos/
   paginas.py      páginas para compartir, tarjetas Open Graph y RSS
   cli.py          python -m escano …
-site/             web estática (index.html) y marcas visuales (site/marcas/)
+site/             web estática (index.html) y su marca, Marcador (site/marcas/)
 data/             datos procesados, versionados (data/raw, los originales, no)
 tests/            parser, votaciones, leyes, agenda, preguntas y pipeline completo
 scripts/          build de Vercel

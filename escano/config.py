@@ -12,8 +12,10 @@ SESIONES = DATOS / "sesiones"      # intervenciones extraídas de cada Diario
 ANALISIS = DATOS / "analisis"      # caché de respuestas del modelo
 SITIO = RAIZ / "site"
 
+# Legislatura que se sigue. Al constituirse unas Cortes nuevas se cambian estas tres constantes (ver docs/xvi-legislatura.md).
 LEGISLATURA = 15
 LEGISLATURA_ROMANA = "XV"
+INICIO_LEGISLATURA = "2023-08-17"   # sesión constitutiva
 
 BASE = "https://www.congreso.es"
 URL_VOTACIONES_DIA = (

@@ -15,7 +15,7 @@ from . import diputados as mod_diputados, hemiciclo as mod_hemiciclo, organos as
 from . import agenda as mod_agenda, intereses as mod_intereses, leyes as mod_leyes, preguntas as mod_preguntas
 from . import explora as mod_explora, semanas as mod_semanas, temas as mod_temas, votaciones as mod_votaciones
 from .analisis import analizar, resumir_sesion, solo_cache
-from .config import DATOS, INFO_GRUPOS, SESIONES, SITIO
+from .config import DATOS, INFO_GRUPOS, LEGISLATURA_ROMANA, SESIONES, SITIO
 
 RETOS = DATOS / "retos.json"  # el reto de cada día de «¿Quién lo dijo?»: se calcula una vez y no se toca
 MVP = DATOS / "mvp.json"  # análisis del prototipo; solo rellenan lo que el pipeline aún no ha analizado
@@ -284,10 +284,12 @@ def construir(con_ia: bool = True) -> dict:
     web_votos = [_votacion_web(v, indice, actual) for v in votaciones]
     por_fecha = votos_por_fecha(web_votos)
 
-    # Escaños actuales por grupo: los del último voto con más presentes.
+    # Escaños actuales por grupo: los del último voto con más presentes. Solo cuentan los votos del Pleno con la
+    # cámara completa: los de la Diputación Permanente (con las Cortes disueltas) tienen unos sesenta miembros.
     escanos = Counter()
-    if votaciones:
-        ultimo = max(votaciones, key=lambda v: (v["fecha"], v["si"] + v["no"] + v["abst"] + v["novota"]))
+    plenas = [v for v in votaciones if v["si"] + v["no"] + v["abst"] + v["novota"] >= 300] or votaciones
+    if plenas:
+        ultimo = max(plenas, key=lambda v: (v["fecha"], v["si"] + v["no"] + v["abst"] + v["novota"]))
         escanos = Counter({g: sum(c.values()) for g, c in ultimo["conteo"].items()})
 
     sesiones_web, ivs_web, fechas_con_ds = [], [], set()
@@ -395,7 +397,7 @@ def construir(con_ia: bool = True) -> dict:
     salida = {
         "datos": {
             "meta": {"periodo": f"{fechas[0]} – {fechas[-1]}" if fechas else "",
-                     "generado": date.today().isoformat()},
+                     "generado": date.today().isoformat(), "legislatura": LEGISLATURA_ROMANA},
             "grupos": grupos,
             "sesiones": sesiones_web,
             "votaciones": web_votos,
@@ -418,6 +420,12 @@ def construir(con_ia: bool = True) -> dict:
             x["tm"] = mod_temas.temas_de(x["titulo"], x["texto"])
     salida["preguntas"] = mod_preguntas.leer_todo()["preguntas"]
     escribir_web(salida)
+    from . import elecciones   # sección «Elecciones» (29N): calendario, lo que caduca, mapas e histórico
+    elecciones.escribir(salida, SITIO / "datos" / "elecciones")
+    from . import geografia    # sección «Geografía»: comunidades y provincias con los datos del INE (python -m escano.geografia)
+    geografia.escribir(SITIO / "datos" / "geografia")
+    from . import encuestas    # «Las encuestas» del 29N: lo que dejó `python -m escano.encuestas` (Wikipedia y Polymarket)
+    encuestas.escribir(SITIO / "datos" / "encuestas")
     try:
         from .paginas import generar
         generar(salida, mod_hemiciclo.leer())

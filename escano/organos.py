@@ -66,6 +66,12 @@ def actualizar() -> dict:
         datos = _post(url, {"_organos_selectedLegislatura": LEGISLATURA_ROMANA, "_organos_selectedOrganoSup": c["sup"],
                             "_organos_selectedSuborgano": c["sub"], "_organos_compoHistorica": "false"})
         salida[c["nombre"]] = leer_composicion(datos)
+    miembros = lambda d: sum(len(v) if isinstance(v, (list, dict)) else 0 for v in d.values())
+    anterior = leer()
+    # Al disolverse las Cortes las comisiones se quedan sin miembros: se conserva la última composición.
+    if anterior and miembros(salida) < miembros(anterior) * 0.5:
+        print(f"  Comisiones: {miembros(salida)} miembros frente a {miembros(anterior)}; se conserva la composición anterior")
+        return anterior
     if salida:
         FICHERO.parent.mkdir(parents=True, exist_ok=True)
         FICHERO.write_text(json.dumps(salida, ensure_ascii=False, indent=1))

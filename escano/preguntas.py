@@ -22,12 +22,12 @@ from datetime import date, timedelta
 
 import requests
 
-from .config import BASE, CRUDOS, DATOS, USER_AGENT
+from .config import BASE, CRUDOS, DATOS, INICIO_LEGISLATURA, LEGISLATURA, USER_AGENT
 
 URL = (BASE + "/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view"
        "&p_p_resource_id=filtrarListado&p_p_cacheability=cacheLevelPage")
 FICHERO = DATOS / "preguntas.json"
-INICIO = date(2023, 8, 17)  # constitución de la XV Legislatura
+INICIO = date.fromisoformat(INICIO_LEGISLATURA)  # constitución de la legislatura
 AVANCE = CRUDOS / "preguntas-avance.json"
 RE_AUTOR = re.compile(r"^(.*?)\s*\(([^()]+)\)\s*$")
 GRUPOS = {"GP": "PP", "GS": "PSOE", "GVOX": "VOX", "GSUMAR": "SUMAR", "GR": "ERC", "GJxCAT": "JUNTS",
@@ -67,7 +67,7 @@ def leer(fila: dict) -> dict:
 def pagina(sesion: requests.Session, n: int, filtros: dict) -> list[dict]:
     for intento in range(4):
         try:
-            r = sesion.post(URL, timeout=(10, 30), data={"_iniciativas_legislatura": "15",
+            r = sesion.post(URL, timeout=(10, 30), data={"_iniciativas_legislatura": str(LEGISLATURA),
                                                    "_iniciativas_competencias": "Preguntas escritas",
                                                    "_iniciativas_paginaActual": str(n), **filtros})
             r.raise_for_status()

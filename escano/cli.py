@@ -11,6 +11,8 @@
     python -m escano lote [--estado | --ver]    # analiza con IA todo lo pendiente por la Batch API de Gemini
     python -m escano explora [--solo temas]     # unifica temas, lugares y propuestas para la pestaña Explora
     python -m escano estado [--desde 2018-06-01] # solo los nombramientos y ceses del BOE (organigrama del Estado)
+    python -m escano candidaturas               # listas al Congreso del BOE y quién de los diputados repite (29N)
+    python -m escano promesas [--solo PP]       # promesas de los programas de 2023 frente a lo que se votó (Gemini)
 """
 from __future__ import annotations
 
@@ -21,7 +23,7 @@ from datetime import date, timedelta
 import json
 
 from . import agenda, boe, calidad, diario, diputados, hemiciclo, intereses, leyes, organos, preguntas, votaciones
-from .config import CRUDOS, PROVEEDOR, VOTACIONES
+from .config import CRUDOS, PROVEEDOR, SITIO, VOTACIONES
 from .construir import construir
 
 
@@ -53,6 +55,7 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
         boe.actualizar(avisar=lambda t: print("  " + t.strip()))
     except Exception as e:
         print(f"· BOE: no se ha podido actualizar ({e})")
+    _candidaturas_si_toca()
 
     mapa = votaciones.mapa_diputados()
     estado = diario.leer_estado()
@@ -73,6 +76,23 @@ def actualizar(desde: date, hasta: date, con_ia: bool) -> None:
     datos = construir(con_ia=con_ia)
     print(f"  {len(datos['datos']['sesiones'])} sesiones, {len(datos['intervenciones'])} intervenciones analizadas, "
           f"{len(datos['datos']['votaciones'])} votaciones")
+
+
+def _candidaturas_si_toca(hoy: date | None = None) -> None:
+    """Entre la publicación de las listas (día 22 tras la convocatoria) y el final de los recursos, cada día."""
+    from . import candidaturas, elecciones
+    hoy = hoy or date.today()
+    desde, hasta = elecciones.CONVOCATORIA + timedelta(days=21), elecciones.CONVOCATORIA + timedelta(days=45)
+    if not (desde <= hoy <= hasta):
+        return
+    try:
+        dips = json.loads((SITIO / "datos" / "indice.json").read_text())["diputados"]
+        c = candidaturas.actualizar(desde, hoy, dips)
+        if c:
+            print(f"· Candidaturas {c['fase']}: {sum(len(v) for v in c['listas'].values())} listas; "
+                  f"{len(c['repite'])} diputados vuelven a ir en ellas")
+    except Exception as e:
+        print(f"· Candidaturas: no se han podido leer ({e})")
 
 
 def reprocesar(con_ia: bool) -> None:
@@ -148,6 +168,13 @@ def main(argv: list[str] | None = None) -> None:
     es = sub.add_parser("estado", help="nombramientos y ceses de altos cargos en el BOE y organigrama del Estado")
     es.add_argument("--desde", type=date.fromisoformat, help="por defecto, lo que falte desde la última vez")
     es.add_argument("--hasta", type=date.fromisoformat)
+    ca = sub.add_parser("candidaturas", help="listas al Congreso publicadas en el BOE y quién de los diputados repite")
+    ca.add_argument("--desde", type=date.fromisoformat, help="por defecto, el día 21 tras la convocatoria")
+    ca.add_argument("--hasta", type=date.fromisoformat, help="por defecto, hoy")
+    ca.add_argument("--boe", nargs="+", help="identificadores BOE-A-… concretos (el principal y sus correcciones)")
+    pm = sub.add_parser("promesas", help="promesas de los programas de 2023 frente a lo votado (necesita GEMINI_API_KEY)")
+    pm.add_argument("--solo", help="solo un programa: PP, PSOE, VOX, SUMAR, ERC, JUNTS, BILDU, PNV, BNG o UPN")
+    pm.add_argument("--limite", type=int, help="como mucho estas tandas de texto por programa (para probar)")
     rt = sub.add_parser("reto", help="fija un reto temático de «¿Quién lo dijo?» para un día (p. ej. vivienda)")
     rt.add_argument("fecha", type=date.fromisoformat)
     rt.add_argument("--tema", required=True, help="un tema fijo de temas.py: vivienda, sanidad, pensiones…")
@@ -189,6 +216,25 @@ def main(argv: list[str] | None = None) -> None:
         e = estado.escribir()
         print(f"· Organigrama: {e['cifras']['cargos_ocupados']} altos cargos con titular en {e['cifras']['ministerios']} "
               f"ministerios; {e['cifras']['cambios_30']} cambios en 30 días")
+    elif args.orden == "candidaturas":
+        from . import candidaturas, elecciones
+        dips = json.loads((SITIO / "datos" / "indice.json").read_text())["diputados"]
+        if args.boe:
+            c = candidaturas.escribir(args.boe, dips)
+        else:
+            c = candidaturas.actualizar(args.desde or elecciones.CONVOCATORIA + timedelta(days=21),
+                                        args.hasta or date.today(), dips)
+        if not c:
+            raise SystemExit("El BOE aún no ha publicado las candidaturas.")
+        print(f"{c['fase']}: {sum(len(v) for v in c['listas'].values())} listas en {len(c['listas'])} circunscripciones; "
+              f"{len(c['repite'])} de {len(dips)} diputados van en alguna")
+        print("Vuelve a construir la web para publicarlo: python -m escano construir --sin-ia")
+    elif args.orden == "promesas":
+        from . import promesas
+        r = promesas.ejecutar(args.solo, args.limite)
+        for sigla, p in r["programas"].items():
+            print(f"  {sigla}: {len(p['promesas'])} promesas")
+        print("Vuelve a construir la web para publicarlo: python -m escano construir --sin-ia")
     elif args.orden == "reto":
         from .construir import fijar_reto_tematico
         r = fijar_reto_tematico(args.fecha.isoformat(), args.tema)

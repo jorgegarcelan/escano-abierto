@@ -21,7 +21,7 @@ from datetime import date
 from pathlib import Path
 from xml.sax.saxutils import escape as esc_xml
 
-from .config import SITIO
+from .config import LEGISLATURA_ROMANA, SITIO
 from .temas import NOMBRE as NOMBRE_TEMA, TEMAS
 
 # Dirección pública de la web (p. ej. https://escanoabierto.es). Las redes necesitan URLs absolutas para
@@ -114,7 +114,7 @@ class Tarjeta:
             t = 1 - i / 160
             self.d.line([(0, i), (W, i)], fill=_mezcla(FONDO, (24, 28, 36), t * t * .8))
         self._logo(64, 52)
-        self.d.text((W - 64, 77), "Congreso de los Diputados · XV Legislatura", font=self.geist(19, 500),
+        self.d.text((W - 64, 77), f"Congreso de los Diputados · {LEGISLATURA_ROMANA} Legislatura", font=self.geist(19, 500),
                     fill=APAGADO, anchor="rm")
 
     def fuente(self, archivo: str, tam: int, peso: int):

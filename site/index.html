@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-marca="marcador">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Plenos y comparecencias del Congreso de los Diputados resumidos: qué se dijo, en qué tono y cómo votó cada grupo.">
 <title>Escaño Abierto</title>
-<link rel="icon" href="marca/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="marcas/marcador-favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="Escaño Abierto" href="rss.xml">
 <script>
 // Vercel Web Analytics y Speed Insights: sin cookies ni identificadores persistentes. Solo existen en el
@@ -18,25 +18,7 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
   }
 }
 </script>
-<script>
-// Marca de la web: Marcador por defecto. ?marca=<nombre> (o el selector del pie) prueba otra;
-// ?marca=tinta vuelve a Tinta y papel, que es la base de index.html sin hoja extra.
-(function(){
-  var MARCAS = ["marcador","senaletica","puntillismo","brutalismo","boceto","neoclasico","neobrutal","bento","tenebrismo","modular","vineta","tinta"];
-  var POR_DEFECTO = "marcador", m = null;
-  try { m = new URLSearchParams(location.search).get("marca"); if (m) localStorage.setItem("marca", m); else m = localStorage.getItem("marca"); } catch(e) {}
-  if (MARCAS.indexOf(m) < 0) m = POR_DEFECTO;
-  document.documentElement.dataset.marca = m;
-  if (m === "tinta") return;
-  document.write('<link rel="stylesheet" href="marcas/' + m + '.css">');
-  if (m === "marcador") {
-    document.querySelector('link[rel="icon"]').href = "marcas/marcador-favicon.svg";
-    document.write('<meta name="theme-color" content="#08090B">');
-  }
-})();
-</script>
-<meta name="theme-color" content="#F7F7F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121316" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#08090B">
 <meta property="og:title" content="Escaño Abierto">
 <meta property="og:description" content="Qué se dijo en el Congreso y cómo se votó.">
 <meta property="og:type" content="website">
@@ -46,7 +28,8 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="marcas/marcador.css">
 <style>
 :root{
   --bg:#F7F7F4; --surface:#FFFFFF; --sunk:#EDEEEA; --ink:#16181D; --muted:#5C6069; --line:#DCDDD8; --line-strong:#82868E;
@@ -266,9 +249,30 @@ td .tonebar{min-width:140px}
 .method h3{font-size:18px;margin-top:6px}
 .method p,.method li{max-width:68ch}
 .method ul{margin:0;padding-left:20px;display:grid;gap:6px}
-.marca-sel{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12.5px}
-.marca-sel select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:3px 6px}
-footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+/* pie: la marca y el estado de los datos, el mapa de la web en cuatro columnas y, debajo, de dónde sale todo */
+footer.pie{margin-top:64px;padding:32px 0 28px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+footer.pie a{color:var(--muted);text-decoration:none}
+footer.pie a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.pie-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,3fr);gap:32px}
+.pie-marca{display:grid;gap:14px;align-content:start;justify-items:start}
+footer.pie .pie-logo{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
+.pie-logo .logo{width:52px;height:28px;background:url(marcas/marcador.svg) left center/contain no-repeat}
+.pie-logo b{font-family:var(--led,var(--display));font-weight:900;font-size:17px;letter-spacing:.03em;text-transform:uppercase}
+.pie-lema{margin:0;max-width:26ch;text-wrap:balance;color:var(--ink);font-size:15px;line-height:1.45}
+.pie-estado{display:inline-flex;align-items:center;gap:8px;margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.02em}
+.pie-estado i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--si);box-shadow:0 0 10px var(--si)}
+.pie-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
+footer.pie .pie-nav h2{margin:0 0 14px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.pie-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pie-notas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 32px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6}
+.pie-notas p{margin:0;max-width:52ch}
+.pie-notas b{display:block;margin-bottom:6px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+footer.pie .pie-notas a{text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:2px}
+@media (max-width:900px){
+  .pie-top{grid-template-columns:1fr}
+  .pie-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pie-notas{grid-template-columns:1fr}
+}
 
 /* hemiciclo */
 .hemi{display:block;width:100%;height:auto;overflow:visible}
@@ -759,7 +763,6 @@ svg.gan g:hover rect[fill^="var(--si)"],svg.gan g:hover rect[fill^="var(--no)"]{
 .vote-acc .btn-img span{display:none}
 .btn-rss{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font:600 12px var(--sans);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:var(--r-pill);padding:3px 10px;white-space:nowrap;vertical-align:middle}
 .btn-rss:hover{color:var(--ink);border-color:var(--line-strong)}
-.rss-pie{color:inherit}
 .vote-acc{display:inline-flex;gap:8px;align-items:center}
 .ficha-acc{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 #aviso{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:600;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -874,6 +877,7 @@ details.exp-mas>summary{cursor:pointer;font-size:13.5px;font-weight:500;text-dec
 /* ¿Quién lo dijo? */
 .tab-punto{position:relative;display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--no);margin-left:5px;vertical-align:super}
 .tab-punto[hidden]{display:none}
+.tab-29n{font:600 10px var(--mono);letter-spacing:.04em;margin-left:6px;padding:1px 5px;border-radius:var(--r-chip);background:var(--ink);color:var(--bg);vertical-align:1px}
 #qld-aviso{position:fixed;right:18px;bottom:18px;z-index:55;display:flex;align-items:center;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-pill);box-shadow:0 10px 30px -12px rgb(0 0 0 / .55);padding:3px}
 .qld-aviso-ir{appearance:none;display:flex;align-items:center;gap:8px;background:none;border:0;border-radius:var(--r-pill);padding:7px 6px 7px 12px;color:var(--ink);font:600 13px var(--sans);cursor:pointer;white-space:nowrap}
 .qld-aviso-ir span{font-weight:500;color:var(--muted)}
@@ -1032,6 +1036,8 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
       <button class="btn-buscar" id="btn-buscar" type="button" aria-label="Buscar (tecla /)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Buscar</span><kbd>/</kbd></button>
       <nav class="tabs" aria-label="Secciones">
         <button id="tab-inicio" data-vista="inicio">Inicio</button>
+        <button id="tab-elecciones" data-vista="elecciones">Elecciones<span class="tab-29n">29N</span></button>
+        <button id="tab-geografia" data-vista="geografia">Geografía</button>
         <button class="tab-menu" id="menu-actividad" aria-haspopup="menu" aria-expanded="false" aria-controls="m-actividad">Actividad<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="tab-menu" id="menu-quien" aria-haspopup="menu" aria-expanded="false" aria-controls="m-quien">Quién es quién<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
@@ -1057,6 +1063,8 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
   <div class="periodo-bar"><label for="periodo">Periodo</label><select id="periodo" aria-label="Periodo que se muestra"></select><span id="periodo-info"></span></div>
   <main>
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
+    <section class="view" id="elecciones" role="tabpanel" aria-labelledby="tab-elecciones" hidden></section>
+    <section class="view" id="geografia" role="tabpanel" aria-labelledby="tab-geografia" hidden></section>
     <section class="view" id="dias" role="tabpanel" aria-labelledby="tab-dias" hidden></section>
     <section class="view" id="temas" role="tabpanel" aria-labelledby="tab-temas" hidden></section>
     <section class="view" id="explora" role="tabpanel" aria-labelledby="tab-explora" hidden></section>
@@ -1078,7 +1086,62 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
   </main>
 
   <div id="tip" hidden></div>
-  <footer><label class="marca-sel">Marca: <select id="marca-sel"><option value="marcador">Marcador</option><option value="tinta">Tinta y papel</option><option value="senaletica">Señalética</option><option value="puntillismo">Puntillismo</option><option value="brutalismo">Brutalismo</option><option value="boceto">Boceto</option><option value="neoclasico">Neoclásico</option><option value="neobrutal">Neobrutal</option><option value="bento">Bento</option><option value="tenebrismo">Tenebrismo</option><option value="modular">Modular</option><option value="vineta">Viñeta</option></select></label>Datos: Diario de Sesiones y datos abiertos de votaciones del Congreso de los Diputados, y nombramientos y ceses del BOE. Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave generados por IA a partir del texto oficial; las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado. Proyecto independiente: no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político. <a href="#sobre" class="rss-pie">Sobre el proyecto</a> · <a href="#aviso-legal" class="rss-pie">Aviso legal</a> · <a href="#glosario" class="rss-pie">Glosario</a> · <a href="#como-ley" class="rss-pie">Cómo se hace una ley</a> · <a href="#preguntas" class="rss-pie">Preguntas al Gobierno</a> · <a href="#quien-lo-dijo" class="rss-pie">¿Quién lo dijo?</a> · <a href="rss.xml" class="rss-pie">Seguir por RSS</a> <span id="gen"></span></footer>
+  <footer class="pie">
+    <div class="pie-top">
+      <div class="pie-marca">
+        <a class="pie-logo" href="#inicio"><span class="logo" aria-hidden="true"></span><b>Escaño Abierto</b></a>
+        <p class="pie-lema">Qué se dijo en el Congreso y cómo se votó.</p>
+        <p class="pie-estado"><i aria-hidden="true"></i><span id="gen">Datos oficiales, cada día</span></p>
+      </div>
+      <nav class="pie-nav" aria-label="Mapa de la web">
+      <div>
+        <h2>Actividad</h2>
+        <ul>
+          <li><a href="#dias">Por día</a></li>
+          <li><a href="#votaciones">Votaciones</a></li>
+          <li><a href="#leyes">Leyes</a></li>
+          <li><a href="#temas">Temas</a></li>
+          <li><a href="#preguntas">Preguntas al Gobierno</a></li>
+          <li><a href="#explora">Explora</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Quién es quién</h2>
+        <ul>
+          <li><a href="#diputados">Diputados</a></li>
+          <li><a href="#grupos">Grupos</a></li>
+          <li><a href="#oradores">Por orador</a></li>
+          <li><a href="#organigrama">Organigrama del Estado</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Además</h2>
+        <ul>
+          <li><a href="#elecciones">Elecciones 29N</a></li>
+          <li><a href="#geografia">Geografía</a></li>
+          <li><a href="#quien-lo-dijo">¿Quién lo dijo?</a></li>
+          <li><a href="#como-ley">Cómo se hace una ley</a></li>
+          <li><a href="#glosario">Glosario</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>El proyecto</h2>
+        <ul>
+          <li><a href="#sobre">Sobre el proyecto</a></li>
+          <li><a href="#metodo">Método</a></li>
+          <li><a href="#aviso-legal">Aviso legal</a></li>
+          <li><a href="rss.xml">Seguir por RSS</a></li>
+          <li><a href="https://github.com/jorgegarcelan/escano-abierto" target="_blank" rel="noopener">Código abierto ↗</a></li>
+        </ul>
+      </div>
+      </nav>
+    </div>
+    <div class="pie-notas">
+      <p><b>Fuentes</b>Diario de Sesiones y datos abiertos de votaciones del <a href="https://www.congreso.es" target="_blank" rel="noopener">Congreso de los Diputados</a>, nombramientos y ceses del <a href="https://www.boe.es" target="_blank" rel="noopener">BOE</a>, resultados electorales del Ministerio del Interior y datos del INE. Las encuestas, de la recopilación de Wikipedia; los mercados, de Polymarket.</p>
+      <p><b>Con IA, comprobado</b>Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave los genera una IA a partir del texto oficial. Las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado.</p>
+      <p><b>Independiente</b>Escaño Abierto no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.</p>
+    </div>
+  </footer>
 </div>
 
 <script>
@@ -1131,8 +1194,6 @@ async function arrancar(clave){
   document.getElementById("periodo-info").textContent = `${DATA.meta.periodo} · ${sesiones.length} sesiones · ${votaciones.length} votaciones`;
   iniciar(DATA, ivs);
 }
-(function(){ const sel=document.getElementById("marca-sel"); sel.value=document.documentElement.dataset.marca||"marcador";
-  sel.addEventListener("change", ()=>{ const u=new URL(location.href); u.searchParams.set("marca", sel.value); location.href=u.toString(); }); })();
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
   INDICE = j;
   let clave = "reciente"; try{ clave = localStorage.getItem("periodo") || clave; }catch(e){}
@@ -1231,6 +1292,7 @@ const ORDEN_HEMI = ["SUMAR","BILDU","ERC","PSOE","MIXTO","PNV","JUNTS","PP","VOX
 const ORDEN_VOTO = {S:0,A:1,N:2,X:3};
 const FORMA_ASIENTO = getComputedStyle(document.documentElement).getPropertyValue("--asiento").trim();
 const DIPS = DATA.diputados || [];
+const LEG = INDICE?.meta?.legislatura || "XV";   // legislatura de los datos (enlaces a las fichas del Congreso)
 const _layouts = {};
 function asientos(N){
   if (_layouts[N]) return _layouts[N];
@@ -1319,7 +1381,7 @@ document.addEventListener("pointerover", e=>{
 }, SIG);
 window.addEventListener("scroll", ()=>{ tip.hidden=true; }, {passive:true, signal:ctl.signal});
 
-$("#gen").textContent = DATA.meta.generado ? `Actualizado el ${DATA.meta.generado}.` : "";
+if (DATA.meta.generado){ const [y,m,d] = DATA.meta.generado.split("-").map(Number); $("#gen").textContent = `Actualizado el ${d} de ${MESES_LARGOS[m-1]} de ${y}`; }
 
 /* ---------- temas ---------- */
 const COLS_TEMA = [...ORDEN_HEMI, "GOB"];
@@ -1435,7 +1497,7 @@ const DIP = DIPS.map((d,i)=>({i, n:d[0], g:d[1], circ:d[2]||"", form:d[3]||"", a
 const DIP_NOMBRE = Object.fromEntries(DIP.map(d=>[d.n,d]));
 // Foto y ficha oficiales del Congreso, a partir del código del diputado (vienen del plano del hemiciclo).
 const fotoDip = d => d?.cod ? `https://www.congreso.es/docu/imgweb/diputados/${d.cod}_15.jpg` : null;
-const fichaOficial = d => `https://www.congreso.es/es/hemiciclo?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_diputadomodule_mostrarFicha=true&codParlamentario=${d.cod}&idLegislatura=XV`;
+const fichaOficial = d => `https://www.congreso.es/es/hemiciclo?p_p_id=diputadomodule&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_diputadomodule_mostrarFicha=true&codParlamentario=${d.cod}&idLegislatura=${LEG}`;
 // «lazy» solo en listados largos; las fotos que se ven siempre se piden en el momento.
 const imgFoto = (d, cls, extra="", lazy=false) => fotoDip(d) ? `<img class="${cls}" src="${fotoDip(d)}" alt=""${lazy?' loading="lazy"':""} referrerpolicy="no-referrer" onerror="this.remove()"${extra}>` : "";
 const DIP_SLUG = Object.fromEntries(DIP.map(d=>[d.slug,d]));
@@ -1699,7 +1761,7 @@ const INICIATIVAS = (()=>{
 })();
 const slugExp = x => x.replace("/","-");
 let iniSel = null;
-const urlIniciativa = x => `https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=${encodeURIComponent(x)}`;
+const urlIniciativa = x => `https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=${LEG}&_iniciativas_id=${encodeURIComponent(x)}`;
 function renderIniciativa(x){
   const ini = INICIATIVAS[x] ||= {exp:x, votos:[], debates:[]};
   const ley = LEYES?.porExp[x];
@@ -3087,6 +3149,22 @@ function irCargo(id){
   pintarPanelOrg(); Org.resaltar(); panelEnVista();
 }
 
+/* ---------- elecciones del 29N (site/elecciones.js, se carga al abrir la pestaña) ---------- */
+let elSub = null, elUltimo = null;
+function renderElecciones(){
+  const ctxEl = {G, DIPS, PLANO, ORDEN_HEMI, esc, fmt, slug, legible, fechaCorta, autorNombre, irDiputado, glosa};
+  const sub = elUltimo = elSub; elSub = null;
+  import("./elecciones.js").then(m=>m.render($("#elecciones"), ctxEl, sub))
+    .catch(()=>{ $("#elecciones").innerHTML = `<p class="nota">No se ha podido cargar la sección de elecciones.</p>`; });
+}
+/* ---------- geografía (site/geografia.js, autocontenida: se carga al abrir la pestaña) ---------- */
+let geoSub = null, geoUltimo = null;
+function renderGeografia(){
+  const ctxGeo = {G, DIPS, ORDEN_HEMI, esc, fmt, slug, legible};
+  const sub = geoUltimo = geoSub; geoSub = null;
+  import("./geografia.js").then(m=>m.render($("#geografia"), ctxGeo, sub))
+    .catch(err=>{ console.error(err); $("#geografia").innerHTML = `<p class="nota">No se ha podido cargar la sección de geografía.</p>`; });
+}
 async function renderOrganigrama(){
   const el = $("#organigrama");
   if (!ORG){ el.innerHTML = `<p class="nota">Cargando el organigrama…</p>`; await cargarOrg(); }
@@ -3485,10 +3563,10 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
+const TABS = ["inicio","elecciones","geografia","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
 const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
-const renderers = {"quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
+const renderers = {elecciones:renderElecciones, geografia:renderGeografia, "quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada cambio de vista cuenta como una página en la analítica: la ruta agrupa (#diputado, #votacion…),
 // la dirección lleva el detalle. La primera la cuenta el propio script al cargar.
 let ultimaVista = null;
@@ -3511,6 +3589,10 @@ function show(id, push){
   if (id==="aviso-legal"){ setTimeout(()=>{ document.getElementById("aviso-legal")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); }, 0); id="sobre"; push=false; }
   if (id && id.startsWith("cargo-")){ const c=id.slice(6); if (orgSel!==c){ orgSel=c; rendered.organigrama=false; } id="organigrama"; push=false; }
   else if (id==="organigrama" && push && orgSel){ orgSel=null; rendered.organigrama=false; }
+  if (id && id.startsWith("elecciones-")){ elSub = id.slice(11); rendered.elecciones=false; id="elecciones"; push=false; }
+  else if (id==="elecciones" && elUltimo){ rendered.elecciones=false; }   // de un apartado a la portada de la sección
+  if (id && id.startsWith("geografia-")){ geoSub = id.slice(10); rendered.geografia=false; id="geografia"; push=false; }
+  else if (id==="geografia" && geoUltimo){ rendered.geografia=false; }   // de una ficha a la portada de la sección
   if (id && id.startsWith("provincia-")){ if (provSel!==id.slice(10)){ provSel=id.slice(10); rendered.provincia=false; } id="provincia"; push=false; }
   if (id && id.startsWith("tema-")){ if (temaFijo!==id.slice(5)){ temaFijo=id.slice(5); rendered.tema=false; } id="tema"; push=false; }
   if (id && id.startsWith("semana-")){ if (semSel!==id.slice(7)){ semSel=id.slice(7); rendered.semana=false; } id="semana"; push=false; }
@@ -3522,7 +3604,7 @@ function show(id, push){
   cerrarMenus();
   const nav = $("nav.tabs"), act = $("nav.tabs>button.activa");   // en el móvil la barra se desplaza: que se vea la sección actual
   if (act && (act.offsetLeft < nav.scrollLeft || act.offsetLeft + act.offsetWidth > nav.scrollLeft + nav.clientWidth)) nav.scrollLeft = act.offsetLeft - 8;
-  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
+  $(".periodo-bar").hidden = id==="organigrama" || id==="quien-lo-dijo" || id==="elecciones" || id==="geografia";   // el periodo es del Congreso; el organigrama va con el BOE de hoy y el juego con toda la legislatura
   if(!rendered[id]){ renderers[id](); rendered[id]=true; }
   contarVista(id, hashOriginal);
   if(push){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
