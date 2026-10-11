@@ -25,7 +25,6 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
-from bs4 import BeautifulSoup
 
 from .config import DATOS, USER_AGENT
 
@@ -129,6 +128,7 @@ def _celda_partido(txt: str) -> tuple[float | None, list[int] | None]:
 
 def leer_wikipedia(html: str) -> tuple[list[dict], dict | None]:
     """Las encuestas de las tablas «Voting intention estimates» (una por año, de la más reciente a 2023)."""
+    from bs4 import BeautifulSoup   # aquí y no arriba: el build de Vercel solo copia los JSON y no instala bs4
     soup = BeautifulSoup(html, "html.parser")
     tablas = [t for t in soup.select("table.wikitable")
               if (h := t.find_previous(["h2", "h3", "h4"])) and "Voting intention" in h.get_text()]
