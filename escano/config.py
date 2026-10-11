@@ -38,8 +38,11 @@ def _cargar_env() -> None:
 
 _cargar_env()
 
-# Proveedor de IA: Gemini si hay GEMINI_API_KEY; si no, Claude (Anthropic). ESCANO_PROVEEDOR lo fuerza.
-PROVEEDOR = os.environ.get("ESCANO_PROVEEDOR") or ("gemini" if os.environ.get("GEMINI_API_KEY") else "anthropic")
+# Proveedor de IA: Gemini, salvo que solo haya clave de Claude (ANTHROPIC_API_KEY). ESCANO_PROVEEDOR lo fuerza.
+# El modelo forma parte de la clave de la caché (data/analisis): un build sin claves (Vercel, una copia del repo) tiene
+# que usar el mismo que la generó, o no encuentra ningún análisis.
+PROVEEDOR = os.environ.get("ESCANO_PROVEEDOR") or (
+    "anthropic" if os.environ.get("ANTHROPIC_API_KEY") and not os.environ.get("GEMINI_API_KEY") else "gemini")
 _MODELO_POR_DEFECTO = {"gemini": "gemini-3.8-flash", "anthropic": "claude-sonnet-4-5"}
 MODELO = os.environ.get("ESCANO_MODELO") or _MODELO_POR_DEFECTO[PROVEEDOR]
 if PROVEEDOR == "gemini" and not MODELO.startswith("gemini"):  # un ESCANO_MODELO de Claude heredado
