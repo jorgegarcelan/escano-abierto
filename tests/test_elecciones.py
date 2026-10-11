@@ -225,6 +225,19 @@ def test_caducan_no_cuenta_las_concluidas():
     assert elecciones.caducan({"iniciativas": [ley]})["total"] == 0
 
 
+def test_caducan_tras_actualizar_el_congreso_sus_datos():
+    """Tras la disolución, el Congreso cierra las que caducan como «Concluido - (Caducado)»: siguen contando. Las de
+    los parlamentos autonómicos pasan al próximo Congreso y las inadmitidas nunca estuvieron vivas."""
+    base = {"titulo": "Ley", "tipo": "Proposición de ley", "origen": "GRUPOS", "autores": ["PP"], "presentada": "2025-01-10",
+            "estado": "en trámite", "etapa": 1, "ampliaciones": 3}
+    leyes = {"iniciativas": [{**base, "exp": "122/1", "situacion": "Concluido - (Caducado)"},
+                             {**base, "exp": "122/2", "situacion": "Senado"},
+                             {**base, "exp": "125/3", "situacion": "Concluido - (Trasladado al próximo Congreso)"},
+                             {**base, "exp": "122/4", "situacion": "Concluido - (Inadmitido a trámite con requerimiento de aclaración)"}]}
+    assert elecciones.caducan(leyes)["total"] == 2
+    assert [x[0] for x in elecciones.viajes(leyes)["leyes"] if x[8] == "caduca"] == ["122/1", "122/2"]
+
+
 def test_escanos_del_decreto_de_convocatoria():
     # Anexo del Real Decreto 806/2026: 350 diputados en 52 circunscripciones; Madrid gana uno y Cádiz lo pierde.
     assert sum(elecciones.ESCANOS.values()) == 350 and len(elecciones.ESCANOS) == 52
@@ -265,6 +278,11 @@ def test_decretos_leyes_y_su_convalidacion():
     assert (d["1/2026"]["estado"], d["1/2026"]["voto"]["si"], d["1/2026"]["proyecto"]) == ("convalidado", 180, True)
     assert (d["2/2026"]["estado"], d["2/2026"]["proyecto"]) == ("derogado", None)
     assert d["3/2026"]["estado"] == "pendiente" and d["3/2026"]["voto"] is None
+    # Los datos de la web no traen «aprobada»: decide la mayoría simple (205 a favor, 0 en contra y 138 abstenciones).
+    sin = [{k: x for k, x in v.items() if k != "aprobada"} for v in votos]
+    sin[0].update(si="205", no="0", abst="138")
+    d = {x["numero"]: x for x in elecciones.decretos(leyes, sin)}
+    assert (d["1/2026"]["estado"], d["2/2026"]["estado"]) == ("convalidado", "derogado")
 
 
 def test_dia_a_dia_de_la_legislatura():

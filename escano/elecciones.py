@@ -107,14 +107,20 @@ def calendario(conv: date = CONVOCATORIA, votacion: date = VOTACION) -> list[dic
     ]
 
 
+def _caduca(i: dict) -> bool:
+    """Si la disolución deja la iniciativa sin terminar. Las «concluidas» no caducan (aprobadas por las Cortes a la
+    espera del BOE, inadmitidas, o las de los parlamentos autonómicos, que pasan al próximo Congreso), salvo las que el
+    Congreso cierra precisamente como «Concluido - (Caducado)» al actualizar sus datos tras la disolución."""
+    situacion = i.get("situacion", "")
+    return i["estado"] in ("en trámite", "caducada") and (not situacion.startswith("Concluido") or "Caducad" in situacion)
+
+
 def caducan(leyes: dict, disolucion: date = CONVOCATORIA) -> dict:
     """Proyectos y proposiciones de ley que la disolución deja sin terminar.
 
     Antes de que el Congreso actualice sus datos abiertos aparecen como «en trámite»; después, como «caducada».
     """
-    # Las «concluidas» (aprobadas por las Cortes, a la espera del BOE) no caducan aunque aún no tengan resultado.
-    vivas = [i for i in leyes.get("iniciativas", []) if i["estado"] in ("en trámite", "caducada")
-             and "popular" not in i.get("titulo", "").lower()[:60] and not i.get("situacion", "").startswith("Concluido")]
+    vivas = [i for i in leyes.get("iniciativas", []) if _caduca(i) and "popular" not in i.get("titulo", "").lower()[:60]]
     dias = lambda i: (disolucion - date.fromisoformat(i["presentada"])).days if i.get("presentada") else None
     lista = sorted(vivas, key=lambda i: (-i["etapa"], -(i.get("ampliaciones") or 0), i["exp"]))
     return {
@@ -166,7 +172,7 @@ def viajes(leyes: dict, disolucion: date = CONVOCATORIA) -> dict:
     for i in leyes.get("iniciativas", []):
         if not i.get("presentada"):
             continue
-        estado = "caduca" if i["estado"] in ("en trámite", "caducada") and not i.get("situacion", "").startswith("Concluido") else i["estado"]
+        estado = "caduca" if _caduca(i) else i["estado"]
         fin = disolucion.isoformat() if estado == "caduca" else (i.get("fecha_resultado") or "")
         filas.append([i["exp"], i["titulo"], "PL" if i["tipo"] == "Proyecto de ley" else "PPL", i["origen"], i["autores"],
                       i.get("comision", ""), i["presentada"], _fechas_etapas(i), estado, fin, i.get("ampliaciones") or 0])
@@ -210,8 +216,9 @@ def decretos(leyes: dict, votaciones: list[dict], hoy: date | None = None) -> li
         if not n:
             continue
         num = lambda k: int(v.get(k) or 0)
+        # Los datos de la web no traen «aprobada»: entonces decide la mayoría simple, como en la convalidación.
         voto = {"id": v.get("id"), "fecha": v["fecha"], "si": num("si"), "no": num("no"), "abst": num("abst"),
-                "aprobada": str(v.get("aprobada")) == "True"}
+                "aprobada": str(v["aprobada"]) == "True" if v.get("aprobada") is not None else num("si") > num("no")}
         (tram if v.get("titulo", "").startswith("Tramitación") else conv)[n] = voto
     hoy = hoy or date.today()
     out = []
