@@ -1387,7 +1387,7 @@ function renderInicio(){
   const dest = candidatas[0];
 
   const heroVoto = dest ? `<figure class="hero-vote">
-      <div class="eyebrow" style="text-align:center">${delDia.length?"La votación más ajustada del día":"La votación más ajustada"}</div>
+      <div class="eyebrow" style="text-align:center">${delDia.length?"La votación más ajustada del día":`La votación más ajustada · ${dt(dest.fecha).d} ${dt(dest.fecha).m}`}</div>
       <div class="hemi-wrap">${hemiciclo(dest,{grande:true, anim:true})}
         <div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${resLabel(dest)}</span></div></div>
       ${hemiLeyenda()}
