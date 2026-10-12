@@ -1,0 +1,36 @@
+name: Tests
+
+# Pasa los tests en cada PR, sin red ni claves de API. Permisos de solo lectura: un PR desde un fork no puede escribir
+# en el repositorio ni ver los secretos.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]   # la mínima que pide el README y la de los workflows de datos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: node --test tests/*.test.mjs

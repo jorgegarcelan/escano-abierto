@@ -1,0 +1,35 @@
+name: Un dato está mal
+description: Un voto, un nombre, una cifra, una fecha o un resumen que no coincide con la fuente oficial.
+title: "[Dato] "
+labels: ["datos"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar. Cuanto más concreto, antes se arregla: lo ideal es el enlace a la página de la web y el del documento oficial que dice otra cosa.
+  - type: input
+    id: pagina
+    attributes:
+      label: Página de Escaño Abierto
+      description: Enlace a la página donde aparece el dato.
+      placeholder: https://www.escanoabierto.com/votacion/…
+    validations:
+      required: true
+  - type: textarea
+    id: dice
+    attributes:
+      label: Qué dice la web
+    validations:
+      required: true
+  - type: textarea
+    id: deberia
+    attributes:
+      label: Qué debería decir
+    validations:
+      required: true
+  - type: input
+    id: fuente
+    attributes:
+      label: Fuente oficial
+      description: Diario de Sesiones, datos abiertos del Congreso, BOE, Ministerio del Interior…
+      placeholder: https://www.congreso.es/…

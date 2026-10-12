@@ -5,6 +5,11 @@ __pycache__/
 data/raw/
 .pytest_cache/
 .DS_Store
+node_modules/
+.claude/
+
+# Vídeos de las promos (HyperFrames, Remotion): material de difusión, fuera del repositorio
+promo/
 
 # Tarjetas para compartir: se dibujan en cada construcción (python -m escano construir)
 site/og/
