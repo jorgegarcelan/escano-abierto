@@ -24,7 +24,7 @@ jobs:
         python-version: ["3.9", "3.12"]   # la mínima que pide el README y la de los workflows de datos
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
