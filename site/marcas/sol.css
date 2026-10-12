@@ -581,28 +581,27 @@ html[data-marca="sol"] #qld-aviso{border:0;box-shadow:var(--sombra-flota)}
 html[data-marca="sol"] .qld-cuadros i{border-radius:6px}
 
 /* ---------- Elecciones: el camino hasta las urnas (tarjeta de la cuenta atrás) ---------- */
-/* Cuadros pixelados, como su chevrón: lo pasado en tinta, lo que viene en gris, los plazos con un borde, la campaña en
-   el degradado del sol, el día de votar redondo como el sol y hoy en rojo, latiendo. Los días entran en cascada. */
+/* Un calendario de cuadros planos, una semana por fila: lo pasado en tinta, hoy en rojo, lo que viene en gris, los
+   plazos en gris oscuro, la campaña en amarillo y el día de votar con un borde rojo. Sin degradados ni círculos. */
 html[data-marca="sol"] .elh-cuenta{gap:var(--e-20)}
 html[data-marca="sol"] .elh-cuenta .n span{font-size:14px;color:var(--tinta-2)}
-html[data-marca="sol"] .cm-rejilla{grid-template-rows:repeat(7,14px);grid-auto-columns:14px;gap:3px}
-html[data-marca="sol"] .elh-camino i{border-radius:0}
+html[data-marca="sol"] .cm-rejilla{grid-template-columns:repeat(7,14px);grid-auto-rows:14px;gap:3px}
+html[data-marca="sol"] .cm-rejilla b{font:500 9px/14px var(--font-mono);color:var(--tinta-3)}
+html[data-marca="sol"] .elh-camino i{border-radius:0;box-shadow:none}
 html[data-marca="sol"] .cm-rejilla i{background:var(--superficie)}
 html[data-marca="sol"] .elh-camino i.pasado{background:var(--tinta)}
-html[data-marca="sol"] .elh-camino i.hito{background:var(--blanco);box-shadow:inset 0 0 0 2px var(--tinta-3)}
-html[data-marca="sol"] .elh-camino i.campana{background:linear-gradient(180deg,#ffd34d,var(--naranja))}
-html[data-marca="sol"] .elh-camino i.voto{border-radius:50%;background:radial-gradient(circle at 50% 30%,#fff3c4 0%,#ffd34d 30%,var(--amarillo) 55%,var(--naranja) 100%);box-shadow:0 0 0 3px rgb(255 190 11 / .28)}
+html[data-marca="sol"] .elh-camino i.hito{background:#c4c4c4}
+html[data-marca="sol"] .elh-camino i.campana{background:var(--amarillo)}
+html[data-marca="sol"] .elh-camino i.voto{background:var(--blanco);box-shadow:inset 0 0 0 2px var(--rojo)}
 html[data-marca="sol"] .elh-camino i.hoy{background:var(--rojo)}
 html[data-marca="sol"] .cm-ext{font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
-html[data-marca="sol"] .cm-ley{font-size:13.5px;color:var(--tinta-2)}
-html[data-marca="sol"] .cm-ley li{grid-template-columns:14px 1fr}
-html[data-marca="sol"] .cm-ley i{width:14px;height:14px}
+html[data-marca="sol"] .cm-ley{gap:10px;font-size:13.5px;color:var(--tinta-2)}
+html[data-marca="sol"] .cm-ley li{grid-template-columns:10px 1fr;gap:10px}
+html[data-marca="sol"] .cm-ley i{width:10px;height:10px}
 html[data-marca="sol"] .cm-ley b{font:500 15px var(--font-mono);color:var(--tinta)}
-@keyframes sol-pixel{from{opacity:0;transform:scale(.4)}}
-@keyframes sol-hoy{50%{box-shadow:0 0 0 4px rgb(223 23 23 / .25)}}
+@keyframes sol-pixel{from{opacity:0}}
 @media (prefers-reduced-motion:no-preference){
-  html[data-marca="sol"] .cm-rejilla i:not(.vacio){animation:sol-pixel 360ms var(--curva-salida) backwards;animation-delay:calc(var(--k) * 9ms + 200ms)}
-  html[data-marca="sol"] .cm-rejilla i.hoy{animation:sol-pixel 360ms var(--curva-salida) backwards,sol-hoy 1.8s var(--curva-salida) 1s infinite;animation-delay:calc(var(--k) * 9ms + 200ms),1s}
+  html[data-marca="sol"] .cm-rejilla i:not(.vacio){animation:sol-pixel 240ms var(--curva-salida) backwards;animation-delay:calc(var(--k) * 8ms + 200ms)}
 }
 @media (max-width:420px){ html[data-marca="sol"] .elh-camino{grid-template-columns:1fr} }
 
@@ -662,9 +661,12 @@ html[data-marca="sol"] .el-tarjeta .c{margin-top:var(--e-12);font-family:var(--f
 html[data-marca="sol"] .el-tarjeta .p{font-size:13px;color:var(--tinta-3)}
 html[data-marca="sol"] .el-tarjeta .v{margin-top:var(--e-12)}
 /* «Qué prometieron y qué votaron», todavía no: la caja gris con su píldora ámbar de «Coming soon» (.in-proximo) */
-html[data-marca="sol"] .elh-pronto{opacity:1;border:0;background:var(--superficie);box-shadow:none}
+/* Como su «04 · Elecciones · Coming soon»: el atardecer, su urna y la píldora ámbar */
+html[data-marca="sol"] .elh-pronto{opacity:1;border:0;box-shadow:none;background:var(--atardecer);color:var(--blanco);grid-template-rows:auto auto auto 1fr;overflow:hidden}
 html[data-marca="sol"] .elh-pronto::before,html[data-marca="sol"] .elh-pronto::after{display:none}
-html[data-marca="sol"] .elh-pronto .p{justify-self:start;align-self:end;padding:var(--e-8) var(--e-12);border-radius:var(--r-pildora);background:var(--ambar-claro);color:var(--ambar-texto);font:500 13px var(--font-texto)}
+html[data-marca="sol"] .elh-pronto .d{color:color-mix(in srgb,var(--blanco) 90%,transparent)}
+html[data-marca="sol"] .elh-pronto .p{justify-self:start;margin-top:var(--e-8);padding:var(--e-8) var(--e-12);border-radius:var(--r-pildora);background:var(--ambar-claro);color:var(--ambar-texto);font:500 13px var(--font-texto)}
+html[data-marca="sol"] .elh-urna{display:block;justify-self:center;align-self:end;width:min(100%,240px);height:auto;margin:var(--e-8) 0 calc(-1 * var(--e-16))}
 /* Los minigráficos de las encuestas */
 html[data-marca="sol"] .el-mbar{font-size:13px}
 html[data-marca="sol"] .el-mbar i{height:10px;border-radius:0}
@@ -682,3 +684,15 @@ html[data-marca="sol"] .elh-hero{position:relative;isolation:isolate;overflow:hi
 html[data-marca="sol"] .elh-hero::before{content:"";position:absolute;z-index:-1;right:-14%;bottom:-62%;width:min(64vw,820px);aspect-ratio:1;pointer-events:none;
   background:radial-gradient(circle closest-side,transparent 0 40%,rgb(255 255 255 / .24) 40% 40.5%,transparent 40.4% 54%,rgb(255 255 255 / .2) 54% 54.4%,
     transparent 54.3% 70%,rgb(255 255 255 / .17) 70% 70.3%,transparent 70.25% 88%,rgb(255 255 255 / .14) 88% 88.25%,transparent 88.2%)}
+/* «02 · Los escaños»: el mapa de los 350 y «El precio de un escaño», en dos columnas */
+html[data-marca="sol"] .elh-grupo:has(.elh-350){grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);column-gap:var(--e-16);align-items:stretch}
+html[data-marca="sol"] .elh-grupo:has(.elh-350)>.elh-grupo-h{grid-column:1 / -1}
+html[data-marca="sol"] .elh-grupo:has(.elh-350)>.el-tarjetas{grid-template-columns:1fr;align-content:stretch}
+html[data-marca="sol"] .elh-grupo:has(.elh-350)>.el-tarjetas>.el-tarjeta{height:100%}
+@media (max-width:900px){ html[data-marca="sol"] .elh-grupo:has(.elh-350){grid-template-columns:1fr} }
+
+html[data-marca="sol"] .el-precio{gap:8px;font-size:13px}
+html[data-marca="sol"] .el-precio-f i{border-radius:0;background:var(--tinta)}
+html[data-marca="sol"] .el-precio-f:nth-last-child(-n+5) i{background:var(--rojo)}
+html[data-marca="sol"] .el-precio-f em{font:500 12.5px var(--font-mono)}
+html[data-marca="sol"] .el-precio-p{font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}

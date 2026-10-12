@@ -49,6 +49,12 @@ const CSS = `
 .hi-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
 @media (max-width:820px){ .hi-top{grid-template-columns:1fr} }
 .hi-hemi{display:block;width:100%;height:auto}
+.el-precio{display:grid;gap:6px;font-size:12.5px}
+.el-precio-f{display:grid;grid-template-columns:76px 1fr 56px;gap:8px;align-items:center}
+.el-precio-f i{display:block;height:10px;background:var(--el-neutro,#5E7FA3);border-radius:0 3px 3px 0}
+.el-precio-f em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
+.el-precio-sep{color:var(--muted);padding-left:2px;line-height:.6}
+.el-precio-p{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
 .hi-hemi.pocos{max-width:340px;margin:0 auto}
 .hi-hemi circle{fill:var(--sunk);transition:fill .55s ease;transition-delay:calc(var(--k) * 1.6ms)}
 .hi-hemi .anio{font-family:var(--led,var(--display));font-weight:900;fill:var(--ink)}
@@ -765,8 +771,11 @@ export async function miniaturas(el, c){
   if (metricas) metricas.innerHTML = `<span class="c" style="font-family:var(--led,var(--display));font-size:34px;font-weight:900;display:block;margin-bottom:2px">${dec(ult.metricas.nep_votos,1)}</span><span class="p" style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">partidos efectivos en 2023 (${dec(E[0].metricas.nep_votos,1)} en 1977)</span>`
     + graficoLinea(E, [{nombre:"", color:NEUTRO, valores:E.map(e=>e.metricas.nep_votos), extremos:false}], {min:2, max:6.5, ancho:320, alto:110, paso:1, eje:v=>v, formato:v=>dec(v,1)}).replace(/<text[^>]*>[^<]*<\/text>/g, "");
   const escano = caja("escano");
-  if (escano){ const precios = Object.entries(ult.prov).map(([c,p])=>[c, p.validos/p.e]).sort((a,b)=>a[1]-b[1]), lo = precios[0], hi = precios[precios.length-1];
-    escano.innerHTML = `<span style="display:grid;gap:6px;font-size:12.5px">${[lo, hi].map(([c,v])=>`<span style="display:grid;grid-template-columns:70px 1fr 56px;gap:8px;align-items:center"><span>${esc(GEO.provincias[c].corto)}</span><span style="display:block;height:10px;width:${(v/hi[1]*100).toFixed(0)}%;background:${NEUTRO};border-radius:0 3px 3px 0"></span><span style="text-align:right;font-variant-numeric:tabular-nums">${fmt(v)}</span></span>`).join("")}</span><span style="font-size:12px;color:var(--muted);display:block;margin-top:6px">votos por escaño en 2023</span>`; }
+  if (escano){ const precios = Object.entries(ult.prov).map(([c,p])=>[c, p.validos/p.e]).sort((a,b)=>a[1]-b[1]), hi = precios[precios.length-1];
+    // Las cinco provincias donde un escaño cuesta menos votos y las cinco donde cuesta más (con una raya entre ambas)
+    const fila = ([c,v])=>`<span class="el-precio-f"><span>${esc(GEO.provincias[c].corto)}</span><i style="width:${(v/hi[1]*100).toFixed(0)}%"></i><em>${fmt(v)}</em></span>`;
+    const pocas = precios.length <= 10;
+    escano.innerHTML = `<span class="el-precio">${pocas ? precios.map(fila).join("") : precios.slice(0,5).map(fila).join("") + `<span class="el-precio-sep">…</span>` + precios.slice(-5).map(fila).join("")}</span><span class="el-precio-p">votos por escaño en ${ult.fecha.slice(0,4)}</span>`; }
   const provincias = caja("provincias");
   if (provincias){ const vs = Object.values(ult.prov).map(p=>p.e), r = rampa(NEUTRO), hi = Math.max(...vs);
     provincias.innerHTML = mapaSVG(c=>ult.prov[c] ? r(Math.sqrt(ult.prov[c].e/hi)) : null, {enlazar:false}).replace('role="img"', 'aria-hidden="true"'); }

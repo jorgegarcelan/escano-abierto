@@ -41,7 +41,8 @@ const CSS = `
 .elh-cuenta .n span{font-size:13px;color:var(--muted)}
 .elh-cuenta .f{display:grid;gap:2px;border-top:1px solid var(--line);padding-top:10px}
 .elh-camino{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;align-items:center}
-.cm-rejilla{display:grid;grid-template-rows:repeat(7,13px);grid-auto-flow:column;grid-auto-columns:13px;gap:3px}
+.cm-rejilla{display:grid;grid-template-columns:repeat(7,13px);grid-auto-rows:13px;gap:3px}
+.cm-rejilla b{font:500 9px/13px var(--mono);text-align:center;color:var(--muted)}
 .cm-rejilla i{border-radius:2px;background:var(--line)}
 .cm-rejilla i.vacio{visibility:hidden}
 .elh-camino i.pasado{background:var(--ink)}
@@ -93,6 +94,7 @@ const CSS = `
 .elh-grupo-h p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:62ch}
 .elh-350{display:grid;gap:8px}
 .elh-pronto{opacity:.7;box-shadow:none;border-style:dashed}
+.elh-urna{display:none}   /* la urna de Reforma Digital (su portada, «04 · Elecciones»): la muestra la marca Sol */
 .elh-pronto:hover{transform:none}
 @media (max-width:760px){
   .elh-hero{grid-template-columns:1fr}
@@ -330,8 +332,8 @@ const hoyISO = () => { const d = new Date(); return `${d.getFullYear()}-${String
 const diasHasta = iso => { const [y,m,d] = iso.split("-").map(Number); const h = new Date(); return Math.round((new Date(y,m-1,d) - new Date(h.getFullYear(),h.getMonth(),h.getDate()))/864e5); };
 const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const fechaLarga = iso => { const [,m,d] = iso.split("-").map(Number); return `${d} de ${MESES[m-1]}`; };
-/* El camino hasta las urnas: un cuadro por día desde la convocatoria hasta la votación, por semanas (de lunes a
-   domingo, una columna por semana). Lo que ya ha pasado, lleno; hoy, marcado; los plazos del calendario, señalados; la
+/* El camino hasta las urnas: un cuadro por día desde la convocatoria hasta la votación, por semanas (una fila por
+   semana, de lunes a domingo, como un calendario). Lo que ya ha pasado, lleno; hoy, marcado; los plazos del calendario, señalados; la
    campaña, de otro color; el día de votar, redondo. Cada cuadro dice qué pasa ese día. */
 function camino(H, hoy){
   const {esc} = ctx;
@@ -342,7 +344,7 @@ function camino(H, hoy){
   const t0 = dia(ini), t1 = dia(fin), lunes = new Date(t0); lunes.setUTCDate(t0.getUTCDate() - (t0.getUTCDay() + 6) % 7);
   const enRango = (f, h) => h.hasta ? h.fecha <= f && f <= h.hasta : h.fecha === f;
   const total = Math.round((t1 - t0)/864e5), pasados = Math.max(0, Math.min(total, Math.round((dia(hoy) - t0)/864e5)));
-  const celdas = [];
+  const celdas = ["L","M","X","J","V","S","D"].map(d=>`<b aria-hidden="true">${d}</b>`);
   for (let t = new Date(lunes), k = 0; t <= t1; t.setUTCDate(t.getUTCDate() + 1), k++){
     const f = isoDe(t);
     if (t < t0){ celdas.push(`<i class="vacio"></i>`); continue; }
@@ -518,7 +520,7 @@ function home(el){
     ${GRUPOS_PAG.map((g,k)=>`<section class="sec elh-grupo"><div class="elh-grupo-h"><span class="k">${String(k+1).padStart(2,"0")}<b> · ${esc(g.n)}</b></span><div><h2>${esc(g.t)}</h2><p>${esc(g.d)}</p></div></div>
       ${g.los350 ? `<div class="elh-350">${bloque350()}<p class="nota"><a href="/elecciones/350/">Cómo ha cambiado el reparto de escaños por provincia desde 1977 →</a>${cambios.length ? ` · En 2026, ${cambios.map(([c,a,b])=>`${esc(GEO.provincias[c].corto)} ${b > a ? "gana" : "pierde"} ${Math.abs(b-a) === 1 ? "un escaño" : `${Math.abs(b-a)} escaños`}`).join(" y ")} respecto a 2023.` : ""}</p></div>` : ""}
       <div class="el-tarjetas">${g.ids.map(id=>TARJETAS[id]()).join("")}
-        ${g.pronto ? `<div class="el-tarjeta elh-pronto"><span class="t">Qué prometieron y qué votaron</span><span class="d">Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.</span><span class="p">Más adelante</span></div>` : ""}</div></section>`).join("")}`;
+        ${g.pronto ? `<div class="el-tarjeta elh-pronto"><span class="t">Qué prometieron y qué votaron</span><span class="d">Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.</span><span class="p">Más adelante</span><svg class="elh-urna" viewBox="120 40 390 430" fill="none" aria-hidden="true"><ellipse cx="315" cy="438" rx="148" ry="18" fill="var(--doblez)" opacity=".2"/><path d="M170 245 330 200 460 265 300 315Z" fill="var(--blanco)" fill-opacity=".9"/><path d="M170 245 300 315V445L170 375Z" fill="var(--blanco)" fill-opacity=".7"/><path d="M300 315 460 265V392L300 445Z" fill="var(--blanco)" fill-opacity=".4"/><path d="M170 245 300 315 460 265M300 315V445" stroke="var(--blanco)" stroke-opacity=".6" stroke-width="2"/><path d="M246 261 353 232 372 242 265 272Z" fill="var(--doblez)"/><path d="M250 90 368 120 338 238 220 208Z" fill="var(--blanco)"/><path d="M250 90 368 120 309 153Z" fill="var(--superficie)"/><path d="M220 208 285 174 338 238" stroke="var(--linea)" stroke-width="2"/><circle cx="292" cy="174" r="24" fill="var(--rojo)"/><path d="m281 173 8 9 16-16" stroke="var(--blanco)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="m352 342 15 8v24l-15-8Z" fill="var(--blanco)" fill-opacity=".6"/><path d="m376 331 15 8v24l-15-8Z" fill="var(--blanco)" fill-opacity=".3"/><path d="m400 320 15 8v24l-15-8Z" fill="var(--blanco)" fill-opacity=".3"/></svg></div>` : ""}</div></section>`).join("")}`;
   montar350(el.querySelector(".el-350"));
   pintarTuProvincia(el.querySelector(".elh-prov"));
   // Un ancla (#elh-provincia) cambiaría de vista: la web enruta por el hash. Se baja con scroll.
