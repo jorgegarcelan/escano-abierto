@@ -123,7 +123,10 @@ html[data-marca="sol"] .pb-barras i{border-radius:0;background:#dcdcdc;transitio
 html[data-marca="sol"] .pb-barras button:hover i{background:var(--tinta-3)}
 html[data-marca="sol"] .pb-barras button.sel i{background:var(--tinta)}
 html[data-marca="sol"] .pb-barras button[aria-pressed="true"] i{background:var(--rojo)}
-html[data-marca="sol"] #periodo-info{margin-left:auto;padding-right:var(--e-12)}
+html[data-marca="sol"] .periodo-bar{flex-wrap:nowrap}
+html[data-marca="sol"] .pb-meses{flex:1 1 120px;min-width:0;max-width:440px}
+html[data-marca="sol"] #periodo-info{margin-left:auto;padding-right:var(--e-12);white-space:nowrap}
+@media (max-width:860px){ html[data-marca="sol"] .periodo-bar{flex-wrap:wrap} }
 html[data-marca="sol"] #periodo-info b{font:500 13.5px var(--font-mono);color:var(--tinta)}
 /* En el móvil: los atajos arriba y los meses debajo, en una caja de radio 20; el resumen fuera (lo dice el control) */
 @media (max-width:860px){
@@ -818,8 +821,32 @@ html[data-marca="sol"] .or-stats{display:flex;flex-wrap:wrap;gap:var(--e-8) var(
 html[data-marca="sol"] .or-tonos{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e-12);align-items:center}
 html[data-marca="sol"] .or-tonos .tonebar{margin:0}
 html[data-marca="sol"] .or-stats .tone{min-height:20px;align-items:center}
-html[data-marca="sol"] .or-g{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
-html[data-marca="sol"] .or-g .dot{display:inline-block;margin-right:6px;vertical-align:1px}
+/* Estructura fija: todas las tarjetas igual de altas, con el pie abajo; el cargo en una línea (entero al pasar el
+   ratón), la cita en tres y los temas en una */
+html[data-marca="sol"] .or-card{display:flex;flex-direction:column;align-items:stretch}
+html[data-marca="sol"] .or-id{gap:4px}
+html[data-marca="sol"] .or-g{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+html[data-marca="sol"] .or-cargo{display:block;font-size:12.5px;line-height:1.35;color:var(--tinta-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-marca="sol"] .or-cita{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+html[data-marca="sol"] .or-temas{flex-wrap:nowrap;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 80%,transparent)}
+html[data-marca="sol"] .or-temas .tag{flex:none}
+html[data-marca="sol"] .or-pie{margin-top:auto}
+/* El paginador: píldoras, la página actual en tinta, anterior y siguiente con el chevrón */
+html[data-marca="sol"] .or-pags{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-4);margin-top:var(--e-24)}
+html[data-marca="sol"] .or-pags button{min-width:40px;height:40px;padding:0 var(--e-12);border:0;border-radius:var(--r-pildora);background:var(--superficie);font:500 14px var(--font-mono);color:var(--tinta);cursor:pointer;transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .or-pags button:hover:not(:disabled){background:#e6e6e6}
+html[data-marca="sol"] .or-pags button[aria-current="page"]{background:var(--tinta);color:var(--blanco)}
+html[data-marca="sol"] .or-pags button:disabled{background:var(--apagado);color:var(--apagado-texto);cursor:default}
+html[data-marca="sol"] .or-pags-h{padding:0 var(--e-4);color:var(--tinta-3)}
+html[data-marca="sol"] .or-pags-n{margin-left:auto;font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+/* Las letras del directorio, con cuántos oradores tiene cada una; la elegida en tinta */
+html[data-marca="sol"] .or-letras{position:static}
+html[data-marca="sol"] .or-letras button{width:auto;min-width:44px;height:44px;display:inline-grid;place-items:center;padding:0 var(--e-8);line-height:1}
+html[data-marca="sol"] .or-letras button small{font-size:9.5px;color:var(--tinta-3)}
+html[data-marca="sol"] .or-letras button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+html[data-marca="sol"] .or-letras button[aria-pressed="true"] small{color:rgb(255 255 255 / .7)}
+html[data-marca="sol"] .or-dir{grid-template-columns:1fr}
+html[data-marca="sol"] .or-dir-l ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));column-gap:var(--e-40)}
 html[data-marca="sol"] .or-panel-in header{position:sticky;top:0;z-index:2}
 
 /* ---------- Por día ---------- */

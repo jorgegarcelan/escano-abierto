@@ -1064,7 +1064,12 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
 .or-stats>span{display:grid;gap:2px}
 .or-stats b{font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
 .or-tonos{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center}
+.or-cargo{font-size:12px;color:var(--muted)}
 .or-cita{font-size:14px;line-height:1.45}
+.or-pags{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:16px}
+.or-pags button{min-width:36px;height:36px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);cursor:pointer;color:var(--ink)}
+.or-pags button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.or-pags-n{margin-left:auto;font-size:12px;color:var(--muted)}
 .or-temas{display:flex;flex-wrap:wrap;gap:4px}
 .or-pie{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}
 .or-ir{color:var(--ink);font-weight:500;white-space:nowrap}

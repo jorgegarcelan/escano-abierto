@@ -79,7 +79,10 @@ async function arrancar(clave){
   document.getElementById("periodo-meses").innerHTML = `<div class="pb-barras">${ms.map(m=>{ const txt = `${nombreMes(m.mes)}: ${cuenta(m.sesiones,"sesión","sesiones")} y ${cuenta(m.votaciones,"votación","votaciones")}`;
       return `<button type="button" data-periodo="${m.mes}"${elegidos.has(m.mes)?' class="sel"':""} aria-pressed="${p[0]===m.mes}" aria-label="${txt}" data-tip="${txt}"><i style="--h:${Math.max(10, Math.round(m.votaciones/maxV*100))}%"></i></button>`; }).join("")}</div>`
     + `<div class="pb-anios" aria-hidden="true">${Object.entries(anioIni).map(([y,i])=>`<span style="left:${(i/ms.length*100).toFixed(2)}%">${y}</span>`).join("")}</div>`;
-  document.getElementById("periodo-info").innerHTML = `${DATA.meta.periodo} · <b>${sesiones.length}</b> ${sesiones.length===1?"sesión":"sesiones"} · <b>${votaciones.length}</b> ${votaciones.length===1?"votación":"votaciones"}`;
+  // En la barra, las fechas cortas («17 ago 2023 – 2 oct 2026»): con las largas no cabe en una línea
+  const corta = iso => { const [y,m,d] = iso.split("-").map(Number); return `${d} ${MESES_LARGOS[m-1].slice(0,3)} ${y}`; };
+  const fs = sesiones.map(s=>s.fecha).sort();
+  document.getElementById("periodo-info").innerHTML = `${fs.length ? `${corta(fs[0])} – ${corta(fs[fs.length-1])}` : ""} · <b>${sesiones.length}</b> ${sesiones.length===1?"sesión":"sesiones"} · <b>${votaciones.length}</b> ${votaciones.length===1?"votación":"votaciones"}`;
   iniciar(DATA, ivs);
 }
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
@@ -1962,7 +1965,8 @@ function respPanel(){
 }
 
 /* ---------- oradores ---------- */
-let orFilter = {q:"", g:"TODOS", orden:"act", vista:"tarjetas"};
+let orFilter = {q:"", g:"TODOS", orden:"act", vista:"tarjetas", pag:1, letra:null};
+const OR_POR_PAGINA = 24;
 // Los oradores: un directorio de quien habló en el periodo. Cada tarjeta lleva a su ficha si es diputado; si no
 // (ministros que no lo son, comparecientes), abre un panel con sus intervenciones.
 function datosOradores(){
@@ -1974,11 +1978,11 @@ function datosOradores(){
     return {...o, avg: o.ivs.reduce((s,i)=>s+i.int,0)/o.ivs.length, dom: Object.entries(tc).sort((a,b)=>b[1]-a[1])[0][0],
       temas: [...new Set(o.ivs.flatMap(i=>i.temas))].slice(0,3), cita: o.ivs.map(i=>i.cita).filter(Boolean).sort((a,b)=>a.length-b.length)[0],
       ses, dip: dipDeOrador(o.nombre)};
-  });
+  }).map(o=>({...o, visible: o.dip ? legible(o.dip.n) : o.nombre}));   // de los diputados, el nombre completo
 }
 function renderOradores(){
   const todos = datosOradores(), q = sinTildes(orFilter.q.trim());
-  let list = todos.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || sinTildes(o.nombre).includes(q) || o.ivs.some(i=>sinTildes(i.temas.join(" ")+" "+(i.resumen||i.frase||"")).includes(q))));
+  let list = todos.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || sinTildes(o.nombre+" "+o.visible).includes(q) || o.ivs.some(i=>sinTildes(i.temas.join(" ")+" "+(i.resumen||i.frase||"")).includes(q))));
   const az = (a,b)=>a.nombre.localeCompare(b.nombre,"es");
   list.sort(orFilter.orden==="int" ? (a,b)=>b.avg-a.avg || b.ivs.length-a.ivs.length : orFilter.orden==="az" || orFilter.vista==="directorio" ? az : (a,b)=>b.ivs.length-a.ivs.length || b.avg-a.avg);
   const present = [...new Set(IVS.map(i=>i.g))];
@@ -1988,19 +1992,29 @@ function renderOradores(){
   const foto = (o, cls) => (o.dip && imgFoto(o.dip, `${cls} foto`, ` style="--grupo:${G[o.g]?.color}"`, true)) || `<span class="${cls} avatar" style="background:${G[o.g]?.color||"var(--line-strong)"}">${esc(iniciales(o.nombre))}</span>`;
   const destino = o => o.dip ? `data-dip="${o.dip.slug}"` : `data-or="${esc(o.nombre)}"`;
   const ultima = o => { const s = o.ses[0]; if (!s) return ""; const d = dt(s.fecha); return `${o.ses.length === 1 ? "en 1 sesión" : `en ${o.ses.length} sesiones`} · la última, ${d.d} ${d.m}`; };
+  const cargo = o => o.rol && o.rol!==gname(o.g) && o.rol!==G[o.g]?.nombre ? o.rol : "";   // sin repetir el grupo
   const tarjeta = o => `<button type="button" class="or-card" ${destino(o)}>
-      <span class="or-top">${foto(o, "or-foto")}<span class="or-id"><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</span><b class="or-n">${esc(o.nombre)}</b></span></span>
+      <span class="or-top">${foto(o, "or-foto")}<span class="or-id"><b class="or-n">${esc(o.visible)}</b><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}</span>${cargo(o) ? `<span class="or-cargo" title="${esc(cargo(o))}">${esc(cargo(o))}</span>` : ""}</span></span>
       <span class="or-stats"><span><b>${o.ivs.length}</b>${o.ivs.length===1?"intervención":"intervenciones"}</span><span><b>${o.avg.toFixed(1).replace(".",",")}</b>intensidad</span></span>
       <span class="or-tonos" title="Tono habitual de sus intervenciones y el reparto de todas">${toneChip(o.dom)}${toneBar(o.ivs)}</span>
       ${o.cita ? `<span class="or-cita">«${esc(o.cita)}»</span>` : ""}
       ${o.temas.length ? `<span class="or-temas">${o.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</span>` : ""}
       <span class="or-pie">${ultima(o)}<span class="or-ir">${o.dip ? "Su ficha" : "Sus intervenciones"}</span></span>
     </button>`;
-  // El directorio: por la inicial, con un índice de letras arriba
+  // Las tarjetas, de 24 en 24
+  const paginas = Math.max(1, Math.ceil(list.length / OR_POR_PAGINA)), pag = Math.min(orFilter.pag, paginas);
+  const trozo = list.slice((pag-1)*OR_POR_PAGINA, pag*OR_POR_PAGINA);
+  const paginador = () => paginas < 2 ? "" : `<nav class="or-pags" aria-label="Páginas">
+      <button type="button" data-pag="${pag-1}" ${pag===1?"disabled":""} aria-label="Página anterior">←</button>
+      ${Array.from({length: paginas}, (_, k)=>k+1).filter(n=>n===1||n===paginas||Math.abs(n-pag)<=1).map((n,k,a)=>`${k&&n-a[k-1]>1?'<span class="or-pags-h">…</span>':""}<button type="button" data-pag="${n}" ${n===pag?'aria-current="page"':""}>${n}</button>`).join("")}
+      <button type="button" data-pag="${pag+1}" ${pag===paginas?"disabled":""} aria-label="Página siguiente">→</button>
+      <span class="or-pags-n">${(pag-1)*OR_POR_PAGINA+1}–${Math.min(pag*OR_POR_PAGINA, list.length)} de ${list.length}</span></nav>`;
+  // El directorio: una letra cada vez (por apellido), con el índice de letras arriba
   const letra = o => sinTildes(o.nombre)[0].toUpperCase();
-  const letras = [...new Set(list.map(letra))];
-  const directorio = () => `<nav class="or-letras" aria-label="Índice">${letras.map(l=>`<button type="button" data-letra="${l}">${l}</button>`).join("")}</nav>
-    <div class="or-dir">${letras.map(l=>`<section class="or-dir-l" id="or-l-${l}"><h3>${l}</h3><ul>${list.filter(o=>letra(o)===l).map(o=>`<li><button type="button" class="or-fila" ${destino(o)}>${foto(o, "or-mini")}<span class="or-fila-n"><b>${esc(o.nombre)}</b><small>${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</small></span><span class="or-fila-d"><b>${o.ivs.length}</b> interv.</span><span class="or-fila-i">${intMeter(Math.round(o.avg))}</span></button></li>`).join("")}</ul></section>`).join("")}</div>`;
+  const letras = [...new Set(list.map(letra))].sort();
+  const sel = letras.includes(orFilter.letra) ? orFilter.letra : letras[0];
+  const directorio = () => `<nav class="or-letras" aria-label="Índice">${letras.map(l=>`<button type="button" data-letra="${l}" aria-pressed="${l===sel}">${l}<small>${list.filter(o=>letra(o)===l).length}</small></button>`).join("")}</nav>
+    <div class="or-dir">${[sel].map(l=>`<section class="or-dir-l" id="or-l-${l}"><h3>${l}</h3><ul>${list.filter(o=>letra(o)===l).map(o=>`<li><button type="button" class="or-fila" ${destino(o)}>${foto(o, "or-mini")}<span class="or-fila-n"><b>${esc(o.visible)}</b><small>${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</small></span><span class="or-fila-d"><b>${o.ivs.length}</b> interv.</span><span class="or-fila-i">${intMeter(Math.round(o.avg))}</span></button></li>`).join("")}</ul></section>`).join("")}</div>`;
   $("#oradores").innerHTML = `
     <div class="view-intro"><div><h2>Oradores</h2><p>Quién habló en el Congreso en el periodo: ${todos.length} oradores entre diputados, miembros del Gobierno y comparecientes. Busca por nombre o por tema (por ejemplo «Ceuta» o «vivienda») y pulsa uno para ver su ficha o sus intervenciones.</p></div></div>
     <div class="or-barra">
@@ -2010,13 +2024,14 @@ function renderOradores(){
     </div>
     <div class="controls" id="or-g">${chips}</div>
     <p class="or-n-res">${list.length === todos.length ? `${list.length} oradores` : `${list.length} de ${todos.length} oradores`}</p>
-    ${!list.length ? '<p class="nota">Ningún orador coincide con la búsqueda.</p>' : orFilter.vista === "directorio" ? directorio() : `<div class="or-cards">${list.map(tarjeta).join("")}</div>`}`;
+    ${!list.length ? '<p class="nota">Ningún orador coincide con la búsqueda.</p>' : orFilter.vista === "directorio" ? directorio() : `<div class="or-cards">${trozo.map(tarjeta).join("")}</div>${paginador()}`}`;
   const inp = $("#or-q");
-  inp.addEventListener("input", e=>{ orFilter.q=e.target.value; const pos=e.target.selectionStart; renderOradores(); const n=$("#or-q"); n.focus(); n.setSelectionRange(pos,pos); });
-  $("#oradores .or-barra").addEventListener("click", e=>{ const b=e.target.closest("[data-vista],[data-orden]"); if(!b) return; if (b.dataset.vista) orFilter.vista=b.dataset.vista; if (b.dataset.orden) orFilter.orden=b.dataset.orden; renderOradores(); });
-  $("#or-g").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; orFilter.g=b.dataset.g; renderOradores(); });
-  $("#oradores").querySelector(".or-letras")?.addEventListener("click", e=>{ const b=e.target.closest("[data-letra]"); if (!b) return;
-    const sec = document.getElementById("or-l-"+b.dataset.letra); window.scrollTo({top: scrollY + sec.getBoundingClientRect().top - 150, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); });
+  inp.addEventListener("input", e=>{ orFilter.q=e.target.value; orFilter.pag=1; const pos=e.target.selectionStart; renderOradores(); const n=$("#or-q"); n.focus(); n.setSelectionRange(pos,pos); });
+  $("#oradores .or-barra").addEventListener("click", e=>{ const b=e.target.closest("[data-vista],[data-orden]"); if(!b) return; if (b.dataset.vista) orFilter.vista=b.dataset.vista; if (b.dataset.orden) orFilter.orden=b.dataset.orden; orFilter.pag=1; renderOradores(); });
+  $("#or-g").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; orFilter.g=b.dataset.g; orFilter.pag=1; orFilter.letra=null; renderOradores(); });
+  $("#oradores").querySelector(".or-pags")?.addEventListener("click", e=>{ const b=e.target.closest("[data-pag]"); if (!b || b.disabled) return; orFilter.pag=+b.dataset.pag; renderOradores();
+    const c = $("#oradores .or-barra"); window.scrollTo({top: scrollY + c.getBoundingClientRect().top - 150}); });
+  $("#oradores").querySelector(".or-letras")?.addEventListener("click", e=>{ const b=e.target.closest("[data-letra]"); if (!b) return; orFilter.letra=b.dataset.letra; renderOradores(); });
 }
 // El panel de un orador que no es diputado: quién es y todas sus intervenciones del periodo, de la más reciente.
 function panelOrador(o){
@@ -2025,7 +2040,7 @@ function panelOrador(o){
   if (!dlg){ dlg = document.createElement("dialog"); dlg.id = "or-panel"; document.body.appendChild(dlg);
     dlg.addEventListener("click", e=>{ if (e.target === dlg || e.target.closest("[data-cerrar]")) dlg.close(); }); }
   const ivs = o.ivs.slice().sort((a,b)=>(DATA.sesiones.find(s=>s.id===b.s)?.fecha||"").localeCompare(DATA.sesiones.find(s=>s.id===a.s)?.fecha||""));
-  dlg.innerHTML = `<div class="or-panel-in"><header><span class="or-top"><span class="or-foto avatar" style="background:${G[o.g]?.color||"var(--line-strong)"}">${esc(iniciales(o.nombre))}</span><span class="or-id"><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</span><b class="or-n">${esc(o.nombre)}</b></span></span>
+  dlg.innerHTML = `<div class="or-panel-in"><header><span class="or-top"><span class="or-foto avatar" style="background:${G[o.g]?.color||"var(--line-strong)"}">${esc(iniciales(o.nombre))}</span><span class="or-id"><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</span><b class="or-n">${esc(o.visible)}</b></span></span>
       <button type="button" class="or-cerrar" data-cerrar aria-label="Cerrar">×</button></header>
     <p class="or-panel-r">${o.ivs.length} ${o.ivs.length===1?"intervención":"intervenciones"} en el periodo · intensidad media ${o.avg.toFixed(1).replace(".",",")} · tono habitual ${toneChip(o.dom)}</p>
     <div class="iv-list">${ivs.map(ivCard).join("")}</div></div>`;
@@ -2557,8 +2572,8 @@ async function compartir(ruta, titulo){
 }
 
 /* ---------- navegación ---------- */
-const TABS = ["inicio","elecciones","geografia","dias","votaciones","leyes","temas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
-const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "preguntas", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
+const TABS = ["inicio","elecciones","geografia","dias","votaciones","leyes","temas","preguntas","explora","quien-lo-dijo","diputados","grupos","organigrama","oradores","metodo"];
+const VISTAS = [...TABS, "semana", "glosario", "como-ley", "provincia", "tema", "sobre"];   // «semana» no tiene pestaña: se llega desde la portada o por enlace
 const rendered = {};
 const renderers = {elecciones:renderElecciones, geografia:renderGeografia, "quien-lo-dijo":renderQuienLoDijo, explora:renderExplora, sobre:renderSobre, leyes:renderLeyes, semana:renderSemana, glosario:renderGlosario, "como-ley":renderComoLey, provincia:renderProvincia, tema:renderTemaFijo, preguntas:renderPreguntas, inicio:renderInicio, temas:renderTemas, diputados:renderDiputados, dias:renderDias, grupos:renderGrupos, organigrama:renderOrganigrama, oradores:renderOradores, votaciones:renderVotaciones, metodo:renderMetodo};
 // Cada dirección cuenta como una página en la analítica, también la primera (el script no cuenta solo): la ruta agrupa
