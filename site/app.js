@@ -736,7 +736,7 @@ function listaLeyes(){
     ${vis.map(i=>`<tr data-ini="${i.exp}"><td class="t"><b>${esc(tituloLey(i))}</b><small><span class="mono">${i.exp}</span> · ${esc(i.estado==="en trámite"?i.situacion:i.resultado)}</small></td>
       <td>${i.autores.map(a=>`<span class="nm">${autorDot(a)}${esc(a==="GOB"?"Gobierno":a in AUTOR?AUTOR[a]:a)}</span>`).join("<br>")}</td><td>${pasosLey(i)}</td><td>${chipLey(i)}</td></tr>`).join("")
       || `<tr><td colspan="4" class="nota">Ninguna iniciativa coincide.</td></tr>`}</tbody></table></div>
-    ${L.length>vis.length?`<p><button class="btn" data-lf-todas>Ver las ${L.length}</button></p>`:""}`;
+    ${L.length>vis.length?`<p><button class="btn boton-claro" data-lf-todas>Ver las ${L.length}</button></p>`:""}`;
 }
 function renderLeyes(){
   const el = $("#leyes");
@@ -857,9 +857,9 @@ async function renderSemana(){
     <div class="view-intro"><div><div class="eyebrow">La semana en el Congreso · ${esc(rangoSemana(s))}</div>
       <h2 style="font-size:clamp(26px,3.6vw,40px);margin-top:8px">${esc(s.titular)}</h2>
       <p>${botonCompartir("semana/"+s.id, s.titular)}${botonRss("")}</p></div></div>
-    <nav class="sem-nav" aria-label="Otras semanas"><button class="btn" data-sem="${SEMANAS[k-1]?.id||""}" ${k?"":"disabled"}>← Anterior</button>
+    <nav class="sem-nav" aria-label="Otras semanas"><button class="btn boton-claro" data-sem="${SEMANAS[k-1]?.id||""}" ${k?"":"disabled"}>← Anterior</button>
       <select id="sem-sel" aria-label="Elegir semana">${opciones}</select>
-      <button class="btn" data-sem="${SEMANAS[k+1]?.id||""}" ${k<SEMANAS.length-1?"":"disabled"}>Siguiente →</button></nav>
+      <button class="btn boton-claro" data-sem="${SEMANAS[k+1]?.id||""}" ${k<SEMANAS.length-1?"":"disabled"}>Siguiente →</button></nav>
     <div class="kpis">${kpis}</div>
     <div class="grid2 sem-top">
       ${dest?`<div class="chart"><h3>La más ajustada</h3><button class="sem-dest" data-irv="${dest.id}" data-f="${dest.fecha}"><div class="hemi-wrap">${hemiciclo(dest,{grande:true})}<div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${resLabel(dest)}</span></div></div><span class="sv-t">${esc(dest.titulo)}</span></button></div>`:""}
@@ -1015,7 +1015,7 @@ function renderComoLey(){
     <ol class="como-ley">${pasos.map(([k,t,txt,cifra,ejemplo])=>`<li><span class="num">${k}</span><div><h3>${t}</h3><p>${txt}</p><p class="cifra">${cifra}</p>${ejemplo}</div></li>`).join("")}</ol>
     <section class="sec"><div class="sec-h"><h2>Y los decretos-leyes</h2></div>
       <p class="prosa">El Gobierno también puede aprobar normas con rango de ley por su cuenta: los ${glosa("real-decreto-ley","reales decretos-leyes")}. Están en vigor desde que se publican, pero el Congreso debe ${glosa("convalidacion","convalidarlos")} en un mes; si no, quedan derogados. En esta legislatura se han publicado ${(LEYES.aprobadas||[]).filter(x=>x.tipo==="Real decreto-ley").length}.</p></section>
-    <p><button class="btn" data-go="leyes">Ver todas las leyes de la legislatura</button> <button class="btn" data-gl="toma-en-consideracion">Glosario</button></p>`;
+    <p><button class="btn boton-claro" data-go="leyes">Ver todas las leyes de la legislatura</button> <button class="btn boton-claro" data-gl="toma-en-consideracion">Glosario</button></p>`;
 }
 
 /* ---------- tus diputados: por provincia ---------- */
@@ -1031,7 +1031,7 @@ function bloqueTusDiputados(){
   return `<section class="sec tus"><div class="sec-h"><h2>Tus diputados</h2><p>Quién te representa en el Congreso, cómo vota y qué pregunta.</p></div>
     <div class="chart tus-card">${selectorProvincia(sl)}
       ${circ?`<div class="tus-fotos">${ds.slice(0,16).map(d=>`<button class="tus-f" data-dip="${d.slug}" title="${esc(legible(d.n))} · ${d.g}">${imgFoto(d,"avatar foto",` style="--grupo:${G[d.g]?.color}"`) || `<span class="avatar" style="background:${G[d.g]?.color}">${esc(iniciales(legible(d.n)))}</span>`}</button>`).join("")}${ds.length>16?`<span class="n">+${ds.length-16}</span>`:""}</div>
-        <button class="btn primary" data-prov="${esc(sl)}">Ver los ${ds.length} diputados de ${esc(circ)}</button>`:`<p class="sub">Elige dónde votas y te enseñamos a tus diputados: su voto en las decisiones más ajustadas, cuántas veces se apartan de su grupo y qué preguntan al Gobierno.</p>`}
+        <button class="btn primary boton" data-prov="${esc(sl)}">Ver los ${ds.length} diputados de ${esc(circ)}</button>`:`<p class="sub">Elige dónde votas y te enseñamos a tus diputados: su voto en las decisiones más ajustadas, cuántas veces se apartan de su grupo y qué preguntan al Gobierno.</p>`}
     </div></section>`;
 }
 function irProvincia(sl){ provSel = sl; try{ localStorage.setItem("provincia", sl); }catch(e){} rendered.provincia=false; show("provincia", false); fijarRuta("provincia-"+sl, true); window.scrollTo(0,0); }
@@ -1103,7 +1103,7 @@ async function renderTemaFijo(){
   el.innerHTML = `<button class="back" data-go="temas">← Temas</button>
     <div class="view-intro"><div><div class="eyebrow">Seguir un tema</div><h2>${esc(t.nombre)}</h2>
       <p>${votos.length} ${votos.length===1?"votación":"votaciones"} en el Pleno, ${leyes.length} ${leyes.length===1?"ley":"leyes"} (${vivas.length} en trámite, ${hechas.length} ${hechas.length===1?"aprobada":"aprobadas"})${t.preguntas?` y ${fmt(t.preguntas)} ${t.preguntas===1?"pregunta escrita":"preguntas escritas"} al Gobierno`:""} en esta legislatura. Clasificación automática por palabras clave: puede haber asuntos que se escapen.</p>
-      <p><a class="btn primary" href="tema/${temaFijo}/rss.xml">${ICONO_RSS} Seguir por RSS</a> ${botonCompartir("tema/"+temaFijo, t.nombre+" en el Congreso")}</p></div></div>
+      <p><a class="btn primary boton" href="tema/${temaFijo}/rss.xml">${ICONO_RSS} Seguir por RSS</a> ${botonCompartir("tema/"+temaFijo, t.nombre+" en el Congreso")}</p></div></div>
     ${proximos.length?`<section class="sec"><div class="sec-h"><h2>En el próximo pleno</h2></div><div class="chart"><ul class="od">${proximos.map(x=>`<li><span class="od-g">${x.grupo?autorDot(x.grupo)+esc(x.grupo==="GOB"?"Gob.":x.grupo):""}</span><span class="od-t"><small>${esc(x.seccion)}${x.autor?` · ${esc(x.autor)} → ${esc(x.a)}`:""}</small>${esc(x.titulo)}</span></li>`).join("")}</ul></div></section>`:""}
     ${vivas.length?`<section class="sec"><div class="sec-h"><h2>Leyes en trámite</h2></div><ul class="tema-leyes">${vivas.slice(0,15).map(filaLey).join("")}</ul>${vivas.length>15?`<p class="nota">Y ${vivas.length-15} más en la pestaña Leyes.</p>`:""}</section>`:""}
     ${votos.length?`<section class="sec"><div class="sec-h"><h2>Últimas votaciones</h2></div><div class="sv-list">${votos.slice(0,25).map(filaVoto).join("")}</div>${votos.length>25?`<p class="nota">Y ${votos.length-25} votaciones más en la legislatura.</p>`:""}</section>`:""}
@@ -1229,7 +1229,7 @@ function renderSobre(){
         <div class="autor-txt">
           <p class="prosa">Soy <b>Jorge Garcelán</b>, investigador en inteligencia artificial e ingeniero de <i lang="en">machine learning</i>, de Madrid. Estudié Ciencia e Ingeniería de Datos y el máster en IA aplicada en la Universidad Carlos III de Madrid, pasé un año de intercambio en Georgia Tech y he trabajado como arquitecto de soluciones en AWS y Multiverse Computing. También soy cofundador de Uniwords.</p>
           <p class="prosa">Mi investigación ha ido casi siempre hacia la IA con impacto social: cómo usarla para diseñar políticas públicas o para medir los sesgos de género en los medios. Escaño Abierto sale de ahí: de pensar que la tecnología puede servir para que entendamos mejor cómo se decide lo que nos afecta a todos.</p>
-          <p class="autor-links"><a class="btn" href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com ↗</a><a class="btn" href="https://github.com/jorgegarcelan" target="_blank" rel="noopener">GitHub ↗</a><a class="btn" href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+          <p class="autor-links"><a class="btn boton-claro" href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com ↗</a><a class="btn boton-claro" href="https://github.com/jorgegarcelan" target="_blank" rel="noopener">GitHub ↗</a><a class="btn boton-claro" href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener">LinkedIn ↗</a></p>
         </div>
       </div></section>
   </div>`;
@@ -1293,7 +1293,7 @@ function reproductor(){
       <label class="repro-dia">Día <select id="repro-dia">${dias.map(f=>{const d=dt(f);return `<option value="${f}"${f===repro.fecha?" selected":""}>${d.d} ${d.m} · ${votosDelDia(f).length} votaciones</option>`;}).join("")}</select></label></div>
     <div class="repro-cuerpo"><svg class="hemi real anima" id="repro-hemi" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="Hemiciclo de la votación en curso">${gobiernoSinEscano()}${seats}</svg>
       <div class="repro-info" aria-live="polite"><div class="eyebrow" id="repro-n"></div><div class="repro-t" id="repro-t"></div><div class="repro-res" id="repro-res"></div>
-        <div class="repro-ctl"><button class="btn" data-repro="prev" aria-label="Votación anterior">◀</button><button class="btn primary" data-repro="play" id="repro-play">▶ Reproducir</button><button class="btn" data-repro="next" aria-label="Votación siguiente">▶▶</button></div>
+        <div class="repro-ctl"><button class="btn boton-claro" data-repro="prev" aria-label="Votación anterior">◀</button><button class="btn primary boton" data-repro="play" id="repro-play">▶ Reproducir</button><button class="btn boton-claro" data-repro="next" aria-label="Votación siguiente">▶▶</button></div>
         <div class="repro-barra" id="repro-barra">${vs.map((v,k)=>`<button data-repro-k="${k}" style="background:var(${passed(v)?"--si":"--no"})" aria-label="Votación ${k+1}" data-tip="${esc(`${esc(v.titulo)}<br>${v.si} a ${v.no}`)}"></button>`).join("")}</div></div></div></div>`;
 }
 function reproPintar(){
@@ -1436,7 +1436,7 @@ function renderInicio(){
         <div class="eyebrow">${ses.organo==="Pleno"?"Último pleno":"Última sesión"} · ${esc(fechaLarga(ses.fecha))}</div>
         <h2 class="hero-h">${esc(titular)}</h2>
         ${lede?`<p class="hero-lede">${esc(lede)}</p>`:""}
-        <div class="hero-cta"><button class="btn primary" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión</button><button class="btn" data-go="votaciones">Todas las votaciones</button></div>
+        <div class="hero-cta"><button class="btn primary boton" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión</button><button class="btn boton-claro" data-go="votaciones">Todas las votaciones</button></div>
       </div>
       ${heroVoto}
     </div>
@@ -1454,7 +1454,7 @@ function renderInicio(){
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
   $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec" id="home-boe"></section>`);
   cargarOrgIdx().then(()=>{ const h=$("#home-boe"); if (!h) return; const t=tarjetaBoe(); if (t) h.innerHTML=t; else h.remove(); });
-  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec"><div class="chart sobre-franja"><p><b>Escaño Abierto</b> junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><button class="btn" data-go="sobre">Sobre el proyecto</button></div></section>`);
+  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec"><div class="chart sobre-franja"><p><b>Escaño Abierto</b> junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><button class="btn boton-claro" data-go="sobre">Sobre el proyecto</button></div></section>`);
   if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
 
@@ -1487,7 +1487,7 @@ function expRadar(){
   const gs = Object.entries(t.grupos).filter(([g])=>G[g]).slice(0,8), gmax = gs[0]?.[1]||1;
   return `<section class="sec" id="exp-radar"><div class="sec-h"><h2>De qué se habla</h2><p>Los temas que se disparan cada semana respecto a sus ocho semanas anteriores. Las etiquetas las pone la IA a cada intervención y se unifican (DANA, gota fría y Paiporta cuentan juntas).</p></div>
     <div class="chart">
-      <div class="exp-semana"><button class="btn" data-exp-sem="${ds[k-1]?.semana||""}" ${k?"":"disabled"} aria-label="Semana anterior">←</button><b>${esc(semanaLarga(w.semana).replace(/^s/,"S"))}</b><button class="btn" data-exp-sem="${ds[k+1]?.semana||""}" ${k<ds.length-1?"":"disabled"} aria-label="Semana siguiente">→</button></div>
+      <div class="exp-semana"><button class="btn boton-claro" data-exp-sem="${ds[k-1]?.semana||""}" ${k?"":"disabled"} aria-label="Semana anterior">←</button><b>${esc(semanaLarga(w.semana).replace(/^s/,"S"))}</b><button class="btn boton-claro" data-exp-sem="${ds[k+1]?.semana||""}" ${k<ds.length-1?"":"disabled"} aria-label="Semana siguiente">→</button></div>
       <div class="exp-chips">${chips}</div>
     </div>
     <div class="chart"><div class="exp-tag-h"><h3>${esc(tag)}</h3><label class="exp-busca">Otro tema <input list="exp-tags" data-exp-input placeholder="Busca un tema…"></label><datalist id="exp-tags">${Object.keys(R.temas).sort((a,b)=>a.localeCompare(b,"es")).map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
@@ -1663,8 +1663,8 @@ function qldInicio(){
       ${qldTema() && !hecho ? `<p class="qld-especial"><b>Hoy, especial ${esc(qldTema().toLowerCase())}:</b> las diez frases del reto hablan de ${esc(qldTema().toLowerCase())}.</p>` : ""}
       ${hecho ? `<div class="chart qld-hecho"><div class="eyebrow">Reto del ${diaMes(hoy)} · hecho</div>${cuadros(hecho.colores)}
           <p class="qld-msg"><b>${hecho.ok}/${QLD_N}</b> grupos y <b>${hecho.extra}</b> ${hecho.extra===1?"persona":"personas"}.${racha>1?` Llevas ${racha} días seguidos.`:""} Mañana hay un reto nuevo.</p>
-          <div class="qld-cta"><button class="btn primary" data-qld="compartir-dia">Compartir resultado</button><button class="btn" data-qld="libre">Partida libre</button></div></div>`
-        : `<div class="qld-cta"><button class="btn primary" data-qld="dia">Jugar el reto de hoy</button><button class="btn" data-qld="libre">Partida libre</button>${racha?`<span class="nota">Racha: ${racha} ${racha===1?"día":"días"}</span>`:""}</div>`}
+          <div class="qld-cta"><button class="btn primary boton" data-qld="compartir-dia">Compartir resultado</button><button class="btn boton-claro" data-qld="libre">Partida libre</button></div></div>`
+        : `<div class="qld-cta"><button class="btn primary boton" data-qld="dia">Jugar el reto de hoy</button><button class="btn boton-claro" data-qld="libre">Partida libre</button>${racha?`<span class="nota">Racha: ${racha} ${racha===1?"día":"días"}</span>`:""}</div>`}
     </div>
     <div class="chart"><h3>Cómo se juega</h3><ul class="qld-reglas">
       <li>Lee la frase y elige el grupo de quien la dijo entre cuatro. El Gobierno cuenta como un grupo más.</li>
@@ -1691,7 +1691,7 @@ function qldRonda(){
       const titulo = !bienG ? `<b class="ko">No.</b> ` : bienP ? `<b class="ok">¡Pleno!</b> ` : R.p ? `<b class="ok">Grupo, sí.</b> La persona, no. ` : `<b class="ok">Grupo, sí.</b> `;
       cuerpo = `<div class="qld-ops">${ops}</div>
         <div class="qld-quien" role="status">${qldCara(orador,g)}<p class="qld-msg">${titulo}Lo dijo <b>${esc(qldNombre(orador))}</b> (${esc(qldGrupo(g))}) el ${fechaCorta(f)}.</p></div>
-        <div class="qld-sig"><button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver la sesión</button><button class="btn primary" data-qld="sig">${qld.k===QLD_N-1?"Ver resultado":"Siguiente"} →</button></div>`;
+        <div class="qld-sig"><button class="linklike" data-irs="${esc(s)}" data-f="${esc(f)}">Ver la sesión</button><button class="btn primary boton" data-qld="sig">${qld.k===QLD_N-1?"Ver resultado":"Siguiente"} →</button></div>`;
     }
   }
   return `<div class="qld">
@@ -1713,7 +1713,7 @@ function qldFin(){
       <p>grupos acertados${extra?`, y ${extra} ${extra===1?"persona":"personas"} de punto extra`:""}</p>
       ${cuadros(rs.map(qldColor))}
       <h2>${titulo}</h2><p>${frase}</p>
-      <div class="qld-cta" style="justify-content:center"><button class="btn primary" data-qld="compartir">Compartir resultado</button><button class="btn" data-qld="libre">Otra partida</button><button class="btn" data-qld="inicio">Tus estadísticas</button></div></div>
+      <div class="qld-cta" style="justify-content:center"><button class="btn primary boton" data-qld="compartir">Compartir resultado</button><button class="btn boton-claro" data-qld="libre">Otra partida</button><button class="btn boton-claro" data-qld="inicio">Tus estadísticas</button></div></div>
     <section class="sec"><div class="sec-h"><h2>Las ${QLD_N} frases</h2><p>Cada una enlaza a la sesión en la que se dijo.</p></div><div class="chart"><ol class="qld-lista">${lista}</ol></div></section></div>`;
 }
 
@@ -1730,7 +1730,7 @@ async function renderQuienLoDijo(){
 }
 // La franja que invita a jugar, en la portada y en Explora.
 const franjaJuego = () => { const st=qldLeer(), hecho=st.dia?.fecha===hoyISO();
-  return `<div class="chart qld-franja"><div><div class="eyebrow">El juego</div><h3>¿Quién lo dijo?</h3><p>${hecho?`Hoy has acertado ${st.dia.ok} de ${QLD_N}. Mañana hay un reto nuevo.`:`${QLD_N} frases literales del Congreso. ¿Sabrías decir de qué grupo es quien habla?`}</p></div><button class="btn${hecho?"":" primary"}" data-go="quien-lo-dijo">${hecho?"Ver mi resultado":"Jugar el reto de hoy"}</button></div>`; };
+  return `<div class="chart qld-franja"><div><div class="eyebrow">El juego</div><h3>¿Quién lo dijo?</h3><p>${hecho?`Hoy has acertado ${st.dia.ok} de ${QLD_N}. Mañana hay un reto nuevo.`:`${QLD_N} frases literales del Congreso. ¿Sabrías decir de qué grupo es quien habla?`}</p></div><button class="btn ${hecho?"boton-claro":"primary boton"}" data-go="quien-lo-dijo">${hecho?"Ver mi resultado":"Jugar el reto de hoy"}</button></div>`; };
 
 // Aviso del reto diario: mientras no se haya jugado hoy, un punto en la pestaña y un botón discreto en la esquina
 // (fuera del juego). La ✕ lo quita hasta el día siguiente. Sin servidor no hay notificaciones push.

@@ -445,9 +445,9 @@ def _pagina(ruta: str, hashweb: str, titulo: str, desc: str, imagen: str, feed: 
     pagina, n = _META.subn(lambda _: meta, _PLANTILLA[0], count=1)
     if not n:
         raise SystemExit("paginas: index.html no tiene el bloque <!--meta--> … <!--/meta-->")
-    pagina = pagina.replace('<html lang="es" data-marca="marcador">',
-                            f'<html lang="es" data-marca="marcador" data-ruta="{e(hashweb)}"'
-                            + (f' data-fecha="{e(fecha)}"' if fecha else "") + ">", 1)
+    # La etiqueta <html> de index.html, sea cual sea la marca, con la ruta (y la fecha) de la página.
+    pagina = re.sub(r"<html( [^>]*)?>", lambda m: f'<html{m[1] or ""} data-ruta="{e(hashweb)}"'
+                    + (f' data-fecha="{e(fecha)}"' if fecha else "") + ">", pagina, count=1)
     return pagina.encode()
 
 

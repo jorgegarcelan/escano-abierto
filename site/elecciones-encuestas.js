@@ -109,7 +109,7 @@ export async function pintarEncuestas(sec){
         <div class="enc-ps" id="enc-ps">${principales.map(id=>`<button data-enc-p="${id}" aria-pressed="true" style="--c:${P[id].color}"><i></i>${esc(P[id].nombre)}</button>`).join("")}</div></div>
         <div id="enc-g"></div></div></section>
     <section class="sec"><div class="sec-h"><h2>Todas las encuestas</h2><div class="controls"><select id="enc-emp" aria-label="Encuestadora"><option value="">Todas las empresas</option>${[...new Set(D.encuestas.map(e=>e.empresa))].sort((a,b)=>a.localeCompare(b,"es")).map(e=>`<option>${esc(e)}</option>`).join("")}</select></div></div>
-      <div class="chart"><div class="enc-tabla-w" id="enc-t"></div><button class="btn enc-mas" id="enc-mas" type="button">Ver más</button></div>
+      <div class="chart"><div class="enc-tabla-w" id="enc-t"></div><button class="btn boton-claro enc-mas" id="enc-mas" type="button">Ver más</button></div>
       <p class="enc-nota">Cómo se hace la media: de cada empresa cuenta solo su última encuesta de los 45 días anteriores, con un peso que se reduce a la mitad cada dos semanas largas y crece un poco con el tamaño de la muestra. No entran el CIS (su estimación se aparta sistemáticamente del resto) ni KeyData (es ya una media de encuestas). Fuente: <a href="${esc(D.fuente)}">la tabla de encuestas de Wikipedia</a>, actualizada el ${esc(fLarga(D.actualizado))}. La ley prohíbe publicar encuestas del 24 al 29 de noviembre: en esos días esta página no las enseñará.</p></section>`;
   function chispa(id){ const m = M.partidos[id].m.slice(-90), vs = m.filter(v=>v!=null), mx = Math.max(...vs), mn = Math.min(...vs), r = Math.max(mx - mn, 2), b = (mx + mn)/2 - r/2;
     return `<svg viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path d="${m.map((v,i)=>v==null?"":`${i&&m[i-1]!=null?"L":"M"}${(i/(m.length-1)*100).toFixed(1)} ${(24 - (v-b)/r*22).toFixed(1)}`).join("")}"/></svg>`; }
@@ -332,7 +332,7 @@ export async function pintarProyeccion(sec, ctx){
     const filas = Object.keys({...v, ...r}).map(id=>[id, r[id] || 0]).filter(([id,e])=>e || (v[id] || 0) >= 3).sort((a,b)=>b[1]-a[1] || (v[b[0]]||0) - (v[a[0]]||0)), max = Math.max(...filas.map(x=>x[1]), 1);
     el.innerHTML = `<div class="pr-prov"><div class="eyebrow">${n} ${n === 1 ? "escaño" : "escaños"} · proyección</div><h3>${esc(nomProv(selP))}</h3><div class="pr-filas">${filas.map(([id,e])=>`<div class="pr-f"><span class="n"><i style="background:${col(id)}"></i>${esc(nom(id))}</span><span class="t"><span class="rg" style="left:0;width:${(e/max*100).toFixed(1)}%;background:${col(id)};opacity:.85"></span></span><b>${e} <span class="cmp">${dec(v[id] || 0)} %</span></b></div>`).join("")}</div>
       ${u ? `<p class="enc-nota">El último escaño sería de <b>${esc(nom(u.gana))}</b>; a ${esc(nom(u.segundo))} le faltarían ${dec(u.falta, 2)} puntos de voto en la provincia para quitárselo.</p>` : ""}
-      <p><button class="btn" type="button" data-pr-x>← Escaños en el aire</button> <a class="btn" href="/elecciones/provincia-${esc(slugP(selP))}/">Su historia →</a></p></div>`;
+      <p><button class="btn boton-claro" type="button" data-pr-x>← Escaños en el aire</button> <a class="btn boton-claro" href="/elecciones/provincia-${esc(slugP(selP))}/">Su historia →</a></p></div>`;
   }
   const slugP = cod => ctx.slug(nomProv(cod));   // el mismo enlace que usa la web para cada provincia
   lado();

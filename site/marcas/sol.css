@@ -1,0 +1,118 @@
+/* Marca de prueba: Sol, el sistema de diseño de Reforma Digital (reforma-digital.es).
+   Los valores son los suyos: marcas/sol/tokens.css y marcas/sol/botones.css, copiados sin cambios (ver
+   marcas/sol/LEEME.md). Esta hoja solo traduce las variables de Escaño a las de Sol y compone la portada, la barra y
+   el pie como su web: fondo blanco y tinta, el atardecer rojo en la portada, el pie del amarillo al naranja,
+   titulares y cifras en serif, lo demás en Geist y los datos y etiquetas en Geist Mono. Sin modo oscuro, como Sol.
+   index.html la carga en lugar de marcador.css, con class="sol-raiz" y data-marca="sol" en <html>. */
+
+/* Sol pone la serif a 400 y su titular de pago no se sirve (se ve Georgia). Las cifras de la web piden 800–900
+   (pensadas para Doto): esta cara dice cubrir todos los pesos con la Georgia normal, así el navegador no la engorda. */
+@font-face{font-family:"Sol Serif";src:local("Georgia");font-weight:100 900;font-style:normal}
+
+html:root[data-marca="sol"]{
+  color-scheme:light;
+  /* Sol las espera de next/font; aquí Geist y Geist Mono llegan de Google Fonts (index.html). */
+  --font-geist:"Geist"; --font-geist-mono:"Geist Mono";
+  /* Escaño → Sol */
+  --bg:var(--blanco); --surface:var(--blanco); --sunk:var(--superficie); --ink:var(--tinta); --muted:var(--tinta-2);
+  --line:var(--linea); --line-strong:var(--tinta-3); --sub:var(--ambar-claro); --on-vote:var(--blanco);
+  --sans:var(--font-texto); --mono:var(--font-mono);
+  --serif:var(--font-texto);              /* citas y texto corrido: Sol nunca usa la serif ahí */
+  --display:"Sol Serif",var(--font-titular);
+  --led:"Sol Serif",var(--font-titular);  /* cifras grandes: --font-cifra de Sol */
+  --r-card:var(--r-20); --r-card-lg:var(--r-28); --r-pill:var(--r-pildora); --r-ctl:var(--r-12); --r-chip:6px;
+  --ancho:1200px;                         /* la retícula de Sol (su --ancho, que esta hoja pisa con el mismo valor) */
+  --sombra:none;
+  /* El sentido del voto conserva sus colores de siempre: el rojo de Sol es de marca, no de «no». */
+  --si:#2F8A5B; --no:#C23B2E; --abst:#C9962A; --nv:#A39DA3;
+}
+
+/* ---------- tipografía ---------- */
+html[data-marca="sol"] body{font-size:16px;line-height:1.55}
+html[data-marca="sol"] :is(h1,h2){font-weight:400;letter-spacing:-.02em}
+html[data-marca="sol"] h3{font-family:var(--font-texto);font-weight:500;letter-spacing:-.01em}
+html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:clamp(28px,3.2vw,40px);line-height:1.08}
+/* Etiquetas: .t-etiqueta de Sol, en rojo como «LOS PROYECTOS». */
+html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--rojo)}
+html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
+html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
+html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d,.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--led);font-weight:400;letter-spacing:-.02em}
+html[data-marca="sol"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.42em 0 color-mix(in srgb,var(--amarillo) 45%,transparent);padding:0 .1em}
+
+/* ---------- barra superior: como su cabecera (80 px, sin bordes, enlaces fantasma en píldora) ---------- */
+html[data-marca="sol"] .topbar{background:color-mix(in srgb,var(--blanco) 92%,transparent);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:0}
+html[data-marca="sol"] .topbar-in{min-height:80px;gap:var(--e-16)}
+html[data-marca="sol"] .brand .logo{height:28px;aspect-ratio:96/53.2;background:var(--rojo);-webkit-mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain;mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain}
+/* El nombre en dos líneas, como «Reforma / Digital». */
+html[data-marca="sol"] .brand .nombre{display:block;font:600 15px/1.02 var(--font-texto);letter-spacing:-.01em;white-space:normal;max-width:7ch}
+html[data-marca="sol"] nav.tabs{align-self:center;gap:var(--e-4)}
+html[data-marca="sol"] nav.tabs>button{min-height:44px;border:0;border-radius:var(--r-pildora);padding:0 14px;font:500 15px var(--font-texto);color:var(--tinta);transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] nav.tabs>button:hover{background:var(--superficie)}
+html[data-marca="sol"] nav.tabs>button.activa{background:var(--superficie)}
+html[data-marca="sol"] .tab-29n{background:var(--rojo);color:var(--blanco);border-radius:var(--r-pildora);padding:1px 6px}
+html[data-marca="sol"] .tab-panel{border-color:var(--linea);border-radius:var(--r-20);box-shadow:var(--sombra-flota)}
+html[data-marca="sol"] .btn-buscar{min-height:44px;border-radius:var(--r-pildora);padding:0 14px;font-size:14px;border-color:var(--linea)}
+html[data-marca="sol"] .btn-menu{width:44px;height:44px;border-radius:50%;border-color:var(--linea)}
+html[data-marca="sol"] .periodo-bar select{border-radius:var(--r-pildora);padding:6px 12px;border-color:var(--tinta-3)}
+
+/* ---------- botones: .boton y .boton-claro de Sol; aquí solo se quitan los restos de .btn ---------- */
+html[data-marca="sol"] .btn:hover{box-shadow:none}
+html[data-marca="sol"] .btn.boton-claro:hover{box-shadow:0 0 0 1px var(--linea)}
+html[data-marca="sol"] .chipbtn{min-height:36px;border:0;background:var(--superficie);padding:0 14px;font-size:14px}
+html[data-marca="sol"] .chipbtn[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+/* Campos: los de .campo de Sol (borde --tinta-3, radio 12, 44 px, 16 px). */
+html[data-marca="sol"] :is(.controls input,.controls select){min-height:44px;padding:var(--e-8) var(--e-12);border:1px solid var(--tinta-3);border-radius:var(--r-12);font-size:16px}
+
+/* ---------- portada: el atardecer, como su hero ---------- */
+html[data-marca="sol"] .hero{
+  background:var(--atardecer); color:var(--blanco); border-radius:var(--r-28);
+  padding:clamp(28px,5vw,64px) clamp(22px,4.5vw,56px) clamp(40px,6vw,80px);
+  gap:clamp(24px,4vw,56px); grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+}
+html[data-marca="sol"] .hero .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
+html[data-marca="sol"] .hero-h{font-size:clamp(34px,4.6vw,60px);line-height:1.04;letter-spacing:-.03em;color:var(--blanco);margin-top:14px}
+html[data-marca="sol"] .hero-lede{font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--blanco)}
+html[data-marca="sol"] .hero-cta .boton-claro{box-shadow:none}
+html[data-marca="sol"] .hero-vote{color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px 22px 20px}
+html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.08em;color:var(--tinta-2)}
+
+/* Las cifras: rejilla de bordes compartidos, sin huecos ni sombras por celda (como sus rejillas). */
+html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin-top:var(--e-24);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
+html[data-marca="sol"] .kpi{flex-direction:column;align-items:flex-start;gap:10px;padding:20px 20px 18px;border-right:1px solid var(--linea)}
+html[data-marca="sol"] .kpi:last-child{border-right:0}
+html[data-marca="sol"] .kpi b{font-size:clamp(34px,3.4vw,46px);line-height:.95}
+html[data-marca="sol"] .kpi span{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;max-width:none;color:var(--tinta-2)}
+html[data-marca="sol"] .kpi.alert b{color:var(--rojo)}
+html[data-marca="sol"] .sec{padding-top:var(--e-64)}
+
+/* ---------- superficies: .caja-plana de Sol ---------- */
+html[data-marca="sol"] :is(.chart,.session,.vote,.card){padding:20px 22px}
+html[data-marca="sol"] .punto .vote{background:var(--superficie);border-color:transparent}
+html[data-marca="sol"] .vcard{transition:box-shadow var(--t-medio) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .vcard:hover{box-shadow:var(--sombra-suave);transform:translateY(-2px)}
+html[data-marca="sol"] :is(.pill,.res){font-family:var(--font-mono);letter-spacing:.04em}
+html[data-marca="sol"] .tag{border-radius:var(--r-pildora);padding:2px 9px}
+html[data-marca="sol"] #tip{background:var(--tinta);color:var(--blanco);font-family:var(--font-mono);font-size:12px;border-radius:var(--r-12)}
+html[data-marca="sol"] table.dt tbody tr:hover{background:var(--superficie)}
+
+/* ---------- pie: el atardecer al revés (los valores de su .pie-sol), todo en tinta ---------- */
+html[data-marca="sol"] footer.pie{
+  margin-top:var(--e-80); padding:clamp(40px,6vw,80px) clamp(22px,4vw,48px) var(--e-32); border:0; border-radius:var(--r-28);
+  background:radial-gradient(80% 70% at 50% -12%, #ffe58f 0%, rgba(255,229,143,0) 70%), linear-gradient(180deg, #ffd34d 0%, var(--amarillo) 46%, var(--naranja) 100%);
+  color:var(--tinta);
+}
+html[data-marca="sol"] footer.pie a{color:var(--tinta)}
+html[data-marca="sol"] footer.pie .pie-logo .logo{width:44px;height:25px;background:currentColor;-webkit-mask:url(../marca/simbolo-tinta.svg) no-repeat left center/contain;mask:url(../marca/simbolo-tinta.svg) no-repeat left center/contain}
+html[data-marca="sol"] .pie-logo b{font:600 17px var(--font-texto);letter-spacing:-.01em;text-transform:none}
+html[data-marca="sol"] .pie-lema{font-family:var(--display);font-size:clamp(26px,3vw,40px);line-height:1.04;letter-spacing:-.03em;max-width:16ch}
+html[data-marca="sol"] .pie-red{display:inline-flex;align-items:center;gap:var(--e-8);margin:0;font-size:14px}
+html[data-marca="sol"] .pie-red img{width:12px;height:16px}
+html[data-marca="sol"] .pie-notas{border-top-color:rgba(34,34,34,.18)}
+html[data-marca="sol"] :is(footer.pie .pie-nav h2,.pie-notas b){color:var(--tinta)}
+
+@media (max-width:720px){
+  html[data-marca="sol"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="sol"] .kpi{border-bottom:1px solid var(--linea)}
+  html[data-marca="sol"] .hero{grid-template-columns:1fr}
+  html[data-marca="sol"] .topbar-in{min-height:64px}
+}

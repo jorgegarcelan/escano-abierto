@@ -930,7 +930,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
       <div class="hi-kp"><div><b>${pct(e.votantes/e.censo, 1)}</b><span>participación</span></div><div><b>${conEsc.length}</b><span>candidaturas con escaño</span></div><div><b>${mayor[4] >= 176 ? "Sí" : "No"}</b><span>mayoría absoluta${mayor[4] >= 176 ? ` (${esc(siglaCorta(mayor[0]))})` : ""}</span></div></div>
       <div class="hi-barras" style="--m:${(176/350*100).toFixed(2)}%">${conEsc.slice(0, 7).map(p=>`<div class="hi-bar" title="${esc(p[1])}"><span class="n">${esc(siglaCorta(p[0]))}</span><span class="t"><i style="width:${(p[4]/350*100).toFixed(2)}%;background:${colorPartido(p[0], p[2])}"></i></span><b>${p[4]}</b><small>${pct(p[3]/e.validos)}</small></div>`).join("")}
         <div class="hi-bar hi-bar-m"><span></span><span class="t"><em>176 · mayoría absoluta</em></span><span></span><span></span></div></div>
-      <p style="margin:12px 0 0"><a class="btn" href="${enlaceE(e)}">La elección y su legislatura, en detalle →</a></p>`;
+      <p style="margin:12px 0 0"><a class="btn boton-claro" href="${enlaceE(e)}">La elección y su legislatura, en detalle →</a></p>`;
     sec.querySelectorAll("[data-hi]").forEach(b=>b.setAttribute("aria-pressed", String(+b.dataset.hi === k)));
     const b = sec.querySelector(`.hi-sel-b[data-hi="${k}"]`), r = $(".hi-sel-r");
     if (b && r){ const bl = b.offsetLeft - r.offsetLeft, bw = b.offsetWidth; if (bl < r.scrollLeft || bl + bw > r.scrollLeft + r.clientWidth) r.scrollTo({left: bl - r.clientWidth/2 + bw/2, behavior: quieto ? "auto" : "smooth"}); }
@@ -1001,7 +1001,7 @@ export async function pintarHistorico(sec, c, {aProvincias = false} = {}){
       <div class="pv-mini-r">${filas.map(x=>`<div class="pv-mini-f"><span class="n" title="${esc(x[0])}">${esc(siglaCorta(x[0]))}</span><span class="b"><i style="width:${(x[2]/max*100).toFixed(1)}%;background:${colorPartido(x[0], x[1])}"></i></span><span class="p">${pct(x[2]/dp.validos)}</span><b>${x[3] || ""}</b></div>`).join("")}</div>
       <p class="pv-mini-d">Participación ${pct(pr.votantes/pr.censo)} · ${fmt(pr.validos/pr.e)} votos por escaño${u ? `<br>Último escaño para <b>${esc(siglaCorta(u.gana))}</b>; a ${esc(siglaCorta(u.segundo))} le faltaron ${fmt(u.faltan)} votos` : ""}</p>
       <div class="eyebrow">Quién ganó, de 1977 a 2023</div><div class="pv-mini-t">${E.map((x,j)=>{ const g = ganador(j, c2); return `<i class="${j === k ? "sel" : ""}" style="background:${g ? g.color : "transparent"}" title="${esc(anio(x))}${g ? ": " + esc(g.nombre) : ""}"></i>`; }).join("")}</div>
-      <a class="btn" href="${enlaceProv(c2)}">La ficha de ${esc(nombreProv(c2))} →</a></div>`;
+      <a class="btn boton-claro" href="${enlaceProv(c2)}">La ficha de ${esc(nombreProv(c2))} →</a></div>`;
   }
   const elegirProv = c2 => { selProv = c2; pintarMapa(); const r = $("#pv-res"); if (r.getBoundingClientRect().top > innerHeight - 80) r.scrollIntoView({block:"nearest", behavior:"smooth"}); };
   mapaEl.addEventListener("click", ev=>{ const p = ev.target.closest("[data-p]"); if (p){ pararH(); selProv === p.dataset.p ? (selProv = null, pintarMapa()) : elegirProv(p.dataset.p); } });
@@ -1920,7 +1920,7 @@ export async function pintarNoche(sec, c){
       const d = await r.json().catch(()=>null);
       if (!d || d.estado === "sin-configurar" || r.status === 404){
         pintarEstado(`<p class="sub" style="margin:0">El escrutinio empieza el <b>domingo 29 de noviembre a las 20.00</b>, cuando cierran los colegios. Esta página se actualizará sola con los datos provisionales del Ministerio del Interior.</p>
-          <p style="margin:0"><button class="btn primary" data-no-ensayo>Ver un ensayo con el escrutinio del 23J</button></p>`);
+          <p style="margin:0"><button class="btn primary boton" data-no-ensayo>Ver un ensayo con el escrutinio del 23J</button></p>`);
         return false;
       }
       if (d.estado === "error"){ pintarEstado(`<p class="sub" style="margin:0">No se ha podido leer el escrutinio (${esc(d.motivo||"")}). Se reintenta en unos segundos.</p>`); return true; }
@@ -1938,7 +1938,7 @@ export async function pintarNoche(sec, c){
     nocheHistoria = [];
     nocheEnsayo = {f: 0, D, reloj: null};
     pintarEstado(`<p class="sub" style="margin:0"><b>Ensayo.</b> Así se verá la noche, con los resultados del 23 de julio de 2023 repartidos en el tiempo como si llegaran mesa a mesa (las cifras intermedias son simuladas; las finales, las oficiales).</p>
-      <div class="controls"><button class="btn" data-no-play>❚❚ Pausa</button><input type="range" min="0" max="100" value="0" step="1" data-no-f aria-label="Porcentaje escrutado del ensayo" style="flex:1;min-width:160px"><button class="chipbtn" data-no-salir>Salir del ensayo</button></div>`);
+      <div class="controls"><button class="btn boton-claro" data-no-play>❚❚ Pausa</button><input type="range" min="0" max="100" value="0" step="1" data-no-f aria-label="Porcentaje escrutado del ensayo" style="flex:1;min-width:160px"><button class="chipbtn" data-no-salir>Salir del ensayo</button></div>`);
     const paso = () => { if (!document.body.contains(sec)){ parar(); return; } nocheEnsayo.f = Math.min(1, nocheEnsayo.f + 0.02); const i = sec.querySelector("[data-no-f]"); if (i) i.value = Math.round(nocheEnsayo.f*100); pintar(simular(nocheEnsayo.D, nocheEnsayo.f)); if (nocheEnsayo.f >= 1){ clearInterval(nocheEnsayo.reloj); nocheEnsayo.reloj = null; const b = sec.querySelector("[data-no-play]"); if (b) b.textContent = "▶ Repetir"; } };
     nocheEnsayo.reloj = setInterval(paso, 900); paso();
   }

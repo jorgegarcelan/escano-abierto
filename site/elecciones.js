@@ -442,7 +442,7 @@ function home(el){
       <div class="elh-txt"><div class="eyebrow">Elecciones generales · domingo 29 de noviembre de 2026</div>
         <span class="elh-fase">${esc(F.etq)}</span>
         <h2>${esc(F.h)}</h2><p>${esc(F.p)}</p>
-        <div class="elh-ctas">${F.cta.map(([id,t],k)=>`<a class="btn${k?"":" primary"}" href="/elecciones/${id}/">${esc(t)} →</a>`).join("")}<button class="btn" type="button" data-elh-prov>Tu provincia ↓</button></div></div>
+        <div class="elh-ctas">${F.cta.map(([id,t],k)=>`<a class="btn ${k?"boton-claro":"primary boton"}" href="/elecciones/${id}/">${esc(t)} →</a>`).join("")}<button class="btn boton-claro" type="button" data-elh-prov>Tu provincia ↓</button></div></div>
       <div class="elh-cuenta">
         <div class="n">${faltan > 0 ? `<b>${faltan}</b><span>${faltan === 1 ? "día: mañana se vota" : "días para votar"}</span>` : faltan === 0 ? `<b>HOY</b><span>se vota de 9.00 a 20.00</span>` : `<b>29N</b><span>elecciones generales</span>`}</div>
         ${ahora ? `<div class="f"><small>Ahora</small><b>${esc(ahora.hito)}</b>${ahora.hasta?`<span>hasta el ${esc(fechaLarga(ahora.hasta))}</span>`:""}</div>` : ""}
@@ -560,7 +560,7 @@ function bloque350(){
       <g class="mapa">${Object.values(GEO.provincias).map(p=>`<path class="prov" d="${p.d}"><title>${esc(p.circ)}</title></path>`).join("")}<path class="can" d="${GEO.canarias}"/></g>
       <g class="puntos"></g></svg>
     <div class="cifra"><b>350</b><span class="lbl">escaños, repartidos entre 52 circunscripciones</span></div>
-    <div class="ctl"><button class="btn" data-350="hemi">Al hemiciclo →</button></div></div>
+    <div class="ctl"><button class="btn boton-claro" data-350="hemi">Al hemiciclo →</button></div></div>
     <div class="el-leyenda">${grupos.map(g=>`<span><i style="background:${G[g].color}"></i>${esc(G[g].nombre)}</span>`).join("")}</div>`;
 }
 function montar350(caja){
@@ -644,7 +644,7 @@ function simulador350(sec){
     <div class="chart">
       <div class="el-regla-ctl"><div><label>Mínimo por provincia</label><div class="el-seg" role="group" aria-label="Mínimo de escaños por provincia">${[1,2,3,4].map(v=>`<button data-min="${v}" aria-pressed="${v===regla.minimo}">${v}</button>`).join("")}</div></div>
         <div><label for="el-total">Diputados en el Congreso: <b id="el-total-v">${regla.total}</b></label><input type="range" id="el-total" min="300" max="400" step="1" value="${regla.total}"><small>La Constitución permite entre 300 y 400</small></div>
-        <button class="btn" data-regla-ley>Volver a la ley actual</button></div>
+        <button class="btn boton-claro" data-regla-ley>Volver a la ley actual</button></div>
       <div class="el-regla-kpis"></div>
       <div class="el-regla-filas"></div>
       <div class="el-leyenda"><span><i style="background:var(--line-strong);border-radius:2px"></i>Escaño que ya tiene hoy</span><span><i style="background:var(--si);border-radius:2px"></i>Ganaría</span><span><i style="background:transparent;border:1.5px solid var(--no);box-sizing:border-box;border-radius:2px"></i>Perdería</span></div>
@@ -739,7 +739,7 @@ function montarCaducan(raiz){
     xs.sort(k);
     caja.innerHTML = `<p class="nota" style="margin:4px 0 0">${xs.length === C.total ? `Las ${miles(xs.length)} leyes.` : `${miles(xs.length)} de ${miles(C.total)} leyes.`}</p>
       <ul class="cad-filas">${xs.slice(0, selCad.n).map(filaCaducada).join("") || `<li class="nota">Ninguna ley coincide.</li>`}</ul>
-      ${xs.length > selCad.n ? `<button class="btn" data-cad-mas>Ver ${Math.min(30, xs.length - selCad.n)} más</button>` : ""}`;
+      ${xs.length > selCad.n ? `<button class="btn boton-claro" data-cad-mas>Ver ${Math.min(30, xs.length - selCad.n)} más</button>` : ""}`;
   };
   let t0 = null;
   raiz.addEventListener("input", e=>{ if (e.target.matches('[data-cad="q"]')){ selCad.q = e.target.value; selCad.n = 30; clearTimeout(t0); t0 = setTimeout(pintar, 200); } });

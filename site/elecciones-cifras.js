@@ -116,7 +116,7 @@ function calendario(caja, D, votos, B){
       <div><b data-c="0">0</b><span>votaciones en el Pleno</span></div><div><b data-c="1">0</b><span>leyes publicadas</span></div>
       <div><b data-c="2">0</b><span>reales decretos-leyes</span></div><div><b data-c="3">0</b><span>preguntas registradas</span></div>
       <div><b>${miles(B.plenos)}</b><span>días de Pleno con votaciones</span></div><div class="alerta"><b>${miles(B.sin_respuesta)}</b><span>preguntas sin respuesta</span></div></div>
-    <div class="cf-ctl"><button class="btn primary" data-cf-play>▶ Reproducir la legislatura</button>
+    <div class="cf-ctl"><button class="btn primary boton" data-cf-play>▶ Reproducir la legislatura</button>
       <div class="cf-seg" role="group" aria-label="Qué se pinta">${MODOS.map(([v,t])=>`<button data-cf-modo="${v}" aria-pressed="${v===modo}">${t}</button>`).join("")}</div>
       <span class="cf-fecha"></span></div>
     <svg class="cf-cal" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cada día de la legislatura">

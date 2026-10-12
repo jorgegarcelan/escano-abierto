@@ -289,7 +289,7 @@ function guillotina(caja, L, ficha){
   const caen = Array(ncol).fill(0); L.forEach(l=>{ const p = lugar(l, tDis, tDis); if (p?.cae) caen[p.col]++; });
   const cab = 40, filasArriba = Math.ceil(maxArriba / nc), yCad = cab + filasArriba*d + 34, H = yCad + 22 + Math.ceil(Math.max(...caen) / nc)*d + 8;
   const xCol = c => c*(colW+gap);
-  caja.innerHTML = `<div class="vj-ctl"><button class="btn primary" data-vj-play>▶ Reproducir la legislatura</button><input type="range" min="${t0}" max="${tDis}" step="1" value="${tDis}" aria-label="Fecha"><span class="vj-fecha"></span></div>
+  caja.innerHTML = `<div class="vj-ctl"><button class="btn primary boton" data-vj-play>▶ Reproducir la legislatura</button><input type="range" min="${t0}" max="${tDis}" step="1" value="${tDis}" aria-label="Fecha"><span class="vj-fecha"></span></div>
     <div class="vj-guillo"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cada ley de la legislatura, según la etapa a la que había llegado en cada fecha">
       <rect class="cad-band" x="0" y="${yCad - 6}" width="${W}" height="${H - yCad + 6}" rx="8" opacity="0"/>
       <text class="cad-t" x="6" y="${yCad + 8}" opacity="0">CADUCAN CON LA DISOLUCIÓN</text>
@@ -370,7 +370,7 @@ function crearFicha(ctx){
       <div class="s">${esc(quien(l))} · ${esc(l.exp)}${l.comision ? ` · ${esc(l.comision)}` : ""}</div>
       <ol>${pasos}${final ? `<li class="fin" style="--c:${D[2]}">${final}</li>` : ""}</ol>
       ${l.ampl ? `<div class="s" style="margin-top:8px">Plazo de enmiendas ampliado ${l.ampl} ${l.ampl === 1 ? "vez" : "veces"}.</div>` : ""}
-      <div class="ir"><button class="btn" data-ini="${esc(l.exp)}">Ver su tramitación →</button>${fija ? "" : `<small style="color:var(--muted)">Pulsa para ver su tramitación</small>`}</div>`;
+      <div class="ir"><button class="btn boton-claro" data-ini="${esc(l.exp)}">Ver su tramitación →</button>${fija ? "" : `<small style="color:var(--muted)">Pulsa para ver su tramitación</small>`}</div>`;
   }
   function colocar(ancla){
     const r = ancla.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight, vw = document.documentElement.clientWidth;
