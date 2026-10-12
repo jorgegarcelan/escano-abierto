@@ -21,7 +21,9 @@ html:root[data-marca="sol"]{
   --sans:var(--font-texto); --mono:var(--font-mono);
   --serif:var(--font-texto);              /* citas y texto corrido: Sol nunca usa la serif ahí */
   --display:"Sol Serif",var(--font-titular);
-  --led:"Sol Serif",var(--font-titular);  /* cifras grandes: --font-cifra de Sol */
+  /* Las cifras, en Geist Mono como en su web (.t-dato): la Georgia del sistema solo tiene números de estilo antiguo,
+     de alturas desiguales. Su titular de pago sí los tendría; mientras no se sirva, las cifras no van en serif. */
+  --led:var(--font-mono);
   --r-card:var(--r-20); --r-card-lg:var(--r-28); --r-pill:var(--r-pildora); --r-ctl:var(--r-12); --r-chip:6px;
   --ancho:1200px;                         /* la retícula de Sol (su --ancho, que esta hoja pisa con el mismo valor) */
   --sombra:none;
@@ -33,6 +35,9 @@ html:root[data-marca="sol"]{
   --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 0h3v3H4zM7 3h3v3H7zM10 6h3v3h-3zM7 9h3v3H7zM4 12h3v3H4z'/%3E%3C/svg%3E");
 }
 html[data-marca="sol"] body{font-size:16px;line-height:1.55;padding-bottom:var(--e-8);overflow-x:clip}
+/* Geist Mono llega en 400 y 500 (los pesos de Sol): las cifras que piden 800–900 (pensadas para Doto) se quedan en 500
+   en vez de engordarse a la fuerza. */
+html[data-marca="sol"]{font-synthesis-weight:none}
 html[data-marca="sol"] .wrap{position:relative}
 
 /* ---------- tipografía (sus .t-titular, .t-texto-l, .t-etiqueta y .t-dato) ---------- */
@@ -42,9 +47,8 @@ html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:cla
 html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.08em;color:var(--rojo)}
 html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
 html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
-html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-family:var(--led);font-weight:400;letter-spacing:-.02em}
-/* Las cifras pequeñas de listas y tablas, en mono (.t-dato de Sol): la Georgia del sistema solo tiene números de estilo
-   antiguo, de alturas desiguales, y en una columna de datos no se alinean. */
+/* Las cifras grandes y las de listas y tablas, en mono (.t-dato de Sol). */
+html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d,.repro-res b,.comp-pct,.qld-num,.geo-cifras b,.geo-caja .num){font-family:var(--led);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
 html[data-marca="sol"] :is(.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--font-mono);font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:0}
 html[data-marca="sol"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.42em 0 color-mix(in srgb,var(--amarillo) 45%,transparent);padding:0 .1em}
 
@@ -61,7 +65,9 @@ html[data-marca="sol"] :is(.sec-h,.face-foot,.hero-cta,.sol-manifiesto,.elh-link
   -webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat}
 
 /* ---------- cabecera: la suya (80 px, sin bordes; enlaces .boton-fantasma y la acción en .boton-claro) ---------- */
-html[data-marca="sol"] .topbar{background:color-mix(in srgb,var(--blanco) 92%,transparent);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:0}
+/* Fija arriba y de lado a lado de la ventana (el contenido, en la retícula): una caja del ancho de la retícula flotaría
+   sobre el pie amarillo al bajar. */
+html[data-marca="sol"] .topbar{margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);background:color-mix(in srgb,var(--blanco) 92%,transparent);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:0}
 html[data-marca="sol"] .topbar-in{min-height:80px;gap:var(--e-8)}
 html[data-marca="sol"] .brand{margin-right:auto;color:var(--tinta)}
 html[data-marca="sol"] .brand .logo{height:28px;aspect-ratio:96/53.2;background:var(--rojo);-webkit-mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain;mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain}
@@ -224,12 +230,9 @@ html[data-marca="sol"] .pie-acciones .boton-claro{box-shadow:var(--sombra-suave)
 html[data-marca="sol"] .pie-mapa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--e-24) var(--e-32);padding-top:var(--e-32);border-top:1px solid rgba(34,34,34,.18)}
 html[data-marca="sol"] .pie-mapa h3{margin:0 0 var(--e-12);font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
 html[data-marca="sol"] .pie-mapa ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--e-4)}
-html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-notas,.pie-legal) a{color:var(--tinta);text-decoration-line:underline;text-decoration-color:rgba(34,34,34,.35);text-decoration-thickness:from-font;text-underline-offset:.25em}
-html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-notas,.pie-legal) a:hover{text-decoration-color:currentColor}
+html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-legal) a{color:var(--tinta);text-decoration-line:underline;text-decoration-color:rgba(34,34,34,.35);text-decoration-thickness:from-font;text-underline-offset:.25em}
+html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-legal) a:hover{text-decoration-color:currentColor}
 html[data-marca="sol"] .pie-mapa a{display:inline-flex;align-items:center;min-height:32px}
-html[data-marca="sol"] .pie-notas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--e-24) var(--e-32);margin:0;padding:0;border:0;font-size:13.5px;line-height:1.6;color:var(--tinta)}
-html[data-marca="sol"] .pie-notas p{margin:0;max-width:52ch}
-html[data-marca="sol"] footer.pie .pie-notas b{display:block;margin-bottom:6px;font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta)}
 html[data-marca="sol"] .pie-legal{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--e-8) var(--e-32);padding-top:var(--e-24);border-top:1px solid rgba(34,34,34,.18);font-size:15px}
 html[data-marca="sol"] .pie-marca{display:inline-flex;align-items:center;flex-wrap:wrap;gap:var(--e-8) var(--e-24)}
 html[data-marca="sol"] footer.pie .pie-logo{display:inline-flex;align-items:center;gap:var(--e-12);color:var(--tinta);text-decoration:none}
@@ -261,11 +264,11 @@ html[data-marca="sol"] :is(.mm-item:not(.mm-sub).activa,.mm-sub.activa b)::after
   html[data-marca="sol"] .sol-portada{min-height:600px}
   html[data-marca="sol"] .pie-sol{gap:var(--e-32)}
   html[data-marca="sol"] .pie-acciones :is(.boton,.boton-claro){width:100%}
-  html[data-marca="sol"] :is(.pie-mapa,.pie-notas){grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="sol"] .pie-mapa{grid-template-columns:repeat(2,minmax(0,1fr))}
   html[data-marca="sol"] .pie-legal{grid-template-columns:minmax(0,1fr)}
   html[data-marca="sol"] .pie-legal ul{justify-content:flex-start}
   html[data-marca="sol"] .sec{padding-top:var(--e-64)}
 }
 @media (max-width:480px){
-  html[data-marca="sol"] :is(.pie-mapa,.pie-notas){grid-template-columns:1fr}
+  html[data-marca="sol"] .pie-mapa{grid-template-columns:1fr}
 }
