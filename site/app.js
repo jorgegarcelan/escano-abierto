@@ -1273,14 +1273,24 @@ async function pintarPreguntasFicha(d){
   cont.innerHTML = `<div class="sec-h"><h2>Sus preguntas al Gobierno</h2><p>${c?`${fmt(c[0])} ${glosa("pregunta-escrita", c[0]===1?"pregunta escrita":"preguntas escritas")}, ${fmt(c[1])} sin contestar${c[2]?` (${fmt(c[2])} desde hace más de ${P.dias} días)`:""}.`:""} <button class="linklike" data-go="preguntas">Todas las preguntas</button></p></div>
     <ul class="preg-list">${lista.slice(0,12).map(p=>filaPregunta(p)).join("")}</ul>${lista.length>12?`<details><summary>Ver ${lista.length-12} más</summary><ul class="preg-list">${lista.slice(12).map(p=>filaPregunta(p)).join("")}</ul></details>`:""}`;
 }
+// La declaración de intereses, en cuatro cajas: actividades (a lo ancho, una fila por actividad con su periodo en
+// mono), aportaciones, regalos y observaciones. Lo que viene vacío o como «Ninguno» se dice una vez, sin repetirlo.
 function interesesFicha(d){
   const x = EXTRA?.[d.n]?.intereses; if (!x) return "";
-  const act = x.actividades||[], apo = x.aportaciones||[], reg = (x.regalos||[]).filter(r=>r[0]||r[1]), obs = x.observaciones||[];
-  return `<section class="sec"><div class="sec-h"><h2>Declaración de intereses</h2><p>Lo que declaró al Congreso (${glosa("declaracion-intereses","qué es")}), última actualización ${x.registro?fechaCorta(x.registro):"sin fecha"}. Se reproduce tal cual.</p></div>
-    ${act.length?`<h3 class="h-min">Actividades declaradas</h3><div class="dtable-wrap"><table class="dt"><thead><tr><th>Periodo</th><th>Dónde</th><th>Qué</th><th>Sector</th></tr></thead><tbody>${act.map(([per,emp,sec,desc])=>`<tr><td class="num" style="white-space:nowrap">${esc(per)||"–"}</td><td>${esc(emp)||"–"}</td><td>${esc(desc)||"–"}</td><td>${esc(sec)||"–"}</td></tr>`).join("")}</tbody></table></div>`:""}
-    ${apo.length?`<h3 class="h-min">Aportaciones a fundaciones, asociaciones o partidos</h3><ul class="decl">${apo.map(([dest,desc])=>`<li><b>${esc(dest)||"Sin especificar"}</b>${desc?` · ${esc(desc)}`:""}</li>`).join("")}</ul>`:""}
-    ${reg.length?`<h3 class="h-min">Regalos, donaciones o invitaciones</h3><ul class="decl">${reg.map(([ben,desc])=>`<li>${ben?`<b>${esc(ben)}</b> · `:""}${esc(desc)}</li>`).join("")}</ul>`:""}
-    ${obs.length?`<h3 class="h-min">Observaciones</h3><ul class="decl">${obs.map(o=>`<li>${esc(o)}</li>`).join("")}</ul>`:""}
+  const nada = t => !t || /^(ningun[oa]s?|no|nada|-+|n\/a)\.?$/i.test(String(t).trim());
+  const act = (x.actividades||[]).filter(r=>!(nada(r[1]) && nada(r[3])));
+  const apo = (x.aportaciones||[]).filter(r=>!(nada(r[0]) && nada(r[1])));
+  const reg = (x.regalos||[]).filter(r=>!(nada(r[0]) && nada(r[1])));
+  const obs = (x.observaciones||[]).filter(o=>!nada(o));
+  const vacio = t => `<p class="int-nada">${t}</p>`;
+  const caja = (k, t, cuerpo, cls="") => `<article class="int-caja ${cls}"><span class="int-k">${k}</span><h3>${t}</h3>${cuerpo}</article>`;
+  return `<section class="sec intereses"><div class="sec-h"><h2>Declaración de intereses</h2><p>Lo que declaró al Congreso (${glosa("declaracion-intereses","qué es")})${x.registro?`, actualizada el ${fechaCorta(x.registro)}`:""}. Se reproduce tal cual.</p></div>
+    <div class="int-grid">
+      ${caja("01 · Actividades", "Lo que hace o ha hecho", act.length ? `<ul class="int-act">${act.map(([per,emp,sec,desc,tipo])=>`<li><span class="int-per">${esc(per)||"Sin fecha"}</span><span class="int-que"><b>${esc(emp)||"Sin especificar"}</b>${desc?`<span>${esc(desc)}</span>`:""}</span>${!nada(sec)||!nada(tipo)?`<span class="int-sec">${[sec,tipo].filter(v=>!nada(v)&&v!=="Otro").map(v=>`<span class="tag">${esc(v)}</span>`).join("")}</span>`:""}</li>`).join("")}</ul>` : vacio("No declara actividades."), "int-ancha")}
+      ${caja("02 · Aportaciones", "A fundaciones, asociaciones o partidos", apo.length ? `<ul class="int-l">${apo.map(([dest,desc])=>`<li><b>${esc(nada(dest)?"Sin especificar":dest)}</b>${!nada(desc)?`<span>${esc(desc)}</span>`:""}</li>`).join("")}</ul>` : vacio("No declara aportaciones."))}
+      ${caja("03 · Regalos", "Regalos, donaciones o invitaciones", reg.length ? `<ul class="int-l">${reg.map(([ben,desc])=>`<li>${!nada(ben)?`<b>${esc(ben)}</b>`:""}${!nada(desc)?`<span>${esc(desc)}</span>`:""}</li>`).join("")}</ul>` : vacio("No declara regalos, donaciones ni invitaciones."))}
+      ${caja("04 · Observaciones", "Observaciones", obs.length ? obs.map(o=>`<p class="int-obs">${esc(o)}</p>`).join("") : vacio("Sin observaciones."))}
+    </div>
   </section>`;
 }
 

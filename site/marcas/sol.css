@@ -979,3 +979,20 @@ html[data-marca="sol"] .gr-mini circle.off{fill:#e6e6e6}
 html[data-marca="sol"] .gr-esc-n{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 6px}
 html[data-marca="sol"] .gr-esc-n small{margin-left:var(--e-8);font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
 
+
+/* ---------- Declaración de intereses ---------- */
+/* Cuatro cajas con su anillo: el número de cada apartado en etiqueta roja y el título en serif; las actividades a lo
+   ancho, una por fila (el periodo en mono, dónde y qué, el sector en píldora); lo que no se declara, en gris */
+html[data-marca="sol"] .int-grid{gap:var(--e-16)}
+html[data-marca="sol"] .int-caja{gap:var(--e-12);padding:var(--e-24);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea)}
+html[data-marca="sol"] .int-k{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--rojo)}
+html[data-marca="sol"] .int-caja h3{margin-bottom:var(--e-4);font:400 clamp(22px,2.2vw,26px)/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .int-act li{grid-template-columns:120px minmax(0,1fr) auto;gap:var(--e-16);padding:var(--e-16) 0;border-top-color:var(--linea)}
+html[data-marca="sol"] .int-per{font:500 13px var(--font-mono);letter-spacing:-.01em;color:var(--tinta)}
+html[data-marca="sol"] .int-que b{font-weight:500;font-size:15.5px}
+html[data-marca="sol"] .int-que span,html[data-marca="sol"] .int-l li span{font-size:14.5px;line-height:1.5;color:var(--tinta-2)}
+html[data-marca="sol"] .int-l li{padding:var(--e-12) 0;border-top-color:var(--linea)}
+html[data-marca="sol"] .int-l li b{font-weight:500}
+html[data-marca="sol"] .int-obs{font-size:15px;line-height:1.6;color:var(--tinta);padding-left:var(--e-16);box-shadow:inset 2px 0 0 var(--linea)}
+html[data-marca="sol"] .int-nada{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--tinta-3)}
+html[data-marca="sol"] .int-nada::before{content:"";width:6px;height:6px;background:var(--tinta-3)}
