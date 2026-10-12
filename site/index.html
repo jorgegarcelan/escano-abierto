@@ -86,7 +86,7 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
   </div>
   <nav class="menu-movil" id="menu-movil" aria-label="Secciones" hidden></nav>
 
-  <div class="periodo-bar"><label for="periodo">Periodo</label><select id="periodo" aria-label="Periodo que se muestra"></select><span id="periodo-info"></span></div>
+  <div class="periodo-bar" role="group" aria-labelledby="periodo-k"><span class="pb-k" id="periodo-k">Periodo</span><div class="pb-seg" id="periodo-seg"></div><div class="pb-meses" id="periodo-meses"></div><span id="periodo-info" aria-live="polite"></span></div>
   <main>
     <section class="view" id="inicio" role="tabpanel" aria-labelledby="tab-inicio"></section>
     <section class="view" id="elecciones" role="tabpanel" aria-labelledby="tab-elecciones" hidden></section>

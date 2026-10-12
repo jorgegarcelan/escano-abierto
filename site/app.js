@@ -67,15 +67,23 @@ async function arrancar(clave){
   p[2].forEach(m=>{ const c=CARGADOS[m]; sesiones.push(...c.sesiones); votaciones.push(...c.votaciones); ivs.push(...c.intervenciones); });
   const DATA = {...INDICE, meta:{...INDICE.meta, periodo: textoPeriodo(sesiones.map(s=>s.fecha).sort())}, sesiones, votaciones};
   try{ localStorage.setItem("periodo", p[0]); }catch(e){}
-  const sel = document.getElementById("periodo");
-  sel.innerHTML = lista.map(([k,l])=>`<option value="${k}"${k===p[0]?" selected":""}>${l}</option>`).join("");
-  document.getElementById("periodo-info").textContent = `${DATA.meta.periodo} · ${sesiones.length} sesiones · ${votaciones.length} votaciones`;
+  // El periodo: dos atajos (los tres últimos meses y toda la legislatura) y una barra por mes, del alto de sus
+  // votaciones; se pulsa un mes para ver solo ese. Lo que se está viendo queda resaltado.
+  const ms = INDICE.meses, maxV = Math.max(1, ...ms.map(m=>m.votaciones)), elegidos = new Set(p[2]);
+  document.getElementById("periodo-seg").innerHTML = [["reciente","Últimos 3 meses"],["todo","Toda la legislatura"]].filter(([k])=>lista.some(x=>x[0]===k))
+    .map(([k,l])=>`<button type="button" data-periodo="${k}" aria-pressed="${k===p[0]}">${l}</button>`).join("");
+  const anioIni = {}; ms.forEach((m,i)=>{ const y = m.mes.slice(0,4); if (!(y in anioIni)) anioIni[y] = i; });
+  const cuenta = (n, uno, varios) => `${n} ${n===1?uno:varios}`;
+  document.getElementById("periodo-meses").innerHTML = `<div class="pb-barras">${ms.map(m=>{ const txt = `${nombreMes(m.mes)}: ${cuenta(m.sesiones,"sesión","sesiones")} y ${cuenta(m.votaciones,"votación","votaciones")}`;
+      return `<button type="button" data-periodo="${m.mes}"${elegidos.has(m.mes)?' class="sel"':""} aria-pressed="${p[0]===m.mes}" aria-label="${txt}" data-tip="${txt}"><i style="--h:${Math.max(10, Math.round(m.votaciones/maxV*100))}%"></i></button>`; }).join("")}</div>`
+    + `<div class="pb-anios" aria-hidden="true">${Object.entries(anioIni).map(([y,i])=>`<span style="left:${(i/ms.length*100).toFixed(2)}%">${y}</span>`).join("")}</div>`;
+  document.getElementById("periodo-info").innerHTML = `${DATA.meta.periodo} · <b>${sesiones.length}</b> ${sesiones.length===1?"sesión":"sesiones"} · <b>${votaciones.length}</b> ${votaciones.length===1?"votación":"votaciones"}`;
   iniciar(DATA, ivs);
 }
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
   INDICE = j;
   let clave = "reciente"; try{ clave = localStorage.getItem("periodo") || clave; }catch(e){}
-  document.getElementById("periodo").addEventListener("change", e => arrancar(e.target.value));
+  document.querySelector(".periodo-bar").addEventListener("click", e => { const b = e.target.closest("[data-periodo]"); if (b && b.getAttribute("aria-pressed") !== "true") arrancar(b.dataset.periodo); });
   return arrancar(clave);
 }).catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudieron cargar los datos. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
 

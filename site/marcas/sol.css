@@ -46,7 +46,7 @@ html[data-marca="sol"] :is(h1,h2){font-weight:400;letter-spacing:-.02em}
 html[data-marca="sol"] h3{font-family:var(--font-texto);font-weight:500;letter-spacing:-.01em}
 html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:clamp(32px,4vw,52px);line-height:1.05}
 html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.08em;color:var(--rojo)}
-html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
+html[data-marca="sol"] :is(th,.organ,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
 /* La línea de cada votación (fecha · tipo · quién · expediente): Geist 14 en tinta-3, no toda en mono */
 html[data-marca="sol"] :is(.vote-h .sub,.hv-sub){font:400 14px/1.45 var(--font-texto);letter-spacing:0;color:var(--tinta-3)}
 html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
@@ -95,8 +95,28 @@ html[data-marca="sol"] .btn-menu{display:none}
 @media (max-width:1200px){ html[data-marca="sol"] .btn-menu{display:inline-flex} }
 html[data-marca="sol"] .btn-menu .icono{transition:transform 420ms var(--curva-salida)}
 html[data-marca="sol"] .btn-menu[aria-expanded="true"] .icono{transform:rotate(45deg)}
-html[data-marca="sol"] .periodo-bar{padding-top:var(--e-24)}
-html[data-marca="sol"] .periodo-bar select{min-height:36px;border-radius:var(--r-pildora);padding:0 12px;border-color:var(--tinta-3)}
+/* El periodo: una barra con su anillo; los atajos en un control segmentado (el elegido en blanco), los meses como
+   barras del alto de sus votaciones (los que se ven, en tinta) y el resumen con las cifras en mono */
+html[data-marca="sol"] .periodo-bar{gap:var(--e-12) var(--e-24);margin-top:var(--e-16);padding:var(--e-12) var(--e-12) var(--e-12) var(--e-20);border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);font-size:14px;color:var(--tinta-2)}
+html[data-marca="sol"] .pb-k{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
+html[data-marca="sol"] .pb-seg{padding:4px;background:var(--superficie)}
+html[data-marca="sol"] .pb-seg button{min-height:36px;padding:0 var(--e-16);font:500 14px var(--font-texto);color:var(--tinta-2);
+  transition:background var(--t-medio) var(--curva-salida),color var(--t-rapido) var(--curva-salida),box-shadow var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .pb-seg button:hover{color:var(--tinta)}
+html[data-marca="sol"] .pb-seg button[aria-pressed="true"]{background:var(--blanco);color:var(--tinta);box-shadow:var(--sombra-suave)}
+html[data-marca="sol"] .pb-barras{gap:3px;height:32px}
+html[data-marca="sol"] .pb-barras i{border-radius:0;background:#dcdcdc;transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .pb-barras button:hover i{background:var(--tinta-3)}
+html[data-marca="sol"] .pb-barras button.sel i{background:var(--tinta)}
+html[data-marca="sol"] .pb-barras button[aria-pressed="true"] i{background:var(--rojo)}
+html[data-marca="sol"] .pb-anios{font:500 10.5px/12px var(--font-mono);letter-spacing:.04em;color:var(--tinta-3)}
+html[data-marca="sol"] #periodo-info{margin-left:auto;padding-right:var(--e-8)}
+html[data-marca="sol"] #periodo-info b{font:500 15px var(--font-mono);color:var(--tinta)}
+@media (max-width:860px){
+  html[data-marca="sol"] .periodo-bar{padding:var(--e-16)}
+  html[data-marca="sol"] .pb-meses{flex-basis:100%;max-width:none;order:3}
+  html[data-marca="sol"] #periodo-info{flex-basis:100%;margin-left:0;order:4}
+}
 
 /* En Inicio la cabecera vive dentro del hero, en blanco, y se va con él al bajar (como en su portada). */
 html[data-marca="sol"].en-portada .topbar{position:absolute;top:var(--e-8);left:0;right:0;margin:0;padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--blanco);--foco:var(--blanco)}

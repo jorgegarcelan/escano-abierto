@@ -100,6 +100,19 @@ html.menu-abierto{overflow:hidden}
 main{padding-top:20px}
 .periodo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding-top:14px;font-size:13px;color:var(--muted)}
 .periodo-bar label{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
+.pb-k{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px}
+.pb-seg{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-pill);background:var(--sunk)}
+.pb-seg button{appearance:none;border:0;background:none;font:500 13px var(--sans);color:var(--muted);padding:5px 12px;border-radius:var(--r-pill);cursor:pointer;white-space:nowrap}
+.pb-seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .15)}
+.pb-meses{display:grid;gap:3px;flex:1 1 300px;max-width:480px}
+.pb-barras{display:flex;align-items:flex-end;gap:2px;height:28px}
+.pb-barras button{flex:1;height:100%;display:flex;align-items:flex-end;padding:0;border:0;background:none;cursor:pointer;min-width:0}
+.pb-barras i{display:block;width:100%;height:var(--h);background:var(--line-strong);border-radius:1px}
+.pb-barras button:hover i{background:var(--muted)}
+.pb-barras button.sel i{background:var(--ink)}
+.pb-anios{position:relative;height:12px;font:500 10px/12px var(--mono);color:var(--muted)}
+.pb-anios span{position:absolute;top:0}
+#periodo-info b{color:var(--ink);font-weight:600}
 .periodo-bar select{font:500 13.5px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:4px 8px}
 section.view{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
 section.view[hidden]{display:none}
