@@ -70,8 +70,10 @@ async function arrancar(clave){
   // El periodo: dos atajos (los tres últimos meses y toda la legislatura) y una barra por mes, del alto de sus
   // votaciones; se pulsa un mes para ver solo ese. Lo que se está viendo queda resaltado.
   const ms = INDICE.meses, maxV = Math.max(1, ...ms.map(m=>m.votaciones)), elegidos = new Set(p[2]);
-  document.getElementById("periodo-seg").innerHTML = [["reciente","Últimos 3 meses"],["todo","Toda la legislatura"]].filter(([k])=>lista.some(x=>x[0]===k))
-    .map(([k,l])=>`<button type="button" data-periodo="${k}" aria-pressed="${k===p[0]}">${l}</button>`).join("");
+  // Si se está viendo un mes, aparece como tercera opción (así se sabe cuál es aunque la barra esté compacta).
+  const atajos = [["reciente","Últimos 3 meses"],["todo","Toda la legislatura"]].filter(([k])=>lista.some(x=>x[0]===k));
+  if (/^\d{4}-\d{2}$/.test(p[0])) atajos.push([p[0], nombreMes(p[0])]);
+  document.getElementById("periodo-seg").innerHTML = atajos.map(([k,l])=>`<button type="button" data-periodo="${k}" aria-pressed="${k===p[0]}">${l}</button>`).join("");
   const anioIni = {}; ms.forEach((m,i)=>{ const y = m.mes.slice(0,4); if (!(y in anioIni)) anioIni[y] = i; });
   const cuenta = (n, uno, varios) => `${n} ${n===1?uno:varios}`;
   document.getElementById("periodo-meses").innerHTML = `<div class="pb-barras">${ms.map(m=>{ const txt = `${nombreMes(m.mes)}: ${cuenta(m.sesiones,"sesión","sesiones")} y ${cuenta(m.votaciones,"votación","votaciones")}`;
@@ -83,6 +85,11 @@ async function arrancar(clave){
 fetch("datos/indice.json", {cache: "no-store"}).then(r => r.json()).then(j => {
   INDICE = j;
   let clave = "reciente"; try{ clave = localStorage.getItem("periodo") || clave; }catch(e){}
+  // El periodo se queda fijo bajo la barra al bajar: cuando su ancla sale por arriba, pasa a una franja compacta.
+  const pb = document.querySelector(".periodo-bar"), ancla = document.getElementById("periodo-ancla");
+  const altoBarra = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--alto-barra")) || 0;
+  const pegar = () => pb.classList.toggle("pegada", !pb.hidden && ancla.getBoundingClientRect().top < altoBarra());
+  addEventListener("scroll", pegar, {passive: true}); addEventListener("resize", pegar);
   document.querySelector(".periodo-bar").addEventListener("click", e => { const b = e.target.closest("[data-periodo]"); if (b && b.getAttribute("aria-pressed") !== "true") arrancar(b.dataset.periodo); });
   return arrancar(clave);
 }).catch(() => { document.querySelector("main").innerHTML = '<p class="nota">No se pudieron cargar los datos. Si abres la web en local, sírvela con <code>python -m http.server</code> desde la carpeta site/.</p>'; });
