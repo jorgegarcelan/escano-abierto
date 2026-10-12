@@ -106,20 +106,17 @@ main{padding-top:20px}
 #periodo-ancla{height:0}
 .periodo-bar{position:sticky;top:var(--alto-barra);z-index:9}
 .periodo-bar.pegada{background:var(--bg);padding-block:6px;border-bottom:1px solid var(--line)}
-.periodo-bar.pegada .pb-anios{display:none}
-.periodo-bar.pegada .pb-barras{height:16px}
 @media (max-width:720px){ .periodo-bar.pegada :is(.pb-k,.pb-meses,#periodo-info){display:none} .periodo-bar.pegada .pb-seg{max-width:100%;overflow-x:auto;scrollbar-width:none} }
 .pb-seg{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-pill);background:var(--sunk)}
 .pb-seg button{appearance:none;border:0;background:none;font:500 13px var(--sans);color:var(--muted);padding:5px 12px;border-radius:var(--r-pill);cursor:pointer;white-space:nowrap}
 .pb-seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .15)}
 .pb-meses{display:grid;gap:3px;flex:1 1 300px;max-width:480px}
-.pb-barras{display:flex;align-items:flex-end;gap:2px;height:28px}
+.pb-barras{display:flex;align-items:flex-end;gap:2px;height:16px}
 .pb-barras button{flex:1;height:100%;display:flex;align-items:flex-end;padding:0;border:0;background:none;cursor:pointer;min-width:0}
 .pb-barras i{display:block;width:100%;height:var(--h);background:var(--line-strong);border-radius:1px}
 .pb-barras button:hover i{background:var(--muted)}
 .pb-barras button.sel i{background:var(--ink)}
-.pb-anios{position:relative;height:12px;font:500 10px/12px var(--mono);color:var(--muted)}
-.pb-anios span{position:absolute;top:0}
+.pb-anios{display:none}   /* compacta siempre: los años, en el aviso de cada barra */
 #periodo-info b{color:var(--ink);font-weight:600}
 .periodo-bar select{font:500 13.5px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-ctl);padding:4px 8px}
 section.view{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}

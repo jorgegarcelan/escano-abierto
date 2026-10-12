@@ -95,40 +95,37 @@ html[data-marca="sol"] .btn-menu{display:none}
 @media (max-width:1200px){ html[data-marca="sol"] .btn-menu{display:inline-flex} }
 html[data-marca="sol"] .btn-menu .icono{transition:transform 420ms var(--curva-salida)}
 html[data-marca="sol"] .btn-menu[aria-expanded="true"] .icono{transform:rotate(45deg)}
-/* El periodo: una barra con su anillo; los atajos en un control segmentado (el elegido en blanco), los meses como
-   barras del alto de sus votaciones (los que se ven, en tinta) y el resumen con las cifras en mono */
-html[data-marca="sol"] .periodo-bar{gap:var(--e-12) var(--e-24);margin-top:var(--e-16);padding:var(--e-12) var(--e-12) var(--e-12) var(--e-20);border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);font-size:14px;color:var(--tinta-2)}
+/* El periodo: siempre una franja compacta en píldora, con su anillo (los atajos en un control segmentado, los meses
+   como barras bajitas del alto de sus votaciones y el resumen con las cifras en mono). Al bajar se queda pegada bajo
+   la cabecera y flota, con la sombra y el desenfoque de la cabecera. */
+html:root[data-marca="sol"]{--alto-barra:80px}
+html:root[data-marca="sol"].en-portada{--alto-barra:0px}
+html[data-marca="sol"] .periodo-bar{top:calc(var(--alto-barra) + var(--e-8));gap:var(--e-8) var(--e-20);margin-top:var(--e-16);padding:var(--e-4) var(--e-4) var(--e-4) var(--e-16);
+  border:0;border-radius:var(--r-pildora);background:var(--blanco);box-shadow:0 0 0 1px var(--linea);font-size:13px;color:var(--tinta-2)}
+html[data-marca="sol"] .periodo-bar.pegada{background:color-mix(in srgb,var(--blanco) 94%,transparent);
+  -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);box-shadow:var(--sombra-flota)}
+@media (prefers-reduced-motion:no-preference){ html[data-marca="sol"] .periodo-bar.pegada{animation:sol-entra 240ms var(--curva-salida)} }
 html[data-marca="sol"] .pb-k{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
-html[data-marca="sol"] .pb-seg{padding:4px;background:var(--superficie)}
-html[data-marca="sol"] .pb-seg button{min-height:36px;padding:0 var(--e-16);font:500 14px var(--font-texto);color:var(--tinta-2);
+html[data-marca="sol"] .pb-seg{padding:3px;background:var(--superficie)}
+html[data-marca="sol"] .pb-seg button{min-height:32px;padding:0 var(--e-16);font:500 14px var(--font-texto);color:var(--tinta-2);
   transition:background var(--t-medio) var(--curva-salida),color var(--t-rapido) var(--curva-salida),box-shadow var(--t-medio) var(--curva-salida)}
 html[data-marca="sol"] .pb-seg button:hover{color:var(--tinta)}
 html[data-marca="sol"] .pb-seg button[aria-pressed="true"]{background:var(--blanco);color:var(--tinta);box-shadow:var(--sombra-suave)}
-html[data-marca="sol"] .pb-barras{gap:3px;height:32px}
+html[data-marca="sol"] .pb-barras{gap:3px;height:18px}
 html[data-marca="sol"] .pb-barras i{border-radius:0;background:#dcdcdc;transition:background var(--t-rapido) var(--curva-salida)}
 html[data-marca="sol"] .pb-barras button:hover i{background:var(--tinta-3)}
 html[data-marca="sol"] .pb-barras button.sel i{background:var(--tinta)}
 html[data-marca="sol"] .pb-barras button[aria-pressed="true"] i{background:var(--rojo)}
-html[data-marca="sol"] .pb-anios{font:500 10.5px/12px var(--font-mono);letter-spacing:.04em;color:var(--tinta-3)}
-html[data-marca="sol"] #periodo-info{margin-left:auto;padding-right:var(--e-8)}
-html[data-marca="sol"] #periodo-info b{font:500 15px var(--font-mono);color:var(--tinta)}
-/* Fijo al bajar: una franja flotante bajo la cabecera, con su sombra (como las superficies que flotan en Sol) */
-html:root[data-marca="sol"]{--alto-barra:80px}
-html:root[data-marca="sol"].en-portada{--alto-barra:0px}
-html[data-marca="sol"] .periodo-bar{top:calc(var(--alto-barra) + var(--e-8))}
-html[data-marca="sol"] .periodo-bar.pegada{padding:var(--e-4) var(--e-4) var(--e-4) var(--e-16);border:0;background:color-mix(in srgb,var(--blanco) 94%,transparent);
-  -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);box-shadow:var(--sombra-flota);border-radius:var(--r-pildora)}
-html[data-marca="sol"] .periodo-bar.pegada .pb-seg button{min-height:32px}
-html[data-marca="sol"] .periodo-bar.pegada .pb-barras{height:18px}
-html[data-marca="sol"] .periodo-bar.pegada #periodo-info{font-size:13px}
-html[data-marca="sol"] .periodo-bar.pegada #periodo-info b{font-size:13.5px}
-@media (prefers-reduced-motion:no-preference){ html[data-marca="sol"] .periodo-bar.pegada{animation:sol-entra 240ms var(--curva-salida)} }
-@media (max-width:720px){ html:root[data-marca="sol"]:not(.en-portada){--alto-barra:64px} html[data-marca="sol"] .periodo-bar.pegada{border-radius:var(--r-20)} }
+html[data-marca="sol"] #periodo-info{margin-left:auto;padding-right:var(--e-12)}
+html[data-marca="sol"] #periodo-info b{font:500 13.5px var(--font-mono);color:var(--tinta)}
+/* En el móvil: los atajos arriba y los meses debajo, en una caja de radio 20; el resumen fuera (lo dice el control) */
 @media (max-width:860px){
-  html[data-marca="sol"] .periodo-bar{padding:var(--e-16)}
-  html[data-marca="sol"] .pb-meses{flex-basis:100%;max-width:none;order:3}
-  html[data-marca="sol"] #periodo-info{flex-basis:100%;margin-left:0;order:4}
+  html[data-marca="sol"] .periodo-bar{padding:var(--e-8);border-radius:var(--r-20)}
+  html[data-marca="sol"] :is(.pb-k,#periodo-info){display:none}
+  html[data-marca="sol"] .pb-seg{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  html[data-marca="sol"] .pb-meses{flex-basis:100%;max-width:none;padding:0 var(--e-4) var(--e-4)}
 }
+@media (max-width:720px){ html:root[data-marca="sol"]:not(.en-portada){--alto-barra:64px} }
 
 /* En Inicio la cabecera vive dentro del hero, en blanco, y se va con él al bajar (como en su portada). */
 html[data-marca="sol"].en-portada .topbar{position:absolute;top:var(--e-8);left:0;right:0;margin:0;padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--blanco);--foco:var(--blanco)}
