@@ -9,6 +9,8 @@ licencia MIT (`LICENSE`), sin cambios. Comprobados contra el commit `ef14a9ece7e
 | `tokens.css` | `packages/design/sol/tokens.css` |
 | `botones.css` | `packages/design/sol/botones.css` |
 | `r.svg` | la R de `apps/web/components/sol/logo.tsx`, en tinta (la R nunca va roja sobre amarillo) |
+| `favicon.svg` | el símbolo de Escaño con los colores de su icono (`apps/web/app/icon.svg`: rojo, y blanco en modo oscuro) |
+| `apple-touch-icon.png` | el símbolo en blanco sobre `--atardecer` (lo dibuja Pillow con el degradado de `escano/paginas.py`) |
 
 Lo que se adapta, no se copia (sus componentes son de React; aquí se llevan sus medidas y su estructura):
 
@@ -20,6 +22,7 @@ Lo que se adapta, no se copia (sus componentes son de React; aquí se llevan sus
 | `../sol.css` e `index.html`, pie | `apps/web/components/sol/footer.css` y `footer.tsx` (`.pie-sol`) |
 | `../sol.css`, menú del móvil | la hoja amarilla de `header.css` (`.in-menu`) |
 | `../sol.js` | los chevrones pixelados y la flecha de enlace externo de `apps/web/components/sol/icon.tsx` |
+| `escano/paginas.py`, tarjetas Open Graph | su `og/template.html` y la portada: atardecer, amanecer, serif (Gelasio, con las medidas de Georgia) y cifras en Geist Mono |
 
 `../sol.css` traduce las variables de Escaño a las de Sol y compone la web; `../sol.js` cambia las flechas de texto de
 enlaces y botones (→, ↗, ↓, ←) por esos iconos. Para traer una versión nueva de los dos CSS, se vuelven a descargar

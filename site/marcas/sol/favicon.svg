@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Sol: el símbolo de Escaño (cinco escaños, el de arriba abierto) en el rojo de Reforma Digital; en modo oscuro, en
+       blanco con el abierto en rojo, como su icono (apps/web/app/icon.svg). -->
+  <style>
+    .e { fill: #df1717 }
+    .a { fill: none; stroke: #a50e0e }
+    @media (prefers-color-scheme: dark) {
+      .e { fill: #fff }
+      .a { stroke: #df1717 }
+    }
+  </style>
+  <circle class="e" cx="4" cy="22" r="3.7"/>
+  <circle class="e" cx="7.5" cy="13.5" r="3.7"/>
+  <circle class="a" cx="16" cy="10" r="2.6" stroke-width="1.8"/>
+  <circle class="e" cx="24.5" cy="13.5" r="3.7"/>
+  <circle class="e" cx="28" cy="22" r="3.7"/>
+</svg>

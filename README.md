@@ -160,7 +160,7 @@ Hecho por [Jorge Garcelán](https://jorgegarcelan.com).
   - Encuestas: tablas de [Wikipedia](https://en.wikipedia.org/wiki/Opinion_polling_for_the_2026_Spanish_general_election), con licencia [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es); las encuestas recopiladas en `data/encuestas/` se comparten con esa misma licencia.
   - Mercados de predicción: [Polymarket](https://polymarket.com).
   - Programas electorales de 2023, de la web de cada partido.
-- **Tipografías** de las tarjetas (Doto y Geist): SIL Open Font License, con su texto en `escano/fuentes/`.
+- **Tipografías** de las tarjetas (Geist, Geist Mono, Gelasio y Doto): SIL Open Font License, con su texto en `escano/fuentes/`.
 - **Marca.** El nombre «Escaño Abierto» y los logotipos (`site/marca/` y `site/marcas/`) no están cubiertos por la licencia MIT. Si publicas una versión propia, usa otro nombre y otro logotipo para que nadie la confunda con esta.
 
 Escaño Abierto es un proyecto independiente y no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.

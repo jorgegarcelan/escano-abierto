@@ -5,13 +5,14 @@ que merece un enlace propio, este módulo escribe en esa ruta la misma página c
 descripción y la imagen que leen WhatsApp, X o Google (que no ejecutan la web para sacarlos). Lleva en data-ruta
 la vista que abre. Las demás rutas (/votaciones/, /elecciones/…) las sirve index.html tal cual (vercel.json).
 Estas páginas no se versionan: se escriben en cada construcción. La imagen (1200×630) se dibuja aquí con Pillow,
-con la estética de la marca Marcador.
+con la estética Sol de Reforma Digital, la de la web.
 
 Las tarjetas solo llevan datos que no cambian (una votación ya votada, el escaño de un diputado), así
 que se regeneran igual y solo se reescriben si su contenido cambia.
 """
 from __future__ import annotations
 
+import functools
 import hashlib
 import html
 import os
@@ -36,12 +37,18 @@ URL_SITIO = (os.environ.get("ESCANO_URL_SITIO") or
 DIBUJAR = not os.environ.get("ESCANO_SIN_TARJETAS")
 FUENTES = Path(__file__).parent / "fuentes"
 W, H = 1200, 630
-FONDO, TINTA, APAGADO, LINEA = (8, 9, 11), (238, 238, 232), (139, 146, 156), (31, 35, 42)
-TENUE = (94, 100, 109)
+# La estética Sol, de Reforma Digital (site/marcas/sol): fondo blanco y tinta, el rojo de marca, el atardecer en la
+# pieza del hemiciclo y en la portada, y el amanecer de su pie en el juego. Titulares en serif, el resto en Geist y
+# las cifras y etiquetas en Geist Mono, como en la web.
+BLANCO, TINTA, TENUE, APAGADO = (255, 255, 255), (34, 34, 34), (77, 77, 77), (107, 107, 107)
+FONDO, LINEA, SUPERFICIE = BLANCO, (228, 228, 228), (242, 242, 242)
+ROJO, DOBLEZ, NARANJA, AMARILLO = (223, 23, 23), (165, 14, 14), (255, 122, 26), (255, 190, 11)
+AMBAR_CLARO, AMBAR_TEXTO = (255, 243, 209), (107, 74, 0)
 # Lo que se lee en el pie de cada tarjeta: de dónde sale y quién la hace, para que viaje con la imagen.
 DOMINIO = "escañoabierto.com"
 CREDITO = "jorgegarcelan.com · @jgarcelan"
-VOTO = {"S": (57, 217, 138), "N": (255, 93, 82), "A": (245, 197, 66), "X": (53, 59, 67)}
+# El sentido del voto, con los colores de la web (el rojo de Sol es de marca, no de «no»).
+VOTO = {"S": (47, 138, 91), "N": (194, 59, 46), "A": (201, 150, 42), "X": (222, 222, 222)}
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
          "noviembre", "diciembre"]
 DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
@@ -99,50 +106,164 @@ def _escribir_si_cambia(ruta: Path, datos: bytes) -> bool:
 
 # ---------------------------------------------------------------- tarjetas
 
-class Tarjeta:
-    """Lienzo de 1200×630 con la cabecera y el pie de la marca.
+@functools.lru_cache(maxsize=None)
+def _fuente(archivo: str, tam: int, peso: int):
+    from PIL import ImageFont
+    f = ImageFont.truetype(str(FUENTES / archivo), tam)
+    try:
+        ejes = f.get_variation_axes()
+        f.set_variation_by_axes([peso if e["name"] in (b"Weight", "Weight") else e["default"] for e in ejes])
+    except (OSError, AttributeError):
+        pass
+    return f
 
-    El contenido va entre y=130 y y=545; debajo, el pie con la dirección de la página y el crédito, que
-    `png()` dibuja junto con la marca de agua.
+
+def _tabla(paradas: list, base) -> list:
+    """Los 256 colores de un degradado de paradas [(t, color, opacidad)] (t de 0 a 1), sobre el color `base`."""
+    out = []
+    for v in range(256):
+        t = v / 255 * 2 ** .5   # Image.radial_gradient: 255 en las esquinas, a √2 radios del centro
+        c, a = paradas[-1][1:]
+        for (t0, c0, a0), (t1, c1, a1) in zip(paradas, paradas[1:]):
+            if t <= t1:
+                s = max(0.0, (t - t0) / (t1 - t0))
+                c, a = _mezcla(c0, c1, s), a0 + (a1 - a0) * s
+                break
+        out.append(_mezcla(base, c, a))
+    return out
+
+
+def _pintar(dist, tabla: list):
+    from PIL import Image
+    return Image.merge("RGB", [dist.point([c[k] for c in tabla]) for k in range(3)])
+
+
+def _elipse(w: int, h: int, rx: float, ry: float, cx: float, cy: float):
+    """Distancia a (cx, cy) en radios de la elipse (rx, ry), como la mide Image.radial_gradient."""
+    from PIL import Image
+    g = Image.radial_gradient("L").resize((max(2, round(2 * rx)), max(2, round(2 * ry))), Image.BILINEAR)
+    dist = Image.new("L", (w, h), 255)
+    dist.paste(g, (round(cx - rx), round(cy - ry)))
+    return dist
+
+
+@functools.lru_cache(maxsize=None)
+def _atardecer(w: int, h: int):
+    """--atardecer de Sol: radial-gradient(90% 55% at 50% 118%, #ffd34d, amarillo 20 %, naranja 45 %,
+    transparente 78 %) sobre el rojo: el sol sube desde abajo."""
+    dist = _elipse(w, h, .9 * w, .55 * h, w / 2, 1.18 * h)
+    return _pintar(dist, _tabla([(0, (255, 211, 77), 1), (.2, AMARILLO, 1), (.45, NARANJA, 1), (.78, ROJO, 0)], ROJO))
+
+
+@functools.lru_cache(maxsize=None)
+def _amanecer(w: int, h: int):
+    """El pie de Sol: el atardecer al revés, de amarillo claro a naranja, con un brillo arriba."""
+    from PIL import Image
+    alto = Image.linear_gradient("L").resize((w, h), Image.BILINEAR)
+    base = _pintar(alto, [_mezcla((255, 211, 77), AMARILLO, min(1, v / 255 / .46)) if v / 255 <= .46
+                          else _mezcla(AMARILLO, NARANJA, (v / 255 - .46) / .54) for v in range(256)])
+    brillo = _elipse(w, h, .8 * w, .7 * h, w / 2, -.12 * h).point(lambda v: round(255 * max(0.0, 1 - v / 255 * 2 ** .5 / .7)))
+    return Image.composite(Image.new("RGB", (w, h), (255, 229, 143)), base, brillo)
+
+
+# El símbolo de Escaño (site/marca/simbolo-tinta.svg, caja 2 5,4 96 53,2): tres filas de escaños y, arriba en el
+# centro, el escaño abierto.
+SIMBOLO = [(8, 54), (11.2, 37.93), (20.3, 24.3), (33.93, 15.2), (66.07, 15.2), (79.7, 24.3), (88.8, 37.93), (92, 54),
+           (21, 54), (24.89, 39.5), (35.5, 28.89), (50, 25), (64.5, 28.89), (75.11, 39.5), (79, 54),
+           (34, 54), (38.69, 42.69), (50, 38), (61.31, 42.69), (66, 54)]
+ABIERTO = (50, 12)
+# La R de Reforma Digital (apps/web/components/sol/logo.tsx, caja 144 × 192): cuerpo, esquina doblada y dos cuadros.
+R_CUERPO = [(48, 0), (96, 0), (96, 48), (48, 48), (48, 96), (96, 96), (96, 144), (48, 144), (48, 192), (0, 192), (0, 48),
+            (48, 48)]
+R_DOBLEZ = [(0, 48), (48, 0), (48, 48)]
+R_CUADROS = [(96, 48), (96, 144)]
+PIEZA = (640, 116, 1136, 542)   # la pieza del atardecer de las tarjetas con hemiciclo
+
+
+class Tarjeta:
+    """Lienzo de 1200×630 con la cabecera y el pie de la marca (Sol).
+
+    fondo: "blanco" (la de cada página), "atardecer" (la portada) o "amanecer" (el juego). El contenido va entre
+    y=130 y y=545; debajo, el pie con la dirección de la página y el crédito, que `png()` dibuja junto con la marca
+    de agua.
     """
 
-    def __init__(self):
+    def __init__(self, fondo: str = "blanco"):
         from PIL import Image, ImageDraw  # import perezoso: el resto del pipeline no necesita Pillow
-        self.img = Image.new("RGB", (W, H), FONDO)
+        self.fondo = fondo
+        self.img = (_atardecer(W, H) if fondo == "atardecer" else _amanecer(W, H) if fondo == "amanecer"
+                    else Image.new("RGB", (W, H), FONDO)).copy()
         self.d = ImageDraw.Draw(self.img)
-        # Resplandor tenue arriba, como en la web.
-        for i in range(160):
-            t = 1 - i / 160
-            self.d.line([(0, i), (W, i)], fill=_mezcla(FONDO, (24, 28, 36), t * t * .8))
-        self._logo(64, 52)
-        self.d.text((W - 64, 77), f"Congreso de los Diputados · {LEGISLATURA_ROMANA} Legislatura", font=self.geist(19, 500),
-                    fill=APAGADO, anchor="rm")
-
-    def fuente(self, archivo: str, tam: int, peso: int):
-        from PIL import ImageFont
-        f = ImageFont.truetype(str(FUENTES / archivo), tam)
-        try:
-            ejes = f.get_variation_axes()
-            f.set_variation_by_axes([peso if e["name"] in (b"Weight", "Weight") else e["default"] for e in ejes])
-        except (OSError, AttributeError):
-            pass
-        return f
+        self.tinta = BLANCO if fondo == "atardecer" else TINTA                       # cabecera y pie
+        self.suave = (255, 226, 214) if fondo == "atardecer" else APAGADO if fondo == "blanco" else TENUE
+        self.caja = None
+        self._logo(64, 48)
+        self._reforma(W - 64, 48)
 
     def geist(self, tam: int, peso: int = 400):
-        return self.fuente("Geist.ttf", tam, peso)
+        return _fuente("Geist.ttf", tam, peso)
 
-    def doto(self, tam: int):
-        return self.fuente("Doto.ttf", tam, 900)
+    def mono(self, tam: int, peso: int = 500):
+        return _fuente("GeistMono.ttf", tam, peso)
+
+    def serif(self, tam: int, peso: int = 400):
+        """Los titulares de Sol van en su serif; se sirve Georgia y aquí, Gelasio, la libre con sus medidas."""
+        return _fuente("Gelasio.ttf", tam, peso)
+
+    def _suave(self, caja: tuple[int, int, int, int], dibujar):
+        """Dibuja círculos a triple tamaño y los reduce: Pillow no suaviza los bordes y los puntos pequeños
+        (el símbolo, los escaños) se verían dentados. dibujar(d, s) recibe el lienzo y la escala."""
+        from PIL import Image, ImageDraw
+        x0, y0, x1, y1 = caja
+        s = 3
+        capa = Image.new("RGBA", ((x1 - x0) * s, (y1 - y0) * s), (0, 0, 0, 0))
+        dibujar(ImageDraw.Draw(capa), s)
+        capa = capa.resize((x1 - x0, y1 - y0), Image.LANCZOS)
+        self.img.paste(capa, (x0, y0), capa)
 
     def _logo(self, x: int, y: int):
-        import math
-        for i, (r, n) in enumerate([(22, 9), (15, 7), (8, 5)]):
-            for k in range(n):
-                a = math.radians(k * 180 / (n - 1))
-                cx, cy = x + 24 - r * math.cos(a), y + 24 - r * math.sin(a)
-                c = (255, 255, 255) if (i == 0 and k == (n - 1) // 2) else (94, 100, 109)
-                self.d.ellipse([cx - 2.4, cy - 2.4, cx + 2.4, cy + 2.4], fill=c)
-        self.d.text((x + 60, y + 25), "ESCAÑO ABIERTO", font=self.doto(28), fill=TINTA, anchor="lm")
+        k = 32 / 53.2   # el símbolo, de 32 px de alto
+        color = BLANCO if self.fondo == "atardecer" else ROJO if self.fondo == "blanco" else TINTA
+
+        def simbolo(d, s):
+            for cx, cy in SIMBOLO:
+                X, Y, r = (cx - 2) * k * s, (cy - 5.4) * k * s, 4.3 * k * s
+                d.ellipse([X - r, Y - r, X + r, Y + r], fill=color)
+            X, Y, r = (ABIERTO[0] - 2) * k * s, (ABIERTO[1] - 5.4) * k * s, 3.5 * k * s
+            d.ellipse([X - r, Y - r, X + r, Y + r], outline=color, width=round(1.6 * k * s))
+        self._suave((x, y, x + 60, y + 34), simbolo)
+        f = self.geist(18, 600)
+        self.d.text((x + 96 * k + 12, y + 14), "Escaño", font=f, fill=self.tinta, anchor="ls")
+        self.d.text((x + 96 * k + 12, y + 32), "Abierto", font=f, fill=self.tinta, anchor="ls")
+
+    def _reforma(self, x1: int, y: int):
+        """«Un proyecto de», la R y «Reforma / Digital», alineado a la derecha en x1."""
+        f, fp, k = self.geist(16, 700), self.geist(16, 400), 30 / 192
+        xt = x1 - max(f.getlength("Reforma"), f.getlength("Digital"))
+        xr = xt - 10 - 144 * k
+        cuerpo = BLANCO if self.fondo == "atardecer" else ROJO if self.fondo == "blanco" else TINTA
+        punto = lambda p: (xr + p[0] * k, y + 1 + p[1] * k)
+        self.d.polygon([punto(p) for p in R_CUERPO], fill=cuerpo)
+        self.d.polygon([punto(p) for p in R_DOBLEZ], fill=DOBLEZ)
+        for qx, qy in R_CUADROS:
+            self.d.rectangle([punto((qx, qy)), punto((qx + 48, qy + 48))], fill=cuerpo)
+        self.d.text((xt, y + 14), "Reforma", font=f, fill=self.tinta, anchor="ls")
+        self.d.text((xt, y + 29), "Digital", font=f, fill=self.tinta, anchor="ls")
+        self.d.text((xr - 12, y + 22), "Un proyecto de", font=fp, fill=self.suave, anchor="rs")
+
+    def rotulo(self, x: int, y: int, texto: str, color=ROJO, tam: int = 17, ancho: int = 540):
+        """Etiqueta de Sol (.t-etiqueta): Geist Mono en mayúsculas con 0,08 em entre letras; se corta con «…»."""
+        f, paso = self.mono(tam, 500), tam * .08
+        texto = texto.upper()
+        largo = lambda s: sum(f.getlength(ch) + paso for ch in s)
+        if largo(texto) > ancho:
+            while texto and largo(texto + "…") > ancho:
+                texto = texto[:-1]
+            texto = texto.rstrip(" ·") + "…"
+        for ch in texto:
+            self.d.text((x, y), ch, font=f, fill=color)
+            x += f.getlength(ch) + paso
+        return x
 
     def texto(self, xy, texto: str, fuente, color, ancho: int, lineas: int, interlinea: float = 1.15) -> int:
         """Escribe `texto` partido en líneas de `ancho` px como mucho; devuelve la y final."""
@@ -167,37 +288,75 @@ class Tarjeta:
             y += alto
         return y
 
-    def etiqueta(self, x: int, y: int, texto: str, fondo, color=(8, 9, 11)):
-        f = self.geist(20, 700)
-        w = f.getlength(texto) + 24
-        self.d.rounded_rectangle([x, y, x + w, y + 36], radius=6, fill=fondo)
-        self.d.text((x + 12, y + 18), texto, font=f, fill=color, anchor="lm")
+    def etiqueta(self, x: int, y: int, texto: str, fondo, color=BLANCO):
+        """El resultado, en una píldora de Sol con el texto en Geist Mono."""
+        f, tam = self.mono(16, 500), 16
+        paso = tam * .06
+        ancho = sum(f.getlength(ch) + paso for ch in texto) - paso
+        self.d.rounded_rectangle([x, y, x + ancho + 32, y + 34], radius=17, fill=fondo)
+        cx = x + 16
+        for ch in texto:
+            self.d.text((cx, y + 18), ch, font=f, fill=color, anchor="lm")
+            cx += f.getlength(ch) + paso
+
+    def cifra(self, xy, texto: str, tam: int = 84):
+        """Las cifras grandes, en Geist Mono (como en la web: la serif solo tiene números de estilo antiguo)."""
+        self.d.text(xy, texto, font=self.mono(tam, 500), fill=TINTA, anchor="ls")
+
+    def pieza(self) -> tuple[int, int, int, int]:
+        """A la derecha, una pieza del atardecer con una tarjeta blanca encima, como el último pleno de la portada
+        de la web. Devuelve la caja del hemiciclo dentro de la tarjeta."""
+        from PIL import Image, ImageDraw, ImageFilter
+        x0, y0, x1, y1 = PIEZA
+        sol = _atardecer(x1 - x0, y1 - y0)
+        mascara = Image.new("L", sol.size, 0)
+        ImageDraw.Draw(mascara).rounded_rectangle([0, 0, sol.width - 1, sol.height - 1], radius=28, fill=255)
+        self.img.paste(sol, (x0, y0), mascara)
+        c = (x0 + 26, y0 + 26, x1 - 26, y1 - 26)
+        # La sombra de --sombra-flota, cálida y abajo.
+        sombra = Image.new("L", (W, H), 0)
+        ImageDraw.Draw(sombra).rounded_rectangle([c[0] + 4, c[1] + 14, c[2] - 4, c[3] + 10], radius=20, fill=90)
+        self.img = Image.composite(Image.new("RGB", (W, H), (120, 40, 0)), self.img,
+                                   sombra.filter(ImageFilter.GaussianBlur(14)))
+        self.d = ImageDraw.Draw(self.img)
+        self.d.rounded_rectangle(c, radius=20, fill=BLANCO)
+        self.caja = c
+        return c[0] + 22, c[1] + 18, c[2] - 22, c[3] - 46
+
+    def leyenda(self, texto: str):
+        """El pie del hemiciclo, dentro de la tarjeta blanca."""
+        x0, _, x1, y1 = self.caja
+        self.d.text(((x0 + x1) / 2, y1 - 20), texto, font=self.geist(16, 500), fill=APAGADO, anchor="ms")
 
     def hemiciclo(self, plano: dict, escanos: list[tuple], caja: tuple[int, int, int, int]):
         """escanos: [(x, y, color, radio_extra)] en coordenadas del plano oficial."""
         x0, y0, x1, y1 = caja
         esc = min((x1 - x0) / plano["ancho"], (y1 - y0) / plano["alto"])
-        ox = x0 + ((x1 - x0) - plano["ancho"] * esc) / 2
-        oy = y0 + ((y1 - y0) - plano["alto"] * esc) / 2
+        ox = ((x1 - x0) - plano["ancho"] * esc) / 2
+        oy = ((y1 - y0) - plano["alto"] * esc) / 2
         r = 5.1 * esc
-        for x, y, color, extra in escanos:
-            cx, cy, rr = ox + x * esc, oy + y * esc, r + extra
-            if extra:
-                self.d.ellipse([cx - rr - 5, cy - rr - 5, cx + rr + 5, cy + rr + 5], fill=_mezcla(FONDO, color, .25))
-            self.d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=color)
+
+        def escanos_(d, s):
+            for x, y, color, extra in escanos:
+                cx, cy, rr = (ox + x * esc) * s, (oy + y * esc) * s, (r + extra) * s
+                if extra:
+                    d.ellipse([cx - rr - 5 * s, cy - rr - 5 * s, cx + rr + 5 * s, cy + rr + 5 * s], fill=_mezcla(FONDO, color, .25))
+                d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=color)
+        self._suave((round(x0), round(y0), round(x1), round(y1)), escanos_)
 
     def _pie(self, ruta: str):
-        self.d.line([(64, 566), (W - 64, 566)], fill=LINEA, width=1)
-        f = self.geist(18, 500)
-        self.d.text((64, 598), DOMINIO + (f"/{ruta}" if ruta else ""), font=f, fill=TENUE, anchor="ls")
-        self.d.text((W - 64, 598), CREDITO, font=f, fill=APAGADO, anchor="rs")
+        if self.fondo != "atardecer":
+            self.d.line([(64, 566), (W - 64, 566)], fill=LINEA if self.fondo == "blanco" else _mezcla(NARANJA, TINTA, .18),
+                        width=1)
+        self.d.text((64, 598), DOMINIO + (f"/{ruta}" if ruta else ""), font=self.mono(16, 400), fill=self.suave, anchor="ls")
+        self.d.text((W - 64, 598), CREDITO, font=self.geist(17, 500), fill=self.suave, anchor="rs")
 
     def _marca_de_agua(self):
         """Tenue y en diagonal, para que el crédito sobreviva aunque se recorte el pie."""
         from PIL import Image, ImageDraw
         capa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(capa)
-        color = (255, 255, 255, 13)
+        color = {"atardecer": (255, 255, 255, 16), "amanecer": (0, 0, 0, 9)}.get(self.fondo, (0, 0, 0, 6))
         d.text((W / 2, H / 2 - 4), "jorgegarcelan.com", font=self.geist(46, 600), fill=color, anchor="ms")
         d.text((W / 2, H / 2 + 4), "@jgarcelan", font=self.geist(34, 600), fill=color, anchor="mt")
         capa = capa.rotate(16, resample=Image.BICUBIC, center=(W / 2, H / 2))
@@ -207,10 +366,14 @@ class Tarjeta:
     def png(self, ruta: str = "") -> bytes:
         """ruta: la de su página (votacion/101-1), que se lee en el pie."""
         import io
+        from PIL import Image
         self._pie(ruta)
         self._marca_de_agua()
         b = io.BytesIO()
-        self.img.convert("P", palette=1, colors=128).save(b, "PNG", optimize=True)  # 1 = ADAPTIVE
+        # 256 colores (octree: conserva los colores exactos de los escaños, que ocupan poco) y difuminado, para que los
+        # degradados del atardecer y el amanecer no se vean a franjas.
+        paleta = self.img.quantize(256, method=Image.Quantize.FASTOCTREE)
+        self.img.quantize(palette=paleta, dither=Image.Dither.FLOYDSTEINBERG).save(b, "PNG", optimize=True)
         return b.getvalue()
 
 
@@ -232,14 +395,13 @@ def _escanos_voto(v: dict, dips: list, plano: dict) -> list[tuple]:
 def tarjeta_votacion(v: dict, dips: list, plano: dict) -> "Tarjeta":
     t = Tarjeta()
     a, m, d = v["fecha"].split("-")
-    t.d.text((64, 140), f"VOTACIÓN · {int(d)} {MESES[int(m) - 1].upper()} {a}", font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), v["titulo"], t.geist(46, 650), TINTA, 560, 4, 1.12)
-    t.etiqueta(64, max(y + 18, 388), resultado(v).upper(), VOTO["S"] if aprobada(v) else VOTO["N"])
-    t.d.text((64, 538), f"{v['si']} – {v['no']}", font=t.doto(96), fill=TINTA, anchor="ls")
+    t.rotulo(64, 132, f"Votación · {int(d)} {MESES[int(m) - 1]} {a}")
+    y = t.texto((64, 168), v["titulo"], t.serif(44), TINTA, 540, 4, 1.12)
+    t.etiqueta(64, max(y + 16, 380), resultado(v).upper(), VOTO["S"] if aprobada(v) else VOTO["N"])
+    t.cifra((60, 540), f"{v['si']} – {v['no']}")
     if plano.get("ancho"):
-        t.hemiciclo(plano, _escanos_voto(v, dips, plano), (660, 125, 1150, 505))
-        t.d.text((905, 537), f"Sí {v['si']} · No {v['no']} · Abst. {v['abst']} · No votan {v['novota']}",
-                 font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+        t.hemiciclo(plano, _escanos_voto(v, dips, plano), t.pieza())
+        t.leyenda(f"Sí {v['si']} · No {v['no']} · Abst. {v['abst']} · No votan {v['novota']}")
     return t
 
 
@@ -247,10 +409,10 @@ def tarjeta_diputado(i: int, dips: list, grupos: dict, plano: dict) -> "Tarjeta"
     t = Tarjeta()
     n, g, circ, form = dips[i][:4]
     nombre_g = grupos.get(g, {}).get("nombre", g)
-    t.d.text((64, 140), "DIPUTADO · " + nombre_g.upper(), font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), legible(n), t.geist(62, 700), TINTA, 560, 3, 1.05)
+    t.rotulo(64, 132, "Diputado · " + nombre_g)
+    y = t.texto((64, 168), legible(n), t.serif(60), TINTA, 540, 3, 1.06)
     linea = " · ".join(x for x in (circ, f"lista de {form}" if form else "") if x)
-    t.texto((64, y + 14), linea, t.geist(26, 500), APAGADO, 560, 2)
+    t.texto((64, y + 14), linea, t.geist(26, 400), TENUE, 540, 2)
     if plano.get("ancho") and dips[i][5] is not None:
         escanos = []
         yo = dips[i]
@@ -259,39 +421,40 @@ def tarjeta_diputado(i: int, dips: list, grupos: dict, plano: dict) -> "Tarjeta"
             if d[5] is None or (j != i and (_baja(d) or (_baja(yo) and (d[5], d[6]) == (yo[5], yo[6])))):
                 continue
             base = _hex(grupos.get(d[1], {}).get("color", "#8A8F98"))
-            escanos.append((d[5], d[6], (255, 255, 255) if j == i else _mezcla(FONDO, base, .38), 4 if j == i else 0))
+            escanos.append((d[5], d[6], TINTA if j == i else _mezcla(FONDO, base, .32), 4 if j == i else 0))
         escanos.sort(key=lambda e: e[3])  # el suyo, encima
-        t.hemiciclo(plano, escanos, (660, 125, 1150, 505))
-        t.d.text((905, 537), "Su escaño en el hemiciclo", font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+        t.hemiciclo(plano, escanos, t.pieza())
+        t.leyenda("Su escaño en el hemiciclo")
     return t
 
 
 def tarjeta_sesion(s: dict, votos: list, dips: list, plano: dict) -> "Tarjeta":
     t = Tarjeta()
-    t.d.text((64, 140), f"{s['organo'].upper()} · {fecha_larga(s['fecha']).upper()}", font=t.geist(21, 600), fill=APAGADO)
+    t.rotulo(64, 132, f"{s['organo']} · {fecha_larga(s['fecha'])}")
     titulo = s.get("titular") or (re.split(r"(?<=[.!?])\s", s.get("resumen") or "")[0]) or s.get("sesion", "")
-    y = t.texto((64, 178), titulo, t.geist(48, 650), TINTA, 560, 4, 1.12)
-    t.d.text((64, 538), f"{len(votos)} votaciones · {len(s.get('puntos', []))} asuntos", font=t.geist(28, 600),
+    t.texto((64, 168), titulo, t.serif(44), TINTA, 540, 5, 1.12)
+    t.d.text((64, 538), f"{len(votos)} votaciones · {len(s.get('puntos', []))} asuntos", font=t.geist(26, 600),
              fill=TINTA, anchor="ls")
     if votos and plano.get("ancho"):
         dest = min(votos, key=lambda v: abs(v["si"] - v["no"]))
-        t.hemiciclo(plano, _escanos_voto(dest, dips, plano), (660, 125, 1150, 505))
-        t.d.text((905, 537), f"La más ajustada: {dest['si']} – {dest['no']}", font=t.geist(19, 500), fill=APAGADO,
-                 anchor="ms")
+        t.hemiciclo(plano, _escanos_voto(dest, dips, plano), t.pieza())
+        t.leyenda(f"La más ajustada: {dest['si']} – {dest['no']}")
     return t
 
 
 def tarjeta_iniciativa(exp: str, titulo: str, votos: list, dips: list, plano: dict, ley: dict | None = None) -> "Tarjeta":
     t = Tarjeta()
     tipo = ley["tipo"] + (" orgánica" if ley.get("organica") else "") if ley else TIPO_EXP.get(exp[:3], "Iniciativa")
-    t.d.text((64, 140), f"{tipo.upper()} · {exp}", font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), titulo, t.geist(46, 650), TINTA, 560, 4, 1.12)
+    t.rotulo(64, 132, f"{tipo} · {exp}")
+    y = t.texto((64, 168), titulo, t.serif(44), TINTA, 540, 4, 1.12)
     if votos:
         ult = votos[-1]
-        t.etiqueta(64, max(y + 18, 388), resultado(ult).upper(), VOTO["S"] if aprobada(ult) else VOTO["N"])
-        t.d.text((64, 538), f"{ult['si']} – {ult['no']}", font=t.doto(96), fill=TINTA, anchor="ls")
+        t.etiqueta(64, max(y + 16, 380), resultado(ult).upper(), VOTO["S"] if aprobada(ult) else VOTO["N"])
+        t.cifra((60, 540), f"{ult['si']} – {ult['no']}")
         if plano.get("ancho"):
-            t.hemiciclo(plano, _escanos_voto(ult, dips, plano), (660, 125, 1150, 505))
+            t.hemiciclo(plano, _escanos_voto(ult, dips, plano), t.pieza())
+            a, m, d = ult["fecha"].split("-")
+            t.leyenda(f"La última votación, {int(d)} de {MESES[int(m) - 1]} de {a}")
     return t
 
 
@@ -304,23 +467,27 @@ def _etapas(t: "Tarjeta", ley: dict, x: int, y: int, ancho: int):
     for k, nombre in enumerate(ETAPAS):
         cx = x + paso * k
         on, cortada = k <= ley["etapa"], corta and k == ley["etapa"] + 1
-        color = TINTA if on else (VOTO["N"] if cortada else (94, 100, 109))
+        color = (ROJO if k == ley["etapa"] else TINTA) if on else (VOTO["N"] if cortada else (190, 190, 190))
         r = 11 if on else 9
         t.d.ellipse([cx - r, y - r, cx + r, y + r], fill=color if on else FONDO, outline=color, width=3)
-        t.d.text((cx, y + 30), nombre, font=t.geist(17, 600 if on else 500), fill=TINTA if on else APAGADO, anchor="ma")
+        t.d.text((cx, y + 30), nombre, font=t.geist(17, 600 if on else 400), fill=TINTA if on else APAGADO, anchor="ma")
 
 
 def tarjeta_ley(ley: dict) -> "Tarjeta":
     t = Tarjeta()
     tipo = ley["tipo"] + (" orgánica" if ley.get("organica") else "")
-    t.d.text((64, 140), f"{tipo.upper()} · {ley['exp']}", font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), ley["titulo"], t.geist(50, 650), TINTA, 1070, 3, 1.12)
-    color = VOTO["S"] if ley["estado"] == "aprobada" else VOTO["N"] if ley["estado"] in ("rechazada", "inadmitida") \
-        else (245, 197, 66) if ley["estado"] == "en trámite" else (139, 146, 156)
-    t.etiqueta(64, max(y + 18, 368), ESTADO_LEY.get(ley["estado"], ley["estado"]).upper(), color)
+    t.rotulo(64, 132, f"{tipo} · {ley['exp']}", ancho=1070)
+    y = t.texto((64, 168), ley["titulo"], t.serif(48), TINTA, 1070, 3, 1.12)
+    # Los estados, con los colores de Sol: aprobada y rechazada como el voto; en trámite, en ámbar.
+    fondo, color = ((VOTO["S"], BLANCO) if ley["estado"] == "aprobada" else
+                    (VOTO["N"], BLANCO) if ley["estado"] in ("rechazada", "inadmitida") else
+                    (AMBAR_CLARO, AMBAR_TEXTO) if ley["estado"] == "en trámite" else (SUPERFICIE, TENUE))
+    texto = ESTADO_LEY.get(ley["estado"], ley["estado"]).upper()
+    t.etiqueta(64, max(y + 16, 360), texto, fondo, color)
     if ley["estado"] == "en trámite" and ley.get("ampliaciones", 0) >= 8:
-        t.d.text((64 + 24 + t.geist(20, 700).getlength(ESTADO_LEY["en trámite"].upper()) + 20, max(y + 18, 368) + 18),
-                 f"Plazo de enmiendas ampliado {ley['ampliaciones']} veces", font=t.geist(22, 500), fill=APAGADO, anchor="lm")
+        x = 64 + 32 + sum(t.mono(16).getlength(ch) + 16 * .06 for ch in texto) + 20
+        t.d.text((x, max(y + 16, 360) + 18), f"Plazo de enmiendas ampliado {ley['ampliaciones']} veces",
+                 font=t.geist(22, 400), fill=TENUE, anchor="lm")
     _etapas(t, ley, 120, 470, 960)
     return t
 
@@ -328,83 +495,90 @@ def tarjeta_ley(ley: dict) -> "Tarjeta":
 def tarjeta_semana(sem: dict, vs: list, votos_por_id: dict, dips: list, plano: dict) -> "Tarjeta":
     t = Tarjeta()
     a, b = sem["desde"].split("-"), sem["hasta"].split("-")
-    rango = (f"{int(a[2])}–{int(b[2])} {MESES[int(b[1]) - 1].upper()} {b[0]}" if a[1] == b[1]
-             else f"{int(a[2])} {MESES[int(a[1]) - 1][:3].upper()} – {int(b[2])} {MESES[int(b[1]) - 1][:3].upper()} {b[0]}")
-    t.d.text((64, 140), f"LA SEMANA EN EL CONGRESO · {rango}", font=t.geist(21, 600), fill=APAGADO)
-    t.texto((64, 178), sem["titular"], t.geist(46, 650), TINTA, 560, 5, 1.12)
+    rango = (f"{int(a[2])}–{int(b[2])} {MESES[int(b[1]) - 1]} {b[0]}" if a[1] == b[1]
+             else f"{int(a[2])} {MESES[int(a[1]) - 1][:3]} – {int(b[2])} {MESES[int(b[1]) - 1][:3]} {b[0]}")
+    t.rotulo(64, 132, f"La semana en el Congreso · {rango}")
+    t.texto((64, 168), sem["titular"], t.serif(44), TINTA, 540, 5, 1.12)
     t.d.text((64, 538), f"{len(vs)} votaciones · {sem['aprobadas']} aprobadas · {len(vs) - sem['aprobadas']} rechazadas",
-             font=t.geist(26, 600), fill=TINTA, anchor="ls")
+             font=t.geist(24, 600), fill=TINTA, anchor="ls")
     dest = votos_por_id.get((sem["ajustadas"] or [None])[0])
     if dest and plano.get("ancho"):
-        t.hemiciclo(plano, _escanos_voto(dest, dips, plano), (660, 125, 1150, 505))
-        t.d.text((905, 537), f"La más ajustada: {dest['si']} – {dest['no']}", font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+        t.hemiciclo(plano, _escanos_voto(dest, dips, plano), t.pieza())
+        t.leyenda(f"La más ajustada: {dest['si']} – {dest['no']}")
     return t
 
 
 def tarjeta_provincia(circ: str, ids: list[int], dips: list, grupos: dict, plano: dict) -> "Tarjeta":
     t = Tarjeta()
-    t.d.text((64, 140), "TUS DIPUTADOS", font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), circ, t.geist(66, 700), TINTA, 560, 2, 1.05)
+    t.rotulo(64, 132, "Tus diputados")
+    y = t.texto((64, 168), circ, t.serif(64), TINTA, 540, 2, 1.06)
     reparto = Counter(dips[i][1] for i in ids)
     t.texto((64, y + 14), f"{len(ids)} {'diputado' if len(ids) == 1 else 'diputados'}: " +
-            ", ".join(f"{g} {n}" for g, n in reparto.most_common()), t.geist(28, 500), APAGADO, 560, 3)
+            ", ".join(f"{g} {n}" for g, n in reparto.most_common()), t.geist(26, 400), TENUE, 540, 3)
     if plano.get("ancho"):
         esc = []
         for j, d in enumerate(dips):
             if d[5] is None or _baja(d):
                 continue
             base = _hex(grupos.get(d[1], {}).get("color", "#8A8F98"))
-            esc.append((d[5], d[6], base if j in ids else _mezcla(FONDO, (94, 100, 109), .55), 3 if j in ids else 0))
+            esc.append((d[5], d[6], base if j in ids else LINEA, 3 if j in ids else 0))
         esc.sort(key=lambda e: e[3])
-        t.hemiciclo(plano, esc, (660, 125, 1150, 505))
+        t.hemiciclo(plano, esc, t.pieza())
+        t.leyenda(f"Sus {len(ids)} escaños, en color")
     return t
 
 
 def tarjeta_tema(nombre: str, votos: list, leyes: list, dips: list, plano: dict) -> "Tarjeta":
     t = Tarjeta()
-    t.d.text((64, 140), "SEGUIR UN TEMA EN EL CONGRESO", font=t.geist(21, 600), fill=APAGADO)
-    y = t.texto((64, 178), nombre, t.geist(62, 700), TINTA, 560, 3, 1.05)
+    t.rotulo(64, 132, "Seguir un tema en el Congreso")
+    y = t.texto((64, 168), nombre, t.serif(60), TINTA, 540, 3, 1.06)
     vivas = sum(l["estado"] == "en trámite" for l in leyes)
-    t.texto((64, y + 16), f"{len(votos)} votaciones · {len(leyes)} leyes, {vivas} en trámite", t.geist(28, 500), APAGADO, 560, 2)
+    t.texto((64, y + 16), f"{len(votos)} votaciones · {len(leyes)} leyes, {vivas} en trámite", t.geist(26, 400), TENUE, 540, 2)
     if votos and plano.get("ancho"):
         ult = max(votos, key=lambda v: (v["fecha"], v["id"]))
-        t.hemiciclo(plano, _escanos_voto(ult, dips, plano), (660, 125, 1150, 505))
-        t.d.text((905, 537), f"La última: {corto(ult['titulo'], 38)}", font=t.geist(19, 500), fill=APAGADO, anchor="ms")
+        t.hemiciclo(plano, _escanos_voto(ult, dips, plano), t.pieza())
+        t.leyenda(f"La última: {corto(ult['titulo'], 38)}")
     return t
 
 
 def tarjeta_portada(plano: dict, dips: list) -> "Tarjeta":
-    t = Tarjeta()
-    t.d.text((64, 222), "ESCAÑO", font=t.doto(120), fill=TINTA)
-    t.d.text((64, 342), "ABIERTO", font=t.doto(120), fill=TINTA)
-    t.d.text((68, 494), "Qué se dijo en el Congreso y cómo se votó.", font=t.geist(30, 500), fill=APAGADO)
+    """La de la portada, como su hero: el atardecer entero, el titular en blanco y el hemiciclo en blanco."""
+    t = Tarjeta("atardecer")
+    y = t.texto((64, 160), "Lo que pasa en el Congreso, contado para cualquiera.", t.serif(64), BLANCO, 600, 4, 1.08)
+    t.texto((64, y + 24), "Qué se dijo, cómo se votó y qué cambia. Con datos oficiales, en lenguaje claro y con "
+            "código abierto.", t.geist(24, 400), BLANCO, 560, 3, 1.45)
     if plano.get("ancho"):
-        grises = [(d[5], d[6], (94, 100, 109), 0) for d in dips if d[5] is not None and not _baja(d)]
-        t.hemiciclo(plano, grises, (660, 125, 1150, 505))
+        blancos = [(d[5], d[6], BLANCO, 0) for d in dips if d[5] is not None and not _baja(d)]
+        t.hemiciclo(plano, blancos, (690, 150, 1136, 500))
     return t
 
 
 def tarjeta_juego(grupos: dict) -> "Tarjeta":
-    """¿Quién lo dijo?: una cita tachada y cuatro grupos para elegir."""
-    t = Tarjeta()
-    t.d.text((64, 170), "¿QUIÉN", font=t.doto(112), fill=TINTA)
-    t.d.text((64, 282), "LO DIJO?", font=t.doto(112), fill=TINTA)
-    t.texto((68, 430), "Frases literales del Congreso. Adivina de qué grupo es quien habla.", t.geist(28, 500),
-            APAGADO, 540, 2, 1.3)
-    x0, x1 = 680, W - 64
-    t.d.text((x0 - 6, 150), "«", font=t.geist(96, 600), fill=TENUE)
+    """¿Quién lo dijo?, en el amanecer del pie de Sol: una cita tachada y cuatro grupos para elegir."""
+    from PIL import Image, ImageDraw, ImageFilter
+    t = Tarjeta("amanecer")
+    y = t.texto((64, 150), "¿Quién lo dijo?", t.serif(96), TINTA, 560, 2, 1.0)
+    t.texto((68, y + 22), "Frases literales del Congreso. Adivina de qué grupo es quien habla.", t.geist(26, 400),
+            TINTA, 520, 3, 1.35)
+    c = (660, 128, W - 64, 528)
+    sombra = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(sombra).rounded_rectangle([c[0] + 4, c[1] + 14, c[2] - 4, c[3] + 10], radius=20, fill=80)
+    t.img = Image.composite(Image.new("RGB", (W, H), (120, 40, 0)), t.img, sombra.filter(ImageFilter.GaussianBlur(14)))
+    t.d = ImageDraw.Draw(t.img)
+    t.d.rounded_rectangle(c, radius=20, fill=BLANCO)
+    x0, x1 = c[0] + 32, c[2] - 32
+    t.d.text((x0 - 4, c[1] + 18), "«", font=t.serif(96), fill=ROJO)
     for k, ancho in enumerate((1, .92, .64)):
-        y = 262 + k * 34
-        t.d.rounded_rectangle([x0, y, x0 + (x1 - x0) * ancho, y + 16], radius=8, fill=LINEA)
-    f = t.geist(22, 600)
+        yy = c[1] + 132 + k * 34
+        t.d.rounded_rectangle([x0, yy, x0 + (x1 - x0) * ancho, yy + 16], radius=8, fill=SUPERFICIE)
+    f = t.geist(20, 600)
     for k, g in enumerate(("PSOE", "PP", "VOX", "SUMAR")):
-        cx, cy = x0 + (k % 2) * ((x1 - x0) // 2 + 6), 388 + (k // 2) * 72
         w = (x1 - x0) // 2 - 6
-        t.d.rounded_rectangle([cx, cy, cx + w, cy + 58], radius=10, outline=(58, 63, 72), width=2,
-                              fill=(16, 18, 22))
+        cx, cy = x0 + (k % 2) * (w + 12), c[1] + 252 + (k // 2) * 64
+        t.d.rounded_rectangle([cx, cy, cx + w, cy + 50], radius=25, fill=SUPERFICIE)
         color = _hex(grupos.get(g, {}).get("color", "#888888"))
-        t.d.ellipse([cx + 20, cy + 22, cx + 34, cy + 36], fill=color)
-        t.d.text((cx + 46, cy + 29), g, font=f, fill=TINTA, anchor="lm")
+        t.d.ellipse([cx + 20, cy + 18, cx + 34, cy + 32], fill=color)
+        t.d.text((cx + 46, cy + 25), g, font=f, fill=TINTA, anchor="lm")
     return t
 
 
