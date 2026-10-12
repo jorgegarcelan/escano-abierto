@@ -48,6 +48,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
 .topbar-in{max-width:var(--ancho);margin:0 auto;display:flex;align-items:center;gap:20px;min-height:56px}
 .brand{display:flex;align-items:center;gap:10px;flex:none;color:var(--ink);text-decoration:none}
+.brand-rd{display:none}   /* el logo de Reforma Digital: lo muestra la marca que lo use (marcas/sol.css) */
 .brand .nombre{display:none;font-family:var(--display);font-weight:700;font-size:19px;white-space:nowrap}
 .brand .logo{display:block;height:26px;aspect-ratio:439.2/55.3;background:var(--ink);-webkit-mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain;mask:url(marca/logotipo-tinta.svg) no-repeat left center/contain}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

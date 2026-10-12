@@ -44,9 +44,9 @@ BLANCO, TINTA, TENUE, APAGADO = (255, 255, 255), (34, 34, 34), (77, 77, 77), (10
 FONDO, LINEA, SUPERFICIE = BLANCO, (228, 228, 228), (242, 242, 242)
 ROJO, DOBLEZ, NARANJA, AMARILLO = (223, 23, 23), (165, 14, 14), (255, 122, 26), (255, 190, 11)
 AMBAR_CLARO, AMBAR_TEXTO = (255, 243, 209), (107, 74, 0)
-# Lo que se lee en el pie de cada tarjeta: de dónde sale y quién la hace, para que viaje con la imagen.
+# Lo que se lee en el pie de cada tarjeta: la dirección de la página y de dónde salen los datos, para que viajen con la imagen.
 DOMINIO = "escañoabierto.com"
-CREDITO = "jorgegarcelan.com · @jgarcelan"
+CREDITO = "Con datos oficiales del Congreso"
 # El sentido del voto, con los colores de la web (el rojo de Sol es de marca, no de «no»).
 VOTO = {"S": (47, 138, 91), "N": (194, 59, 46), "A": (201, 150, 42), "X": (222, 222, 222)}
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",

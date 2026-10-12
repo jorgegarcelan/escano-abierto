@@ -49,6 +49,7 @@ const CSS = `
 .hi-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
 @media (max-width:820px){ .hi-top{grid-template-columns:1fr} }
 .hi-hemi{display:block;width:100%;height:auto}
+.hi-hemi.pocos{max-width:340px;margin:0 auto}
 .hi-hemi circle{fill:var(--sunk);transition:fill .55s ease;transition-delay:calc(var(--k) * 1.6ms)}
 .hi-hemi .anio{font-family:var(--led,var(--display));font-weight:900;fill:var(--ink)}
 .hi-tabla{width:100%;border-collapse:collapse;font-size:13px}
@@ -569,12 +570,19 @@ const C_VOTOS = elColor("votos", "#6E8FB8"), C_ESCANOS = elColor("escanos", "#C9
 const _asientos = {};
 function asientos(N){
   if (_asientos[N]) return _asientos[N];
+  // Pocos escaños (las provincias pequeñas): una sola fila en arco, con aire en los extremos. Con el algoritmo general
+  // salían dos filas con un escaño suelto abajo a la izquierda y puntos enormes que el borde cortaba.
+  if (N <= 8){
+    const r = N === 1 ? .5 : .78;
+    const pts = Array.from({length: N}, (_, j)=>{ const a = N === 1 ? Math.PI/2 : Math.PI*(1 - (j + .5)/N); return {a, r, x: 100*r*Math.cos(a), y: -100*r*Math.sin(a)}; });
+    return _asientos[N] = {pts, rad: N === 1 ? 9 : Math.min(2*78*Math.sin(Math.PI/(2*N))*.36, 9)};
+  }
   const filas = N>200 ? 12 : Math.max(2, Math.round(Math.sqrt(N/1.8))), r0 = N>200 ? .4 : .32;
   const radios = Array.from({length:filas},(_,i)=>r0+(1-r0)*i/Math.max(1,filas-1));
   const suma = radios.reduce((a,b)=>a+b,0), n = radios.map(r=>Math.round(N*r/suma));
   n[filas-1] += N - n.reduce((a,b)=>a+b,0);
   const out = [];
-  radios.forEach((r,i)=>{ for(let j=0;j<n[i];j++){ const a=Math.PI*(1-j/Math.max(1,n[i]-1)); out.push({a, r, x:100*r*Math.cos(a), y:-100*r*Math.sin(a)}); } });
+  radios.forEach((r,i)=>{ for(let j=0;j<n[i];j++){ const a = n[i] === 1 ? Math.PI/2 : Math.PI*(1-j/Math.max(1,n[i]-1)); out.push({a, r, x:100*r*Math.cos(a), y:-100*r*Math.sin(a)}); } });
   out.sort((p,q)=>q.a-p.a || p.r-q.r);
   const paso = Math.min(...radios.map((r,i)=>n[i]>1 ? Math.PI*r*100/(n[i]-1) : 60), filas>1 ? (1-r0)*100/(filas-1) : 60);
   return _asientos[N] = {pts: out, rad: Math.min(paso*.42, 9)};
@@ -606,8 +614,8 @@ export function hemicicloReal(el, c, segs, etiqueta = ""){
 }
 /* Un hemiciclo como SVG vacío; pintarHemi() le pone color (con transición) a partir de segmentos {color, n, tip}. */
 function hemiSVG(N, {etiqueta="", clase=""}={}){
-  const {pts, rad} = asientos(N);
-  return `<svg class="hi-hemi ${clase}" viewBox="-108 -108 216 114" role="img" aria-label="Hemiciclo de ${N} escaños">${pts.map((p,k)=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad.toFixed(2)}" style="--k:${k}"></circle>`).join("")}
+  const {pts, rad} = asientos(N), m = Math.max(8, rad + 2);   // el margen, para que ningún escaño quede cortado
+  return `<svg class="hi-hemi ${N <= 8 ? "pocos " : ""}${clase}" viewBox="${-100 - m} ${-100 - m} ${200 + 2*m} ${100 + 2*m}" role="img" aria-label="Hemiciclo de ${N} escaños">${pts.map((p,k)=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad.toFixed(2)}" style="--k:${k}"></circle>`).join("")}
     ${etiqueta?`<text class="anio" x="0" y="-5" text-anchor="middle" style="font-size:${N>200?17:22}px">${esc(etiqueta)}</text>`:""}</svg>`;
 }
 function pintarHemi(svg, segs, etiqueta){

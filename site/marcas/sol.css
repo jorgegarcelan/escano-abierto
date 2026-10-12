@@ -107,6 +107,17 @@ html[data-marca="sol"].en-portada nav.tabs>button.activa{background:color-mix(in
 html[data-marca="sol"].en-portada .tab-29n{background:var(--blanco);color:var(--rojo)}
 html[data-marca="sol"].en-portada .btn-buscar{box-shadow:none}
 
+/* El logo de Reforma Digital en la barra de la portada, junto al de Escaño y separado por una raya fina, como su
+   logotipo (la R y «Reforma / Digital» en dos líneas, del alto de la R). En el resto de páginas no se ve. */
+html[data-marca="sol"] .brand-rd{display:none}
+html[data-marca="sol"].en-portada .brand{margin-right:0}
+html[data-marca="sol"].en-portada .brand-rd{display:inline-flex;align-items:center;gap:8px;margin:0 auto 0 var(--e-4);padding-left:var(--e-16);
+  border-left:1px solid color-mix(in srgb,var(--blanco) 40%,transparent);color:var(--blanco);text-decoration:none;
+  font:700 14px/.92 var(--font-logo,var(--font-texto));letter-spacing:-.01em;min-height:44px}
+html[data-marca="sol"].en-portada .brand-rd span{display:block}
+/* Donde la barra va justa (hasta 1360 px, y en el móvil), solo la R */
+@media (max-width:1360px){ html[data-marca="sol"].en-portada .brand-rd span{display:none} html[data-marca="sol"].en-portada .brand-rd{padding-left:var(--e-12)} }
+
 /* ---------- portada: su hero (.in-hero): atardecer, 8 px de margen, radio 28, titular centrado ---------- */
 html[data-marca="sol"] .sol-portada{
   position:relative;display:flex;flex-direction:column;min-height:688px;margin:var(--e-8) var(--a-sangre) 0;

@@ -68,6 +68,10 @@ svg.geo-mapa{display:block;width:100%;height:auto;max-height:72vh}
 .geo-card{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 14px;align-content:start;background:var(--surface);border:var(--borde,1px) solid var(--line);border-radius:var(--r-card-lg,14px);padding:14px 14px 12px;box-shadow:var(--sombra,none);transition:border-color .2s}
 .geo-card:hover{border-color:var(--line-strong)}
 .geo-card svg{grid-row:span 3;width:64px;height:64px;display:block}
+/* Toda la tarjeta lleva a su ficha (el enlace del nombre la cubre); las provincias, encima, a la suya */
+.geo-card{position:relative}
+.geo-card .t::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.geo-card .geo-chip{position:relative;z-index:1}
 .geo-card svg path{fill:var(--sunk);stroke:var(--line-strong);stroke-width:1;vector-effect:non-scaling-stroke}
 .geo-card .t{font-weight:600;font-size:16px;color:var(--ink);text-decoration:none}
 .geo-card .t:hover{text-decoration:underline}
