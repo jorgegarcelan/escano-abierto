@@ -1100,3 +1100,19 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
 .ses-cifras{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted)}
 .ses-cifras b{color:var(--ink);font-variant-numeric:tabular-nums}
 details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
+/* grupos: una tarjeta por grupo */
+.gr-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px;margin-top:16px}
+.gr-card{appearance:none;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-content:start;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:var(--borde) solid var(--line);border-top:4px solid var(--grupo);border-radius:var(--r-card);padding:14px 16px;box-shadow:var(--sombra)}
+.gr-cab{display:grid;gap:2px}
+.gr-sigla{font:600 11px var(--mono);letter-spacing:.06em;color:var(--grupo)}
+.gr-nombre{font-size:18px;line-height:1.15}
+.gr-esc{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.gr-esc-n b{font-size:16px;color:var(--ink)}
+.gr-esc-b{position:relative;height:6px;background:var(--sunk);border-radius:3px;overflow:visible}
+.gr-esc-b i{display:block;height:100%;background:var(--grupo);border-radius:3px}
+.gr-esc-b em{position:absolute;left:50.3%;top:-3px;bottom:-3px;width:1px;background:var(--line-strong)}
+.gr-cifras{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;font-size:12px;color:var(--muted)}
+.gr-cifras span{display:grid;gap:2px}
+.gr-cifras b{font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.gr-temas{display:flex;flex-wrap:wrap;gap:4px}
+.gr-ir{font-size:13px;font-weight:500}

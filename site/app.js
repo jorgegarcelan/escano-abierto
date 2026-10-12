@@ -1895,7 +1895,19 @@ function renderGrupos(){
     const decided = votes.filter(v=>["S","N"].includes(v.grupos[g])).length;
     const tc = {}; ivs.forEach(i=>i.temas.forEach(t=>tc[t]=(tc[t]||0)+1));
     const top = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]).join(", ");
-    return `<tr><td class="gname">${gdot(g)} ${gname(g)}</td><td class="num">${ivs.length}</td><td class="num">${avg}</td><td>${ivs.length?toneBar(ivs):'<span style="color:var(--muted)">–</span>'}</td><td>${esc(top)||"–"}</td><td class="num">${g==="GOB"?"–":decided?`${win}/${decided}`:"–"}</td></tr>`;
+    // Una tarjeta por grupo: su nombre, sus escaños (y lo que pesan en los 350), cuánto habla y con qué tono, cuántas
+    // votaciones gana y su cohesión. Lleva a sus diputados (el Gobierno, a sus oradores).
+    const esc_ = DIP.filter(d=>d.g===g && !d.baja).length, coh = g==="GOB" ? null : cohesion(g);
+    const temas = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+    const cifra = (n, l) => `<span><b>${n}</b>${l}</span>`;
+    return `<button type="button" class="gr-card" ${g==="GOB" ? `data-gr-or="GOB"` : `data-gr="${g}"`} style="--grupo:${G[g].color}">
+      <span class="gr-cab"><span class="gr-sigla">${esc(g==="GOB"?"Gobierno":g)}</span><b class="gr-nombre">${esc(G[g].nombre)}</b></span>
+      ${g==="GOB" ? `<span class="gr-esc gr-esc-gob">El Consejo de Ministros, en el banco azul</span>` : `<span class="gr-esc"><span class="gr-esc-n"><b>${esc_}</b> ${esc_===1?"escaño":"escaños"}</span><span class="gr-esc-b"><i style="width:${(esc_/350*100).toFixed(1)}%"></i><em></em></span></span>`}
+      <span class="gr-cifras">${cifra(ivs.length, "intervenciones")}${cifra(String(avg).replace(".",","), "intensidad")}${g==="GOB" ? "" : cifra(decided ? `${Math.round(win/decided*100)} %` : "–", "votaciones ganadas") + cifra(coh!=null ? `${(coh*100).toFixed(1).replace(".",",")} %` : "–", "cohesión")}</span>
+      ${ivs.length ? `<span class="gr-tono">${toneBar(ivs)}</span>` : ""}
+      ${temas.length ? `<span class="gr-temas">${temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</span>` : ""}
+      <span class="gr-ir">${g==="GOB" ? "Sus oradores" : "Sus diputados"}</span>
+    </button>`;
   }).join("");
 
   // Afinidad con el voto nominal: probabilidad de que dos diputados de cada grupo votaran lo mismo.
@@ -1909,20 +1921,22 @@ function renderGrupos(){
 
   $("#grupos").innerHTML = `
     <div class="view-intro"><div><h2>Grupos parlamentarios</h2><p>Cuánto intervino cada grupo y con qué tono, qué mayorías se formaron, cuánto ruido hubo en la Cámara y qué grupos votan juntos.</p><p><button class="linklike" data-go="preguntas">Preguntas escritas al Gobierno por grupo →</button></p></div></div>
-    <div class="gtable-wrap"><table><thead><tr><th>Grupo</th><th>Interv.</th><th>Intensidad</th><th>Tono</th><th>Temas principales</th><th>Votaciones ganadas</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="gr-cards">${rows}</div>
     ${toneLegend(IVS)}
+    <section class="sec gr-sec"><div class="sec-h"><h2>Cómo votan</h2><p>Quién gana, con quién y con cuánta disciplina, votación a votación.</p></div></section>
     ${DATA.votaciones.length?`<div class="chart"><h3>Quién gana cada votación</h3><p class="sub">Cada columna es una votación, en orden cronológico; cada fila, un grupo. El cuadro se rellena con el color del grupo cuando votó en bloque con el lado ganador. Pulsa una columna para ir a la votación.</p>${matrizGanadores()}</div>`:""}
     ${ganadasPorSemana()?`<div class="chart"><h3>Votaciones ganadas, semana a semana</h3><p class="sub">Parte de las votaciones de cada semana en las que el grupo, en bloque, estuvo en el lado ganador. La línea gris del centro marca el 50 %; arriba, el 100 %.</p>${ganadasPorSemana()}</div>`:""}
     <div class="chart"><h3>Mayorías</h3><p class="sub">Qué grupos estaban, en bloque, en el lado ganador de cada votación: los que votaron sí en las aprobadas y los que votaron no en las rechazadas. Cada fila es una combinación; los escaños son los que suman esos grupos.</p>${tablaMayorias()}</div>
     <div class="two">
+      <div class="panel"><h3>Afinidad de voto</h3><p>Probabilidad de que un diputado de cada grupo, tomados al azar, votaran lo mismo, de media en las ${DATA.votaciones.length} votaciones.</p><div class="heat-wrap">${heat}</div></div>
+      <div class="panel"><h3>Cohesión</h3><p>Parte de los diputados de cada grupo que votó con la mayoría de su grupo, de media.</p><div class="coh">${coh.map(([g,c])=>`<div class="coh-row" data-tip="${esc(`${G[g].nombre}: ${pct(c)} de sus diputados vota con la mayoría del grupo`)}"><span class="g" style="font-weight:600;display:inline-flex;gap:6px;align-items:center">${gdot(g)}${g}</span><span class="trk"><b style="width:${(c*100).toFixed(1)}%"></b></span><span class="n">${(c*100).toFixed(1).replace(".",",")} %</span></div>`).join("")}</div></div>
+    </div>
+    <section class="sec gr-sec"><div class="sec-h"><h2>Cómo reacciona la Cámara</h2><p>Lo que anota el Diario de Sesiones mientras se habla, y si el Gobierno contesta a lo que se le pregunta.</p></div></section>
+    <div class="two">
       <div class="chart"><h3>Termómetro de la cámara</h3><p class="sub">Aplausos, risas, rumores y protestas que anota el Diario de Sesiones en cada pleno.</p>${termometroSesiones()||'<p class="nota">Sin datos.</p>'}</div>
       <div class="chart"><h3>Durante los turnos de cada grupo</h3><p class="sub">Reacciones por turno de palabra. Los aplausos suelen venir del propio grupo; los rumores y las protestas, de los demás.</p>${termometroGrupos()||'<p class="nota">Sin datos.</p>'}</div>
     </div>
-    <div class="two">
-      <div class="panel"><h3>Afinidad de voto</h3><p>Probabilidad de que un diputado de cada grupo, tomados al azar, votaran lo mismo, de media en las ${DATA.votaciones.length} votaciones.</p><div class="heat-wrap">${heat}</div></div>
-      <div class="panel"><h3>Cohesión</h3><p>Parte de los diputados de cada grupo que votó con la mayoría de su grupo, de media.</p><div class="coh">${coh.map(([g,c])=>`<div class="coh-row" data-tip="${esc(`${G[g].nombre}: ${pct(c)} de sus diputados vota con la mayoría del grupo`)}"><span class="g" style="font-weight:600;display:inline-flex;gap:6px;align-items:center">${gdot(g)}${g}</span><span class="trk"><b style="width:${(c*100).toFixed(1)}%"></b></span><span class="n">${(c*100).toFixed(1).replace(".",",")} %</span></div>`).join("")}</div></div>
-      ${respPanel()}
-    </div>`;
+    ${respPanel()}`;
   // La matriz de ganadores se abre por las votaciones más recientes.
   requestAnimationFrame(()=>{ const w=$("#grupos .gan-wrap"); if (w) w.scrollLeft = w.scrollWidth; });
 }
@@ -2720,6 +2734,9 @@ document.addEventListener("click", e=>{
   const dp = e.target.closest("[data-dip]");
   if (dp){ irDiputado(dp.dataset.dip); return; }
   if (e.target.closest("[data-dip-volver]")){ dipSel=null; rendered.diputados=false; show("diputados",true); window.scrollTo(0,0); return; }
+  const gr = e.target.closest("[data-gr],[data-gr-or]");   // una tarjeta de Grupos: a sus diputados (el Gobierno, a sus oradores)
+  if (gr){ if (gr.dataset.gr){ dipFiltro.g = gr.dataset.gr; dipSel = null; rendered.diputados = false; show("diputados", true); }
+    else { orFilter.g = gr.dataset.grOr; rendered.oradores = false; show("oradores", true); } window.scrollTo(0,0); return; }
   const dg = e.target.closest("[data-dg]");
   if (dg){ dipFiltro.g=dg.dataset.dg; renderDiputados(); return; }
   const dor = e.target.closest("[data-dord]");
