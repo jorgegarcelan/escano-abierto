@@ -36,7 +36,10 @@ html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:cla
 html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--rojo)}
 html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
 html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
-html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d,.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--led);font-weight:400;letter-spacing:-.02em}
+html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-family:var(--led);font-weight:400;letter-spacing:-.02em}
+/* Las cifras pequeñas de listas y tablas, en mono (.t-dato de Sol): la Georgia del sistema solo tiene números de estilo
+   antiguo, de alturas desiguales, y en una columna de datos no se alinean. */
+html[data-marca="sol"] :is(.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--font-mono);font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:0}
 html[data-marca="sol"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.42em 0 color-mix(in srgb,var(--amarillo) 45%,transparent);padding:0 .1em}
 
 /* ---------- barra superior: como su cabecera (80 px, sin bordes, enlaces fantasma en píldora) ---------- */
@@ -60,6 +63,19 @@ html[data-marca="sol"] .btn:hover{box-shadow:none}
 html[data-marca="sol"] .btn.boton-claro:hover{box-shadow:0 0 0 1px var(--linea)}
 html[data-marca="sol"] .chipbtn{min-height:36px;border:0;background:var(--superficie);padding:0 14px;font-size:14px}
 html[data-marca="sol"] .chipbtn[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+/* Compartir, Imagen y Seguir: las tres, como la .pildora de Sol (gris claro, sin borde). */
+html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss){display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:0;border-radius:var(--r-pildora);background:var(--superficie);color:var(--tinta);font:500 13px var(--font-texto);transition:background var(--t-rapido) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss):hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%);color:var(--tinta)}
+html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss):active{transform:scale(.96)}
+/* Los apartados de Elecciones: píldoras grises; el actual, en tinta. */
+html[data-marca="sol"] .el-nav-grupos{gap:16px 0}
+html[data-marca="sol"] .el-nav-grupos .g{gap:8px;padding:0 16px;border-left-color:var(--linea)}
+html[data-marca="sol"] .el-nav-grupos .gt{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
+html[data-marca="sol"] .el-nav-grupos .g.act .gt{color:var(--rojo)}
+html[data-marca="sol"] .el-nav-grupos .gi{gap:6px}
+html[data-marca="sol"] .el-nav-grupos .gi a{min-height:32px;display:inline-flex;align-items:center;padding:0 12px;border:0;background:var(--superficie);color:var(--tinta);font-size:13px}
+html[data-marca="sol"] .el-nav-grupos .gi a:hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%)}
+html[data-marca="sol"] .el-nav-grupos .gi a[aria-current="page"]{background:var(--tinta);color:var(--blanco)}
 /* Campos: los de .campo de Sol (borde --tinta-3, radio 12, 44 px, 16 px). */
 html[data-marca="sol"] :is(.controls input,.controls select){min-height:44px;padding:var(--e-8) var(--e-12);border:1px solid var(--tinta-3);border-radius:var(--r-12);font-size:16px}
 
@@ -75,6 +91,34 @@ html[data-marca="sol"] .hero-lede{font-size:clamp(17px,1.4vw,19px);line-height:1
 html[data-marca="sol"] .hero-cta .boton-claro{box-shadow:none}
 html[data-marca="sol"] .hero-vote{color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px 22px 20px}
 html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.08em;color:var(--tinta-2)}
+
+/* Las otras portadas, con el mismo atardecer: Elecciones y ¿Quién lo dijo? */
+html[data-marca="sol"] :is(.elh-hero,.qld-hero){
+  background:var(--atardecer); color:var(--blanco); border:0; border-radius:var(--r-28);
+  padding:clamp(28px,5vw,56px) clamp(22px,4.5vw,56px) clamp(36px,5.5vw,64px);
+}
+html[data-marca="sol"] :is(.elh-hero,.qld-hero) .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
+html[data-marca="sol"] :is(.elh-hero h2,.qld-h){color:var(--blanco);letter-spacing:-.03em}
+html[data-marca="sol"] :is(.elh-hero p,.qld-hero>p){color:var(--blanco);font-size:clamp(16px,1.3vw,18px);line-height:1.6}
+html[data-marca="sol"] :is(.elh-hero,.qld-hero) .boton-claro{box-shadow:none}
+html[data-marca="sol"] .elh-hero{gap:clamp(24px,4vw,48px)}
+html[data-marca="sol"] .elh-fase{background:var(--blanco);color:var(--tinta)}
+html[data-marca="sol"] .elh-cuenta{color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px}
+html[data-marca="sol"] .elh-cuenta .f{border-top-color:var(--linea)}
+html[data-marca="sol"] .elh-cuenta .f small{color:var(--rojo)}
+html[data-marca="sol"] .qld-hero{justify-items:start;gap:16px}
+html[data-marca="sol"] .qld-hero :is(.qld-especial,.nota){color:var(--blanco)!important}
+html[data-marca="sol"] .qld-hero .qld-hecho{color:var(--tinta);border:0;box-shadow:var(--sombra-flota)}
+html[data-marca="sol"] .qld-hero .qld-hecho .eyebrow{color:var(--rojo)}
+html[data-marca="sol"] .qld-hero + .chart{background:var(--superficie);border:0}
+
+/* Método: una página informativa de Sol, sin caja, con la lectura limitada a 760 px. */
+html[data-marca="sol"] .method{background:none;border:0;padding:0;gap:14px;max-width:760px;font-size:17px;line-height:1.6}
+html[data-marca="sol"] .method h2{font-size:clamp(36px,4.6vw,56px);line-height:1.02;letter-spacing:-.03em;margin-bottom:4px}
+html[data-marca="sol"] .method h3{font:400 clamp(24px,2.4vw,30px)/1.15 var(--display);letter-spacing:-.02em;margin-top:28px;padding-top:28px;border-top:1px solid var(--linea)}
+html[data-marca="sol"] .method p,html[data-marca="sol"] .method li{max-width:65ch}
+html[data-marca="sol"] .method ul{gap:10px;padding-left:22px}
+html[data-marca="sol"] .method li::marker{color:var(--rojo)}
 
 /* Las cifras: rejilla de bordes compartidos, sin huecos ni sombras por celda (como sus rejillas). */
 html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin-top:var(--e-24);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
