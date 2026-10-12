@@ -1912,41 +1912,74 @@ function respPanel(){
 }
 
 /* ---------- oradores ---------- */
-let orFilter = {q:"", g:"TODOS"};
-function renderOradores(){
+let orFilter = {q:"", g:"TODOS", orden:"act", vista:"tarjetas"};
+// Los oradores: un directorio de quien habló en el periodo. Cada tarjeta lleva a su ficha si es diputado; si no
+// (ministros que no lo son, comparecientes), abre un panel con sus intervenciones.
+function datosOradores(){
   const by = {};
-  IVS.forEach(i=>{ (by[i.orador]=by[i.orador]||{nombre:i.orador,g:i.g,rol:i.rol.split(" · ")[0],ivs:[]}).ivs.push(i); });
-  let list = Object.values(by);
-  const q = orFilter.q.trim().toLowerCase();
-  list = list.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || o.nombre.toLowerCase().includes(q) || o.ivs.some(i=>i.temas.join(" ").toLowerCase().includes(q)||(i.resumen||i.frase||"").toLowerCase().includes(q))));
-  list.sort((a,b)=>b.ivs.length-a.ivs.length || (b.ivs.reduce((s,i)=>s+i.int,0)/b.ivs.length)-(a.ivs.reduce((s,i)=>s+i.int,0)/a.ivs.length));
+  IVS.forEach(i=>{ (by[i.orador] ||= {nombre:i.orador, g:i.g, rol:i.rol.split(" · ")[0], ivs:[]}).ivs.push(i); });
+  return Object.values(by).map(o=>{
+    const tc = {}; o.ivs.forEach(i=>tc[i.tono]=(tc[i.tono]||0)+1);
+    const ses = [...new Set(o.ivs.map(i=>i.s))].map(id=>DATA.sesiones.find(s=>s.id===id)).filter(Boolean).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+    return {...o, avg: o.ivs.reduce((s,i)=>s+i.int,0)/o.ivs.length, dom: Object.entries(tc).sort((a,b)=>b[1]-a[1])[0][0],
+      temas: [...new Set(o.ivs.flatMap(i=>i.temas))].slice(0,3), cita: o.ivs.map(i=>i.cita).filter(Boolean).sort((a,b)=>a.length-b.length)[0],
+      ses, dip: dipDeOrador(o.nombre)};
+  });
+}
+function renderOradores(){
+  const todos = datosOradores(), q = sinTildes(orFilter.q.trim());
+  let list = todos.filter(o=>(orFilter.g==="TODOS"||o.g===orFilter.g) && (!q || sinTildes(o.nombre).includes(q) || o.ivs.some(i=>sinTildes(i.temas.join(" ")+" "+(i.resumen||i.frase||"")).includes(q))));
+  const az = (a,b)=>a.nombre.localeCompare(b.nombre,"es");
+  list.sort(orFilter.orden==="int" ? (a,b)=>b.avg-a.avg || b.ivs.length-a.ivs.length : orFilter.orden==="az" || orFilter.vista==="directorio" ? az : (a,b)=>b.ivs.length-a.ivs.length || b.avg-a.avg);
   const present = [...new Set(IVS.map(i=>i.g))];
   const order = [...PARL,"GOB","COMP"].filter(g=>present.includes(g));
   const chips = ["TODOS",...order].map(g=>`<button class="chipbtn" data-g="${g}" aria-pressed="${orFilter.g===g}">${g==="TODOS"?"Todos":gdot(g)+gname(g)}</button>`).join("");
-  const cards = list.map(o=>{
-    const avg = o.ivs.reduce((s,i)=>s+i.int,0)/o.ivs.length;
-    const tc={}; o.ivs.forEach(i=>tc[i.tono]=(tc[i.tono]||0)+1);
-    const dom = Object.entries(tc).sort((a,b)=>b[1]-a[1])[0][0];
-    const topics = [...new Set(o.ivs.flatMap(i=>i.temas))].slice(0,5);
-    const cita = o.ivs.map(i=>i.cita).filter(Boolean).sort((a,b)=>a.length-b.length)[0];
-    const sesiones = [...new Set(o.ivs.map(i=>i.s))].map(id=>DATA.sesiones.find(s=>s.id===id)).map(s=>{const d=dt(s.fecha);return `${d.d} ${d.m} · ${s.organo}`;});
-    return `<article class="card"><div style="display:flex;gap:8px;align-items:center">${gdot(o.g)}<span class="sub">${esc(gname(o.g))} · ${esc(o.rol)}</span></div>
-      <h3>${esc(o.nombre)}</h3>
-      <div class="stats"><span><b>${o.ivs.length}</b> interv.</span><span>intensidad <b>${avg.toFixed(1)}</b> ${intMeter(Math.round(avg))}</span><span>tono dominante ${toneChip(dom)}</span></div>
-      ${toneBar(o.ivs)}
-      ${cita?`<blockquote><mark>«${esc(cita)}»</mark></blockquote>`:""}
-      <div class="tags">${topics.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
-      <div class="sub">${sesiones.join(" · ")}</div>
-    </article>`;
-  }).join("");
+  const seg = (k, opts) => `<div class="or-seg" role="group">${opts.map(([v,l])=>`<button type="button" data-${k}="${v}" aria-pressed="${orFilter[k]===v}">${l}</button>`).join("")}</div>`;
+  const foto = (o, cls) => (o.dip && imgFoto(o.dip, `${cls} foto`, ` style="--grupo:${G[o.g]?.color}"`, true)) || `<span class="${cls} avatar" style="background:${G[o.g]?.color||"var(--line-strong)"}">${esc(iniciales(o.nombre))}</span>`;
+  const destino = o => o.dip ? `data-dip="${o.dip.slug}"` : `data-or="${esc(o.nombre)}"`;
+  const ultima = o => { const s = o.ses[0]; if (!s) return ""; const d = dt(s.fecha); return `${o.ses.length === 1 ? "en 1 sesión" : `en ${o.ses.length} sesiones`} · la última, ${d.d} ${d.m}`; };
+  const tarjeta = o => `<button type="button" class="or-card" ${destino(o)}>
+      <span class="or-top">${foto(o, "or-foto")}<span class="or-id"><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</span><b class="or-n">${esc(o.nombre)}</b></span></span>
+      <span class="or-stats"><span><b>${o.ivs.length}</b>${o.ivs.length===1?"intervención":"intervenciones"}</span><span><b>${o.avg.toFixed(1).replace(".",",")}</b>intensidad</span></span>
+      <span class="or-tonos" title="Tono habitual de sus intervenciones y el reparto de todas">${toneChip(o.dom)}${toneBar(o.ivs)}</span>
+      ${o.cita ? `<span class="or-cita">«${esc(o.cita)}»</span>` : ""}
+      ${o.temas.length ? `<span class="or-temas">${o.temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</span>` : ""}
+      <span class="or-pie">${ultima(o)}<span class="or-ir">${o.dip ? "Su ficha" : "Sus intervenciones"}</span></span>
+    </button>`;
+  // El directorio: por la inicial, con un índice de letras arriba
+  const letra = o => sinTildes(o.nombre)[0].toUpperCase();
+  const letras = [...new Set(list.map(letra))];
+  const directorio = () => `<nav class="or-letras" aria-label="Índice">${letras.map(l=>`<button type="button" data-letra="${l}">${l}</button>`).join("")}</nav>
+    <div class="or-dir">${letras.map(l=>`<section class="or-dir-l" id="or-l-${l}"><h3>${l}</h3><ul>${list.filter(o=>letra(o)===l).map(o=>`<li><button type="button" class="or-fila" ${destino(o)}>${foto(o, "or-mini")}<span class="or-fila-n"><b>${esc(o.nombre)}</b><small>${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</small></span><span class="or-fila-d"><b>${o.ivs.length}</b> interv.</span><span class="or-fila-i">${intMeter(Math.round(o.avg))}</span></button></li>`).join("")}</ul></section>`).join("")}</div>`;
   $("#oradores").innerHTML = `
-    <div class="view-intro"><div><h2>Oradores</h2><p>${list.length} de ${Object.keys(by).length} oradores. Busca por nombre o por tema (por ejemplo «Ceuta» o «vivienda»).</p></div></div>
-    <div class="controls"><input id="or-q" type="search" placeholder="Buscar orador o tema…" value="${esc(orFilter.q)}" aria-label="Buscar orador o tema"></div>
+    <div class="view-intro"><div><h2>Oradores</h2><p>Quién habló en el Congreso en el periodo: ${todos.length} oradores entre diputados, miembros del Gobierno y comparecientes. Busca por nombre o por tema (por ejemplo «Ceuta» o «vivienda») y pulsa uno para ver su ficha o sus intervenciones.</p></div></div>
+    <div class="or-barra">
+      <label class="or-busca"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="or-q" type="search" placeholder="Buscar orador o tema…" value="${esc(orFilter.q)}" aria-label="Buscar orador o tema"></label>
+      ${seg("vista", [["tarjetas","Tarjetas"],["directorio","Directorio A–Z"]])}
+      ${orFilter.vista === "tarjetas" ? seg("orden", [["act","Más activos"],["int","Más intensos"],["az","A–Z"]]) : ""}
+    </div>
     <div class="controls" id="or-g">${chips}</div>
-    <div class="cards">${cards || '<p class="nota">Ningún orador coincide con la búsqueda.</p>'}</div>`;
+    <p class="or-n-res">${list.length === todos.length ? `${list.length} oradores` : `${list.length} de ${todos.length} oradores`}</p>
+    ${!list.length ? '<p class="nota">Ningún orador coincide con la búsqueda.</p>' : orFilter.vista === "directorio" ? directorio() : `<div class="or-cards">${list.map(tarjeta).join("")}</div>`}`;
   const inp = $("#or-q");
   inp.addEventListener("input", e=>{ orFilter.q=e.target.value; const pos=e.target.selectionStart; renderOradores(); const n=$("#or-q"); n.focus(); n.setSelectionRange(pos,pos); });
+  $("#oradores .or-barra").addEventListener("click", e=>{ const b=e.target.closest("[data-vista],[data-orden]"); if(!b) return; if (b.dataset.vista) orFilter.vista=b.dataset.vista; if (b.dataset.orden) orFilter.orden=b.dataset.orden; renderOradores(); });
   $("#or-g").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; orFilter.g=b.dataset.g; renderOradores(); });
+  $("#oradores").querySelector(".or-letras")?.addEventListener("click", e=>{ const b=e.target.closest("[data-letra]"); if (!b) return;
+    const sec = document.getElementById("or-l-"+b.dataset.letra); window.scrollTo({top: scrollY + sec.getBoundingClientRect().top - 150, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); });
+}
+// El panel de un orador que no es diputado: quién es y todas sus intervenciones del periodo, de la más reciente.
+function panelOrador(o){
+  if (!o) return;
+  let dlg = document.getElementById("or-panel");
+  if (!dlg){ dlg = document.createElement("dialog"); dlg.id = "or-panel"; document.body.appendChild(dlg);
+    dlg.addEventListener("click", e=>{ if (e.target === dlg || e.target.closest("[data-cerrar]")) dlg.close(); }); }
+  const ivs = o.ivs.slice().sort((a,b)=>(DATA.sesiones.find(s=>s.id===b.s)?.fecha||"").localeCompare(DATA.sesiones.find(s=>s.id===a.s)?.fecha||""));
+  dlg.innerHTML = `<div class="or-panel-in"><header><span class="or-top"><span class="or-foto avatar" style="background:${G[o.g]?.color||"var(--line-strong)"}">${esc(iniciales(o.nombre))}</span><span class="or-id"><span class="or-g">${gdot(o.g)}${esc(gname(o.g))}${o.rol && o.rol!==gname(o.g) ? ` · ${esc(o.rol)}` : ""}</span><b class="or-n">${esc(o.nombre)}</b></span></span>
+      <button type="button" class="or-cerrar" data-cerrar aria-label="Cerrar">×</button></header>
+    <p class="or-panel-r">${o.ivs.length} ${o.ivs.length===1?"intervención":"intervenciones"} en el periodo · intensidad media ${o.avg.toFixed(1).replace(".",",")} · tono habitual ${toneChip(o.dom)}</p>
+    <div class="iv-list">${ivs.map(ivCard).join("")}</div></div>`;
+  dlg.showModal();
 }
 
 /* ---------- votaciones ---------- */
@@ -2658,6 +2691,8 @@ document.addEventListener("click", e=>{
   if (tc){ dipFiltro.circ = dipFiltro.circ===tc.dataset.circ ? null : tc.dataset.circ; renderDiputados(); document.getElementById("dip-tabla")?.scrollIntoView({block:"start"}); window.scrollBy(0,-70); return; }
   const mm = e.target.closest("[data-mapa]");
   if (mm){ mapaModo = mm.dataset.mapa; renderDiputados(); return; }
+  const orb = e.target.closest("[data-or]");   // un orador que no es diputado: el panel con sus intervenciones
+  if (orb){ panelOrador(datosOradores().find(o=>o.nombre===orb.dataset.or)); return; }
   const dp = e.target.closest("[data-dip]");
   if (dp){ irDiputado(dp.dataset.dip); return; }
   if (e.target.closest("[data-dip-volver]")){ dipSel=null; rendered.diputados=false; show("diputados",true); window.scrollTo(0,0); return; }
