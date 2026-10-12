@@ -90,7 +90,9 @@ const estado = {modo: "votaciones", reproducida: false};
 
 /* ---------- la legislatura, día a día ---------- */
 const MODOS = [["votaciones","Votaciones"],["leyes","Leyes y decretos-leyes"],["preguntas","Preguntas registradas"]];
-const VERDE = "#3C8C6A", MORADO = "#7152A8", AZUL = "#4F7AA6", AMBAR = "#C9873E";
+// Cada marca puede poner los suyos en --cf-verde, --cf-morado… (Sol: rojo, tinta, tinta y ámbar).
+const cfColor = (k, def) => getComputedStyle(document.documentElement).getPropertyValue("--cf-" + k).trim() || def;
+const VERDE = cfColor("verde", "#3C8C6A"), MORADO = cfColor("morado", "#7152A8"), AZUL = cfColor("azul", "#4F7AA6"), AMBAR = cfColor("ambar", "#C9873E");
 function calendario(caja, D, votos, B){
   const desde = deIso(D.desde), hasta = deIso(D.hasta), dias = [];
   for (let d = new Date(desde); d <= hasta; d.setUTCDate(d.getUTCDate()+1)) dias.push(iso(d));

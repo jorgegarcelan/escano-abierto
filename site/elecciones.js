@@ -74,6 +74,7 @@ const CSS = `
 .elh-grupo{padding-top:44px}
 .elh-grupo-h{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:baseline;border-top:1px solid var(--line-strong);padding-top:14px}
 .elh-grupo-h .k{font:600 13px var(--mono);color:var(--muted)}
+.elh-grupo-h .k b{display:none}
 .elh-grupo-h h2{font-size:26px;margin:0}
 .elh-grupo-h p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:62ch}
 .elh-350{display:grid;gap:8px}
@@ -100,7 +101,7 @@ const CSS = `
 .cad-hielo{all:unset;box-sizing:border-box;display:grid;grid-template-columns:3.6em minmax(0,1fr);gap:12px;align-items:center;padding:8px 6px;border-radius:8px;cursor:pointer;border-top:1px solid var(--line)}
 .cad-hielo:first-child{border-top:0}
 .cad-hielo:hover,.cad-hielo:focus-visible{background:var(--sunk)}
-.cad-hielo .n{font:700 22px var(--mono);text-align:right;color:#7FB8E0;line-height:1;display:grid}
+.cad-hielo .n{font:700 22px var(--mono);text-align:right;color:var(--c-hielo,#7FB8E0);line-height:1;display:grid}
 .cad-hielo .n small{font:500 10.5px var(--mono);color:var(--muted)}
 .cad-hielo .c{display:grid;gap:4px;min-width:0}
 .cad-hielo .t{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -451,7 +452,7 @@ function home(el){
     </div>
     <section class="sec elh-sec"><div class="sec-h"><h2>En qué punto estamos</h2><p>Los plazos los fija la Ley Orgánica del Régimen Electoral General y se cuentan desde que el BOE publica el decreto de convocatoria${DATOS.decreto?` (${esc(DATOS.decreto.rd)})`:""}.</p></div>${calendario()}</section>
     <section class="sec elh-sec" id="elh-provincia"><div class="sec-h"><h2>Tu provincia</h2><p>Cuántos diputados elige, cómo se repartieron en 2023 y quiénes la representan hoy.</p></div><div class="chart elh-prov"><p class="nota">Cargando…</p></div></section>
-    ${GRUPOS_PAG.map((g,k)=>`<section class="sec elh-grupo"><div class="elh-grupo-h"><span class="k">${String(k+1).padStart(2,"0")}</span><div><h2>${esc(g.t)}</h2><p>${esc(g.d)}</p></div></div>
+    ${GRUPOS_PAG.map((g,k)=>`<section class="sec elh-grupo"><div class="elh-grupo-h"><span class="k">${String(k+1).padStart(2,"0")}<b> · ${esc(g.n)}</b></span><div><h2>${esc(g.t)}</h2><p>${esc(g.d)}</p></div></div>
       ${g.los350 ? `<div class="elh-350">${bloque350()}<p class="nota"><a href="/elecciones/350/">Cómo ha cambiado el reparto de escaños por provincia desde 1977 →</a>${cambios.length ? ` · En 2026, ${cambios.map(([c,a,b])=>`${esc(GEO.provincias[c].corto)} ${b > a ? "gana" : "pierde"} ${Math.abs(b-a) === 1 ? "un escaño" : `${Math.abs(b-a)} escaños`}`).join(" y ")} respecto a 2023.` : ""}</p></div>` : ""}
       <div class="el-tarjetas">${g.ids.map(id=>TARJETAS[id]()).join("")}
         ${g.pronto ? `<div class="el-tarjeta elh-pronto"><span class="t">Qué prometieron y qué votaron</span><span class="d">Las promesas de los programas de 2023 frente a lo que votó cada candidatura en el Congreso.</span><span class="p">Más adelante</span></div>` : ""}</div></section>`).join("")}`;

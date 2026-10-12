@@ -185,7 +185,9 @@ const enlaceP = c => uni(T.provincias[c].ccaa) ? enlaceC(T.provincias[c].ccaa) :
 
 /* ---------- color ---------- */
 // Secuencial: un solo tono, de la superficie al color. Divergente: dos tonos con el gris de la superficie en medio.
-const TONO = {neutro: "#4F7AA6", calido: "#B4613A", frio: "#3D7CB0", renta: "#3C8C6A", edad: "#8A5AA8"};
+// Cada marca puede poner los suyos en --geo-neutro, --geo-calido… (Sol: tinta, rojo y su azul).
+const TONO = Object.fromEntries(Object.entries({neutro: "#4F7AA6", calido: "#B4613A", frio: "#3D7CB0", renta: "#3C8C6A", edad: "#8A5AA8"})
+  .map(([k, v]) => [k, getComputedStyle(document.documentElement).getPropertyValue("--geo-" + k).trim() || v]));
 function hexRgb(h){ h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
 const cssVar = (v, def) => { const x = getComputedStyle(document.documentElement).getPropertyValue(v).trim(); return x.startsWith("#") ? x : def; };
 const mezcla = (a, b, t) => a.map((x, i) => Math.round(x + (b[i] - x) * t));

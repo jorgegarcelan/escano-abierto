@@ -26,7 +26,8 @@ html:root[data-marca="sol"]{
   --led:var(--font-mono);
   --r-card:var(--r-20); --r-card-lg:var(--r-28); --r-pill:var(--r-pildora); --r-ctl:var(--r-12); --r-chip:6px;
   --ancho:1200px;                         /* la retícula de Sol (su --ancho, que esta hoja pisa con el mismo valor) */
-  --sombra:none;
+  --sombra:0 0 0 1px var(--linea);         /* las cajas, como su .caja-plana: un anillo de 1 px en vez de borde */
+  --borde:0px;
   /* El sentido del voto conserva sus colores de siempre: el rojo de Sol es de marca, no de «no». */
   --si:#2F8A5B; --no:#C23B2E; --abst:#C9962A; --nv:#A39DA3;
   /* Lo que sale del ancho de la retícula hasta 8 px del borde de la ventana (el hero y el pie de Sol) */
@@ -45,7 +46,9 @@ html[data-marca="sol"] :is(h1,h2){font-weight:400;letter-spacing:-.02em}
 html[data-marca="sol"] h3{font-family:var(--font-texto);font-weight:500;letter-spacing:-.01em}
 html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:clamp(32px,4vw,52px);line-height:1.05}
 html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.08em;color:var(--rojo)}
-html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
+html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
+/* La línea de cada votación (fecha · tipo · quién · expediente): Geist 14 en tinta-3, no toda en mono */
+html[data-marca="sol"] :is(.vote-h .sub,.hv-sub){font:400 14px/1.45 var(--font-texto);letter-spacing:0;color:var(--tinta-3)}
 html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
 /* Las cifras grandes y las de listas y tablas, en mono (.t-dato de Sol). */
 html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d,.repro-res b,.comp-pct,.qld-num,.geo-cifras b,.geo-caja .num){font-family:var(--led);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
@@ -54,6 +57,8 @@ html[data-marca="sol"] blockquote mark{background:none;color:inherit;box-shadow:
 
 /* ---------- iconos: los chevrones pixelados de Sol (marcas/sol.js cambia las flechas de texto) ---------- */
 html[data-marca="sol"] .icono{flex:none;display:inline-block;vertical-align:-.12em}
+/* Las flechas cambiadas por sol.js miden siempre lo mismo: algunos módulos dan tamaño a todo svg de su caja */
+html[data-marca="sol"] svg.icono:is(.icono-fin,.icono-ini){width:14px!important;height:14px!important;max-height:none!important}
 html[data-marca="sol"] .icono-fin{margin-left:.4em}
 html[data-marca="sol"] .icono-ini{margin-right:.4em}
 html[data-marca="sol"] :is(.btn,.boton,.boton-claro,.chipbtn) .icono:is(.icono-fin,.icono-ini){margin:0}
@@ -216,7 +221,7 @@ html[data-marca="sol"] .method ul{gap:10px;padding-left:22px}
 html[data-marca="sol"] .method li::marker{color:var(--rojo)}
 
 /* Las cifras: rejilla de bordes compartidos, sin huecos ni sombras por celda (como sus rejillas). */
-html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin-top:var(--e-64);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
+html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;padding:0;margin-top:var(--e-64);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
 html[data-marca="sol"] .kpi{flex-direction:column;align-items:flex-start;gap:10px;padding:20px 20px 18px;border-right:1px solid var(--linea)}
 html[data-marca="sol"] .kpi:last-child{border-right:0}
 html[data-marca="sol"] .kpi b{font-size:clamp(34px,3.4vw,46px);line-height:.95}
@@ -224,10 +229,10 @@ html[data-marca="sol"] .kpi span{font-family:var(--font-mono);font-size:11.5px;l
 html[data-marca="sol"] .kpi.alert b{color:var(--rojo)}
 
 /* ---------- superficies: .caja-plana de Sol ---------- */
-html[data-marca="sol"] :is(.chart,.session,.vote,.card){padding:20px 22px}
+html[data-marca="sol"] :is(.chart,.session,.vote,.card){padding:var(--e-24);gap:var(--e-16)}
+@media (max-width:480px){ html[data-marca="sol"] :is(.chart,.session,.vote,.card){padding:var(--e-20)} }
 html[data-marca="sol"] .punto .vote{background:var(--superficie);border-color:transparent}
-html[data-marca="sol"] .vcard{transition:box-shadow var(--t-medio) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
-html[data-marca="sol"] .vcard:hover{box-shadow:var(--sombra-suave);transform:translateY(-2px)}
+
 html[data-marca="sol"] :is(.pill,.res){font-family:var(--font-mono);letter-spacing:.04em}
 html[data-marca="sol"] .tag{border-radius:var(--r-pildora);padding:2px 9px}
 html[data-marca="sol"] #tip{background:var(--tinta);color:var(--blanco);font-family:var(--font-mono);font-size:12px;border-radius:var(--r-12)}
@@ -299,3 +304,246 @@ html[data-marca="sol"] :is(.mm-item:not(.mm-sub).activa,.mm-sub.activa b)::after
 @media (max-width:480px){
   html[data-marca="sol"] .pie-mapa{grid-template-columns:1fr}
 }
+
+/* =====================================================================================================================
+   Capa común: lo que comparten todas las páginas, con las reglas de su GUIA.md
+   ===================================================================================================================== */
+
+/* Selección en amarillo, como su .sol-raiz ::selection */
+html[data-marca="sol"] ::selection{background:var(--amarillo);color:var(--tinta)}
+
+/* El titular de cada caja: su .t-titular-s (serif 24–30 px); debajo, la explicación a 14 en tinta-2 */
+html[data-marca="sol"] :is(.chart,.card)>h3{margin:0;font:400 clamp(22px,2.2vw,26px)/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .chart>.sub{margin:-8px 0 0;max-width:65ch}
+
+/* Texto: nada por debajo de 14 px salvo las etiquetas en mayúsculas (.t-etiqueta). Notas y pies, a 14 en tinta-2. */
+html[data-marca="sol"] :is(.nota,.sub,.view-intro .sub,.face-foot,.hv-sub,.vc-t,.tab-item small,.mm-sub small){font-size:14px;line-height:1.5}
+html[data-marca="sol"] :is(.nota,.sub){color:var(--tinta-2)}
+/* Etiquetas: tipo, fechas y metadatos cortos, en .t-etiqueta (Geist Mono 12, mayúsculas, 0,08 em) */
+html[data-marca="sol"] :is(.tag,.pill,.res,.oficial-k){font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+html[data-marca="sol"] .tag{display:inline-flex;align-items:center;min-height:22px;padding:0 9px;border-radius:var(--r-pildora);background:var(--superficie);color:var(--tinta-2)}
+html[data-marca="sol"] .pill{display:inline-flex;align-items:center;min-height:22px;padding:0 9px;border-radius:var(--r-pildora);border:0;box-shadow:inset 0 0 0 1px currentColor}
+html[data-marca="sol"] .res{display:inline-flex;align-items:center;min-height:22px;padding:0 9px;border-radius:var(--r-pildora)}
+/* «título oficial»: una marca discreta (subrayado de puntos), no otra píldora */
+html[data-marca="sol"] .oficial{border:0;padding:0;margin-left:2px;font:inherit;font-size:inherit;color:inherit;text-decoration:underline dotted;text-underline-offset:.2em}
+
+/* Desplegables (<details>): el chevrón pixelado de Sol, que gira al abrirse */
+html[data-marca="sol"] details>summary{list-style:none}
+html[data-marca="sol"] details>summary::-webkit-details-marker{display:none}
+html[data-marca="sol"] details.ivs>summary{display:inline-flex;align-items:center;gap:8px;min-height:32px;font-size:14px;text-decoration-color:color-mix(in srgb,currentColor 40%,transparent);text-underline-offset:.25em}
+html[data-marca="sol"] details.ivs>summary::before{content:"";width:12px;height:12px;flex:none;background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat;transition:transform var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] details.ivs[open]>summary::before{transform:rotate(90deg)}
+
+/* Tablas: cabecera en etiqueta, filas separadas por línea fina, sin rayas */
+html[data-marca="sol"] table.dt{border-collapse:collapse}
+html[data-marca="sol"] table.dt th{font:500 11px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3);border-bottom:1px solid var(--linea)}
+html[data-marca="sol"] table.dt td{border-bottom:1px solid var(--linea);font-size:14px}
+html[data-marca="sol"] table.dt :is(td,th){padding:10px 12px}
+
+/* Filtros: las píldoras de Sol; la elegida, en tinta */
+html[data-marca="sol"] .controls{gap:var(--e-8)}
+html[data-marca="sol"] .chipbtn{min-height:36px;font:500 14px var(--font-texto);transition:background var(--t-rapido) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .chipbtn:hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%)}
+html[data-marca="sol"] .chipbtn[aria-pressed="true"]:hover{background:var(--tinta)}
+html[data-marca="sol"] .chipbtn:active{transform:scale(.96)}
+html[data-marca="sol"] :is(select,input[type="search"],input[type="text"]){font-family:var(--font-texto)}
+html[data-marca="sol"] select{border-radius:var(--r-12)}
+
+/* ---------- movimiento: sus tiempos (160/200 ms) y curvas; nada ligado al scroll ---------- */
+/* Cada vista entra subiendo 6 px desde un desenfoque de 3 px (su entrada de bloques, 360 ms) */
+@keyframes sol-entra{from{opacity:0;transform:translateY(6px);filter:blur(3px)}}
+html[data-marca="sol"] main>.view:not([hidden]){animation:sol-entra 360ms var(--curva-salida) both}
+/* Los menús de la barra: entran en 240 ms y salen rápido, como su diálogo */
+html[data-marca="sol"] .tab-panel:not([hidden]){animation:sol-entra 240ms var(--curva-salida) both}
+/* La hoja del menú del móvil baja como un cajón (su .in-menu) */
+@keyframes sol-cajon{from{clip-path:inset(0 0 100% 0 round var(--r-28))}to{clip-path:inset(0 round var(--r-28))}}
+html[data-marca="sol"] .menu-movil:not([hidden]){animation:sol-cajon 420ms var(--curva-cajon) both}
+/* Los escaños del hemiciclo aparecen con la curva de salida de Sol */
+html[data-marca="sol"] .hemi.anim :is(circle,rect){animation-duration:360ms;animation-timing-function:var(--curva-salida)}
+@media (prefers-reduced-motion:reduce){
+  html[data-marca="sol"] :is(main>.view,.tab-panel,.menu-movil):not([hidden]){animation:none}
+  html[data-marca="sol"] details.ivs>summary::before{transition:none}
+}
+
+/* =====================================================================================================================
+   Página a página
+   ===================================================================================================================== */
+
+/* ---------- Temas ---------- */
+/* «Sigue un tema»: una rejilla de bordes compartidos, sin huecos ni sombras por celda (como sus fuentes y su equipo) */
+html[data-marca="sol"] .temas-seguir{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
+html[data-marca="sol"] .temas-seguir .ts{display:grid;align-content:space-between;gap:var(--e-12);min-height:112px;margin:0;padding:var(--e-20);border:0;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);border-radius:0;background:none;text-align:left;cursor:pointer;transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .temas-seguir .ts b{font:400 22px/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .temas-seguir .ts small{font:500 11px/1.3 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .temas-seguir .ts:hover{background:var(--superficie)}
+
+/* ---------- Explora ---------- */
+/* Sus apartados: píldoras, como los de Elecciones */
+html[data-marca="sol"] .exp-nav{gap:var(--e-8);padding-block:var(--e-16);border-bottom:0}
+html[data-marca="sol"] .exp-nav a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:var(--r-pildora);background:var(--superficie);color:var(--tinta);font-size:14px;text-decoration:none;transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .exp-nav a:hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%)}
+/* Los temas para elegir: píldoras; el elegido, en tinta */
+html[data-marca="sol"] .exp-chip{min-height:36px;align-content:center;padding:6px 14px;border:0;border-radius:var(--r-pildora);background:var(--superficie);box-shadow:none;transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .exp-chip:hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%)}
+html[data-marca="sol"] .exp-chip[aria-pressed="true"]{background:var(--tinta);color:var(--blanco);box-shadow:none}
+html[data-marca="sol"] .exp-chip[aria-pressed="true"] small{color:color-mix(in srgb,var(--blanco) 70%,transparent)}
+
+html[data-marca="sol"] .exp-chip:has(small){border-radius:var(--r-16)}
+
+/* ---------- Ficha de diputado y Tus diputados (provincia) ---------- */
+/* Su escaño, en la pieza de los proyectos de Sol (gris, el sol detrás) con el hemiciclo en una tarjeta que sale por abajo */
+html[data-marca="sol"] :is(.ficha-top,.prov-top){grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,64px)}
+html[data-marca="sol"] :is(.ficha-top,.prov-top)>div:last-child{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:flex-end;min-height:340px;padding:clamp(28px,5%,48px) clamp(28px,9%,64px) 0;border-radius:var(--r-28);background:var(--superficie)}
+html[data-marca="sol"] :is(.ficha-top,.prov-top)>div:last-child::before{content:"";position:absolute;z-index:-1;left:50%;top:34%;width:96%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 22%,#ffd34d 0%,var(--amarillo) 36%,var(--naranja) 100%);transform:translateX(-50%)}
+html[data-marca="sol"] :is(.ficha-top,.prov-top)>div:last-child>*{width:100%;padding:var(--e-24) var(--e-24) var(--e-16);border-radius:var(--r-20) var(--r-20) 0 0;background:var(--blanco);box-shadow:var(--sombra-flota)}
+html[data-marca="sol"] .ficha-id .eyebrow{margin-bottom:var(--e-4)}
+html[data-marca="sol"] .ficha-top h2{font-size:clamp(36px,4.5vw,60px);line-height:1.04;letter-spacing:-.02em}
+
+/* ---------- Organigrama ---------- */
+/* Los cargos en tinta y los nombramientos recientes en el rojo de Sol (antes, morado y naranja) */
+html:root[data-marca="sol"]{--org:var(--tinta);--org-nuevo:var(--rojo)}
+html[data-marca="sol"] #org-svg text{font-family:var(--font-texto);fill:var(--tinta-3)}
+html[data-marca="sol"] :is(.org-panel,.org-titular){border:0;box-shadow:0 0 0 1px var(--linea);border-radius:var(--r-20)}
+html[data-marca="sol"] .org-titular{background:var(--superficie);box-shadow:none}
+html[data-marca="sol"] #org-res{border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota)}
+html[data-marca="sol"] details.org-rama>summary::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat;transition:transform var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] details.org-rama[open]>summary::before{transform:rotate(90deg)}
+
+/* ---------- Glosario ---------- */
+/* Rejilla de bordes compartidos: el término en serif y la definición a 14 */
+html[data-marca="sol"] .glosario{gap:0;border-top:1px solid var(--linea);border-left:1px solid var(--linea)}
+html[data-marca="sol"] .glosario>div{padding:var(--e-20) var(--e-24);border:0;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);border-radius:0;box-shadow:none;background:none;scroll-margin-top:96px}
+html[data-marca="sol"] .glosario dt{margin-bottom:var(--e-8);font:400 21px/1.2 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .glosario dd{color:var(--tinta-2)}
+html[data-marca="sol"] .glosario>div:target{background:var(--ambar-claro)}
+
+/* ---------- Cómo se hace una ley ---------- */
+/* Sus pasos numerados (su «Cómo contribuir»): «01» en Geist Mono y tinta-3, el titular en serif, sin línea ni círculos */
+html[data-marca="sol"] .como-ley{counter-reset:paso;gap:var(--e-32);border-left:0;margin-left:0;max-width:760px}
+html[data-marca="sol"] .como-ley li{counter-increment:paso;grid-template-columns:auto 1fr;gap:var(--e-20);padding:0}
+html[data-marca="sol"] .como-ley .num{position:static;width:auto;height:auto;padding-top:6px;border-radius:0;background:none;color:var(--tinta-3);font-size:0}
+html[data-marca="sol"] .como-ley .num::before{content:counter(paso,decimal-leading-zero);font:400 15px var(--font-mono)}
+html[data-marca="sol"] .como-ley h3{margin:0 0 var(--e-12);font:400 clamp(24px,2.4vw,30px)/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .como-ley p{color:var(--tinta-2);font-size:16px;line-height:1.6}
+html[data-marca="sol"] .como-ley .cifra{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:var(--r-pildora);background:var(--superficie);color:var(--tinta);font:500 12px var(--font-mono);letter-spacing:.04em}
+html[data-marca="sol"] .como-ley .ej{font-size:14px}
+
+@media (max-width:720px){ html[data-marca="sol"] :is(.ficha-top,.prov-top){grid-template-columns:1fr} }
+html[data-marca="sol"] .prov-top+.tus-grid{margin-top:var(--e-48)}
+
+/* ---------- Geografía ---------- */
+/* Los tonos de los mapas (geografia.js los lee de aquí): la población en tinta, lo que baja en rojo, lo que sube y la
+   renta en el azul de Sol, la edad en rojo oscuro */
+html:root[data-marca="sol"]{--geo-neutro:#222222;--geo-calido:#df1717;--geo-frio:#2346e8;--geo-renta:#2346e8;--geo-edad:#a50e0e}
+
+html[data-marca="sol"] .geo-card .t{font:400 22px/1.15 var(--display);letter-spacing:-.01em;text-decoration:none}
+html[data-marca="sol"] .geo-card .t:hover{text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:from-font}
+
+/* ---------- Elecciones ---------- */
+/* Los colores de sus gráficos (los módulos los leen de aquí): el Gobierno en tinta; en «La legislatura, día a día», las
+   votaciones en tinta, las leyes en rojo, los decretos-leyes en tinta y las preguntas en ámbar; el origen de las leyes
+   (Gobierno, grupos, Senado, comunidades) en tinta, azul, ámbar y gris; lo congelado, en azul */
+html:root[data-marca="sol"]{
+  --color-gob:#222222;
+  --cf-azul:#222222; --cf-verde:#df1717; --cf-morado:#222222; --cf-ambar:#c9962a;
+  --c-gob:#222222; --c-grupos:#2346e8; --c-sen:#c9962a; --c-ccaa:#9a9a9a;
+  --c-hielo:#2346e8;
+}
+
+
+/* ---------- Sobre el proyecto: quién está detrás ---------- */
+/* A la izquierda, quién lo empezó; a la derecha, Reforma Digital en el atardecer, con su R grande en blanco */
+html[data-marca="sol"] .autor-par{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--e-16);align-items:stretch}
+html[data-marca="sol"] .autor-par .autor{align-content:start}
+html[data-marca="sol"] .autor-par .eyebrow{margin-bottom:var(--e-4)}
+html[data-marca="sol"] .autor-rd{position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:start;gap:var(--e-16);padding:var(--e-32) var(--e-32) 160px;border-radius:var(--r-28);background:var(--atardecer);color:var(--blanco);--foco:var(--blanco)}
+html[data-marca="sol"] .autor-rd .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
+html[data-marca="sol"] .autor-rd h3{margin:0;font:400 clamp(28px,3vw,40px)/1.05 var(--display);letter-spacing:-.02em}
+html[data-marca="sol"] .autor-rd p{margin:0;max-width:46ch;font-size:16px;line-height:1.6}
+html[data-marca="sol"] .autor-rd .boton-claro{box-shadow:none}
+html[data-marca="sol"] .autor-rd::after{content:"";position:absolute;z-index:-1;right:28px;bottom:24px;width:84px;height:112px;background:var(--blanco);
+  -webkit-mask:url(sol/r.svg) center/contain no-repeat;mask:url(sol/r.svg) center/contain no-repeat}
+@media (max-width:860px){ html[data-marca="sol"] .autor-par{grid-template-columns:1fr} }
+
+/* =====================================================================================================================
+   Cabeceras de sección: una luz por familia, con el sol y sus halos de las imágenes de su web (og/template.html)
+   Actividad, en el amanecer de su pie; Quién es quién, en el atardecer de su portada; Entender, en la pieza gris.
+   ===================================================================================================================== */
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top){
+  --sol-d:min(34vw,460px); --sol-x:20%; --halo:rgb(255 255 255 / .2);   /* en vw: el mismo valor sirve para ancho y alto; asoma un 38 % */
+  position:relative;isolation:isolate;overflow:hidden;align-items:flex-end;min-height:300px;margin-top:var(--e-16);
+  padding:clamp(32px,5vw,64px) clamp(24px,4.5vw,56px);border-radius:var(--r-28);background:var(--superficie)}
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top)>*{position:relative;z-index:1}
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top)>div:first-child{max-width:min(62ch,62%)}
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top) h2{font-size:clamp(40px,5vw,68px);line-height:1.02;letter-spacing:-.025em}
+/* El sol: un disco que sube desde abajo a la derecha */
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top)::after{content:"";position:absolute;z-index:0;
+  right:calc(var(--sol-x) - var(--sol-d) / 2);bottom:calc(var(--sol-d) * -.62);width:var(--sol-d);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,#fff3c4 0%,#ffd34d 22%,var(--amarillo) 46%,var(--naranja) 82%,#f2551a 100%)}
+/* Sus halos: anillos finos alrededor del disco */
+html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top)::before{content:"";position:absolute;z-index:0;
+  right:calc(var(--sol-x) - var(--sol-d));bottom:calc(var(--sol-d) * -1.12);width:calc(var(--sol-d) * 2);aspect-ratio:1;
+  background:radial-gradient(circle closest-side,transparent 0 58%,var(--halo) 58% 58.5%,transparent 58.5% 68%,var(--halo) 68% 68.4%,
+    transparent 68.4% 80%,var(--halo) 80% 80.3%,transparent 80.3% 94%,var(--halo) 94% 94.25%,transparent 94.25%)}
+/* Actividad: el amanecer, texto en tinta */
+html[data-marca="sol"] :is(#dias,#votaciones,#leyes,#temas,#explora,#preguntas,#tema)>.view-intro:first-of-type{
+  --halo:rgb(34 34 34 / .13);color:var(--tinta);
+  background:radial-gradient(80% 70% at 50% -12%,#ffe58f 0%,rgba(255,229,143,0) 70%),linear-gradient(180deg,#ffd34d 0%,var(--amarillo) 46%,var(--naranja) 100%)}
+html[data-marca="sol"] :is(#dias,#votaciones,#leyes,#temas,#explora,#preguntas,#tema)>.view-intro:first-of-type :is(p,.eyebrow){color:var(--tinta)}
+html[data-marca="sol"] :is(#dias,#votaciones,#leyes,#temas,#explora,#preguntas,#tema)>.view-intro:first-of-type::after{
+  background:radial-gradient(circle at 50% 38%,#fff8de 0%,#ffe58f 30%,#ffd34d 60%,var(--amarillo) 100%)}
+/* Quién es quién: el atardecer, texto en blanco */
+html[data-marca="sol"] :is(#diputados,#grupos,#oradores,#organigrama)>.view-intro:first-of-type{
+  color:var(--blanco);--foco:var(--blanco);background:var(--atardecer)}
+html[data-marca="sol"] :is(#diputados,#grupos,#oradores,#organigrama)>.view-intro:first-of-type :is(p,.eyebrow,a,.linklike){color:var(--blanco)}
+html[data-marca="sol"] :is(#diputados,#grupos,#oradores,#organigrama)>.view-intro:first-of-type .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
+/* Entender: la pieza gris con el sol */
+html[data-marca="sol"] :is(#glosario,#como-ley)>.view-intro:first-of-type{--halo:rgb(34 34 34 / .08)}
+@media (max-width:720px){
+  html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top){--sol-d:min(78vw,320px);--sol-x:22%;min-height:320px;align-items:flex-start}
+  html[data-marca="sol"] main>.view>.view-intro:first-of-type:not(.prov-top)>div:first-child{max-width:none}
+}
+
+/* =====================================================================================================================
+   Tarjetas que son un enlace (su .tarjeta-enlace): el chevrón abajo a la derecha y, al pasar el ratón, un sol suave que
+   sube desde abajo y el chevrón que avanza. Votaciones ajustadas, temas, apartados de Elecciones y comunidades.
+   ===================================================================================================================== */
+html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card,.ts){position:relative;isolation:isolate;overflow:hidden;
+  transition:box-shadow var(--t-medio) var(--curva-salida),background-color var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card)::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+  background:radial-gradient(90% 55% at 50% 118%,#ffd34d 0%,rgb(255 190 11 / .55) 35%,rgb(255 122 26 / 0) 75%);opacity:0;transform:translateY(24%);
+  transition:opacity var(--t-medio) var(--curva-salida),transform 420ms var(--curva-salida)}
+html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card,.ts)::after{content:"";position:absolute;right:var(--e-20);bottom:var(--e-20);width:14px;height:14px;
+  background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat;
+  transition:transform var(--t-medio) var(--curva-salida)}
+@media (hover:hover) and (pointer:fine){
+  html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card):hover{box-shadow:var(--sombra-suave)}
+  html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card):hover::before{opacity:1;transform:none}
+  html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card,.ts):hover::after{transform:translateX(4px)}
+}
+html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card){padding-bottom:var(--e-48)}
+html[data-marca="sol"] .el-tarjeta{border:0;border-radius:var(--r-20)}
+/* Los enlaces de texto con chevrón: el chevrón avanza al pasar el ratón */
+@media (hover:hover) and (pointer:fine){
+  html[data-marca="sol"] .linklike::after{transition:transform var(--t-medio) var(--curva-salida)}
+  html[data-marca="sol"] .linklike:hover::after{transform:translateX(3px)}
+  html[data-marca="sol"] :is(a,button):hover>svg.icono-fin{transform:translateX(3px)}
+  html[data-marca="sol"] :is(a,button)>svg.icono-fin{transition:transform var(--t-medio) var(--curva-salida)}
+}
+@media (prefers-reduced-motion:reduce){
+  html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card)::before{transform:none}
+  html[data-marca="sol"] :is(.vcard,.el-tarjeta,.geo-card,.ts,.linklike)::after,html[data-marca="sol"] svg.icono-fin{transition:none!important;transform:none!important}
+}
+
+/* En los apartados de Elecciones, el titular en serif y sin la flecha de texto (ya lleva el chevrón de la tarjeta) */
+html[data-marca="sol"] .el-tarjeta .t{font:400 22px/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .el-tarjeta .t svg.icono-fin{display:none}
+/* Los grupos de apartados de la portada de Elecciones, como sus proyectos numerados: «01 · LA LEGISLATURA» en etiqueta
+   roja y el titular de sección en serif grande, sin la raya de arriba */
+html[data-marca="sol"] .elh-grupo{padding-top:var(--e-96)}
+html[data-marca="sol"] .elh-grupo-h{display:block;border-top:0;padding-top:0;margin-bottom:var(--e-24)}
+html[data-marca="sol"] .elh-grupo-h .k{display:block;margin-bottom:var(--e-16);font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rojo)}
+html[data-marca="sol"] .elh-grupo-h .k b{display:inline;font-weight:500}
+html[data-marca="sol"] .elh-grupo-h h2{font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-.02em}
+html[data-marca="sol"] .elh-grupo-h p{margin-top:var(--e-12);font-size:17px;line-height:1.6;color:var(--tinta-2)}
+
