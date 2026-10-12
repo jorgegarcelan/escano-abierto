@@ -184,8 +184,7 @@ class Tarjeta:
     """Lienzo de 1200×630 con la cabecera y el pie de la marca (Sol).
 
     fondo: "blanco" (la de cada página), "atardecer" (la portada) o "amanecer" (el juego). El contenido va entre
-    y=130 y y=545; debajo, el pie con la dirección de la página y el crédito, que `png()` dibuja junto con la marca
-    de agua.
+    y=130 y y=545; debajo, el pie con la dirección de la página y el crédito, que dibuja `png()`.
     """
 
     def __init__(self, fondo: str = "blanco"):
@@ -304,24 +303,35 @@ class Tarjeta:
         self.d.text(xy, texto, font=self.mono(tam, 500), fill=TINTA, anchor="ls")
 
     def pieza(self) -> tuple[int, int, int, int]:
-        """A la derecha, una pieza del atardecer con una tarjeta blanca encima, como el último pleno de la portada
-        de la web. Devuelve la caja del hemiciclo dentro de la tarjeta."""
-        from PIL import Image, ImageDraw, ImageFilter
+        """A la derecha, la pieza de los proyectos de Sol (su .rc-marco), como el último pleno de la portada de la web:
+        gris, con un sol que asoma por detrás y una tarjeta blanca que sale por el borde de abajo. Devuelve la caja del
+        hemiciclo dentro de la tarjeta."""
+        from PIL import Image, ImageChops, ImageDraw, ImageFilter
         x0, y0, x1, y1 = PIEZA
-        sol = _atardecer(x1 - x0, y1 - y0)
-        mascara = Image.new("L", sol.size, 0)
-        ImageDraw.Draw(mascara).rounded_rectangle([0, 0, sol.width - 1, sol.height - 1], radius=28, fill=255)
-        self.img.paste(sol, (x0, y0), mascara)
-        c = (x0 + 26, y0 + 26, x1 - 26, y1 - 26)
-        # La sombra de --sombra-flota, cálida y abajo.
+        w, h = x1 - x0, y1 - y0
+        pieza = Image.new("RGB", (w, h), SUPERFICIE)
+        # El sol: un disco del 96 % del ancho que empieza al 30 % del alto, con su brillo arriba (circle at 50% 22%).
+        d = round(.96 * w)
+        sol = _pintar(_elipse(d, d, .9265 * d, .9265 * d, d / 2, .22 * d),
+                      _tabla([(0, (255, 211, 77), 1), (.36, AMARILLO, 1), (1, NARANJA, 1)], NARANJA))
+        disco = Image.new("L", (d * 3, d * 3), 0)
+        ImageDraw.Draw(disco).ellipse([0, 0, d * 3 - 1, d * 3 - 1], fill=255)
+        pieza.paste(sol, ((w - d) // 2, round(.3 * h)), disco.resize((d, d), Image.LANCZOS))
+        mascara = Image.new("L", (w * 3, h * 3), 0)
+        ImageDraw.Draw(mascara).rounded_rectangle([0, 0, w * 3 - 1, h * 3 - 1], radius=28 * 3, fill=255)
+        self.img.paste(pieza, (x0, y0), mascara.resize((w, h), Image.LANCZOS))
+        c = (x0 + 52, y0 + 36, x1 - 52, y1)
+        # La sombra de --sombra-flota, cálida, recortada a la pieza.
         sombra = Image.new("L", (W, H), 0)
-        ImageDraw.Draw(sombra).rounded_rectangle([c[0] + 4, c[1] + 14, c[2] - 4, c[3] + 10], radius=20, fill=90)
-        self.img = Image.composite(Image.new("RGB", (W, H), (120, 40, 0)), self.img,
-                                   sombra.filter(ImageFilter.GaussianBlur(14)))
+        ImageDraw.Draw(sombra).rounded_rectangle([c[0] + 2, c[1] + 10, c[2] - 2, c[3] + 30], radius=20, fill=70)
+        sombra = sombra.filter(ImageFilter.GaussianBlur(14))
+        recorte = Image.new("L", (W, H), 0)
+        recorte.paste(mascara.resize((w, h), Image.LANCZOS), (x0, y0))
+        self.img = Image.composite(Image.new("RGB", (W, H), (120, 40, 0)), self.img, ImageChops.multiply(sombra, recorte))
         self.d = ImageDraw.Draw(self.img)
-        self.d.rounded_rectangle(c, radius=20, fill=BLANCO)
+        self.d.rounded_rectangle(c, radius=20, fill=BLANCO, corners=(True, True, False, False))
         self.caja = c
-        return c[0] + 22, c[1] + 18, c[2] - 22, c[3] - 46
+        return c[0] + 18, c[1] + 22, c[2] - 18, c[3] - 52
 
     def leyenda(self, texto: str):
         """El pie del hemiciclo, dentro de la tarjeta blanca."""
@@ -351,24 +361,11 @@ class Tarjeta:
         self.d.text((64, 598), DOMINIO + (f"/{ruta}" if ruta else ""), font=self.mono(16, 400), fill=self.suave, anchor="ls")
         self.d.text((W - 64, 598), CREDITO, font=self.geist(17, 500), fill=self.suave, anchor="rs")
 
-    def _marca_de_agua(self):
-        """Tenue y en diagonal, para que el crédito sobreviva aunque se recorte el pie."""
-        from PIL import Image, ImageDraw
-        capa = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        d = ImageDraw.Draw(capa)
-        color = {"atardecer": (255, 255, 255, 16), "amanecer": (0, 0, 0, 9)}.get(self.fondo, (0, 0, 0, 6))
-        d.text((W / 2, H / 2 - 4), "jorgegarcelan.com", font=self.geist(46, 600), fill=color, anchor="ms")
-        d.text((W / 2, H / 2 + 4), "@jgarcelan", font=self.geist(34, 600), fill=color, anchor="mt")
-        capa = capa.rotate(16, resample=Image.BICUBIC, center=(W / 2, H / 2))
-        self.img = Image.alpha_composite(self.img.convert("RGBA"), capa).convert("RGB")
-        self.d = ImageDraw.Draw(self.img)
-
     def png(self, ruta: str = "") -> bytes:
         """ruta: la de su página (votacion/101-1), que se lee en el pie."""
         import io
         from PIL import Image
         self._pie(ruta)
-        self._marca_de_agua()
         b = io.BytesIO()
         # 256 colores (octree: conserva los colores exactos de los escaños, que ocupan poco) y difuminado, para que los
         # degradados del atardecer y el amanecer no se vean a franjas.

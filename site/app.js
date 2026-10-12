@@ -1387,14 +1387,20 @@ function renderInicio(){
   const candidatas = (delDia.length?delDia:DATA.votaciones).slice().sort((a,b)=>margen(a)-margen(b) || b.fecha.localeCompare(a.fecha));
   const dest = candidatas[0];
 
+  // El resumen, solo el principio: las frases que quepan en unas 260 letras (al menos una); el resto está en la sesión.
+  const resumenCorto = t => frases(t).reduce((acc, f) => !acc || (acc + " " + f).length <= 260 ? (acc ? acc + " " + f : f) : acc, "");
+  // La votación más ajustada: arriba qué es y cómo acabó; en medio el hemiciclo y el marcador; abajo el título.
   const heroVoto = dest ? `<figure class="hero-vote">
-      <div class="eyebrow" style="text-align:center">${delDia.length?"La votación más ajustada del día":`La votación más ajustada · ${dt(dest.fecha).d} ${dt(dest.fecha).m}`}</div>
+      <div class="hv-barra"><span class="eyebrow">${delDia.length?"La más ajustada del día":`La más ajustada · ${dt(dest.fecha).d} ${dt(dest.fecha).m}`}</span><span class="res ${passed(dest)?"ok":"ko"}">${resLabel(dest)}</span></div>
       <div class="hemi-wrap">${hemiciclo(dest,{grande:true, anim:true})}
-        <div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${resLabel(dest)}</span></div></div>
+        <div class="hemi-center"><b>${dest.si} – ${dest.no}</b><span>${margen(dest)} ${margen(dest)===1?"voto":"votos"} de diferencia</span></div></div>
       ${hemiLeyenda()}
       <p class="hv-t">${esc(dest.titulo)}</p>
-      <div class="hv-sub">${dest.titulo_fuente==="oficial"?`<span class="oficial" data-tip="Título abreviado del texto oficial del expediente. Conserva las palabras del grupo que presenta la iniciativa.">título oficial</span> · `:""}${esc(dest.tipo)} · ${dest.proponente==="GOB"?"Gobierno":esc(dest.proponente)} · ${margen(dest)} ${margen(dest)===1?"voto":"votos"} de diferencia · <button class="linklike" data-go="votaciones" data-anchor="v-${dest.id}" style="font-size:12.5px">Ver votación</button></div>
+      <div class="hv-sub">${esc(dest.tipo)} · ${dest.proponente==="GOB"?"Gobierno":esc(dest.proponente)}${dest.titulo_fuente==="oficial"?` · <span class="oficial" data-tip="Título abreviado del texto oficial del expediente. Conserva las palabras del grupo que presenta la iniciativa.">título oficial</span>`:""}</div>
+      <button class="linklike hv-ir" data-go="votaciones" data-anchor="v-${dest.id}">Ver la votación</button>
     </figure>` : "";
+  // Lo que se votó en esa sesión, una fila por votación (como las fuentes de Reforma Digital): resultado, marcador y título.
+  const votosDia = delDia.length ? `<div class="hero-votos"><div class="eyebrow">Lo que se votó</div><ul>${delDia.slice(0,4).map(v=>`<li><button type="button" data-go="votaciones" data-anchor="v-${v.id}"><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span><span class="hv-n">${v.si} – ${v.no}</span><span class="hv-tt">${esc(v.titulo)}</span></button></li>`).join("")}</ul>${delDia.length>4?`<button class="linklike" data-go="dias" data-anchor="s-${ses.id}">y ${delDia.length-4} más</button>`:""}</div>` : "";
 
   // Cifras del periodo.
   const oradores = new Set(IVS.map(i=>i.orador));
@@ -1435,7 +1441,8 @@ function renderInicio(){
       <div class="hero-texto">
         <div class="eyebrow">${ses.organo==="Pleno"?"Último pleno":"Última sesión"} · ${esc(fechaLarga(ses.fecha))}</div>
         <h2 class="hero-h">${esc(titular)}</h2>
-        ${lede?`<p class="hero-lede">${esc(lede)}</p>`:""}
+        ${lede?`<p class="hero-lede">${esc(resumenCorto(lede))}</p>`:""}
+        ${votosDia}
         <div class="hero-cta"><button class="btn primary boton" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión →</button><button class="linklike" data-go="votaciones">Todas las votaciones</button></div>
       </div>
       ${heroVoto?`<div class="hero-pieza">${heroVoto}</div>`:""}

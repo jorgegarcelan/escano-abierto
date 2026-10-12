@@ -60,7 +60,7 @@ html[data-marca="sol"] :is(.btn,.boton,.boton-claro,.chipbtn) .icono:is(.icono-f
 /* Los enlaces de texto, como su .in-enlace: subrayado y, detrás, el chevrón. */
 html[data-marca="sol"] .linklike{font-weight:500;text-decoration-color:color-mix(in srgb,currentColor 40%,transparent);text-underline-offset:.25em}
 html[data-marca="sol"] .linklike:hover{text-decoration-color:currentColor}
-html[data-marca="sol"] :is(.sec-h,.face-foot,.hero-cta,.sol-manifiesto,.elh-links,.view-intro) .linklike:not(:has(.icono))::after{
+html[data-marca="sol"] :is(.sec-h,.face-foot,.hero-cta,.hero-vote,.sol-manifiesto,.elh-links,.view-intro) .linklike:not(:has(.icono))::after{
   content:"";display:inline-block;width:12px;height:12px;margin-left:.45em;vertical-align:-.05em;background:currentColor;
   -webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat}
 
@@ -127,14 +127,37 @@ html[data-marca="sol"] .view-intro{gap:var(--e-16) var(--e-32);padding-top:var(-
 html[data-marca="sol"] .view-intro p{font-size:18px;line-height:1.6;color:var(--tinta-2);max-width:65ch}
 
 /* El último pleno: como un proyecto de su portada, el texto a la izquierda y la votación sobre una pieza del atardecer. */
-html[data-marca="sol"] .hero{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,64px);align-items:center;padding:var(--e-80) 0 0;scroll-margin-top:var(--e-24)}
+html[data-marca="sol"] .hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,64px);align-items:center;padding:var(--e-80) 0 0;scroll-margin-top:var(--e-24)}
 html[data-marca="sol"] .hero-texto{display:grid;gap:var(--e-20);align-content:center}
-html[data-marca="sol"] .hero-h{margin:0;font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-.02em;color:var(--tinta)}
+html[data-marca="sol"] .hero-h{margin:0;font-size:clamp(32px,3.6vw,48px);line-height:1.06;letter-spacing:-.02em;color:var(--tinta)}
 html[data-marca="sol"] .hero-lede{margin:0;font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--tinta-2);text-wrap:pretty}
 html[data-marca="sol"] .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-8) var(--e-24);margin-top:var(--e-8)}
-html[data-marca="sol"] .hero-pieza{display:grid;place-items:center;padding:clamp(20px,4vw,48px);border-radius:var(--r-28);background:var(--atardecer)}
-html[data-marca="sol"] .hero-vote{width:100%;color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px 22px 20px}
-html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.08em;color:var(--tinta-2)}
+/* Lo que se votó: filas de línea fina, como sus fuentes oficiales (.in-fuente). */
+html[data-marca="sol"] .hero-votos{display:grid;gap:var(--e-8);justify-items:start}
+html[data-marca="sol"] .hero-votos .eyebrow{color:var(--tinta-3)}
+html[data-marca="sol"] .hero-votos ul{list-style:none;margin:0;padding:0;width:100%;border-top:1px solid var(--linea)}
+html[data-marca="sol"] .hero-votos li button{display:grid;grid-template-columns:auto 7.5ch minmax(0,1fr);align-items:center;gap:var(--e-12);width:100%;min-height:52px;padding:var(--e-8) 0;border:0;border-bottom:1px solid var(--linea);background:none;color:var(--tinta);font:inherit;text-align:left;cursor:pointer}
+html[data-marca="sol"] .hero-votos .res{justify-self:start;border-radius:var(--r-pildora);padding:3px 9px;font-size:11px}
+html[data-marca="sol"] .hero-votos .hv-n{font:500 15px var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+/* Dos líneas: los títulos de un mismo día suelen empezar igual («RDL 26/2026 por el que se adoptan…»). */
+html[data-marca="sol"] .hero-votos .hv-tt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px;line-height:1.4;color:var(--tinta-2)}
+html[data-marca="sol"] .hero-votos li button:hover .hv-tt{color:var(--tinta);text-decoration:underline;text-underline-offset:.25em}
+/* La pieza, como el marco de sus proyectos (.rc-marco): gris, con un sol que asoma por abajo detrás y la tarjeta que
+   sale por el borde de abajo, como su navegador (.rc-pieza-web). */
+html[data-marca="sol"] .hero-pieza{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:flex-end;align-self:stretch;min-height:560px;
+  padding:clamp(32px,6%,56px) clamp(32px,11%,72px) 0;border-radius:var(--r-28);background:var(--superficie)}
+html[data-marca="sol"] .hero-pieza::before{content:"";position:absolute;z-index:-1;left:50%;top:30%;width:96%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 22%,#ffd34d 0%,var(--amarillo) 36%,var(--naranja) 100%);transform:translateX(-50%)}
+html[data-marca="sol"] .hero-vote{width:100%;gap:var(--e-12);color:var(--tinta);border:0;border-radius:var(--r-20) var(--r-20) 0 0;box-shadow:var(--sombra-flota);padding:0 var(--e-24) var(--e-24)}
+/* La barra de la tarjeta (su .rc-navegador-barra): qué votación es y cómo acabó. */
+html[data-marca="sol"] .hv-barra{display:flex;align-items:center;justify-content:space-between;gap:var(--e-12);min-height:52px;margin:0 calc(-1 * var(--e-24)) var(--e-8);padding:0 var(--e-24);border-bottom:1px solid var(--linea)}
+html[data-marca="sol"] .hv-barra .res{border-radius:var(--r-pildora);padding:3px 10px;font-size:11px}
+html[data-marca="sol"] .hero-vote .hemi-center b{font-size:clamp(36px,3.4vw,48px);letter-spacing:-.04em}
+html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.06em;color:var(--tinta-3)}
+html[data-marca="sol"] .hero-vote .hv-t{font-size:16px;line-height:1.45;max-width:40ch}
+html[data-marca="sol"] .hero-vote .hv-sub{margin-top:-4px;font:400 13px var(--font-texto);letter-spacing:0;color:var(--tinta-3)}
+html[data-marca="sol"] .hero-vote .hv-sub .oficial{border:0;padding:0;font:inherit;text-decoration:underline dotted;text-underline-offset:.2em}
+html[data-marca="sol"] .hero-vote .hv-ir{justify-self:center;font-size:14px}
 
 /* El proyecto: su «La iniciativa» (dos columnas; a la izquierda etiqueta, titular y enlace; a la derecha la lectura). */
 html[data-marca="sol"] .sol-manifiesto{grid-template-columns:1fr 1fr;gap:var(--e-64);align-items:start}
@@ -258,6 +281,10 @@ html[data-marca="sol"] :is(.mm-item:not(.mm-sub).activa,.mm-sub.activa b)::after
   html[data-marca="sol"] .hero,html[data-marca="sol"] .sol-manifiesto{grid-template-columns:1fr;gap:var(--e-32)}
 }
 @media (max-width:720px){
+  /* En el móvil, el título de cada votación en su propia fila, debajo del resultado y el marcador. */
+  html[data-marca="sol"] .hero-votos li button{grid-template-columns:auto 1fr;row-gap:6px;padding:var(--e-12) 0}
+  html[data-marca="sol"] .hero-votos .hv-tt{grid-column:1 / -1;-webkit-line-clamp:3}
+  html[data-marca="sol"] .hero-pieza{min-height:0;padding-inline:var(--e-20)}
   html[data-marca="sol"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   html[data-marca="sol"] .kpi{border-bottom:1px solid var(--linea)}
   html[data-marca="sol"] .topbar-in{min-height:64px}
