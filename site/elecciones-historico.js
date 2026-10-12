@@ -98,7 +98,7 @@ const CSS = `
 .pe-balanza .eje{stroke:var(--line);stroke-width:1}
 .pe-balanza circle{fill:color-mix(in srgb,var(--ink) 22%,var(--surface));stroke:var(--surface);stroke-width:1;cursor:pointer;transition:cx .9s cubic-bezier(.2,.8,.2,1),cy .9s cubic-bezier(.2,.8,.2,1),r .6s,fill .3s}
 .pe-balanza circle:hover{fill:color-mix(in srgb,var(--ink) 55%,var(--surface))}
-.pe-balanza circle.tu{fill:#4F7AA6;stroke:var(--ink);stroke-width:2}
+.pe-balanza circle.tu{fill:var(--el-neutro,#4F7AA6);stroke:var(--ink);stroke-width:2}
 .pe-balanza text{font:600 11px var(--sans);fill:var(--muted);pointer-events:none}
 .pe-balanza text.tu{fill:var(--ink)}
 .pe-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:4px 20px;padding:14px 0;margin-top:14px;border-block:1px solid var(--line)}
@@ -560,7 +560,10 @@ function rampa(hex){
   const a = hexRgb(sup.startsWith("#") ? sup : "#EDEEEA"), b = hexRgb(hex);
   return t => { t = Math.max(0, Math.min(1, t)); const c = a.map((x,i)=>Math.round(x + (b[i]-x)*(0.12 + 0.88*t))); return `rgb(${c.join(",")})`; };
 }
-const NEUTRO = "#5E7FA3";
+// Cada marca puede poner los suyos en --el-neutro, --el-calido, --el-votos y --el-escanos (Sol: tinta, rojo, tinta, rojo).
+const elColor = (k, def) => getComputedStyle(document.documentElement).getPropertyValue("--el-" + k).trim() || def;
+const NEUTRO = elColor("neutro", "#5E7FA3"), CALIDO = elColor("calido", "#B4613A"), BAJA = elColor("calido", "#9A6B4F");
+const C_VOTOS = elColor("votos", "#6E8FB8"), C_ESCANOS = elColor("escanos", "#C9A227");
 
 /* Hemiciclo genérico de N escaños (mismo algoritmo que la web). */
 const _asientos = {};
@@ -1273,8 +1276,8 @@ export async function pintarMetricas(sec, c){
     <p class="nota">Los índices se calculan por familias de partidos (las confluencias van con su familia) y, dentro de «Otros», por candidatura. Fuente: Ministerio del Interior.</p>`;
   const ancho = id => sec.querySelector("#"+id).clientWidth;
   sec.querySelector("#me-part").innerHTML = graficoLinea(E, [{nombre:"Participación", color:NEUTRO, valores:E.map(e=>e.votantes/e.censo)}], {min:.6, max:.85, ancho:ancho("me-part")});
-  sec.querySelector("#me-nep").innerHTML = graficoLinea(E, [{nombre:"Votos", color:"#6E8FB8", valores:E.map(e=>e.metricas.nep_votos)}, {nombre:"Escaños", color:"#C9A227", valores:E.map(e=>e.metricas.nep_escanos)}], {min:2, max:6.5, paso:.5, ancho:ancho("me-nep"), formato:v=>dec(v,1), eje:v=>dec(v,1)});
-  sec.querySelector("#me-bip").innerHTML = graficoLinea(E, [{nombre:"Votos", color:"#6E8FB8", valores:E.map(e=>((e.fam.PSOE?.[0]||0)+(e.fam.PP?.[0]||0))/e.validos)}, {nombre:"Escaños", color:"#C9A227", valores:E.map(e=>((e.fam.PSOE?.[1]||0)+(e.fam.PP?.[1]||0))/350)}], {min:.3, max:1, ancho:ancho("me-bip")});
+  sec.querySelector("#me-nep").innerHTML = graficoLinea(E, [{nombre:"Votos", color:C_VOTOS, valores:E.map(e=>e.metricas.nep_votos)}, {nombre:"Escaños", color:C_ESCANOS, valores:E.map(e=>e.metricas.nep_escanos)}], {min:2, max:6.5, paso:.5, ancho:ancho("me-nep"), formato:v=>dec(v,1), eje:v=>dec(v,1)});
+  sec.querySelector("#me-bip").innerHTML = graficoLinea(E, [{nombre:"Votos", color:C_VOTOS, valores:E.map(e=>((e.fam.PSOE?.[0]||0)+(e.fam.PP?.[0]||0))/e.validos)}, {nombre:"Escaños", color:C_ESCANOS, valores:E.map(e=>((e.fam.PSOE?.[1]||0)+(e.fam.PP?.[1]||0))/350)}], {min:.3, max:1, ancho:ancho("me-bip")});
   sec.querySelector("#me-gal").innerHTML = graficoLinea(E, [{nombre:"Gallagher", color:NEUTRO, valores:E.map(e=>e.metricas.gallagher)}], {min:0, max:12, paso:2, ancho:ancho("me-gal"), formato:v=>dec(v,1), eje:v=>v});
   sec.querySelector("#me-ped").innerHTML = graficoLinea(E, [{nombre:"Pedersen", color:NEUTRO, valores:E.map(e=>e.metricas.pedersen ?? null)}], {min:0, max:40, paso:10, ancho:ancho("me-ped"), formato:v=>dec(v,1)+" %", eje:v=>v+"%"});
   sec.querySelector("#me-sin").innerHTML = graficoLinea(E, [{nombre:"Votos sin escaño", color:NEUTRO, valores:E.map(e=>e.metricas.sin_escano)}], {min:1e6, max:3.5e6, paso:5e5, ancho:ancho("me-sin"), formato:v=>fmtCorto(v), eje:v=>dec(v/1e6,1)+" M"});
@@ -1619,7 +1622,7 @@ export async function pintarEscano(sec, c){
   }
   function mapa(){
     const perd = heModo === "perdidos", val = Object.fromEntries(Object.entries(P).map(([c2,x])=>[c2, perd ? x.sin_escano/x.validos : x.validos/x.e]));
-    const vs = Object.values(val), lo = Math.min(...vs), hi = Math.max(...vs), r = rampa(perd ? "#B4613A" : NEUTRO);
+    const vs = Object.values(val), lo = Math.min(...vs), hi = Math.max(...vs), r = rampa(perd ? CALIDO : NEUTRO);
     $("#he-mapa-t").textContent = perd ? "Votos que no sirvieron para elegir a nadie" : "Votos por escaño en cada provincia";
     $("#he-mapa-s").textContent = perd ? "Parte de los votos válidos de cada provincia que fue a candidaturas sin escaño allí. Con pocos escaños en juego se pierden muchos más." : "Votos válidos entre escaños: cuanto más intenso, más caro. Pulsa una provincia para hacerla tuya y jugar con sus votos.";
     sec.querySelectorAll("[data-he-modo]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.heModo === heModo)));
@@ -1857,7 +1860,7 @@ async function pintarMapaMunicipal(caja, {prov=null}={}){
     const v = Object.values(vals).filter(x=>x!=null).sort((a,b)=>a-b);
     if (cambio){
       const lim = Math.max(Math.abs(v[Math.floor(v.length*.02)]||0), Math.abs(v[Math.floor(v.length*.98)]||0)) || .1;
-      const sube = rampa(g==="PART" ? NEUTRO : G8[g].color), baja = rampa("#9A6B4F");
+      const sube = rampa(g==="PART" ? NEUTRO : G8[g].color), baja = rampa(BAJA);
       color = x => x==null ? "var(--sunk)" : x >= 0 ? sube(x/lim) : baja(-x/lim);
       leyenda = `<span>−${Math.round(lim*100)} pt</span><span class="r" style="background:linear-gradient(90deg,${baja(1)},${baja(0)},${sube(0)},${sube(1)})"></span><span>+${Math.round(lim*100)} pt</span>`;
     } else {

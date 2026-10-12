@@ -452,18 +452,18 @@ html:root[data-marca="sol"]{
 
 
 /* ---------- Sobre el proyecto: quién está detrás ---------- */
-/* A la izquierda, quién lo empezó; a la derecha, Reforma Digital en el atardecer, con su R grande en blanco */
-html[data-marca="sol"] .autor-par{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--e-16);align-items:stretch}
-html[data-marca="sol"] .autor-par .autor{align-content:start}
-html[data-marca="sol"] .autor-par .eyebrow{margin-bottom:var(--e-4)}
-html[data-marca="sol"] .autor-rd{position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:start;gap:var(--e-16);padding:var(--e-32) var(--e-32) 160px;border-radius:var(--r-28);background:var(--atardecer);color:var(--blanco);--foco:var(--blanco)}
+/* Reforma Digital en el atardecer, con su R grande en blanco; debajo, una línea discreta sobre cómo empezó */
+html[data-marca="sol"] .autor-rd{position:relative;isolation:isolate;overflow:hidden;display:grid;align-content:start;gap:var(--e-16);padding:clamp(32px,5vw,56px) clamp(24px,4.5vw,56px) clamp(48px,6vw,72px);border-radius:var(--r-28);background:var(--atardecer);color:var(--blanco);--foco:var(--blanco)}
 html[data-marca="sol"] .autor-rd .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
-html[data-marca="sol"] .autor-rd h3{margin:0;font:400 clamp(28px,3vw,40px)/1.05 var(--display);letter-spacing:-.02em}
-html[data-marca="sol"] .autor-rd p{margin:0;max-width:46ch;font-size:16px;line-height:1.6}
+html[data-marca="sol"] .autor-rd h3{margin:0;font:400 clamp(32px,4vw,52px)/1.05 var(--display);letter-spacing:-.02em}
+html[data-marca="sol"] .autor-rd p{margin:0;max-width:56ch;font-size:clamp(17px,1.4vw,19px);line-height:1.6}
+html[data-marca="sol"] .autor-rd .autor-links{display:flex;flex-wrap:wrap;gap:var(--e-8);margin-top:var(--e-8)}
 html[data-marca="sol"] .autor-rd .boton-claro{box-shadow:none}
-html[data-marca="sol"] .autor-rd::after{content:"";position:absolute;z-index:-1;right:28px;bottom:24px;width:84px;height:112px;background:var(--blanco);
+html[data-marca="sol"] .autor-rd::after{content:"";position:absolute;z-index:-1;right:clamp(24px,5vw,64px);bottom:clamp(24px,4vw,48px);width:clamp(72px,9vw,120px);aspect-ratio:3/4;background:var(--blanco);
   -webkit-mask:url(sol/r.svg) center/contain no-repeat;mask:url(sol/r.svg) center/contain no-repeat}
-@media (max-width:860px){ html[data-marca="sol"] .autor-par{grid-template-columns:1fr} }
+html[data-marca="sol"] .autor-nota{margin:var(--e-12) 0 0;font-size:14px;color:var(--tinta-3)}
+html[data-marca="sol"] .autor-nota a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:from-font}
+@media (max-width:720px){ html[data-marca="sol"] .autor-rd{padding-bottom:150px} }
 
 /* =====================================================================================================================
    Cabeceras de sección: una luz por familia, con el sol y sus halos de las imágenes de su web (og/template.html)
@@ -546,4 +546,22 @@ html[data-marca="sol"] .elh-grupo-h .k{display:block;margin-bottom:var(--e-16);f
 html[data-marca="sol"] .elh-grupo-h .k b{display:inline;font-weight:500}
 html[data-marca="sol"] .elh-grupo-h h2{font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-.02em}
 html[data-marca="sol"] .elh-grupo-h p{margin-top:var(--e-12);font-size:17px;line-height:1.6;color:var(--tinta-2)}
+html:root[data-marca="sol"]{--el-neutro:#222222;--el-calido:#df1717;--el-votos:#222222;--el-escanos:#df1717}
+/* «El Congreso que pudo ser»: en la caja gris de Sol, no en un rosa */
+html[data-marca="sol"] .chart.ps{background:var(--superficie);box-shadow:none}
 
+
+/* ---------- ¿Quién lo dijo?: sus animaciones con los tiempos de Sol ---------- */
+/* El aviso del reto: la píldora flotante de Sol (sombra cálida), que entra subiendo y late en amarillo */
+html[data-marca="sol"] #qld-aviso{border:0;box-shadow:var(--sombra-flota)}
+@keyframes sol-latido{50%{box-shadow:0 0 0 6px rgb(255 190 11 / .45)}}
+@keyframes sol-bien{40%{box-shadow:0 0 0 10px rgb(255 190 11 / .4),var(--sombra-suave)}}
+@media (prefers-reduced-motion:no-preference){
+  html[data-marca="sol"] #qld-aviso{animation:sol-entra 360ms var(--curva-salida) 1.2s backwards}
+  html[data-marca="sol"] .qld-aviso-ir i{animation:sol-latido 2s var(--curva-salida) 1.6s 3}
+  /* Acierto: un destello del sol alrededor de la tarjeta; fallo: el mismo temblor, con la curva de Sol */
+  html[data-marca="sol"] .qld-card.bien{animation:sol-bien 600ms var(--curva-salida)}
+  html[data-marca="sol"] .qld-card.mal{animation:qld-mal 360ms var(--curva-salida)}
+  html[data-marca="sol"] .qld-fin .qld-cuadros i{animation:qld-cuadro 360ms var(--curva-salida) backwards}
+}
+html[data-marca="sol"] .qld-cuadros i{border-radius:6px}

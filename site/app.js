@@ -1227,22 +1227,13 @@ function renderSobre(){
         <p>El <a href="${REPO}" target="_blank" rel="noopener">código de Escaño Abierto</a> es público en GitHub. Las tipografías de las tarjetas para compartir (Doto y Geist) se distribuyen con licencia SIL Open Font License.</p>
       </div></section>
     <section class="sec"><div class="sec-h"><h2>Quién está detrás</h2></div>
-      <div class="autor-par">
-        <div class="chart autor">
-          <div class="eyebrow">Quién lo empezó</div>
-          <div class="autor-txt">
-            <p class="prosa">Escaño Abierto lo empecé yo, <b>Jorge Garcelán</b>, como un proyecto personal. Soy investigador en inteligencia artificial e ingeniero de <i lang="en">machine learning</i>, de Madrid: estudié Ciencia e Ingeniería de Datos y el máster en IA aplicada en la Universidad Carlos III de Madrid, pasé un año en Georgia Tech y he trabajado como arquitecto de soluciones en AWS y Multiverse Computing.</p>
-            <p class="prosa">Mi investigación ha ido casi siempre hacia la IA con impacto social, y de ahí salió esto: la idea de que la tecnología puede ayudarnos a entender cómo se decide lo que nos afecta a todos.</p>
-            <p class="autor-links"><a class="btn boton-claro" href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com ↗</a><a class="btn boton-claro" href="https://github.com/jorgegarcelan" target="_blank" rel="noopener">GitHub ↗</a><a class="btn boton-claro" href="https://linkedin.com/in/jgarcelan" target="_blank" rel="noopener">LinkedIn ↗</a></p>
-          </div>
-        </div>
-        <div class="autor-rd">
-          <div class="eyebrow">Ahora, en Reforma Digital</div>
-          <h3>Un proyecto de Reforma Digital.</h3>
-          <p>Escaño Abierto se ha integrado en <b>Reforma Digital</b>, una iniciativa abierta para que lo público esté a la altura de las personas. Comparte con ella el diseño, la forma de trabajar en comunidad y el código abierto, y sigue siendo independiente de cualquier institución o partido.</p>
-          <p class="autor-links"><a class="btn boton-claro" href="https://reforma-digital.es" target="_blank" rel="noopener">Conoce Reforma Digital ↗</a><a class="btn boton-claro" href="https://github.com/samuelcorsan/reforma-digital" target="_blank" rel="noopener">Su código ↗</a></p>
-        </div>
-      </div></section>
+      <div class="autor-rd">
+        <div class="eyebrow">Reforma Digital</div>
+        <h3>Un proyecto de Reforma Digital.</h3>
+        <p>Escaño Abierto forma parte de <b>Reforma Digital</b>, una iniciativa abierta para que lo público esté a la altura de las personas. Se hace en comunidad y con código abierto: cualquiera puede avisar de un error, proponer una mejora o sumarse.</p>
+        <p class="autor-links"><a class="btn boton-claro" href="https://reforma-digital.es" target="_blank" rel="noopener">Conoce Reforma Digital ↗</a><a class="btn boton-claro" href="https://reforma-digital.es/#participar" target="_blank" rel="noopener">Participar ↗</a><a class="btn boton-claro" href="${REPO}" target="_blank" rel="noopener">El código de Escaño Abierto ↗</a></p>
+      </div>
+      <p class="autor-nota">Empezó como un proyecto personal de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">Jorge Garcelán</a>.</p></section>
   </div>`;
   if (!LEYES || !PREG) Promise.all([cargarLeyes(), cargarPreguntas()]).then(()=>{ if (!$("#sobre").hidden) renderSobre(); });
 }
