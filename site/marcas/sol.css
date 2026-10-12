@@ -821,3 +821,34 @@ html[data-marca="sol"] .or-stats .tone{min-height:20px;align-items:center}
 html[data-marca="sol"] .or-g{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 html[data-marca="sol"] .or-g .dot{display:inline-block;margin-right:6px;vertical-align:1px}
 html[data-marca="sol"] .or-panel-in header{position:sticky;top:0;z-index:2}
+
+/* ---------- Por día ---------- */
+/* El filtro en control segmentado; el índice de jornadas como casillas (el día en mono, un punto por sesión: rojo el
+   pleno), que se desplaza; la fecha de cada jornada fija a la izquierda; las cifras de la sesión en mono y el orden
+   del día plegable con el chevrón */
+html[data-marca="sol"] .dias-barra{gap:var(--e-8) var(--e-16);margin-top:var(--e-24)}
+html[data-marca="sol"] .dias-barra .or-seg small{font:500 11px var(--font-mono);color:var(--tinta-3);opacity:1}
+html[data-marca="sol"] .dias-n{font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .dias-indice{gap:var(--e-4);margin-top:var(--e-16);-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px);mask-image:linear-gradient(90deg,transparent,#000 24px);padding-left:24px}
+html[data-marca="sol"] .dia-i{width:52px;padding:var(--e-8) 0;border:0;border-radius:var(--r-16);background:var(--superficie);gap:4px;transition:background var(--t-rapido) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .dia-i:hover{background:#e6e6e6}
+html[data-marca="sol"] .dia-i:active{transform:scale(.96)}
+html[data-marca="sol"] .dia-i small,html[data-marca="sol"] .dia-i em{font-family:var(--font-mono);color:var(--tinta-3)}
+html[data-marca="sol"] .dia-i b{font:500 18px var(--font-mono);letter-spacing:-.02em}
+html[data-marca="sol"] .dia-i span i{border-radius:0;background:var(--tinta-3)}
+html[data-marca="sol"] .dia-i span i.pleno{background:var(--rojo)}
+html[data-marca="sol"] .day{gap:var(--e-24);padding-block:var(--e-24) var(--e-32);border-bottom-color:var(--linea)}
+html[data-marca="sol"] .day .date{top:calc(var(--alto-barra) + 72px)}
+html[data-marca="sol"] .date .d{font:500 44px/1 var(--font-mono);letter-spacing:-.04em}
+html[data-marca="sol"] .date .m,html[data-marca="sol"] .date .w{font:500 11px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .date .m{margin-top:var(--e-8);color:var(--rojo)}
+html[data-marca="sol"] .session{gap:var(--e-16)}
+html[data-marca="sol"] .session-head h3{font:400 clamp(22px,2.2vw,26px)/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .organ{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--rojo)}
+html[data-marca="sol"] .ses-cifras{gap:var(--e-4) var(--e-20);font-size:13px;color:var(--tinta-3)}
+html[data-marca="sol"] .ses-cifras b{font:500 15px var(--font-mono);color:var(--tinta)}
+html[data-marca="sol"] details.od-plegable>summary{display:flex;align-items:center;gap:var(--e-8);min-height:48px;padding:0;border-top:1px solid var(--linea);font:500 14px var(--font-texto);list-style:none}
+html[data-marca="sol"] details.od-plegable>summary::-webkit-details-marker{display:none}
+html[data-marca="sol"] details.od-plegable>summary::before{content:"";width:12px;height:12px;background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat;transition:transform var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] details.od-plegable[open]>summary::before{transform:rotate(90deg)}
+@media (max-width:640px){ html[data-marca="sol"] .day .date{position:static} html[data-marca="sol"] .date .d{font-size:32px} }

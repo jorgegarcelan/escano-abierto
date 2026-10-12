@@ -1826,10 +1826,16 @@ async function pintarLugar(circ){
 }
 
 /* ---------- días ---------- */
+// Por día: un índice de las jornadas del periodo (un punto por sesión, rojo si es pleno), un filtro por órgano y cada
+// jornada con su fecha fija a la izquierda. En cada sesión, sus cifras arriba y el orden del día plegable si es largo.
+let diasFiltro = "todas";
+const tipoOrgano = s => s.organo === "Pleno" ? "pleno" : /comisi|ponencia/i.test(s.organo) ? "comision" : "otros";
 function renderDias(){
   const byDate = {};
-  DATA.sesiones.forEach(s=>(byDate[s.fecha]=byDate[s.fecha]||[]).push(s));
+  const visibles = DATA.sesiones.filter(s=>diasFiltro==="todas" || tipoOrgano(s)===diasFiltro);
+  visibles.forEach(s=>(byDate[s.fecha]=byDate[s.fecha]||[]).push(s));
   const dates = Object.keys(byDate).sort().reverse();
+  let primera = true;
   const html = dates.map(f=>{
     const d = dt(f);
     const sess = byDate[f].map(s=>{
@@ -1845,6 +1851,9 @@ function renderDias(){
           ${listaVotos((p.votos||[]).filter(id=>VOTES[id]).map(id=>VOTES[id]), true)}
         </div>`;
       }).join("");
+      const nVot = s.puntos.reduce((n,p)=>n+(p.votos||[]).filter(id=>VOTES[id]).length, 0);
+      const plegar = !primera && s.puntos.length > 2; primera = false;
+      const cifras = `<div class="ses-cifras"><span><b>${s.puntos.length}</b> ${s.puntos.length===1?"asunto":"asuntos"}</span>${nVot?`<span><b>${nVot}</b> ${nVot===1?"votación":"votaciones"}</span>`:""}${ivs.length?`<span><b>${ivs.length}</b> ${ivs.length===1?"intervención analizada":"intervenciones analizadas"}</span>`:""}</div>`;
       return `<article class="session" id="s-${s.id}">
         <div class="session-head"><div><div class="organ">${esc(s.organo)}</div><h3>${esc(s.sesion)}</h3></div>
           <div class="meta-links">${botonCompartir("sesion/"+slugPy(s.id), s.organo+", "+s.fecha)}${s.ds?`<a href="${s.ds}" target="_blank" rel="noopener">Diario de Sesiones <span class="mono">${s.dsNombre}</span></a>`:`<span style="color:var(--muted)">Diario de Sesiones aún no publicado</span>`}${s.ordenDia?`<a href="${s.ordenDia}" target="_blank" rel="noopener">Orden del día</a>`:""}</div></div>
@@ -1852,12 +1861,26 @@ function renderDias(){
         ${(s.momentos||[]).length?`<div style="display:grid;gap:6px"><div class="eyebrow">Momentos clave</div><ol class="momentos">${s.momentos.map(m=>`<li>${esc(m.que)}${(m.quien||[]).length?` <span class="quien">· ${esc(m.quien.join(", "))}</span>`:""}</li>`).join("")}</ol></div>`:""}
         ${ivs.length?`<div style="display:grid;gap:6px"><div class="eyebrow">Tono de las intervenciones analizadas</div>${toneBar(ivs)}${toneLegend(ivs)}</div>`:""}
         ${s.reacciones && Object.keys(s.reacciones).length?`<p class="nota">En la Cámara: ${Object.entries(s.reacciones).map(([k,n])=>`${esc(k.replace(/_/g," "))} <b class="num">${n}</b>`).join(" · ")}</p>`:""}
-        <div class="puntos">${puntos}</div>
+        ${cifras}
+        ${s.puntos.length ? (plegar ? `<details class="od-plegable"><summary>Orden del día · ${s.puntos.length} asuntos${nVot?` · ${nVot} ${nVot===1?"votación":"votaciones"}`:""}</summary><div class="puntos">${puntos}</div></details>` : `<div class="puntos">${puntos}</div>`) : ""}
       </article>`;
     }).join("");
-    return `<div class="day"><div class="date"><div class="d">${d.d}</div><div class="m">${d.m} 2026</div><div class="w">${d.w}</div></div><div class="sessions">${sess}</div></div>`;
+    return `<div class="day" id="dia-${f}"><div class="date"><div class="d">${d.d}</div><div class="m">${d.m} ${f.slice(0,4)}</div><div class="w">${d.w}</div></div><div class="sessions">${sess}</div></div>`;
   }).join("");
-  $("#dias").innerHTML = `<div class="view-intro"><div><h2>Sesión a sesión</h2><p>Resumen de cada jornada, orden del día, intervenciones analizadas y resultado de las votaciones. Cada votación aparece junto al asunto debatido; si se votó otro día, se indica la fecha.</p></div></div><div>${html}</div>`;
+  const cuenta = k => DATA.sesiones.filter(s=>k==="todas" || tipoOrgano(s)===k).length;
+  const filtros = [["todas","Todas"],["pleno","Pleno"],["comision","Comisiones"],["otros","Otros órganos"]].filter(([k])=>k==="todas" || cuenta(k));
+  // El índice: de la jornada más antigua a la más reciente, como un calendario
+  const indice = dates.slice().reverse().map(f=>{ const d = dt(f), ss = byDate[f];
+    return `<button type="button" class="dia-i" data-dia="${f}" data-tip="${esc(`${d.d} ${d.m} · ${ss.map(s=>s.organo).join(", ")}`)}"><small>${esc(d.w.slice(0,3))}</small><b>${d.d}</b><span>${ss.map(s=>`<i class="${tipoOrgano(s)}"></i>`).join("")}</span><em>${esc(d.m)}</em></button>`; }).join("");
+  $("#dias").innerHTML = `<div class="view-intro"><div><h2>Sesión a sesión</h2><p>Resumen de cada jornada, orden del día, intervenciones analizadas y resultado de las votaciones. Cada votación aparece junto al asunto debatido; si se votó otro día, se indica la fecha.</p></div></div>
+    <div class="dias-barra"><div class="or-seg" role="group" aria-label="Qué sesiones">${filtros.map(([k,l])=>`<button type="button" data-org="${k}" aria-pressed="${diasFiltro===k}">${l} <small>${cuenta(k)}</small></button>`).join("")}</div>
+      <p class="dias-n">${dates.length} ${dates.length===1?"jornada":"jornadas"} · ${visibles.length} ${visibles.length===1?"sesión":"sesiones"}</p></div>
+    <nav class="dias-indice" aria-label="Jornadas">${indice}</nav>
+    <div>${html || '<p class="nota">No hay sesiones de este tipo en el periodo.</p>'}</div>`;
+  $("#dias .dias-barra").addEventListener("click", e=>{ const b=e.target.closest("[data-org]"); if (!b) return; diasFiltro = b.dataset.org; renderDias(); });
+  $("#dias .dias-indice").addEventListener("click", e=>{ const b=e.target.closest("[data-dia]"); if (!b) return;
+    const dia = document.getElementById("dia-"+b.dataset.dia); window.scrollTo({top: scrollY + dia.getBoundingClientRect().top - 150, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); });
+  const ind = $("#dias .dias-indice"); if (ind) ind.scrollLeft = ind.scrollWidth;   // el índice se abre por lo más reciente
 }
 function matchItem(i,p){ if (p.itemId) return i.item===p.itemId; return !!p.match && new RegExp(p.match).test(i.item); }
 
@@ -2591,6 +2614,7 @@ function show(id, push){
   contarVista(); ponerTitulo(id, hashOriginal);
 }
 function ir(tab, anchor, push=true){
+  if (tab==="dias" && anchor && diasFiltro!=="todas"){ diasFiltro="todas"; rendered.dias=false; }   // que la sesión buscada se vea
   if (tab==="votaciones"){ if (anchor) vFilter.res="todas"; if (anchor || iniSel){ iniSel=null; rendered.votaciones=false; } }
   show(tab,push);
   const el = anchor && document.getElementById(anchor);

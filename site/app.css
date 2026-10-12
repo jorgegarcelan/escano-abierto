@@ -1083,3 +1083,20 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
 .or-panel-in header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .or-cerrar{appearance:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:20px;line-height:1;cursor:pointer;color:var(--ink)}
 .or-panel-r{margin:0;font-size:13px;color:var(--muted)}
+/* por día: índice, filtro y cifras de cada sesión */
+.dias-barra{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:16px}
+.dias-barra .or-seg small{font-size:11px;opacity:.7}
+.dias-n{margin:0;font-size:13px;color:var(--muted)}
+.dias-indice{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-top:12px;padding-bottom:2px}
+.dias-indice::-webkit-scrollbar{display:none}
+.dia-i{appearance:none;flex:none;display:grid;justify-items:center;gap:2px;width:48px;padding:6px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.dia-i small{font:500 10px var(--mono);text-transform:uppercase;color:var(--muted)}
+.dia-i b{font-size:17px;line-height:1}
+.dia-i span{display:flex;gap:2px;min-height:6px}
+.dia-i span i{width:6px;height:6px;border-radius:50%;background:var(--line-strong)}
+.dia-i span i.pleno{background:var(--no)}
+.dia-i em{font:500 9.5px var(--mono);font-style:normal;text-transform:uppercase;color:var(--muted)}
+.day .date{position:sticky;top:calc(var(--alto-barra) + 64px);align-self:start}
+.ses-cifras{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted)}
+.ses-cifras b{color:var(--ink);font-variant-numeric:tabular-nums}
+details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
