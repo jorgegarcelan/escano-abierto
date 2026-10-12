@@ -883,3 +883,23 @@ html[data-marca="sol"] .gr-sec{padding-top:var(--e-80)}
 html[data-marca="sol"] .panel{padding:var(--e-24);border:0;border-radius:var(--r-20);background:var(--blanco);box-shadow:0 0 0 1px var(--linea)}
 html[data-marca="sol"] .panel>h3{margin:0 0 var(--e-8);font:400 clamp(22px,2.2vw,26px)/1.15 var(--display);letter-spacing:-.01em}
 html[data-marca="sol"] .panel>p{margin:0 0 var(--e-16);font-size:14px;color:var(--tinta-2)}
+
+/* ---------- Diputados ---------- */
+/* El directorio arriba: cuadrícula de fotos (la foto con el anillo de su grupo, el nombre, grupo y provincia en
+   etiqueta y tres cifras en mono), o la tabla; al pasar el ratón, el sol suave */
+html[data-marca="sol"] .dp-dir .sec-h{margin-bottom:0}
+html[data-marca="sol"] .dp-cards{gap:var(--e-12);margin-top:var(--e-16)}
+html[data-marca="sol"] .dp-card{position:relative;isolation:isolate;overflow:hidden;gap:var(--e-12);padding:var(--e-16);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);transition:box-shadow var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .dp-card::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(90% 55% at 50% 118%,#ffd34d 0%,rgb(255 190 11 / .45) 35%,rgb(255 122 26 / 0) 75%);opacity:0;transform:translateY(24%);transition:opacity var(--t-medio) var(--curva-salida),transform 420ms var(--curva-salida)}
+@media (hover:hover) and (pointer:fine){
+  html[data-marca="sol"] .dp-card:hover{box-shadow:var(--sombra-suave)}
+  html[data-marca="sol"] .dp-card:hover::before{opacity:1;transform:none}
+}
+html[data-marca="sol"] .dp-foto{width:60px;height:60px;box-shadow:0 0 0 2px var(--blanco),0 0 0 4px var(--grupo);font:500 15px var(--font-mono)}
+html[data-marca="sol"] .dp-foto.avatar{box-shadow:none}
+html[data-marca="sol"] .dp-id b{font:400 19px/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .dp-id small{font:500 10.5px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .dp-cifras{gap:var(--e-16);padding-top:var(--e-12);border-top:1px solid var(--linea);font-size:11px;color:var(--tinta-3)}
+html[data-marca="sol"] .dp-cifras b{font:500 15px var(--font-mono);letter-spacing:-.02em}
+html[data-marca="sol"] .or-seg button{white-space:nowrap}
+@media (max-width:640px){ html[data-marca="sol"] .or-seg{max-width:100%;overflow-x:auto;scrollbar-width:none} html[data-marca="sol"] .or-seg::-webkit-scrollbar{display:none} }

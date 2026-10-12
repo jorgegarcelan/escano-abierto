@@ -410,7 +410,7 @@ const statsDip = (() => {
 })();
 const pct = x => x==null ? "–" : `${Math.round(x*100)} %`;
 const pctBar = x => x==null ? "–" : `<span class="pct">${pct(x)}<i><b style="width:${x*100}%"></b></i></span>`;
-let dipFiltro = {q:"", g:"TODOS", orden:"dis", circ:null};
+let dipFiltro = {q:"", g:"TODOS", orden:"dis", circ:null, vista:"fotos"};
 let dipSel = null;
 function hemiDiputado(d){
   if (CON_PLANO && DIPS[d.i][5]!=null){
@@ -441,13 +441,26 @@ function renderDiputados(){
   $("#diputados").innerHTML = `
     <div class="view-intro"><div><h2>Diputados</h2><p>Los 350 diputados con su voto en las ${VOTOS_NOM.length} votaciones incluidas: cuánto participan, cuántas veces se apartan de su grupo y cuántas intervenciones tienen analizadas. Pulsa uno para ver su ficha, o un escaño en cualquier hemiciclo.</p></div></div>
     ${bloqueTusDiputados()}
+    <section class="sec dp-dir" id="dip-tabla"><div class="sec-h"><h2>Los 350</h2><p>Busca por nombre o provincia, filtra por grupo y ordena por lo que quieras ver.</p></div>
+      <div class="or-barra">
+        <label class="or-busca"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></label>
+        <div class="or-seg" role="group" aria-label="Vista">${[["fotos","Fotos"],["tabla","Tabla"]].map(([k,l])=>`<button type="button" data-dvista="${k}" aria-pressed="${dipFiltro.vista===k}">${l}</button>`).join("")}</div>
+        <div class="or-seg" role="group" aria-label="Orden">${[["dis","Más veces por libre"],["part","Menos participación"],["ivs","Más intervenciones"],["nom","A–Z"]].map(([k,l])=>`<button type="button" data-dord="${k}" aria-pressed="${ord===k}">${l}</button>`).join("")}</div>
+      </div>
+      <div class="controls" id="dip-g">${chips}${dipFiltro.circ?`<button class="chipbtn" aria-pressed="true" data-circ="${esc(dipFiltro.circ)}">${esc(nombreCirc(dipFiltro.circ))} ✕</button><button class="linklike" data-prov="${esc(slug(dipFiltro.circ))}">Página de ${esc(nombreCirc(dipFiltro.circ))} →</button>`:""}</div>
+      <p class="or-n-res">${lista.length} ${lista.length===1?"diputado":"diputados"}${dipFiltro.g!=="TODOS"&&dipFiltro.g!=="BAJA"?` · ${esc(G[dipFiltro.g]?.nombre||dipFiltro.g)}`:""}</p>
+      ${dipFiltro.vista==="fotos" ? `<div class="dp-cards">${lista.map(d=>{ const s=S[d.i]; return `<button type="button" class="dp-card" data-dip="${d.slug}" style="--grupo:${G[d.g]?.color}">
+          ${imgFoto(d, "dp-foto foto", "", true) || `<span class="dp-foto avatar" style="background:${G[d.g]?.color}">${esc(iniciales(legible(d.n)))}</span>`}
+          <span class="dp-id"><b>${esc(legible(d.n))}</b><small>${gdot(d.g)}${esc(d.g)}${d.circ?` · ${esc(d.circ)}`:""}</small></span>
+          <span class="dp-cifras"><span><b>${pct(s.part)}</b>participa</span><span><b>${s.dis||0}</b>por libre</span><span><b>${s.ivs.length||0}</b>interv.</span></span>
+        </button>`; }).join("") || '<p class="nota">Nadie coincide con la búsqueda.</p>'}</div>`
+      : `<div class="dtable-wrap"><table class="dt"><thead><tr>${th("nom","Diputado")}<th>Circunscripción</th>${th("part","Participación","num")}${th("dis","Distinto a su grupo","num")}${th("ivs","Interv.","num")}</tr></thead>
+      <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${imgFoto(d, "mini-foto", ` style="--grupo:${G[d.g]?.color}"`, true) || gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>`}
+      <p class="nota">Participación: votaciones en las que votó (sí, no o abstención) sobre las que le correspondían; una ausencia puede tener causas justificadas. «Por libre»: veces que votó distinto de la mayoría de su grupo.</p>
+    </section>
+    <section class="sec"><div class="sec-h"><h2>Dónde se sientan y de dónde vienen</h2></div>
     ${CON_PLANO?`<div class="chart"><h3>El hemiciclo</h3><p class="sub">Cada punto es un diputado en su escaño real. Elige qué mostrar o resalta a quien busques; pulsa un escaño para abrir su ficha.</p><div id="hemi-datos">${hemiDatos()}</div></div>`:""}
-    <div class="chart"><h3>Por circunscripción</h3>${mapaCirc()}</div>
-    <div class="controls" id="dip-tabla"><input id="dip-q" type="search" placeholder="Buscar por nombre o provincia…" value="${esc(dipFiltro.q)}" aria-label="Buscar diputado por nombre o provincia"></div>
-    <div class="controls" id="dip-g">${chips}${dipFiltro.circ?`<button class="chipbtn" aria-pressed="true" data-circ="${esc(dipFiltro.circ)}">${esc(nombreCirc(dipFiltro.circ))} ✕</button><button class="linklike" data-prov="${esc(slug(dipFiltro.circ))}">Página de ${esc(nombreCirc(dipFiltro.circ))} →</button>`:""}</div>
-    <div class="dtable-wrap"><table class="dt"><thead><tr>${th("nom","Diputado")}<th>Circunscripción</th>${th("part","Participación","num")}${th("dis","Distinto a su grupo","num")}${th("ivs","Interv.","num")}</tr></thead>
-      <tbody>${lista.map(d=>{ const s=S[d.i]; return `<tr data-dip="${d.slug}"><td><span class="nm">${imgFoto(d, "mini-foto", ` style="--grupo:${G[d.g]?.color}"`, true) || gdot(d.g)}${esc(legible(d.n))}</span></td><td>${esc(d.circ)||"–"}</td><td class="num">${pctBar(s.part)}</td><td class="num">${s.dis||"·"}</td><td class="num">${s.ivs.length||"·"}</td></tr>`; }).join("") || `<tr><td colspan="5" class="nota">Nadie coincide con la búsqueda.</td></tr>`}</tbody></table></div>
-    <p class="nota">Participación: votaciones en las que votó (sí, no o abstención) sobre las que le correspondían. Una ausencia puede tener causas justificadas.</p>`;
+    <div class="chart"><h3>Por circunscripción</h3>${mapaCirc()}</div></section>`;
   pintarHemiDatos();
   if (!EXTRA) cargarExtra().then(()=>{ if (mapaHemi.metrica==="turnos") pintarHemiDatos(); });
   const inp=$("#dip-q");
@@ -2735,10 +2748,15 @@ document.addEventListener("click", e=>{
   if (dp){ irDiputado(dp.dataset.dip); return; }
   if (e.target.closest("[data-dip-volver]")){ dipSel=null; rendered.diputados=false; show("diputados",true); window.scrollTo(0,0); return; }
   const gr = e.target.closest("[data-gr],[data-gr-or]");   // una tarjeta de Grupos: a sus diputados (el Gobierno, a sus oradores)
-  if (gr){ if (gr.dataset.gr){ dipFiltro.g = gr.dataset.gr; dipSel = null; rendered.diputados = false; show("diputados", true); }
-    else { orFilter.g = gr.dataset.grOr; rendered.oradores = false; show("oradores", true); } window.scrollTo(0,0); return; }
+  if (gr){ window.scrollTo(0,0);
+    if (gr.dataset.gr){ dipFiltro.g = gr.dataset.gr; dipSel = null; rendered.diputados = false; show("diputados", true);
+      requestAnimationFrame(()=>{ const t = document.getElementById("dip-tabla"); if (t) window.scrollTo(0, scrollY + t.getBoundingClientRect().top - 140); }); }
+    else { orFilter.g = gr.dataset.grOr; rendered.oradores = false; show("oradores", true); }
+    return; }
   const dg = e.target.closest("[data-dg]");
   if (dg){ dipFiltro.g=dg.dataset.dg; renderDiputados(); return; }
+  const dvi = e.target.closest("[data-dvista]");
+  if (dvi){ dipFiltro.vista=dvi.dataset.dvista; renderDiputados(); return; }
   const dor = e.target.closest("[data-dord]");
   if (dor){ dipFiltro.orden=dor.dataset.dord; renderDiputados(); return; }
   const seat = e.target.closest(".hemi [data-n]");

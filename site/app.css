@@ -1116,3 +1116,13 @@ details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;paddin
 .gr-cifras b{font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
 .gr-temas{display:flex;flex-wrap:wrap;gap:4px}
 .gr-ir{font-size:13px;font-weight:500}
+/* diputados: la cuadrícula de fotos */
+.dp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:10px;margin-top:12px}
+.dp-card{appearance:none;display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:14px;box-shadow:var(--sombra)}
+.dp-foto{width:56px;height:56px;border-radius:50%;object-fit:cover;display:grid;place-items:center;color:#fff;font:600 15px var(--sans);box-shadow:0 0 0 2px var(--grupo)}
+.dp-id{display:grid;gap:2px;min-width:0;width:100%}
+.dp-id b{font-size:15px;line-height:1.2}
+.dp-id small{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dp-cifras{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:12px;font-size:11px;color:var(--muted);width:100%}
+.dp-cifras span{display:grid;gap:1px}
+.dp-cifras b{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
