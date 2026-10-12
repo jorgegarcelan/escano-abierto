@@ -930,3 +930,25 @@ html[data-marca="sol"] .dp-cifras{gap:var(--e-16);padding-top:var(--e-12);border
 html[data-marca="sol"] .dp-cifras b{font:500 15px var(--font-mono);letter-spacing:-.02em}
 html[data-marca="sol"] .or-seg button{white-space:nowrap}
 @media (max-width:640px){ html[data-marca="sol"] .or-seg{max-width:100%;overflow-x:auto;scrollbar-width:none} html[data-marca="sol"] .or-seg::-webkit-scrollbar{display:none} }
+/* Grupos, uno a uno: el hemiciclo (los escaños del grupo elegido en su color; los demás en gris, con la curva de
+   Sol) con los botones de cada grupo debajo, y su tarjeta grande al lado */
+html[data-marca="sol"] .gr-vistas{margin-top:var(--e-24)}
+html[data-marca="sol"] .gr-dos{gap:var(--e-16);margin-top:var(--e-16)}
+html[data-marca="sol"] .gr-hemi-caja{gap:var(--e-20)}
+html[data-marca="sol"] .gr-hemi circle{transition:fill var(--t-medio) var(--curva-salida),r var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .gr-hemi circle.off{fill:#e6e6e6}
+html[data-marca="sol"] .gr-hemi circle:not(.off):hover{r:7}
+html[data-marca="sol"] .gr-botones{gap:var(--e-4)}
+html[data-marca="sol"] .gr-b{min-height:36px;padding:0 var(--e-12);border:0;background:var(--superficie);font:500 14px var(--font-texto);transition:background var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .gr-b:hover{background:#e6e6e6}
+html[data-marca="sol"] .gr-b small{font:500 11px var(--font-mono);color:var(--tinta-3)}
+html[data-marca="sol"] .gr-b[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+html[data-marca="sol"] .gr-b[aria-pressed="true"] small{color:rgb(255 255 255 / .7)}
+html[data-marca="sol"] .gr-sel .gr-card{padding:var(--e-32) var(--e-24) var(--e-24);align-content:start}
+html[data-marca="sol"] .gr-sel .gr-ir{margin-top:auto}
+html[data-marca="sol"] .gr-sel .gr-nombre{font-size:clamp(28px,3vw,36px)}
+html[data-marca="sol"] .gr-sel .gr-esc-n b{font-size:32px}
+@media (prefers-reduced-motion:no-preference){ html[data-marca="sol"] .gr-sel .gr-card{animation:sol-entra 360ms var(--curva-salida)} }
+html[data-marca="sol"] .gr-quien{gap:var(--e-8);padding-top:var(--e-12);border-top:1px solid var(--linea);font-size:14px}
+html[data-marca="sol"] .gr-quien small{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
+html[data-marca="sol"] .gr-quien em{font:500 13px var(--font-mono);color:var(--tinta-3)}

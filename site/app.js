@@ -1901,9 +1901,12 @@ function renderDias(){
 function matchItem(i,p){ if (p.itemId) return i.item===p.itemId; return !!p.match && new RegExp(p.match).test(i.item); }
 
 /* ---------- grupos ---------- */
+// Grupos: a la izquierda, el hemiciclo; a la derecha, la tarjeta del grupo elegido (al elegirlo se colorean sus escaños
+// y los demás quedan en gris). La otra vista enseña todas las tarjetas a la vez.
+let grSel = null, grVista = "uno";
 function renderGrupos(){
   const keys = [...PARL,"GOB"];
-  const rows = keys.map(g=>{
+  const tarjetaGrupo = (g, grande=false) => {
     const ivs = IVS.filter(i=>i.g===g);
     const avg = ivs.length? (ivs.reduce((a,i)=>a+i.int,0)/ivs.length).toFixed(1) : "–";
     const votes = DATA.votaciones.filter(v=>v.grupos[g]);
@@ -1922,9 +1925,24 @@ function renderGrupos(){
       <span class="gr-cifras">${cifra(ivs.length, "intervenciones")}${cifra(String(avg).replace(".",","), "intensidad")}${g==="GOB" ? "" : cifra(decided ? `${Math.round(win/decided*100)} %` : "–", "votaciones ganadas") + cifra(coh!=null ? `${(coh*100).toFixed(1).replace(".",",")} %` : "–", "cohesión")}</span>
       ${ivs.length ? `<span class="gr-tono">${toneBar(ivs)}</span>` : ""}
       ${temas.length ? `<span class="gr-temas">${temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</span>` : ""}
+      ${grande ? quienHabla(g) : ""}
       <span class="gr-ir">${g==="GOB" ? "Sus oradores" : "Sus diputados"}</span>
     </button>`;
-  }).join("");
+  };
+  // En la tarjeta grande, quién habla más en el grupo (de los diputados, con su nombre completo)
+  const quienHabla = g => { const n = {}; IVS.filter(i=>i.g===g).forEach(i=>n[i.orador]=(n[i.orador]||0)+1);
+    const top = Object.entries(n).sort((a,b)=>b[1]-a[1]).slice(0,3); if (!top.length) return "";
+    return `<span class="gr-quien"><small>Quién habla más</small>${top.map(([o,k])=>{ const d = dipDeOrador(o); return `<span>${esc(d ? legible(d.n) : o)}<em>${k}</em></span>`; }).join("")}</span>`; };
+  const rows = keys.map(g=>tarjetaGrupo(g)).join("");
+  const escanos = g => DIP.filter(d=>d.g===g && !d.baja).length;
+  if (!grSel || !keys.includes(grSel)) grSel = PARL.slice().sort((a,b)=>escanos(b)-escanos(a))[0];
+  // El hemiciclo real: cada escaño con su grupo; los que no son del elegido, apagados
+  const hemiGr = CON_PLANO ? `<svg class="gr-hemi" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" role="img" aria-label="El hemiciclo por grupos">${DIP.filter(d=>!d.baja && DIPS[d.i][5]!=null).map(d=>`<circle cx="${DIPS[d.i][5]}" cy="${DIPS[d.i][6]}" r="${ESC_R}" data-g="${d.g}" style="--c:${G[d.g]?.color}"${d.g!==grSel?' class="off"':""} data-tip="${esc(legible(d.n))} · ${esc(d.g)}"></circle>`).join("")}</svg>` : "";
+  const botones = [...ORDEN_HEMI,"GOB"].filter(g=>keys.includes(g)).map(g=>`<button type="button" class="gr-b" data-grsel="${g}" aria-pressed="${g===grSel}" style="--grupo:${G[g].color}"><i></i>${esc(g==="GOB"?"Gobierno":g)}${g==="GOB"?"":`<small>${escanos(g)}</small>`}</button>`).join("");
+  const vistas = `<div class="or-seg" role="group" aria-label="Vista">${[["uno","Uno a uno"],["todos","Todos"]].map(([k,l])=>`<button type="button" data-grvista="${k}" aria-pressed="${grVista===k}">${l}</button>`).join("")}</div>`;
+  const principal = grVista === "uno" && CON_PLANO
+    ? `<div class="gr-dos"><div class="chart gr-hemi-caja">${hemiGr}<div class="gr-botones">${botones}</div></div><div class="gr-sel">${tarjetaGrupo(grSel, true)}</div></div>`
+    : `<div class="gr-cards">${rows}</div>`;
 
   // Afinidad con el voto nominal: probabilidad de que dos diputados de cada grupo votaran lo mismo.
   const H = ORDEN_HEMI;
@@ -1937,7 +1955,8 @@ function renderGrupos(){
 
   $("#grupos").innerHTML = `
     <div class="view-intro"><div><h2>Grupos parlamentarios</h2><p>Cuánto intervino cada grupo y con qué tono, qué mayorías se formaron, cuánto ruido hubo en la Cámara y qué grupos votan juntos.</p><p><button class="linklike" data-go="preguntas">Preguntas escritas al Gobierno por grupo →</button></p></div></div>
-    <div class="gr-cards">${rows}</div>
+    <div class="gr-vistas">${vistas}</div>
+    ${principal}
     ${toneLegend(IVS)}
     <section class="sec gr-sec"><div class="sec-h"><h2>Cómo votan</h2><p>Quién gana, con quién y con cuánta disciplina, votación a votación.</p></div></section>
     ${DATA.votaciones.length?`<div class="chart"><h3>Quién gana cada votación</h3><p class="sub">Cada columna es una votación, en orden cronológico; cada fila, un grupo. El cuadro se rellena con el color del grupo cuando votó en bloque con el lado ganador. Pulsa una columna para ir a la votación.</p>${matrizGanadores()}</div>`:""}
@@ -1955,6 +1974,13 @@ function renderGrupos(){
     ${respPanel()}`;
   // La matriz de ganadores se abre por las votaciones más recientes.
   requestAnimationFrame(()=>{ const w=$("#grupos .gan-wrap"); if (w) w.scrollLeft = w.scrollWidth; });
+  const elegir = g => { grSel = g;
+    document.querySelectorAll("#grupos .gr-hemi circle").forEach(c=>c.classList.toggle("off", c.dataset.g!==g));
+    document.querySelectorAll("#grupos [data-grsel]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.grsel===g)));
+    const caja = $("#grupos .gr-sel"); if (caja) caja.innerHTML = tarjetaGrupo(g, true); };
+  $("#grupos .gr-vistas").addEventListener("click", e=>{ const b=e.target.closest("[data-grvista]"); if (b){ grVista = b.dataset.grvista; renderGrupos(); } });
+  $("#grupos .gr-dos")?.addEventListener("click", e=>{ const b = e.target.closest("[data-grsel]") || e.target.closest(".gr-hemi circle"); if (!b) return;
+    e.stopPropagation(); elegir(b.dataset.grsel || b.dataset.g); });
 }
 
 function respPanel(){
