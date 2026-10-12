@@ -952,3 +952,22 @@ html[data-marca="sol"] .gr-sel .gr-esc-n b{font-size:32px}
 html[data-marca="sol"] .gr-quien{gap:var(--e-8);padding-top:var(--e-12);border-top:1px solid var(--linea);font-size:14px}
 html[data-marca="sol"] .gr-quien small{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
 html[data-marca="sol"] .gr-quien em{font:500 13px var(--font-mono);color:var(--tinta-3)}
+
+/* ---------- Ficha de diputado: pestañas ---------- */
+/* Las pestañas, un control segmentado fijo al bajar (bajo la barra del periodo), translúcido como ella; en Resumen,
+   «Lo que ha dicho» y «Lo que ha votado» en filas de línea fina con la fecha en mono */
+html[data-marca="sol"] .ficha-tabs{top:calc(var(--alto-barra) + 64px);margin-top:var(--e-32);padding:4px;background:rgb(242 242 242 / .82);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px)}
+html[data-marca="sol"] .ficha-tabs button{min-height:40px;padding:0 var(--e-16);font:500 14px var(--font-texto);color:var(--tinta-2);transition:background var(--t-medio) var(--curva-salida),color var(--t-rapido) var(--curva-salida),box-shadow var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .ficha-tabs button:hover{color:var(--tinta)}
+html[data-marca="sol"] .ficha-tabs button small{font:500 11px var(--font-mono);color:var(--tinta-3);opacity:1}
+html[data-marca="sol"] .ficha-tabs button[aria-selected="true"]{background:var(--blanco);color:var(--tinta);box-shadow:var(--sombra-suave)}
+html[data-marca="sol"] #ficha-panel>.sec:first-child,html[data-marca="sol"] #ficha-panel>div>.sec:first-child{padding-top:var(--e-48)}
+@media (prefers-reduced-motion:no-preference){ html[data-marca="sol"] #ficha-panel>*{animation:sol-entra 360ms var(--curva-salida)} }
+html[data-marca="sol"] .ficha-l li{grid-template-columns:56px minmax(0,1fr) auto;gap:var(--e-12);padding:var(--e-12) 0;border-bottom-color:var(--linea)}
+html[data-marca="sol"] .ficha-l-f{font:500 11px/1.6 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .ficha-l-t b{font-size:14.5px}
+html[data-marca="sol"] .ficha-l-t small{font-size:12.5px;color:var(--tinta-3)}
+html[data-marca="sol"] .ficha-libre{color:var(--rojo)!important;font:500 11px var(--font-mono)!important;letter-spacing:.06em;text-transform:uppercase}
+html[data-marca="sol"] .ficha-ult .chart>.linklike{justify-self:start}
+html[data-marca="sol"] .ficha-ult .chart>.linklike::after{content:"";display:inline-block;width:12px;height:12px;margin-left:.45em;vertical-align:-.05em;background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat}
+html[data-marca="sol"] .ficha-l-t small:not(.ficha-libre),html[data-marca="sol"] .ficha-l-t .linklike{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}

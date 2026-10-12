@@ -469,14 +469,19 @@ function renderDiputados(){
   const inp=$("#dip-q");
   inp.addEventListener("input", e=>{ dipFiltro.q=e.target.value; const pos=e.target.selectionStart; renderDiputados(); const n=$("#dip-q"); n.focus(); n.setSelectionRange(pos,pos); });
 }
+// La ficha de un diputado: la cabecera y sus cifras, y debajo unas pestañas fijas al bajar (Resumen, Intervenciones,
+// Votaciones, Preguntas, Intereses, Comparar). Solo se ve una cada vez y las listas largas van por páginas: con toda la
+// legislatura no se dispara.
+let fichaEst = {slug:null, tab:"resumen", ivPag:1, ivTema:null, vtFiltro:"todas", vtPag:1, vtQ:""};
+const FICHA_IV = 10, FICHA_VT = 25;
 function renderFicha(d){
+  if (fichaEst.slug !== d.slug) fichaEst = {slug:d.slug, tab:"resumen", ivPag:1, ivTema:null, vtFiltro:"todas", vtPag:1, vtQ:""};
   const s = statsDip[d.i], grupo = G[d.g];
   const alta = d.alta ? (()=>{ const [y,m,dd]=d.alta.split("-").map(Number); return `${dd} ${MESES[m-1]} ${y}`; })() : "";
-  const filas = VOTOS_NOM.map(v=>{ const x=v.v[d.i]; if (x==="-") return ""; const gp=v.grupos[grupoEn(v,d.i)]||"?"; const dis=["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp; const dd=dt(v.fecha);
-    return `<tr class="${dis?"dis":""}"><td class="num" style="white-space:nowrap">${dd.d} ${dd.m}</td><td class="t"><button class="linklike" style="text-decoration:none;text-align:left;font-weight:400" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button></td>
-      <td><span class="mivoto ${x}">${MIVOTO[x]}</span></td><td><span class="gp ${gp==="?"?"q":gp}">${grupoEn(v,d.i)}<span class="v">${VLABEL[gp]}</span></span></td><td><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></td></tr>`; }).join("");
   const kpis = [[pct(s.part),"participación",`${s.vot} de ${s.vot+s.aus} votaciones`],[pct(s.lealtad),"con su grupo",""],[s.dis,s.dis===1?"vez distinto a su grupo":"veces distinto a su grupo","",s.dis>0],[s.ivs.length,s.ivs.length===1?"intervención analizada":"intervenciones analizadas",""]]
     .map(([n,l,t,a])=>`<div class="kpi ${a?"alert":""}"${t?` title="${t}"`:""}><b>${n}</b><span>${l}</span></div>`).join("");
+  const nVot = VOTOS_NOM.filter(v=>v.v[d.i]!=="-").length;
+  const tabs = [["resumen","Resumen"], ...(s.ivs.length?[["intervenciones",`Intervenciones <small>${s.ivs.length}</small>`]]:[]), ["votaciones",`Votaciones <small>${nVot}</small>`], ["preguntas","Preguntas"], ["intereses","Intereses"], ["comparar","Comparar"]];
   $("#diputados").innerHTML = `
     <button class="back" data-dip-volver>← Todos los diputados</button>
     <div class="ficha-top">
@@ -487,22 +492,85 @@ function renderFicha(d){
       <div>${hemiDiputado(d)}</div>
     </div>
     <div class="kpis">${kpis}</div>
-    <section class="sec"><div class="sec-h"><h2>Perfil</h2></div><div id="perfil">${perfilFicha(d)}</div></section>
-    ${comparacion(d)}
-    ${s.ivs.length?`<section class="sec"><div class="sec-h"><h2>Sus intervenciones</h2></div><div class="iv-list">${s.ivs.map(ivCard).join("")}</div></section>`:""}
-    <section class="sec" id="ficha-cargos"></section>
-    <section class="sec" id="ficha-preguntas"></section>
-    <div id="ficha-intereses">${interesesFicha(d)}</div>
-    <section class="sec"><div class="sec-h"><h2>Cómo votó</h2><p>${s.dis?`Las filas marcadas son las votaciones en las que se apartó de la mayoría de su grupo.`:`Votó siempre como la mayoría de su grupo.`}</p></div>
-      <div class="dtable-wrap"><table class="dt vt"><thead><tr><th>Fecha</th><th>Votación</th><th>Su voto</th><th>Su grupo</th><th>Resultado</th></tr></thead><tbody>${filas}</tbody></table></div></section>`;
+    <nav class="ficha-tabs" aria-label="Apartados de la ficha" role="tablist">${tabs.map(([k,l])=>`<button type="button" role="tab" data-ftab="${k}" aria-selected="${fichaEst.tab===k}">${l}</button>`).join("")}</nav>
+    <div id="ficha-panel" role="tabpanel"></div>`;
+  pintarPanelFicha(d);
+  $("#diputados .ficha-tabs").addEventListener("click", e=>{ const b=e.target.closest("[data-ftab]"); if (b) irPestana(d, b.dataset.ftab); });
   iniciarFicha(d);
 }
+function irPestana(d, tab){
+  fichaEst.tab = tab;
+  document.querySelectorAll("#diputados [data-ftab]").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.ftab===tab)));
+  pintarPanelFicha(d);
+  const t = $("#diputados .ficha-tabs"); if (t && t.getBoundingClientRect().top < 0) window.scrollTo(0, scrollY + t.getBoundingClientRect().top - 140);
+}
+function fechaDeIv(i){ return DATA.sesiones.find(x=>x.id===i.s)?.fecha || ""; }
+function paginadorFicha(pag, total, porPag, attr){
+  const n = Math.ceil(total/porPag); if (n < 2) return "";
+  return `<nav class="or-pags" aria-label="Páginas"><button type="button" ${attr}="${pag-1}" ${pag===1?"disabled":""} aria-label="Página anterior">←</button>
+    ${Array.from({length:n},(_,k)=>k+1).filter(x=>x===1||x===n||Math.abs(x-pag)<=1).map((x,k,a)=>`${k&&x-a[k-1]>1?'<span class="or-pags-h">…</span>':""}<button type="button" ${attr}="${x}" ${x===pag?'aria-current="page"':""}>${x}</button>`).join("")}
+    <button type="button" ${attr}="${pag+1}" ${pag===n?"disabled":""} aria-label="Página siguiente">→</button><span class="or-pags-n">${(pag-1)*porPag+1}–${Math.min(pag*porPag,total)} de ${total}</span></nav>`;
+}
+function filaVotoFicha(d, v){
+  const x=v.v[d.i], gp=v.grupos[grupoEn(v,d.i)]||"?", dis=["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp, dd=dt(v.fecha);
+  return `<tr class="${dis?"dis":""}"><td class="num" style="white-space:nowrap">${dd.d} ${dd.m} ${v.fecha.slice(2,4)}</td><td class="t"><button class="linklike" style="text-decoration:none;text-align:left;font-weight:400" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button></td>
+    <td><span class="mivoto ${x}">${MIVOTO[x]}</span></td><td><span class="gp ${gp==="?"?"q":gp}">${grupoEn(v,d.i)}<span class="v">${VLABEL[gp]}</span></span></td><td><span class="res ${passed(v)?"ok":"ko"}">${resLabel(v)}</span></td></tr>`;
+}
+function esPorLibre(d, v){ const x=v.v[d.i], gp=v.grupos[grupoEn(v,d.i)]; return ["S","N","A"].includes(x)&&["S","N","A"].includes(gp)&&x!==gp; }
+function pintarPanelFicha(d){
+  const panel = document.getElementById("ficha-panel"); if (!panel) return;
+  const s = statsDip[d.i], tab = fichaEst.tab;
+  const ivs = s.ivs.slice().sort((a,b)=>fechaDeIv(b).localeCompare(fechaDeIv(a)));
+  const votos = VOTOS_NOM.filter(v=>v.v[d.i]!=="-");
+  const ir = (t, l) => `<button type="button" class="linklike" data-ftab-ir="${t}">${l}</button>`;
+  if (tab === "resumen"){
+    const libres = votos.filter(v=>esPorLibre(d,v));
+    panel.innerHTML = `<section class="sec"><div class="sec-h"><h2>Perfil</h2></div><div id="perfil">${perfilFicha(d)}</div></section>
+      <section class="sec"><div class="sec-h"><h2>Lo último</h2></div><div class="two ficha-ult">
+        <div class="chart"><h3>Lo que ha dicho</h3>${ivs.length ? `<ul class="ficha-l">${ivs.slice(0,4).map(i=>{ const f=fechaDeIv(i), dd=f?dt(f):null; return `<li><span class="ficha-l-f">${dd?`${dd.d} ${dd.m}`:""}</span><span class="ficha-l-t"><b>${esc(i.frase||i.resumen||i.item)}</b><small>${esc(i.item)}</small></span>${toneChip(i.tono)}</li>`; }).join("")}</ul>${ir("intervenciones", `Sus ${ivs.length} ${ivs.length===1?"intervención":"intervenciones"}`)}` : `<p class="nota">No tiene intervenciones analizadas en el periodo.</p>`}</div>
+        <div class="chart"><h3>Lo que ha votado</h3>${votos.length ? `<ul class="ficha-l">${votos.slice(0,6).map(v=>{ const dd=dt(v.fecha), x=v.v[d.i]; return `<li><span class="ficha-l-f">${dd.d} ${dd.m}</span><span class="ficha-l-t"><button class="linklike" data-go="votaciones" data-anchor="v-${v.id}">${esc(v.titulo)}</button>${esPorLibre(d,v)?'<small class="ficha-libre">Por libre</small>':""}</span><span class="mivoto ${x}">${MIVOTO[x]}</span></li>`; }).join("")}</ul>${ir("votaciones", `Sus ${votos.length} votaciones${libres.length?` · ${libres.length} por libre`:""}`)}` : `<p class="nota">No hay votaciones nominales en el periodo.</p>`}</div>
+      </div></section>
+      <section class="sec" id="ficha-cargos"></section>`;
+    pintarCargosFicha(d);
+  } else if (tab === "intervenciones"){
+    const tc = {}; ivs.forEach(i=>i.temas.forEach(t=>tc[t]=(tc[t]||0)+1));
+    const temas = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    const lista = fichaEst.ivTema ? ivs.filter(i=>i.temas.includes(fichaEst.ivTema)) : ivs;
+    const pag = Math.min(fichaEst.ivPag, Math.max(1, Math.ceil(lista.length/FICHA_IV)));
+    panel.innerHTML = `<section class="sec"><div class="sec-h"><h2>Sus intervenciones</h2><p>De la más reciente a la más antigua. Filtra por tema.</p></div>
+      ${temas.length>1?`<div class="controls">${[["","Todos"],...temas.map(([t,n])=>[t,`${t} <small>${n}</small>`])].map(([t,l])=>`<button class="chipbtn" data-ftema="${esc(t)}" aria-pressed="${(fichaEst.ivTema||"")===t}">${l}</button>`).join("")}</div>`:""}
+      <div class="iv-list">${lista.slice((pag-1)*FICHA_IV, pag*FICHA_IV).map(ivCard).join("")}</div>${paginadorFicha(pag, lista.length, FICHA_IV, "data-fivpag")}</section>`;
+  } else if (tab === "votaciones"){
+    const q = sinTildes(fichaEst.vtQ.trim()), libres = votos.filter(v=>esPorLibre(d,v)), aus = votos.filter(v=>v.v[d.i]==="X");
+    let lista = fichaEst.vtFiltro==="libre" ? libres : fichaEst.vtFiltro==="ausencias" ? aus : votos;
+    if (q) lista = lista.filter(v=>sinTildes(v.titulo).includes(q));
+    const pag = Math.min(fichaEst.vtPag, Math.max(1, Math.ceil(lista.length/FICHA_VT)));
+    panel.innerHTML = `<section class="sec"><div class="sec-h"><h2>Cómo votó</h2><p>${s.dis?`Las filas marcadas son las votaciones en las que se apartó de la mayoría de su grupo.`:`Votó siempre como la mayoría de su grupo.`}</p></div>
+      <div class="or-barra"><label class="or-busca"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="fvt-q" type="search" placeholder="Buscar una votación…" value="${esc(fichaEst.vtQ)}" aria-label="Buscar una votación"></label>
+        <div class="or-seg" role="group">${[["todas",`Todas <small>${votos.length}</small>`],["libre",`Por libre <small>${libres.length}</small>`],["ausencias",`Ausencias <small>${aus.length}</small>`]].map(([k,l])=>`<button type="button" data-fvt="${k}" aria-pressed="${fichaEst.vtFiltro===k}">${l}</button>`).join("")}</div></div>
+      ${lista.length ? `<div class="dtable-wrap"><table class="dt vt"><thead><tr><th>Fecha</th><th>Votación</th><th>Su voto</th><th>Su grupo</th><th>Resultado</th></tr></thead><tbody>${lista.slice((pag-1)*FICHA_VT, pag*FICHA_VT).map(v=>filaVotoFicha(d,v)).join("")}</tbody></table></div>${paginadorFicha(pag, lista.length, FICHA_VT, "data-fvtpag")}` : `<p class="nota">Ninguna votación coincide.</p>`}</section>`;
+    const inp = document.getElementById("fvt-q");
+    inp.addEventListener("input", e=>{ fichaEst.vtQ=e.target.value; fichaEst.vtPag=1; const pos=e.target.selectionStart; pintarPanelFicha(d); const n=document.getElementById("fvt-q"); n.focus(); n.setSelectionRange(pos,pos); });
+  } else if (tab === "preguntas"){
+    panel.innerHTML = `<section class="sec" id="ficha-preguntas"><p class="nota">Cargando sus preguntas…</p></section>`;
+    pintarPreguntasFicha(d);
+  } else if (tab === "intereses"){
+    panel.innerHTML = `<div id="ficha-intereses">${interesesFicha(d) || (EXTRA ? `<section class="sec"><p class="nota">No consta su declaración de intereses.</p></section>` : `<section class="sec"><p class="nota">Cargando…</p></section>`)}</div>`;
+  } else if (tab === "comparar"){
+    panel.innerHTML = comparacion(d);
+    document.getElementById("comp-q")?.addEventListener("change", e=>{ const q=sinTildes(e.target.value.trim()); const o=DIP.find(x=>sinTildes(legible(x.n))===q) || DIP.find(x=>q && sinTildes(legible(x.n)).includes(q));
+      if (o){ dipComp=o.slug; pintarPanelFicha(d); } });
+  }
+  panel.onclick = e=>{
+    const t = e.target.closest("[data-ftab-ir]"); if (t){ irPestana(d, t.dataset.ftabIr); return; }
+    const tm = e.target.closest("[data-ftema]"); if (tm){ fichaEst.ivTema = tm.dataset.ftema || null; fichaEst.ivPag = 1; pintarPanelFicha(d); return; }
+    const ip = e.target.closest("[data-fivpag]"); if (ip && !ip.disabled){ fichaEst.ivPag = +ip.dataset.fivpag; irPestana(d, "intervenciones"); return; }
+    const vf = e.target.closest("[data-fvt]"); if (vf){ fichaEst.vtFiltro = vf.dataset.fvt; fichaEst.vtPag = 1; pintarPanelFicha(d); return; }
+    const vp = e.target.closest("[data-fvtpag]"); if (vp && !vp.disabled){ fichaEst.vtPag = +vp.dataset.fvtpag; irPestana(d, "votaciones"); return; }
+  };
+}
 function iniciarFicha(d){
-  if (!EXTRA) cargarExtra().then(()=>{ const p=document.getElementById("perfil"); if (p && dipSel===d.slug){ p.innerHTML=perfilFicha(d); const i=document.getElementById("ficha-intereses"); if (i) i.innerHTML=interesesFicha(d); } });
-  pintarPreguntasFicha(d);
-  pintarCargosFicha(d);
-  document.getElementById("comp-q")?.addEventListener("change", e=>{ const q=sinTildes(e.target.value.trim()); const o=DIP.find(x=>sinTildes(legible(x.n))===q) || DIP.find(x=>q && sinTildes(legible(x.n)).includes(q));
-    if (o){ dipComp=o.slug; const y=window.scrollY; renderFicha(d); window.scrollTo(0,y); } });
+  if (!EXTRA) cargarExtra().then(()=>{ if (dipSel===d.slug && ["resumen","intereses"].includes(fichaEst.tab)) pintarPanelFicha(d); });
 }
 function irDiputado(sl){ dipSel = sl; rendered.diputados=false; show("diputados", false); fijarRuta("diputado-"+sl, true); window.scrollTo(0,0); }
 
@@ -1201,7 +1269,7 @@ async function pintarPreguntasFicha(d){
   const cont = document.getElementById("ficha-preguntas"); if (!cont) return;
   const P = await cargarPreguntas(), c = P?.diputados?.[d.i];
   const lista = c ? await fetch(`datos/preguntas/${d.slug}.json`).then(r=>r.ok?r.json():[]).catch(()=>[]) : [];
-  if (!c && !lista.length){ cont.remove(); return; }
+  if (!c && !lista.length){ cont.innerHTML = `<p class="nota">No ha registrado preguntas escritas al Gobierno.</p>`; return; }
   cont.innerHTML = `<div class="sec-h"><h2>Sus preguntas al Gobierno</h2><p>${c?`${fmt(c[0])} ${glosa("pregunta-escrita", c[0]===1?"pregunta escrita":"preguntas escritas")}, ${fmt(c[1])} sin contestar${c[2]?` (${fmt(c[2])} desde hace más de ${P.dias} días)`:""}.`:""} <button class="linklike" data-go="preguntas">Todas las preguntas</button></p></div>
     <ul class="preg-list">${lista.slice(0,12).map(p=>filaPregunta(p)).join("")}</ul>${lista.length>12?`<details><summary>Ver ${lista.length-12} más</summary><ul class="preg-list">${lista.slice(12).map(p=>filaPregunta(p)).join("")}</ul></details>`:""}`;
 }
@@ -1371,11 +1439,15 @@ function perfilFicha(d){
   const e = EXTRA[d.n] || {bio:"", comisiones:[], turnos:{}};
   const com = e.comisiones.slice().sort((a,b)=>{ const i=x=>{const k=ORDEN_CARGO.indexOf(x);return k<0?99:k;}; return i(a[1])-i(b[1]) || a[0].localeCompare(b[0],"es"); });
   const tur = Object.entries(e.turnos).sort((a,b)=>b[1]-a[1]); const maxT = tur[0]?.[1]||1;
+  // Con toda la legislatura las listas crecen mucho: las ocho primeras a la vista y el resto en un desplegable
+  const MAX_PERFIL = 8;
+  const filaCom = ([c,cargo])=>`<li><span>${esc(c.replace(/^Comisión (de |del |para |sobre )?/,m=>m.charAt(0).toUpperCase()+m.slice(1)))}</span><span class="cargo${/President|Vicepresident|Secretari|Portavoz|Portavoces/.test(cargo)?" destacado":""}">${esc(cargoLegible(cargo))}</span></li>`;
+  const filaTur = ([o,n])=>`<div class="coh-row"><span style="font-size:12.5px">${esc(o.replace(/^Comisión (de |del )?/,""))}</span><span class="trk"><b style="width:${n/maxT*100}%"></b></span><span class="n">${n}</span></div>`;
   return `<div class="two perfil">
     <div class="chart"><h3>Biografía</h3>${!e.bio?`<p class="nota">El Congreso no publica biografía de este diputado.</p>`:e.bio.length>420?`<details class="bio"><summary><p>${esc(e.bio)}</p></summary></details>`:`<div class="bio"><p>${esc(e.bio)}</p></div>`}
       <p class="nota">Texto de la ficha oficial del Congreso.</p></div>
-    <div class="chart"><h3>Comisiones</h3>${com.length?`<ul class="comisiones">${com.map(([c,cargo])=>`<li><span>${esc(c.replace(/^Comisión (de |del |para |sobre )?/,m=>m.charAt(0).toUpperCase()+m.slice(1)))}</span><span class="cargo${/President|Vicepresident|Secretari|Portavoz|Portavoces/.test(cargo)?" destacado":""}">${esc(cargoLegible(cargo))}</span></li>`).join("")}</ul>`:`<p class="nota">No forma parte de ninguna comisión.</p>`}
-      ${tur.length?`<h3 style="margin-top:10px">Turnos de palabra</h3><div class="coh">${tur.map(([o,n])=>`<div class="coh-row"><span style="font-size:12.5px">${esc(o.replace(/^Comisión (de |del )?/,""))}</span><span class="trk"><b style="width:${n/maxT*100}%"></b></span><span class="n">${n}</span></div>`).join("")}</div><p class="nota">En los Diarios de Sesiones del periodo.</p>`:""}</div>
+    <div class="chart"><h3>Comisiones</h3>${com.length?`<ul class="comisiones">${com.slice(0,MAX_PERFIL).map(filaCom).join("")}</ul>${com.length>MAX_PERFIL?`<details class="ivs"><summary>${com.length-MAX_PERFIL} más</summary><ul class="comisiones">${com.slice(MAX_PERFIL).map(filaCom).join("")}</ul></details>`:""}`:`<p class="nota">No forma parte de ninguna comisión.</p>`}
+      ${tur.length?`<h3 style="margin-top:10px">Turnos de palabra</h3><div class="coh">${tur.slice(0,MAX_PERFIL).map(filaTur).join("")}</div>${tur.length>MAX_PERFIL?`<details class="ivs"><summary>${tur.length-MAX_PERFIL} órganos más</summary><div class="coh">${tur.slice(MAX_PERFIL).map(filaTur).join("")}</div></details>`:""}<p class="nota">En los Diarios de Sesiones del periodo.</p>`:""}</div>
   </div>`;
 }
 let dipComp = null;

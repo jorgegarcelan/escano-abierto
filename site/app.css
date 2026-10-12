@@ -1150,3 +1150,17 @@ details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;paddin
 .gr-sel{display:grid;align-self:stretch}
 .gr-sel .gr-card{width:100%;height:100%}
 .gr-dos{align-items:stretch}
+/* ficha de diputado: pestañas y lo último */
+.ficha-tabs{position:sticky;top:calc(var(--alto-barra) + 60px);z-index:8;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-top:20px;padding:4px;border-radius:var(--r-pill);background:var(--sunk)}
+.ficha-tabs::-webkit-scrollbar{display:none}
+.ficha-tabs button{appearance:none;flex:none;border:0;background:none;padding:7px 14px;border-radius:var(--r-pill);font:500 14px var(--sans);color:var(--muted);cursor:pointer;white-space:nowrap}
+.ficha-tabs button small{font-size:11px;opacity:.75}
+.ficha-tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .15)}
+.ficha-l{list-style:none;margin:0;padding:0}
+.ficha-l li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.ficha-l-f{font-size:12px;color:var(--muted);padding-top:2px}
+.ficha-l-t{display:grid;gap:2px;min-width:0}
+.ficha-l-t b{font-weight:500;font-size:14px;line-height:1.35}
+.ficha-l-t small{font-size:12px;color:var(--muted)}
+.ficha-l-t .linklike{text-align:left;font-weight:400;text-decoration:none}
+.ficha-libre{color:var(--no)!important;font-weight:600}
