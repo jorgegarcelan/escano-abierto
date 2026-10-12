@@ -194,15 +194,6 @@ html[data-marca="sol"] .chipbtn[aria-pressed="true"]{background:var(--tinta);col
 html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss){display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:0;border-radius:var(--r-pildora);background:var(--superficie);color:var(--tinta);font:500 13px var(--font-texto);transition:background var(--t-rapido) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
 html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss):hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%);color:var(--tinta)}
 html[data-marca="sol"] :is(.compartir,.btn-img,.btn-rss):active{transform:scale(.96)}
-/* Los apartados de Elecciones: píldoras grises; el actual, en tinta. */
-html[data-marca="sol"] .el-nav-grupos{gap:16px 0}
-html[data-marca="sol"] .el-nav-grupos .g{gap:8px;padding:0 16px;border-left-color:var(--linea)}
-html[data-marca="sol"] .el-nav-grupos .gt{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
-html[data-marca="sol"] .el-nav-grupos .g.act .gt{color:var(--rojo)}
-html[data-marca="sol"] .el-nav-grupos .gi{gap:6px}
-html[data-marca="sol"] .el-nav-grupos .gi a{min-height:32px;display:inline-flex;align-items:center;padding:0 12px;border:0;background:var(--superficie);color:var(--tinta);font-size:13px}
-html[data-marca="sol"] .el-nav-grupos .gi a:hover{background:color-mix(in oklch,var(--superficie),var(--tinta) 8%)}
-html[data-marca="sol"] .el-nav-grupos .gi a[aria-current="page"]{background:var(--tinta);color:var(--blanco)}
 /* Campos: los de .campo de Sol (borde --tinta-3, radio 12, 44 px, 16 px). */
 html[data-marca="sol"] :is(.controls input,.controls select){min-height:44px;padding:var(--e-8) var(--e-12);border:1px solid var(--tinta-3);border-radius:var(--r-12);font-size:16px}
 
@@ -696,3 +687,41 @@ html[data-marca="sol"] .el-precio-f i{border-radius:0;background:var(--tinta)}
 html[data-marca="sol"] .el-precio-f:nth-last-child(-n+5) i{background:var(--rojo)}
 html[data-marca="sol"] .el-precio-f em{font:500 12.5px var(--font-mono)}
 html[data-marca="sol"] .el-precio-p{font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+
+/* ---------- Elecciones: el menú de los apartados ---------- */
+/* Arriba, dónde estás y el paso («Apartado 12 de 14» con anterior y siguiente en círculos); los seis bloques en una
+   fila, en serif con su número en mono (el actual en gris, con el número rojo); los apartados del bloque, en un control
+   segmentado (el actual en blanco con sombra); y un guion por apartado, como el «Proyecto 04 de 04» de su portada. */
+html[data-marca="sol"] .el-cabeza{padding-top:var(--e-8)}
+html[data-marca="sol"] .el-migas{padding-top:0;font-size:14px;color:var(--tinta-3)}
+html[data-marca="sol"] .el-migas a{color:var(--tinta-2);text-underline-offset:.2em;text-decoration-thickness:from-font}
+html[data-marca="sol"] .el-paso-n{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
+html[data-marca="sol"] .el-paso-b{width:36px;height:36px;border:0;background:var(--blanco);box-shadow:0 0 0 1px var(--linea);
+  transition:background var(--t-rapido) var(--curva-salida),transform var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] a.el-paso-b:hover{background:var(--superficie)}
+html[data-marca="sol"] a.el-paso-b:active{transform:scale(.96)}
+html[data-marca="sol"] span.el-paso-b{opacity:1;box-shadow:0 0 0 1px var(--linea);background:var(--superficie)}
+html[data-marca="sol"] .el-ruta{gap:var(--e-16);padding-top:var(--e-20);margin-bottom:var(--e-16)}
+html[data-marca="sol"] .el-grupos{gap:var(--e-4);margin-inline:calc(-1 * var(--e-12))}
+html[data-marca="sol"] .el-grupos a{min-height:44px;align-items:center;gap:8px;padding:0 var(--e-12);font:400 18px/1 var(--display);letter-spacing:-.01em;color:var(--tinta-2);
+  transition:background var(--t-rapido) var(--curva-salida),color var(--t-rapido) var(--curva-salida)}
+html[data-marca="sol"] .el-grupos a small{font:500 11px var(--font-mono);letter-spacing:.04em;color:var(--tinta-3)}
+html[data-marca="sol"] .el-grupos a:hover{color:var(--tinta);background:var(--superficie)}
+html[data-marca="sol"] .el-grupos .act a{color:var(--tinta);background:var(--superficie)}
+html[data-marca="sol"] .el-grupos .act a small{color:var(--rojo)}
+html[data-marca="sol"] .el-pags{display:inline-flex;width:fit-content;max-width:100%;gap:2px;padding:4px;border-radius:var(--r-pildora);background:var(--superficie)}
+html[data-marca="sol"] .el-pags a{display:inline-flex;align-items:center;min-height:36px;padding:0 var(--e-16);border:0;border-radius:var(--r-pildora);font:500 14px var(--font-texto);color:var(--tinta-2);
+  transition:background var(--t-medio) var(--curva-salida),color var(--t-rapido) var(--curva-salida),box-shadow var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .el-pags a:hover{color:var(--tinta)}
+html[data-marca="sol"] .el-pags a[aria-current="page"]{background:var(--blanco);color:var(--tinta);box-shadow:var(--sombra-suave)}
+html[data-marca="sol"] .el-barras{gap:4px;margin-top:var(--e-4)}
+html[data-marca="sol"] .el-barras i{height:3px;border-radius:0;background:var(--linea)}
+html[data-marca="sol"] .el-barras i.corte{margin-left:12px}
+html[data-marca="sol"] .el-barras i.hecho{background:var(--tinta)}
+html[data-marca="sol"] .el-barras i.act{background:var(--rojo)}
+@media (max-width:640px){
+  html[data-marca="sol"] .el-paso-n{display:none}
+  html[data-marca="sol"] .el-grupos{-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 40px),transparent);padding-inline:var(--e-12)}
+  html[data-marca="sol"] .el-pags{border-radius:var(--r-20)}
+}
+

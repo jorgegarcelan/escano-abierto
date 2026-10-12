@@ -258,6 +258,27 @@ const CSS = `
 .el-prom .vs .x{font:600 11.5px var(--mono);white-space:nowrap}
 .el-prom .vs small{color:var(--muted)}
 .el-migas{font-size:13px;color:var(--muted);padding-top:4px;display:flex;gap:6px;align-items:center}
+.el-ruta{display:grid;gap:12px;padding:12px 0 0;margin-bottom:10px}
+.el-cabeza{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.el-paso-n{font:600 10.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.el-paso{display:flex;align-items:center;gap:6px}
+.el-paso-n{margin-right:6px}
+.el-paso-b{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);color:var(--ink);text-decoration:none}
+.el-paso span.el-paso-b{opacity:.35}
+.el-grupos{display:flex;gap:4px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none}
+.el-grupos::-webkit-scrollbar{display:none}
+.el-grupos a{display:flex;align-items:baseline;gap:7px;padding:7px 12px;border-radius:var(--r-pill);text-decoration:none;color:var(--muted);white-space:nowrap;font-size:14px}
+.el-grupos a small{font:600 10.5px var(--mono)}
+.el-grupos a:hover{color:var(--ink)}
+.el-grupos .act a{color:var(--ink);background:var(--sunk)}
+.el-pags{display:flex;flex-wrap:wrap;gap:6px}
+.el-pags a{font-size:13px;color:var(--muted);text-decoration:none;padding:5px 11px;border-radius:var(--r-pill);border:1px solid var(--line);white-space:nowrap}
+.el-pags a[aria-current="page"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.el-barras{display:flex;gap:3px;margin-top:4px}
+.el-barras i{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.el-barras i.corte{margin-left:6px}
+.el-barras i.hecho{background:var(--line-strong)}
+.el-barras i.act{background:var(--ink)}
 .el-migas a{color:var(--muted)}
 .el-nav{padding:12px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--line)}
 .el-nav-grupos{display:flex;flex-wrap:wrap;gap:12px 0}
@@ -400,13 +421,24 @@ export async function render(el, c, sub){
   const actual = eleccion || provincia ? "historico" : sub;
   const p = PAG[sub];
   const g = NAV.findIndex(x=>x.ids.includes(actual)), i = ORDEN_NAV.indexOf(actual);
-  const grupos = NAV.map((x,k)=>`<div class="g${k===g?" act":""}"><span class="gt">${String(k+1).padStart(2,"0")} · ${esc(x.n)}</span><div class="gi">${x.ids.map(id=>`<a href="/elecciones/${id}/"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div></div>`).join("");
+  // El menú de los apartados, en tres niveles: dónde estás y el paso (12 de 14, con anterior y siguiente); los seis
+  // bloques numerados en una fila; y los apartados del bloque actual. Debajo, un guion por apartado.
+  const num = k => String(k+1).padStart(2,"0");
+  const paso = (id, dir) => id ? `<a class="el-paso-b" href="/elecciones/${id}/" aria-label="${dir === "ant" ? "Anterior" : "Siguiente"}: ${esc(PAG[id].t)}">${dir === "ant" ? "←" : "→"}</a>` : `<span class="el-paso-b" aria-hidden="true"></span>`;
+  const ruta = `<nav class="el-ruta" aria-label="Apartados de las elecciones">
+      <ol class="el-grupos">${NAV.map((x,k)=>`<li${k===g?' class="act"':""}><a href="/elecciones/${x.ids[0]}/"${k===g?' aria-current="true"':""}><small>${num(k)}</small>${esc(x.n)}</a></li>`).join("")}</ol>
+      ${g >= 0 ? `<div class="el-pags" role="list">${NAV[g].ids.map(id=>`<a role="listitem" href="/elecciones/${id}/"${id===actual?' aria-current="page"':""}>${esc(PAG[id].c||PAG[id].t)}</a>`).join("")}</div>` : ""}
+      <div class="el-barras" aria-hidden="true">${ORDEN_NAV.map((id,k)=>`<i class="${k < i ? "hecho" : k === i ? "act" : ""}${k > 0 && NAV.findIndex(x=>x.ids.includes(id)) !== NAV.findIndex(x=>x.ids.includes(ORDEN_NAV[k-1])) ? " corte" : ""}"></i>`).join("")}</div>
+    </nav>`;
   const vecino = (id, cls, flecha) => id ? `<a class="${cls}" href="/elecciones/${id}/"><small>${cls==="ant"?"← Anterior":"Siguiente →"}</small><b>${esc(PAG[id].t)}</b></a>` : `<span></span>`;
-  el.innerHTML = `<nav class="el-migas" aria-label="Estás en"><a href="/elecciones/">Elecciones 29N</a>${g>=0?` <span>›</span> <span>${esc(NAV[g].n)}</span>`:""}${eleccion||provincia?` <span>›</span> <a href="/elecciones/${actual}/">${esc(PAG[actual].t)}</a>`:""}</nav>
-    <nav class="el-nav" aria-label="Apartados de las elecciones"><div class="el-nav-grupos">${grupos}</div>
-      <details class="el-nav-movil"><summary><span>Apartado</span><b>${esc(PAG[actual].t)}</b></summary><div class="el-nav-grupos">${grupos}</div></details></nav>
+  const pasoHtml = `<span class="el-paso"><span class="el-paso-n">Apartado ${i+1} de ${ORDEN_NAV.length}</span>${paso(ORDEN_NAV[i-1], "ant")}${paso(ORDEN_NAV[i+1], "sig")}</span>`;
+  el.innerHTML = `<div class="el-cabeza"><nav class="el-migas" aria-label="Estás en"><a href="/elecciones/">Elecciones 29N</a>${g>=0?` <span>›</span> <span>${esc(NAV[g].n)}</span>`:""}${eleccion||provincia?` <span>›</span> <a href="/elecciones/${actual}/">${esc(PAG[actual].t)}</a>`:""}</nav>${pasoHtml}</div>
+    ${ruta}
     <div id="el-pagina">${p ? `<div class="view-intro"><div><h2>${esc(p.t)}</h2><p>${esc(p.d)}</p></div></div>` : ""}<div class="el-cuerpo"><p class="nota">Cargando…</p></div>
       ${p ? `<nav class="el-sigue" aria-label="Otros apartados">${vecino(ORDEN_NAV[i-1], "ant")}${vecino(ORDEN_NAV[i+1], "sig")}</nav>` : ""}</div>`;
+  // En el móvil la fila de bloques se desplaza: que se vea el actual
+  const fila = el.querySelector(".el-grupos"), act = fila?.querySelector(".act");
+  if (act && fila.scrollWidth > fila.clientWidth) fila.scrollLeft = act.offsetLeft - (fila.clientWidth - act.offsetWidth)/2;
   const cuerpo = el.querySelector(".el-cuerpo");
   const hist = f => import("./elecciones-historico.js").then(m=>m[f](cuerpo, ctx, sub)).catch(err=>{ console.error(err); cuerpo.innerHTML = `<p class="nota">No se ha podido cargar este apartado.</p>`; });
   if (sub === "350"){
