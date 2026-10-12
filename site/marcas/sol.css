@@ -102,8 +102,15 @@ html:root[data-marca="sol"]{--alto-barra:80px}
 html:root[data-marca="sol"].en-portada{--alto-barra:0px}
 html[data-marca="sol"] .periodo-bar{top:calc(var(--alto-barra) + var(--e-8));gap:var(--e-8) var(--e-20);margin-top:var(--e-16);padding:var(--e-4) var(--e-4) var(--e-4) var(--e-16);
   border:0;border-radius:var(--r-pildora);background:var(--blanco);box-shadow:0 0 0 1px var(--linea);font-size:13px;color:var(--tinta-2)}
-html[data-marca="sol"] .periodo-bar.pegada{background:color-mix(in srgb,var(--blanco) 94%,transparent);
-  -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);box-shadow:var(--sombra-flota)}
+/* Pegada: translúcida, como un cristal (se ve pasar el contenido debajo, desenfocado) */
+html[data-marca="sol"] .periodo-bar.pegada{background:rgb(255 255 255 / .6);
+  -webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);
+  box-shadow:0 0 0 1px rgb(255 255 255 / .5),0 2px 4px rgba(120,40,0,.06),0 18px 40px -12px rgba(120,40,0,.14)}
+html[data-marca="sol"] .periodo-bar.pegada .pb-seg{background:rgb(34 34 34 / .06)}
+html[data-marca="sol"] .periodo-bar.pegada .pb-seg button[aria-pressed="true"]{background:rgb(255 255 255 / .9)}
+html[data-marca="sol"] .periodo-bar.pegada .pb-barras i{background:rgb(34 34 34 / .16)}
+html[data-marca="sol"] .periodo-bar.pegada .pb-barras button.sel i{background:var(--tinta)}
+html[data-marca="sol"] .periodo-bar.pegada .pb-barras button[aria-pressed="true"] i{background:var(--rojo)}
 @media (prefers-reduced-motion:no-preference){ html[data-marca="sol"] .periodo-bar.pegada{animation:sol-entra 240ms var(--curva-salida)} }
 html[data-marca="sol"] .pb-k{font:500 11px var(--font-mono);letter-spacing:.08em;color:var(--tinta-3)}
 html[data-marca="sol"] .pb-seg{padding:3px;background:var(--superficie)}
