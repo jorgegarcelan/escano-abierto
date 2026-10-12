@@ -1,9 +1,11 @@
-/* Marca de prueba: Sol, el sistema de diseño de Reforma Digital (reforma-digital.es).
-   Los valores son los suyos: marcas/sol/tokens.css y marcas/sol/botones.css, copiados sin cambios (ver
-   marcas/sol/LEEME.md). Esta hoja solo traduce las variables de Escaño a las de Sol y compone la portada, la barra y
-   el pie como su web: fondo blanco y tinta, el atardecer rojo en la portada, el pie del amarillo al naranja,
-   titulares y cifras en serif, lo demás en Geist y los datos y etiquetas en Geist Mono. Sin modo oscuro, como Sol.
-   index.html la carga en lugar de marcador.css, con class="sol-raiz" y data-marca="sol" en <html>. */
+/* Marca Sol: el sistema de diseño de Reforma Digital (reforma-digital.es) aplicado a Escaño.
+   Los valores son los suyos: marcas/sol/tokens.css y marcas/sol/botones.css, copiados sin cambios, y las medidas de su
+   web (cabecera, hero, secciones y pie de apps/web/components/sol; ver marcas/sol/LEEME.md). Esta hoja traduce las
+   variables de Escaño a las de Sol y compone la web como la suya: la portada en el atardecer con la cabecera dentro,
+   secciones con etiqueta roja y titular en serif, piezas del atardecer junto al texto y el pie del amarillo al naranja.
+   Titulares y cifras grandes en serif, lo demás en Geist y los datos y etiquetas en Geist Mono. Sin modo oscuro, como
+   Sol. index.html la carga en lugar de marcador.css, con class="sol-raiz" y data-marca="sol" en <html>; marcas/sol.js
+   cambia las flechas de texto por sus iconos. */
 
 /* Sol pone la serif a 400 y su titular de pago no se sirve (se ve Georgia). Las cifras de la web piden 800–900
    (pensadas para Doto): esta cara dice cubrir todos los pesos con la Georgia normal, así el navegador no la engorda. */
@@ -25,15 +27,19 @@ html:root[data-marca="sol"]{
   --sombra:none;
   /* El sentido del voto conserva sus colores de siempre: el rojo de Sol es de marca, no de «no». */
   --si:#2F8A5B; --no:#C23B2E; --abst:#C9962A; --nv:#A39DA3;
+  /* Lo que sale del ancho de la retícula hasta 8 px del borde de la ventana (el hero y el pie de Sol) */
+  --a-sangre:calc(50% - 50vw + var(--e-8));
+  /* El chevrón pixelado de Sol, para los enlaces que lo llevan por CSS */
+  --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 0h3v3H4zM7 3h3v3H7zM10 6h3v3h-3zM7 9h3v3H7zM4 12h3v3H4z'/%3E%3C/svg%3E");
 }
+html[data-marca="sol"] body{font-size:16px;line-height:1.55;padding-bottom:var(--e-8);overflow-x:clip}
+html[data-marca="sol"] .wrap{position:relative}
 
-/* ---------- tipografía ---------- */
-html[data-marca="sol"] body{font-size:16px;line-height:1.55}
+/* ---------- tipografía (sus .t-titular, .t-texto-l, .t-etiqueta y .t-dato) ---------- */
 html[data-marca="sol"] :is(h1,h2){font-weight:400;letter-spacing:-.02em}
 html[data-marca="sol"] h3{font-family:var(--font-texto);font-weight:500;letter-spacing:-.01em}
-html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:clamp(28px,3.2vw,40px);line-height:1.08}
-/* Etiquetas: .t-etiqueta de Sol, en rojo como «LOS PROYECTOS». */
-html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;color:var(--rojo)}
+html[data-marca="sol"] :is(.view-intro h2,.sec-h h2,.ficha-top h2){font-size:clamp(32px,4vw,52px);line-height:1.05}
+html[data-marca="sol"] .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.08em;color:var(--rojo)}
 html[data-marca="sol"] :is(th,.organ,.periodo-bar label,.vote-h .sub,.hv-sub,.vc-s,.date .m,.date .w){font-family:var(--font-mono);letter-spacing:.06em}
 html[data-marca="sol"] th{font-size:11px;font-weight:500;text-transform:uppercase}
 html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-family:var(--led);font-weight:400;letter-spacing:-.02em}
@@ -42,21 +48,94 @@ html[data-marca="sol"] :is(.kpi b,.hemi-center b,.vcard .vc-n,.date .d){font-fam
 html[data-marca="sol"] :is(.th-row .n,.decide-row .n,.rank-row .n){font-family:var(--font-mono);font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:0}
 html[data-marca="sol"] blockquote mark{background:none;color:inherit;box-shadow:inset 0 -.42em 0 color-mix(in srgb,var(--amarillo) 45%,transparent);padding:0 .1em}
 
-/* ---------- barra superior: como su cabecera (80 px, sin bordes, enlaces fantasma en píldora) ---------- */
+/* ---------- iconos: los chevrones pixelados de Sol (marcas/sol.js cambia las flechas de texto) ---------- */
+html[data-marca="sol"] .icono{flex:none;display:inline-block;vertical-align:-.12em}
+html[data-marca="sol"] .icono-fin{margin-left:.4em}
+html[data-marca="sol"] .icono-ini{margin-right:.4em}
+html[data-marca="sol"] :is(.btn,.boton,.boton-claro,.chipbtn) .icono:is(.icono-fin,.icono-ini){margin:0}
+/* Los enlaces de texto, como su .in-enlace: subrayado y, detrás, el chevrón. */
+html[data-marca="sol"] .linklike{font-weight:500;text-decoration-color:color-mix(in srgb,currentColor 40%,transparent);text-underline-offset:.25em}
+html[data-marca="sol"] .linklike:hover{text-decoration-color:currentColor}
+html[data-marca="sol"] :is(.sec-h,.face-foot,.hero-cta,.sol-manifiesto,.elh-links,.view-intro) .linklike:not(:has(.icono))::after{
+  content:"";display:inline-block;width:12px;height:12px;margin-left:.45em;vertical-align:-.05em;background:currentColor;
+  -webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat}
+
+/* ---------- cabecera: la suya (80 px, sin bordes; enlaces .boton-fantasma y la acción en .boton-claro) ---------- */
 html[data-marca="sol"] .topbar{background:color-mix(in srgb,var(--blanco) 92%,transparent);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:0}
-html[data-marca="sol"] .topbar-in{min-height:80px;gap:var(--e-16)}
+html[data-marca="sol"] .topbar-in{min-height:80px;gap:var(--e-8)}
+html[data-marca="sol"] .brand{margin-right:auto;color:var(--tinta)}
 html[data-marca="sol"] .brand .logo{height:28px;aspect-ratio:96/53.2;background:var(--rojo);-webkit-mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain;mask:url(../marca/simbolo-tinta.svg) no-repeat center/contain}
 /* El nombre en dos líneas, como «Reforma / Digital». */
 html[data-marca="sol"] .brand .nombre{display:block;font:600 15px/1.02 var(--font-texto);letter-spacing:-.01em;white-space:normal;max-width:7ch}
-html[data-marca="sol"] nav.tabs{align-self:center;gap:var(--e-4)}
-html[data-marca="sol"] nav.tabs>button{min-height:44px;border:0;border-radius:var(--r-pildora);padding:0 14px;font:500 15px var(--font-texto);color:var(--tinta);transition:background var(--t-rapido) var(--curva-salida)}
-html[data-marca="sol"] nav.tabs>button:hover{background:var(--superficie)}
-html[data-marca="sol"] nav.tabs>button.activa{background:var(--superficie)}
-html[data-marca="sol"] .tab-29n{background:var(--rojo);color:var(--blanco);border-radius:var(--r-pildora);padding:1px 6px}
-html[data-marca="sol"] .tab-panel{border-color:var(--linea);border-radius:var(--r-20);box-shadow:var(--sombra-flota)}
-html[data-marca="sol"] .btn-buscar{min-height:44px;border-radius:var(--r-pildora);padding:0 14px;font-size:14px;border-color:var(--linea)}
-html[data-marca="sol"] .btn-menu{width:44px;height:44px;border-radius:50%;border-color:var(--linea)}
-html[data-marca="sol"] .periodo-bar select{border-radius:var(--r-pildora);padding:6px 12px;border-color:var(--tinta-3)}
+html[data-marca="sol"] nav.tabs{margin-left:0;align-self:center;gap:var(--e-4);overflow:visible}
+html[data-marca="sol"] nav.tabs>button{min-height:44px;padding:0 var(--e-12);border:0;color:inherit;font:500 15px var(--font-texto);gap:6px}
+html[data-marca="sol"] nav.tabs>button.activa{background:color-mix(in srgb,currentColor 8%,transparent)}
+html[data-marca="sol"] nav.tabs .chev{opacity:1;transition:transform var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .tab-29n{background:var(--rojo);color:var(--blanco);border-radius:var(--r-pildora);padding:1px 6px;font-family:var(--font-mono)}
+html[data-marca="sol"] .tab-panel{border-color:var(--linea);border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:var(--e-8)}
+html[data-marca="sol"] .tab-item{border-radius:var(--r-12);padding:10px 14px}
+html[data-marca="sol"] .tab-item.activa b::after{background:var(--rojo)}
+html[data-marca="sol"] .btn-buscar{min-height:44px;margin-left:var(--e-8);padding:0 var(--e-16);font-size:15px;color:var(--tinta)}
+html[data-marca="sol"] .btn-buscar kbd{border-radius:6px;background:var(--superficie);border:0;font-family:var(--font-mono)}
+/* El menú del móvil: el círculo blanco con «+» de su cabecera, que gira a «×» al abrirse. */
+html[data-marca="sol"] .btn-menu{width:44px;height:44px;padding:0;border:0;border-radius:50%;color:var(--tinta)}
+/* .boton-claro lo pone en inline-flex: como en la hoja base, solo cuando la barra no cabe */
+html[data-marca="sol"] .btn-menu{display:none}
+@media (max-width:1200px){ html[data-marca="sol"] .btn-menu{display:inline-flex} }
+html[data-marca="sol"] .btn-menu .icono{transition:transform 420ms var(--curva-salida)}
+html[data-marca="sol"] .btn-menu[aria-expanded="true"] .icono{transform:rotate(45deg)}
+html[data-marca="sol"] .periodo-bar{padding-top:var(--e-24)}
+html[data-marca="sol"] .periodo-bar select{min-height:36px;border-radius:var(--r-pildora);padding:0 12px;border-color:var(--tinta-3)}
+
+/* En Inicio la cabecera vive dentro del hero, en blanco, y se va con él al bajar (como en su portada). */
+html[data-marca="sol"].en-portada .topbar{position:absolute;top:var(--e-8);left:0;right:0;margin:0;padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--blanco);--foco:var(--blanco)}
+html[data-marca="sol"].en-portada .brand{color:var(--blanco)}
+html[data-marca="sol"].en-portada .brand .logo{background:var(--blanco)}
+html[data-marca="sol"].en-portada nav.tabs>button:hover::before{opacity:.16}
+html[data-marca="sol"].en-portada nav.tabs>button.activa{background:color-mix(in srgb,var(--blanco) 16%,transparent)}
+html[data-marca="sol"].en-portada .tab-29n{background:var(--blanco);color:var(--rojo)}
+html[data-marca="sol"].en-portada .btn-buscar{box-shadow:none}
+
+/* ---------- portada: su hero (.in-hero): atardecer, 8 px de margen, radio 28, titular centrado ---------- */
+html[data-marca="sol"] .sol-portada{
+  position:relative;display:flex;flex-direction:column;min-height:688px;margin:var(--e-8) var(--a-sangre) 0;
+  border-radius:var(--r-28);background:var(--atardecer);color:var(--blanco);--foco:var(--blanco);
+}
+html[data-marca="sol"] .sol-portada-in{
+  flex:1;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:var(--ancho);margin-inline:auto;
+  padding:calc(80px + var(--e-40)) var(--margen) calc(var(--e-80) + 44px);text-align:center;
+}
+html[data-marca="sol"] .sol-portada h1{max-width:25ch;margin:0 auto var(--e-32);font:400 clamp(36px,5vw,72px)/1.08 var(--display);letter-spacing:-.02em;color:var(--blanco)}
+html[data-marca="sol"] .sol-portada p{max-width:64ch;margin:0 auto var(--e-16);font-size:clamp(16px,1.2vw,17px);line-height:1.6}
+/* Centrado sin transform (el botón lo usa para la pulsación); píldora translúcida sobre el naranja, foco en tinta. */
+html[data-marca="sol"] .sol-portada-enlace{position:absolute;bottom:var(--e-24);inset-inline:0;width:fit-content;margin-inline:auto;--foco:var(--tinta);
+  background:color-mix(in oklch,var(--blanco) 35%,transparent);box-shadow:none;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+html[data-marca="sol"] .sol-portada-enlace::before{background:color-mix(in oklch,var(--blanco) 30%,transparent)}
+
+/* ---------- secciones: las suyas (96 px de aire, etiqueta roja, titular serif, lectura en tinta-2) ---------- */
+html[data-marca="sol"] .sec{padding-top:var(--e-96);gap:var(--e-20)}
+html[data-marca="sol"] .sec-h{align-items:end;gap:var(--e-12) var(--e-32);margin-bottom:var(--e-8)}
+html[data-marca="sol"] .sec-h p{font-size:16px;line-height:1.6;color:var(--tinta-2);max-width:52ch}
+html[data-marca="sol"] .sec-h :is(.linklike,a){font-size:15px}
+html[data-marca="sol"] .view-intro{gap:var(--e-16) var(--e-32);padding-top:var(--e-40)}
+html[data-marca="sol"] .view-intro p{font-size:18px;line-height:1.6;color:var(--tinta-2);max-width:65ch}
+
+/* El último pleno: como un proyecto de su portada, el texto a la izquierda y la votación sobre una pieza del atardecer. */
+html[data-marca="sol"] .hero{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,64px);align-items:center;padding:var(--e-80) 0 0;scroll-margin-top:var(--e-24)}
+html[data-marca="sol"] .hero-texto{display:grid;gap:var(--e-20);align-content:center}
+html[data-marca="sol"] .hero-h{margin:0;font-size:clamp(32px,4vw,52px);line-height:1.05;letter-spacing:-.02em;color:var(--tinta)}
+html[data-marca="sol"] .hero-lede{margin:0;font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--tinta-2);text-wrap:pretty}
+html[data-marca="sol"] .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-8) var(--e-24);margin-top:var(--e-8)}
+html[data-marca="sol"] .hero-pieza{display:grid;place-items:center;padding:clamp(20px,4vw,48px);border-radius:var(--r-28);background:var(--atardecer)}
+html[data-marca="sol"] .hero-vote{width:100%;color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px 22px 20px}
+html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.08em;color:var(--tinta-2)}
+
+/* El proyecto: su «La iniciativa» (dos columnas; a la izquierda etiqueta, titular y enlace; a la derecha la lectura). */
+html[data-marca="sol"] .sol-manifiesto{grid-template-columns:1fr 1fr;gap:var(--e-64);align-items:start}
+html[data-marca="sol"] .sol-manifiesto>div:first-child{display:grid;gap:var(--e-20);justify-items:start}
+html[data-marca="sol"] .sol-manifiesto h2{max-width:17ch;font-size:clamp(32px,4vw,52px);line-height:1.05}
+html[data-marca="sol"] .sol-lectura{display:grid;gap:var(--e-24);color:var(--tinta-2);font-size:clamp(17px,1.4vw,19px);line-height:1.6}
+html[data-marca="sol"] .sol-lectura p{margin:0}
 
 /* ---------- botones: .boton y .boton-claro de Sol; aquí solo se quitan los restos de .btn ---------- */
 html[data-marca="sol"] .btn:hover{box-shadow:none}
@@ -79,19 +158,6 @@ html[data-marca="sol"] .el-nav-grupos .gi a[aria-current="page"]{background:var(
 /* Campos: los de .campo de Sol (borde --tinta-3, radio 12, 44 px, 16 px). */
 html[data-marca="sol"] :is(.controls input,.controls select){min-height:44px;padding:var(--e-8) var(--e-12);border:1px solid var(--tinta-3);border-radius:var(--r-12);font-size:16px}
 
-/* ---------- portada: el atardecer, como su hero ---------- */
-html[data-marca="sol"] .hero{
-  background:var(--atardecer); color:var(--blanco); border-radius:var(--r-28);
-  padding:clamp(28px,5vw,64px) clamp(22px,4.5vw,56px) clamp(40px,6vw,80px);
-  gap:clamp(24px,4vw,56px); grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
-}
-html[data-marca="sol"] .hero .eyebrow{color:color-mix(in srgb,var(--blanco) 88%,transparent)}
-html[data-marca="sol"] .hero-h{font-size:clamp(34px,4.6vw,60px);line-height:1.04;letter-spacing:-.03em;color:var(--blanco);margin-top:14px}
-html[data-marca="sol"] .hero-lede{font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--blanco)}
-html[data-marca="sol"] .hero-cta .boton-claro{box-shadow:none}
-html[data-marca="sol"] .hero-vote{color:var(--tinta);border:0;border-radius:var(--r-20);box-shadow:var(--sombra-flota);padding:24px 22px 20px}
-html[data-marca="sol"] .hemi-center span{font-family:var(--font-mono);letter-spacing:.08em;color:var(--tinta-2)}
-
 /* Las otras portadas, con el mismo atardecer: Elecciones y ¿Quién lo dijo? */
 html[data-marca="sol"] :is(.elh-hero,.qld-hero){
   background:var(--atardecer); color:var(--blanco); border:0; border-radius:var(--r-28);
@@ -112,22 +178,21 @@ html[data-marca="sol"] .qld-hero .qld-hecho{color:var(--tinta);border:0;box-shad
 html[data-marca="sol"] .qld-hero .qld-hecho .eyebrow{color:var(--rojo)}
 html[data-marca="sol"] .qld-hero + .chart{background:var(--superficie);border:0}
 
-/* Método: una página informativa de Sol, sin caja, con la lectura limitada a 760 px. */
-html[data-marca="sol"] .method{background:none;border:0;padding:0;gap:14px;max-width:760px;font-size:17px;line-height:1.6}
-html[data-marca="sol"] .method h2{font-size:clamp(36px,4.6vw,56px);line-height:1.02;letter-spacing:-.03em;margin-bottom:4px}
-html[data-marca="sol"] .method h3{font:400 clamp(24px,2.4vw,30px)/1.15 var(--display);letter-spacing:-.02em;margin-top:28px;padding-top:28px;border-top:1px solid var(--linea)}
-html[data-marca="sol"] .method p,html[data-marca="sol"] .method li{max-width:65ch}
+/* Método: una página informativa de Sol (.info-pagina), sin caja, con la lectura limitada a 760 px. */
+html[data-marca="sol"] .method{background:none;border:0;padding:var(--e-40) 0 0;gap:14px;max-width:760px;font-size:17px;line-height:1.6}
+html[data-marca="sol"] .method h2{font-size:clamp(36px,4.5vw,60px);line-height:1.1;letter-spacing:-.02em;margin-bottom:4px}
+html[data-marca="sol"] .method h3{font:400 clamp(24px,3vw,32px)/1.2 var(--display);letter-spacing:-.01em;margin-top:28px;padding-top:28px;border-top:1px solid var(--linea)}
+html[data-marca="sol"] .method p,html[data-marca="sol"] .method li{max-width:65ch;color:var(--tinta-2)}
 html[data-marca="sol"] .method ul{gap:10px;padding-left:22px}
 html[data-marca="sol"] .method li::marker{color:var(--rojo)}
 
 /* Las cifras: rejilla de bordes compartidos, sin huecos ni sombras por celda (como sus rejillas). */
-html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin-top:var(--e-24);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
+html[data-marca="sol"] .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:0;margin-top:var(--e-64);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);overflow:hidden}
 html[data-marca="sol"] .kpi{flex-direction:column;align-items:flex-start;gap:10px;padding:20px 20px 18px;border-right:1px solid var(--linea)}
 html[data-marca="sol"] .kpi:last-child{border-right:0}
 html[data-marca="sol"] .kpi b{font-size:clamp(34px,3.4vw,46px);line-height:.95}
 html[data-marca="sol"] .kpi span{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;max-width:none;color:var(--tinta-2)}
 html[data-marca="sol"] .kpi.alert b{color:var(--rojo)}
-html[data-marca="sol"] .sec{padding-top:var(--e-64)}
 
 /* ---------- superficies: .caja-plana de Sol ---------- */
 html[data-marca="sol"] :is(.chart,.session,.vote,.card){padding:20px 22px}
@@ -138,25 +203,69 @@ html[data-marca="sol"] :is(.pill,.res){font-family:var(--font-mono);letter-spaci
 html[data-marca="sol"] .tag{border-radius:var(--r-pildora);padding:2px 9px}
 html[data-marca="sol"] #tip{background:var(--tinta);color:var(--blanco);font-family:var(--font-mono);font-size:12px;border-radius:var(--r-12)}
 html[data-marca="sol"] table.dt tbody tr:hover{background:var(--superficie)}
+/* El juego del día, en la pieza amarilla de sus proyectos (.in-proyecto-sol). */
+html[data-marca="sol"] #home-juego>*{border:0;border-radius:var(--r-28);color:var(--tinta);
+  background:radial-gradient(100% 100% at 100% 0%,color-mix(in oklch,var(--amarillo),var(--blanco) 60%) 0%,transparent 70%),linear-gradient(150deg,var(--amarillo) 35%,color-mix(in oklch,var(--amarillo),var(--naranja) 55%) 100%)}
+html[data-marca="sol"] #home-juego .eyebrow{color:var(--tinta)}
 
-/* ---------- pie: el atardecer al revés (los valores de su .pie-sol), todo en tinta ---------- */
-html[data-marca="sol"] footer.pie{
-  margin-top:var(--e-80); padding:clamp(40px,6vw,80px) clamp(22px,4vw,48px) var(--e-32); border:0; border-radius:var(--r-28);
-  background:radial-gradient(80% 70% at 50% -12%, #ffe58f 0%, rgba(255,229,143,0) 70%), linear-gradient(180deg, #ffd34d 0%, var(--amarillo) 46%, var(--naranja) 100%);
-  color:var(--tinta);
+/* ---------- pie: el suyo (.pie-sol): el atardecer al revés, todo en tinta ---------- */
+html[data-marca="sol"] footer.pie{--marca-color:currentColor;margin:var(--e-96) var(--a-sangre) 0;padding:0;border:0;font-size:15px;color:var(--tinta)}
+html[data-marca="sol"] .pie-sol{
+  display:flex;flex-direction:column;gap:var(--e-40);
+  padding:clamp(48px,8vw,112px) max(var(--margen),(100% - var(--ancho)) / 2) var(--e-40);border-radius:var(--r-28);
+  background:radial-gradient(80% 70% at 50% -12%,#ffe58f 0%,rgba(255,229,143,0) 70%),linear-gradient(180deg,#ffd34d 0%,var(--amarillo) 46%,var(--naranja) 100%);
 }
-html[data-marca="sol"] footer.pie a{color:var(--tinta)}
+html[data-marca="sol"] .pie-titulo{margin:0;max-width:20ch;font:400 clamp(32px,4vw,56px)/1 var(--display);letter-spacing:-.03em;color:var(--tinta)}
+html[data-marca="sol"] .pie-acciones{display:flex;flex-wrap:wrap;gap:var(--e-12)}
+html[data-marca="sol"] .pie-acciones :is(.boton,.boton-claro){min-height:44px;padding-inline:var(--e-16);font-size:14px}
+html[data-marca="sol"] footer.pie .pie-acciones .boton{color:var(--blanco)}
+/* Sobre amarillo, el claro se separa con una sombra cálida y no con línea gris. */
+html[data-marca="sol"] .pie-acciones .boton-claro{box-shadow:var(--sombra-suave)}
+html[data-marca="sol"] .pie-mapa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--e-24) var(--e-32);padding-top:var(--e-32);border-top:1px solid rgba(34,34,34,.18)}
+html[data-marca="sol"] .pie-mapa h3{margin:0 0 var(--e-12);font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
+html[data-marca="sol"] .pie-mapa ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--e-4)}
+html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-notas,.pie-legal) a{color:var(--tinta);text-decoration-line:underline;text-decoration-color:rgba(34,34,34,.35);text-decoration-thickness:from-font;text-underline-offset:.25em}
+html[data-marca="sol"] footer.pie :is(.pie-mapa,.pie-notas,.pie-legal) a:hover{text-decoration-color:currentColor}
+html[data-marca="sol"] .pie-mapa a{display:inline-flex;align-items:center;min-height:32px}
+html[data-marca="sol"] .pie-notas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--e-24) var(--e-32);margin:0;padding:0;border:0;font-size:13.5px;line-height:1.6;color:var(--tinta)}
+html[data-marca="sol"] .pie-notas p{margin:0;max-width:52ch}
+html[data-marca="sol"] footer.pie .pie-notas b{display:block;margin-bottom:6px;font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta)}
+html[data-marca="sol"] .pie-legal{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--e-8) var(--e-32);padding-top:var(--e-24);border-top:1px solid rgba(34,34,34,.18);font-size:15px}
+html[data-marca="sol"] .pie-marca{display:inline-flex;align-items:center;flex-wrap:wrap;gap:var(--e-8) var(--e-24)}
+html[data-marca="sol"] footer.pie .pie-logo{display:inline-flex;align-items:center;gap:var(--e-12);color:var(--tinta);text-decoration:none}
 html[data-marca="sol"] footer.pie .pie-logo .logo{width:44px;height:25px;background:currentColor;-webkit-mask:url(../marca/simbolo-tinta.svg) no-repeat left center/contain;mask:url(../marca/simbolo-tinta.svg) no-repeat left center/contain}
 html[data-marca="sol"] .pie-logo b{font:600 17px var(--font-texto);letter-spacing:-.01em;text-transform:none}
-html[data-marca="sol"] .pie-lema{font-family:var(--display);font-size:clamp(26px,3vw,40px);line-height:1.04;letter-spacing:-.03em;max-width:16ch}
-html[data-marca="sol"] .pie-red{display:inline-flex;align-items:center;gap:var(--e-8);margin:0;font-size:14px}
-html[data-marca="sol"] .pie-red img{width:12px;height:16px}
-html[data-marca="sol"] .pie-notas{border-top-color:rgba(34,34,34,.18)}
-html[data-marca="sol"] :is(footer.pie .pie-nav h2,.pie-notas b){color:var(--tinta)}
+html[data-marca="sol"] .pie-de{display:inline-flex;align-items:center;gap:6px;font-size:14px}
+html[data-marca="sol"] footer.pie .pie-de a{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+html[data-marca="sol"] .pie-legal ul{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:0 var(--e-4);margin:0 calc(-1 * var(--e-8));padding:0;list-style:none}
+html[data-marca="sol"] .pie-legal li a{display:inline-flex;align-items:center;min-height:44px;padding-inline:var(--e-8);border-radius:var(--r-12)}
+html[data-marca="sol"] .pie-nota{margin:0;font-size:14px}
 
+/* ---------- el menú del móvil: su hoja amarilla, con las secciones en serif y líneas finas ---------- */
+html[data-marca="sol"] .menu-movil{left:var(--e-8);right:var(--e-8);bottom:var(--e-8);border-radius:var(--r-28);padding:var(--e-16) var(--margen) var(--e-40);color:var(--tinta);
+  background:radial-gradient(120% 70% at 100% 0%,#ffd34d 0%,rgba(255,211,77,0) 60%),var(--amarillo)}
+html[data-marca="sol"] .mm-item{min-height:64px;border-bottom-color:rgb(34 34 34 / .16);font:400 28px/1.05 var(--display);letter-spacing:-.02em;color:var(--tinta)}
+html[data-marca="sol"] .mm-sub b{font:400 24px/1.1 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .mm-sub small{color:var(--tinta-2)}
+html[data-marca="sol"] .mm-item:hover,html[data-marca="sol"] .mm-item:focus-visible{background:rgb(34 34 34 / .06)}
+html[data-marca="sol"] .menu-movil .mm-grupo h2{border-bottom-color:rgb(34 34 34 / .16);color:var(--tinta);font-family:var(--font-mono)}
+html[data-marca="sol"] :is(.mm-item:not(.mm-sub).activa,.mm-sub.activa b)::after{background:var(--rojo);box-shadow:none}
+
+@media (max-width:959px){
+  html[data-marca="sol"] .hero,html[data-marca="sol"] .sol-manifiesto{grid-template-columns:1fr;gap:var(--e-32)}
+}
 @media (max-width:720px){
   html[data-marca="sol"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   html[data-marca="sol"] .kpi{border-bottom:1px solid var(--linea)}
-  html[data-marca="sol"] .hero{grid-template-columns:1fr}
   html[data-marca="sol"] .topbar-in{min-height:64px}
+  html[data-marca="sol"] .sol-portada{min-height:600px}
+  html[data-marca="sol"] .pie-sol{gap:var(--e-32)}
+  html[data-marca="sol"] .pie-acciones :is(.boton,.boton-claro){width:100%}
+  html[data-marca="sol"] :is(.pie-mapa,.pie-notas){grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-marca="sol"] .pie-legal{grid-template-columns:minmax(0,1fr)}
+  html[data-marca="sol"] .pie-legal ul{justify-content:flex-start}
+  html[data-marca="sol"] .sec{padding-top:var(--e-64)}
+}
+@media (max-width:480px){
+  html[data-marca="sol"] :is(.pie-mapa,.pie-notas){grid-template-columns:1fr}
 }

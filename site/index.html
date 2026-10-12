@@ -44,20 +44,28 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
 <body>
 
 <div class="wrap">
+  <!-- Portada (Sol): el hero de reforma-digital.es. En Inicio la barra se pinta encima, dentro del atardecer. -->
+  <section class="sol-portada" id="portada" aria-labelledby="portada-titulo" hidden>
+    <div class="sol-portada-in">
+      <h1 id="portada-titulo">Lo que pasa en el Congreso, contado para cualquiera.</h1>
+      <p>Cada pleno resumido, cada votación con el voto de cada diputado y cada ley, desde que entra hasta que se publica. Con datos oficiales, en lenguaje claro y con código abierto.</p>
+    </div>
+    <button class="boton-claro sol-portada-enlace" type="button" data-bajar>Lo último del Congreso <svg class="icono" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><path transform="rotate(90 8 8)" d="M4 0h3v3H4zM7 3h3v3H7zM10 6h3v3h-3zM7 9h3v3H7zM4 12h3v3H4z"/></svg></button>
+  </section>
   <header class="topbar">
     <div class="topbar-in">
       <a class="brand" href="/" data-go="inicio"><span class="logo" aria-hidden="true"></span><span class="nombre" aria-hidden="true">Escaño Abierto</span><span class="sr">Escaño Abierto · Inicio</span></a>
-      <button class="btn-buscar" id="btn-buscar" type="button" aria-label="Buscar (tecla /)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Buscar</span><kbd>/</kbd></button>
       <nav class="tabs" aria-label="Secciones">
-        <button id="tab-inicio" data-vista="inicio">Inicio</button>
-        <button id="tab-elecciones" data-vista="elecciones">Elecciones<span class="tab-29n">29N</span></button>
-        <button id="tab-geografia" data-vista="geografia">Geografía</button>
-        <button class="tab-menu" id="menu-actividad" aria-haspopup="menu" aria-expanded="false" aria-controls="m-actividad">Actividad<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="tab-menu" id="menu-quien" aria-haspopup="menu" aria-expanded="false" aria-controls="m-quien">Quién es quién<svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
-        <button id="tab-metodo" data-vista="metodo">Método</button>
+        <button class="boton-fantasma" id="tab-inicio" data-vista="inicio">Inicio</button>
+        <button class="boton-fantasma" id="tab-elecciones" data-vista="elecciones">Elecciones<span class="tab-29n">29N</span></button>
+        <button class="boton-fantasma" id="tab-geografia" data-vista="geografia">Geografía</button>
+        <button class="boton-fantasma tab-menu" id="menu-actividad" aria-haspopup="menu" aria-expanded="false" aria-controls="m-actividad">Actividad<svg class="icono chev" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><path transform="rotate(90 8 8)" d="M4 0h3v3H4zM7 3h3v3H7zM10 6h3v3h-3zM7 9h3v3H7zM4 12h3v3H4z"/></svg></button>
+        <button class="boton-fantasma tab-menu" id="menu-quien" aria-haspopup="menu" aria-expanded="false" aria-controls="m-quien">Quién es quién<svg class="icono chev" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><path transform="rotate(90 8 8)" d="M4 0h3v3H4zM7 3h3v3H7zM10 6h3v3h-3zM7 9h3v3H7zM4 12h3v3H4z"/></svg></button>
+        <button class="boton-fantasma" id="tab-quien-lo-dijo" data-vista="quien-lo-dijo">¿Quién lo dijo?<i class="tab-punto" hidden><span class="sr"> (reto de hoy sin jugar)</span></i></button>
+        <button class="boton-fantasma" id="tab-metodo" data-vista="metodo">Método</button>
       </nav>
-      <button class="btn-menu" id="btn-menu" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Menú"><span class="hamb" aria-hidden="true"><i></i><i></i><i></i></span><i class="tab-punto" hidden></i></button>
+      <button class="btn-buscar boton-claro" id="btn-buscar" type="button" aria-label="Buscar (tecla /)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Buscar</span><kbd>/</kbd></button>
+      <button class="btn-menu boton-claro" id="btn-menu" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Menú"><svg class="icono" viewBox="0 0 15 15" width="15" height="15" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true"><path d="M6 0h3v3H6zM0 6h3v3H0zM6 6h3v3H6zM12 6h3v3h-3zM6 12h3v3H6z"/></svg><i class="tab-punto" hidden></i></button>
     </div>
   </header>
   <!-- Fuera de la barra: un backdrop-filter en .topbar (algunas marcas) haría que position:fixed fuera relativo a ella -->
@@ -102,66 +110,85 @@ if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
   </main>
 
   <div id="tip" hidden></div>
-  <footer class="pie">
-    <div class="pie-top">
-      <div class="pie-marca">
-        <a class="pie-logo" href="/"><span class="logo" aria-hidden="true"></span><b>Escaño Abierto</b></a>
-        <p class="pie-lema">Qué se dijo en el Congreso y cómo se votó.</p>
-        <p class="pie-red"><img src="/marcas/sol/r.svg" alt="" width="12" height="16"><span>Un proyecto de <a href="https://reforma-digital.es" target="_blank" rel="noopener">Reforma Digital</a></span></p>
-        <p class="pie-estado"><i aria-hidden="true"></i><span id="gen">Datos oficiales, cada día</span></p>
+  <footer class="pie" aria-labelledby="pie-titulo">
+    <div class="pie-sol">
+      <h2 id="pie-titulo" class="pie-titulo">El Congreso es de todos. Sus datos, también.</h2>
+      <div class="pie-acciones">
+        <a class="boton" href="https://github.com/jorgegarcelan/escano-abierto/issues/new/choose" target="_blank" rel="noopener"><svg class="icono" viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M3.25 4.75a2 2 0 0 1 2-2h7.5a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2H8.5l-3.25 3v-3a2 2 0 0 1-2-2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg> Cuéntanos qué echas en falta</a>
+        <a class="boton-claro" href="https://github.com/jorgegarcelan/escano-abierto" target="_blank" rel="noopener">Ver el código en GitHub <svg class="icono" viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M5 13 13 5M6.5 5H13v6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="boton-claro" href="https://reforma-digital.es" target="_blank" rel="noopener"><svg class="icono" viewBox="0 0 144 192" width="12" height="16" aria-hidden="true"><path fill="currentColor" d="M48 0H96V48H48V96H96V144H48V192H0V48H48Z"/><path fill="var(--doblez)" d="M0 48L48 0V48Z"/><rect x="96" y="48" width="48" height="48" fill="currentColor"/><rect x="96" y="144" width="48" height="48" fill="currentColor"/></svg> Conoce Reforma Digital <svg class="icono" viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M5 13 13 5M6.5 5H13v6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
-      <nav class="pie-nav" aria-label="Mapa de la web">
-      <div>
-        <h2>Actividad</h2>
-        <ul>
-          <li><a href="/dias/">Por día</a></li>
-          <li><a href="/votaciones/">Votaciones</a></li>
-          <li><a href="/leyes/">Leyes</a></li>
-          <li><a href="/temas/">Temas</a></li>
-          <li><a href="/preguntas/">Preguntas al Gobierno</a></li>
-          <li><a href="/explora/">Explora</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>Quién es quién</h2>
-        <ul>
-          <li><a href="/diputados/">Diputados</a></li>
-          <li><a href="/grupos/">Grupos</a></li>
-          <li><a href="/oradores/">Por orador</a></li>
-          <li><a href="/organigrama/">Organigrama del Estado</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>Además</h2>
-        <ul>
-          <li><a href="/elecciones/">Elecciones 29N</a></li>
-          <li><a href="/geografia/">Geografía</a></li>
-          <li><a href="/quien-lo-dijo/">¿Quién lo dijo?</a></li>
-          <li><a href="/como-ley/">Cómo se hace una ley</a></li>
-          <li><a href="/glosario/">Glosario</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2>El proyecto</h2>
-        <ul>
-          <li><a href="/sobre/">Sobre el proyecto</a></li>
-          <li><a href="/metodo/">Método</a></li>
-          <li><a href="/aviso-legal/">Aviso legal</a></li>
-          <li><a href="rss.xml">Seguir por RSS</a></li>
-          <li><a href="https://github.com/jorgegarcelan/escano-abierto" target="_blank" rel="noopener">Código abierto ↗</a></li>
-        </ul>
-      </div>
+      <nav class="pie-mapa" aria-label="Mapa de la web">
+        <div>
+          <h3>Actividad</h3>
+          <ul>
+            <li><a href="/dias/">Por día</a></li>
+            <li><a href="/votaciones/">Votaciones</a></li>
+            <li><a href="/leyes/">Leyes</a></li>
+            <li><a href="/temas/">Temas</a></li>
+            <li><a href="/preguntas/">Preguntas al Gobierno</a></li>
+            <li><a href="/explora/">Explora</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Quién es quién</h3>
+          <ul>
+            <li><a href="/diputados/">Diputados</a></li>
+            <li><a href="/grupos/">Grupos</a></li>
+            <li><a href="/oradores/">Por orador</a></li>
+            <li><a href="/organigrama/">Organigrama del Estado</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Además</h3>
+          <ul>
+            <li><a href="/elecciones/">Elecciones 29N</a></li>
+            <li><a href="/geografia/">Geografía</a></li>
+            <li><a href="/quien-lo-dijo/">¿Quién lo dijo?</a></li>
+            <li><a href="/como-ley/">Cómo se hace una ley</a></li>
+            <li><a href="/glosario/">Glosario</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Reforma Digital</h3>
+          <ul>
+            <li><a href="https://reforma-digital.es/#iniciativa" target="_blank" rel="noopener">La iniciativa</a></li>
+            <li><a href="https://reforma-digital.es/#proyectos" target="_blank" rel="noopener">Los proyectos</a></li>
+            <li><a href="https://reforma-digital.es/chat" target="_blank" rel="noopener">Buscador de trámites</a></li>
+            <li><a href="https://reforma-digital.es/equipo" target="_blank" rel="noopener">Equipo</a></li>
+            <li><a href="https://reforma-digital.es/#participar" target="_blank" rel="noopener">Participar</a></li>
+          </ul>
+        </div>
       </nav>
-    </div>
-    <div class="pie-notas">
-      <p><b>Fuentes</b>Diario de Sesiones y datos abiertos de votaciones del <a href="https://www.congreso.es" target="_blank" rel="noopener">Congreso de los Diputados</a>, nombramientos y ceses del <a href="https://www.boe.es" target="_blank" rel="noopener">BOE</a>, resultados electorales del Ministerio del Interior y datos del INE. Las encuestas, de la recopilación de Wikipedia; los mercados, de Polymarket.</p>
-      <p><b>Con IA, comprobado</b>Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave los genera una IA a partir del texto oficial. Las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado.</p>
-      <p><b>Independiente</b>Escaño Abierto no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.</p>
+      <div class="pie-notas">
+        <p><b>Fuentes</b>Diario de Sesiones y datos abiertos de votaciones del <a href="https://www.congreso.es" target="_blank" rel="noopener">Congreso de los Diputados</a>, nombramientos y ceses del <a href="https://www.boe.es" target="_blank" rel="noopener">BOE</a>, resultados electorales del Ministerio del Interior y datos del INE. Las encuestas, de la recopilación de Wikipedia; los mercados, de Polymarket.</p>
+        <p><b>Con IA, comprobado</b>Resúmenes, frases de síntesis, tono, intensidad, posturas, compromisos, propuestas y momentos clave los genera una IA a partir del texto oficial. Las citas, cifras y compromisos se han comprobado literalmente en el Diario de Sesiones enlazado.</p>
+        <p><b>Independiente</b>Escaño Abierto no está asociado al Congreso de los Diputados ni a ningún organismo público o partido político.</p>
+      </div>
+      <div class="pie-legal">
+        <span class="pie-marca"><a class="pie-logo" href="/"><span class="logo" aria-hidden="true"></span><b>Escaño Abierto</b></a><span class="pie-de">Un proyecto de <a href="https://reforma-digital.es" target="_blank" rel="noopener"><svg class="icono" viewBox="0 0 144 192" width="12" height="16" aria-hidden="true"><path fill="currentColor" d="M48 0H96V48H48V96H96V144H48V192H0V48H48Z"/><path fill="var(--doblez)" d="M0 48L48 0V48Z"/><rect x="96" y="48" width="48" height="48" fill="currentColor"/><rect x="96" y="144" width="48" height="48" fill="currentColor"/></svg>Reforma Digital</a></span></span>
+        <nav aria-label="El proyecto">
+          <ul>
+            <li><a href="/sobre/">Sobre el proyecto</a></li>
+            <li><a href="/metodo/">Método</a></li>
+            <li><a href="/aviso-legal/">Aviso legal</a></li>
+            <li><a href="rss.xml">RSS</a></li>
+          </ul>
+        </nav>
+        <p class="pie-nota"><span id="gen">Datos oficiales, cada día</span> · Proyecto independiente.</p>
+        <nav class="pie-nota" aria-label="Licencias">
+          <ul>
+            <li><a href="https://github.com/jorgegarcelan/escano-abierto/blob/main/LICENSE" target="_blank" rel="noopener">Código, licencia MIT</a></li>
+            <li><a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">Datos, CC BY 4.0</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </footer>
 </div>
 
 <script src="/app.js"></script>
+<script src="/marcas/sol.js"></script>
 
 </body>
 </html>

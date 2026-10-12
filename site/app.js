@@ -1431,14 +1431,14 @@ function renderInicio(){
   // Temas.
 
   $("#inicio").innerHTML = `
-    <div class="hero">
-      <div>
+    <div class="hero" id="ultimo">
+      <div class="hero-texto">
         <div class="eyebrow">${ses.organo==="Pleno"?"Último pleno":"Última sesión"} · ${esc(fechaLarga(ses.fecha))}</div>
         <h2 class="hero-h">${esc(titular)}</h2>
         ${lede?`<p class="hero-lede">${esc(lede)}</p>`:""}
-        <div class="hero-cta"><button class="btn primary boton" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión</button><button class="btn boton-claro" data-go="votaciones">Todas las votaciones</button></div>
+        <div class="hero-cta"><button class="btn primary boton" data-go="dias" data-anchor="s-${ses.id}">Ver la sesión →</button><button class="linklike" data-go="votaciones">Todas las votaciones</button></div>
       </div>
-      ${heroVoto}
+      ${heroVoto?`<div class="hero-pieza">${heroVoto}</div>`:""}
     </div>
     <div class="kpis" aria-label="${esc(DATA.meta.periodo)} en cifras">${kpis}</div>
     ${proximoPleno()}
@@ -1454,7 +1454,7 @@ function renderInicio(){
       <div class="chart"><p class="sub" style="margin:0">Quién habla de qué. Área del círculo = intervenciones del grupo.</p>${matrizTemas(TEMAS.slice(0,8))}</div></div></section>`:""}`;
   $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec" id="home-boe"></section>`);
   cargarOrgIdx().then(()=>{ const h=$("#home-boe"); if (!h) return; const t=tarjetaBoe(); if (t) h.innerHTML=t; else h.remove(); });
-  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec"><div class="chart sobre-franja"><p><b>Escaño Abierto</b> junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><button class="btn boton-claro" data-go="sobre">Sobre el proyecto</button></div></section>`);
+  $("#inicio").insertAdjacentHTML("beforeend", `<section class="sec sol-manifiesto" aria-labelledby="h-proyecto"><div><div class="eyebrow">El proyecto</div><h2 id="h-proyecto">Que entender el Congreso no sea otro trámite.</h2><button class="linklike" data-go="sobre">Sobre el proyecto</button></div><div class="sol-lectura"><p>Escaño Abierto junta lo que publica el Congreso y lo cuenta para que cualquiera pueda entender qué se decide, quién lo decide y cómo. Independiente, con datos oficiales y código abierto.</p><p>Es un proyecto de <a href="https://reforma-digital.es" target="_blank" rel="noopener">Reforma Digital</a>, una iniciativa abierta para que lo público esté a la altura de las personas.</p></div></section>`);
   if (!SEMANAS) cargarSemanas().then(()=>{ const h=$("#home-semana"); if (h) h.innerHTML = tarjetaSemana(); });
 }
 
@@ -2511,6 +2511,8 @@ function show(id, push){
   avisoReto(id);
   VISTAS.forEach(t=>{ $("#"+t).hidden = t!==id; const b=$("#tab-"+t); if (b){ b.classList.toggle("activa", t===id); if (t===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); } });
   document.querySelectorAll(".tab-menu").forEach(m=>m.classList.toggle("activa", !!$("#"+m.getAttribute("aria-controls")+" .activa")));
+  const portada = $("#portada");   // la portada de la marca (Sol): solo en Inicio, con la barra pintada dentro
+  if (portada){ portada.hidden = id!=="inicio"; document.documentElement.classList.toggle("en-portada", id==="inicio"); }
   cerrarMenus();
   document.querySelectorAll("#menu-movil [data-go]").forEach(b=>{ b.classList.toggle("activa", b.dataset.go===id); if (b.dataset.go===id) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
   menuMovil(false);
