@@ -579,3 +579,29 @@ html[data-marca="sol"] #qld-aviso{border:0;box-shadow:var(--sombra-flota)}
   html[data-marca="sol"] .qld-fin .qld-cuadros i{animation:qld-cuadro 360ms var(--curva-salida) backwards}
 }
 html[data-marca="sol"] .qld-cuadros i{border-radius:6px}
+
+/* ---------- Elecciones: el camino hasta las urnas (tarjeta de la cuenta atrás) ---------- */
+/* Cuadros pixelados, como su chevrón: lo pasado en tinta, lo que viene en gris, los plazos con un borde, la campaña en
+   el degradado del sol, el día de votar redondo como el sol y hoy en rojo, latiendo. Los días entran en cascada. */
+html[data-marca="sol"] .elh-cuenta{gap:var(--e-20)}
+html[data-marca="sol"] .elh-cuenta .n span{font-size:14px;color:var(--tinta-2)}
+html[data-marca="sol"] .cm-rejilla{grid-template-rows:repeat(7,14px);grid-auto-columns:14px;gap:3px}
+html[data-marca="sol"] .elh-camino i{border-radius:0}
+html[data-marca="sol"] .cm-rejilla i{background:var(--superficie)}
+html[data-marca="sol"] .elh-camino i.pasado{background:var(--tinta)}
+html[data-marca="sol"] .elh-camino i.hito{background:var(--blanco);box-shadow:inset 0 0 0 2px var(--tinta-3)}
+html[data-marca="sol"] .elh-camino i.campana{background:linear-gradient(180deg,#ffd34d,var(--naranja))}
+html[data-marca="sol"] .elh-camino i.voto{border-radius:50%;background:radial-gradient(circle at 50% 30%,#fff3c4 0%,#ffd34d 30%,var(--amarillo) 55%,var(--naranja) 100%);box-shadow:0 0 0 3px rgb(255 190 11 / .28)}
+html[data-marca="sol"] .elh-camino i.hoy{background:var(--rojo)}
+html[data-marca="sol"] .cm-ext{font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .cm-ley{font-size:13.5px;color:var(--tinta-2)}
+html[data-marca="sol"] .cm-ley li{grid-template-columns:14px 1fr}
+html[data-marca="sol"] .cm-ley i{width:14px;height:14px}
+html[data-marca="sol"] .cm-ley b{font:500 15px var(--font-mono);color:var(--tinta)}
+@keyframes sol-pixel{from{opacity:0;transform:scale(.4)}}
+@keyframes sol-hoy{50%{box-shadow:0 0 0 4px rgb(223 23 23 / .25)}}
+@media (prefers-reduced-motion:no-preference){
+  html[data-marca="sol"] .cm-rejilla i:not(.vacio){animation:sol-pixel 360ms var(--curva-salida) backwards;animation-delay:calc(var(--k) * 9ms + 200ms)}
+  html[data-marca="sol"] .cm-rejilla i.hoy{animation:sol-pixel 360ms var(--curva-salida) backwards,sol-hoy 1.8s var(--curva-salida) 1s infinite;animation-delay:calc(var(--k) * 9ms + 200ms),1s}
+}
+@media (max-width:420px){ html[data-marca="sol"] .elh-camino{grid-template-columns:1fr} }

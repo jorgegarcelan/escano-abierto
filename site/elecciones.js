@@ -40,6 +40,20 @@ const CSS = `
 .elh-cuenta .n b{font-family:var(--led,var(--display));font-size:clamp(64px,9vw,104px);line-height:.88;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .elh-cuenta .n span{font-size:13px;color:var(--muted)}
 .elh-cuenta .f{display:grid;gap:2px;border-top:1px solid var(--line);padding-top:10px}
+.elh-camino{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;align-items:center}
+.cm-rejilla{display:grid;grid-template-rows:repeat(7,13px);grid-auto-flow:column;grid-auto-columns:13px;gap:3px}
+.cm-rejilla i{border-radius:2px;background:var(--line)}
+.cm-rejilla i.vacio{visibility:hidden}
+.elh-camino i.pasado{background:var(--ink)}
+.elh-camino i.hoy{background:var(--no)}
+.elh-camino i.hito{background:color-mix(in srgb,var(--ink) 30%,var(--surface))}
+.elh-camino i.campana{background:var(--abst)}
+.elh-camino i.voto{background:var(--si);border-radius:50%}
+.cm-ext{display:flex;justify-content:space-between;margin-top:4px;font:500 10.5px var(--mono);color:var(--muted)}
+.cm-ley{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:12.5px;color:var(--muted);line-height:1.3}
+.cm-ley li{display:grid;grid-template-columns:13px 1fr;gap:8px;align-items:center}
+.cm-ley i{width:13px;height:13px;border-radius:2px;display:block}
+.cm-ley b{color:var(--ink)}
 .elh-cuenta .f small{font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .elh-cuenta .f b{font-size:15.5px;line-height:1.25}
 .elh-cuenta .f span{font-size:12.5px;color:var(--muted)}
@@ -301,6 +315,39 @@ const hoyISO = () => { const d = new Date(); return `${d.getFullYear()}-${String
 const diasHasta = iso => { const [y,m,d] = iso.split("-").map(Number); const h = new Date(); return Math.round((new Date(y,m-1,d) - new Date(h.getFullYear(),h.getMonth(),h.getDate()))/864e5); };
 const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const fechaLarga = iso => { const [,m,d] = iso.split("-").map(Number); return `${d} de ${MESES[m-1]}`; };
+/* El camino hasta las urnas: un cuadro por día desde la convocatoria hasta la votación, por semanas (de lunes a
+   domingo, una columna por semana). Lo que ya ha pasado, lleno; hoy, marcado; los plazos del calendario, señalados; la
+   campaña, de otro color; el día de votar, redondo. Cada cuadro dice qué pasa ese día. */
+function camino(H, hoy){
+  const {esc} = ctx;
+  const ini = H[0]?.fecha, fin = (H.find(h=>/^Votaci/i.test(h.hito)) || H[H.length-1])?.fecha;
+  if (!ini || !fin) return "";
+  const dia = iso => { const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m-1, d)); };
+  const isoDe = t => t.toISOString().slice(0, 10);
+  const t0 = dia(ini), t1 = dia(fin), lunes = new Date(t0); lunes.setUTCDate(t0.getUTCDate() - (t0.getUTCDay() + 6) % 7);
+  const enRango = (f, h) => h.hasta ? h.fecha <= f && f <= h.hasta : h.fecha === f;
+  const total = Math.round((t1 - t0)/864e5), pasados = Math.max(0, Math.min(total, Math.round((dia(hoy) - t0)/864e5)));
+  const celdas = [];
+  for (let t = new Date(lunes), k = 0; t <= t1; t.setUTCDate(t.getUTCDate() + 1), k++){
+    const f = isoDe(t);
+    if (t < t0){ celdas.push(`<i class="vacio"></i>`); continue; }
+    const h = H.find(x=>enRango(f, x));
+    const cl = f === fin ? "voto" : f === hoy ? "hoy" : f < hoy ? "pasado" : h && /campa/i.test(h.hito) ? "campana" : h ? "hito" : "";
+    const tipTxt = `${fechaCortaEl(f)}${f === hoy ? " · hoy" : ""}${h ? ` · ${h.hito}` : ""}`;
+    celdas.push(`<i class="${cl}" style="--k:${k}" data-tip="${esc(tipTxt)}"></i>`);
+  }
+  const campana = H.find(h=>/campa/i.test(h.hito));
+  return `<div class="elh-camino">
+      <div><div class="cm-rejilla" role="img" aria-label="Del ${esc(fechaLarga(ini))} al ${esc(fechaLarga(fin))}: han pasado ${pasados} de ${total} días">${celdas.join("")}</div>
+        <div class="cm-ext"><span>${esc(fechaCortaEl(ini))}</span><span>${esc(fechaCortaEl(fin))}</span></div></div>
+      <ul class="cm-ley">
+        <li><i class="pasado"></i><span><b>${pasados}</b> de ${total} días desde la convocatoria</span></li>
+        <li><i class="hito"></i><span>Plazos: listas, voto por correo, reflexión</span></li>
+        ${campana ? `<li><i class="campana"></i><span>Campaña, del ${esc(fechaLarga(campana.fecha))} al ${esc(fechaLarga(campana.hasta || campana.fecha))}</span></li>` : ""}
+        <li><i class="voto"></i><span>Se vota el ${esc(fechaLarga(fin))}</span></li>
+      </ul>
+    </div>`;
+}
 const fechaCortaEl = iso => { const [,m,d] = iso.split("-").map(Number); return `${d} ${MESES[m-1].slice(0,3)}`; };
 
 /* Apartados de la sección: cada uno es una subpágina (#elecciones-<id>). */
@@ -446,6 +493,7 @@ function home(el){
         <div class="elh-ctas">${F.cta.map(([id,t],k)=>`<a class="btn ${k?"boton-claro":"primary boton"}" href="/elecciones/${id}/">${esc(t)} →</a>`).join("")}<button class="btn boton-claro" type="button" data-elh-prov>Tu provincia ↓</button></div></div>
       <div class="elh-cuenta">
         <div class="n">${faltan > 0 ? `<b>${faltan}</b><span>${faltan === 1 ? "día: mañana se vota" : "días para votar"}</span>` : faltan === 0 ? `<b>HOY</b><span>se vota de 9.00 a 20.00</span>` : `<b>29N</b><span>elecciones generales</span>`}</div>
+        ${faltan >= 0 ? camino(H, hoy) : ""}
         ${ahora ? `<div class="f"><small>Ahora</small><b>${esc(ahora.hito)}</b>${ahora.hasta?`<span>hasta el ${esc(fechaLarga(ahora.hasta))}</span>`:""}</div>` : ""}
         ${prox ? `<div class="f"><small>Lo próximo · ${esc(cuando(prox))}</small><b>${esc(prox.hito)}</b><span>${prox.hasta?`del ${esc(fechaLarga(prox.fecha))} al ${esc(fechaLarga(prox.hasta))}`:`el ${esc(fechaLarga(prox.fecha))}`}</span></div>` : ""}
       </div>
