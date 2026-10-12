@@ -633,3 +633,52 @@ html[data-marca="sol"] .colab-ir svg.icono-fin{margin:0;transition:transform var
   html[data-marca="sol"] .colab-tu:hover .colab-mas{transform:rotate(90deg)}
 }
 @media (max-width:640px){ html[data-marca="sol"] .colab{width:100%} html[data-marca="sol"] .colab>li{width:50%} html[data-marca="sol"] .colab-p{padding:var(--e-16)} html[data-marca="sol"] .colab-ir{display:none} }
+
+/* ---------- Portada de Elecciones ---------- */
+/* «En qué punto estamos»: una pista gruesa que se llena en tinta hasta hoy; los hitos, cuadros pixelados (lo pasado
+   en tinta, lo próximo con borde rojo); «hoy», una píldora roja; los nombres a 14 y las fechas en etiqueta */
+html[data-marca="sol"] .elh-cal{margin-top:var(--e-24);padding-top:var(--e-24)}
+html[data-marca="sol"] .el-cal::before{top:calc(var(--e-24) + 5px);height:6px;border-radius:3px;background:var(--superficie)}
+html[data-marca="sol"] .elh-cal::after{top:calc(var(--e-24) + 5px);height:6px;border-radius:3px;background:var(--tinta)}
+html[data-marca="sol"] .el-cal .h{gap:6px;padding-right:var(--e-12)}
+html[data-marca="sol"] .el-cal .h i{width:16px;height:16px;margin-top:0;border-radius:0;border:0;background:var(--blanco);box-shadow:inset 0 0 0 2px var(--tinta-3)}
+html[data-marca="sol"] .el-cal .h.pasado i{background:var(--tinta);box-shadow:none}
+html[data-marca="sol"] .el-cal .h.ahora i{background:var(--rojo);box-shadow:0 0 0 4px rgb(223 23 23 / .2)}
+html[data-marca="sol"] .elh-cal .h.proximo i{background:var(--blanco);box-shadow:inset 0 0 0 3px var(--rojo)}
+html[data-marca="sol"] .el-cal .h b{font:500 14px/1.3 var(--font-texto)}
+html[data-marca="sol"] .el-cal .h small{font:500 11px/1.3 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+html[data-marca="sol"] .el-cal .h.pasado b{color:var(--tinta-3)}
+html[data-marca="sol"] .elh-cal .h.proximo :is(b,small){color:var(--rojo)}
+html[data-marca="sol"] .elh-cal .hoy{top:-2px;padding:2px 8px;border-radius:var(--r-pildora);background:var(--rojo);color:var(--blanco);font:500 10.5px var(--font-mono);letter-spacing:.06em}
+@media (max-width:760px){
+  html[data-marca="sol"] .elh-cal{padding-top:0}
+  html[data-marca="sol"] .el-cal::before{top:0;left:11px;width:4px;height:auto}
+}
+/* Las filas de tarjetas ocupan todo el ancho, tengan las que tengan */
+html[data-marca="sol"] .el-tarjetas{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:var(--e-16)}
+html[data-marca="sol"] .el-tarjeta{min-height:260px}
+html[data-marca="sol"] .el-tarjeta .d{font-size:14px;line-height:1.45;color:var(--tinta-2)}
+html[data-marca="sol"] .el-tarjeta .c{margin-top:var(--e-12);font-family:var(--font-mono);font-weight:500;letter-spacing:-.03em}
+html[data-marca="sol"] .el-tarjeta .p{font-size:13px;color:var(--tinta-3)}
+html[data-marca="sol"] .el-tarjeta .v{margin-top:var(--e-12)}
+/* «Qué prometieron y qué votaron», todavía no: la caja gris con su píldora ámbar de «Coming soon» (.in-proximo) */
+html[data-marca="sol"] .elh-pronto{opacity:1;border:0;background:var(--superficie);box-shadow:none}
+html[data-marca="sol"] .elh-pronto::before,html[data-marca="sol"] .elh-pronto::after{display:none}
+html[data-marca="sol"] .elh-pronto .p{justify-self:start;align-self:end;padding:var(--e-8) var(--e-12);border-radius:var(--r-pildora);background:var(--ambar-claro);color:var(--ambar-texto);font:500 13px var(--font-texto)}
+/* Los minigráficos de las encuestas */
+html[data-marca="sol"] .el-mbar{font-size:13px}
+html[data-marca="sol"] .el-mbar i{height:10px;border-radius:0}
+html[data-marca="sol"] .el-mbar em{font-family:var(--font-mono)}
+html[data-marca="sol"] .el-m350{height:18px;border-radius:0}
+html[data-marca="sol"] .el-m350 .m176{background:var(--tinta)}
+html[data-marca="sol"] .el-m350-p{font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.04em;color:var(--tinta-3)}
+html[data-marca="sol"] .el-mlinea polyline{stroke:var(--rojo)}
+html[data-marca="sol"] .el-mlinea polygon{fill:url(#none);fill:rgb(255 190 11 / .28)}
+html[data-marca="sol"] .el-mcol i{border-radius:0;background:var(--superficie);box-shadow:inset 0 0 0 1px var(--linea)}
+html[data-marca="sol"] .el-mcol>span:last-child i{background:var(--rojo);box-shadow:none}
+html[data-marca="sol"] .el-mcol em{font-family:var(--font-mono)}
+/* El atardecer de la portada de Elecciones, con los halos del sol detrás de la cuenta atrás (sus imágenes de redes) */
+html[data-marca="sol"] .elh-hero{position:relative;isolation:isolate;overflow:hidden}
+html[data-marca="sol"] .elh-hero::before{content:"";position:absolute;z-index:-1;right:-14%;bottom:-62%;width:min(64vw,820px);aspect-ratio:1;pointer-events:none;
+  background:radial-gradient(circle closest-side,transparent 0 40%,rgb(255 255 255 / .24) 40% 40.5%,transparent 40.4% 54%,rgb(255 255 255 / .2) 54% 54.4%,
+    transparent 54.3% 70%,rgb(255 255 255 / .17) 70% 70.3%,transparent 70.25% 88%,rgb(255 255 255 / .14) 88% 88.25%,transparent 88.2%)}

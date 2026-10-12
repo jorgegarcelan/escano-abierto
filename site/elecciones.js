@@ -284,6 +284,21 @@ const CSS = `
 .el-sigue small{font-size:12px;color:var(--muted)}
 .el-sigue b{font-size:15px}
 .el-tarjetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.el-mbar{display:grid;gap:5px;font-size:12px}
+.el-mbar>span{display:grid;grid-template-columns:52px 1fr 34px;gap:8px;align-items:center}
+.el-mbar i{display:block;height:8px;width:var(--w);background:var(--c);border-radius:2px}
+.el-mbar em{font:500 11.5px var(--mono);font-style:normal;text-align:right}
+.el-m350{position:relative;display:flex;height:14px;border-radius:3px;overflow:hidden;gap:1px}
+.el-m350 .m176{position:absolute;left:calc(176/350*100%);top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.el-m350-p{display:block;margin-top:6px;font:500 11px var(--mono);color:var(--muted)}
+.el-mlinea{display:block;width:100%;height:64px;overflow:visible}
+.el-mlinea polyline{fill:none;stroke:var(--ink);stroke-width:2;vector-effect:non-scaling-stroke}
+.el-mlinea polygon{fill:color-mix(in srgb,var(--ink) 10%,transparent)}
+.el-mcol{display:flex;align-items:flex-end;gap:6px;height:70px}
+.el-mcol>span{flex:1;display:grid;grid-template-rows:1fr auto;height:100%;gap:4px}
+.el-mcol i{align-self:end;height:var(--h);background:var(--line-strong);border-radius:2px 2px 0 0}
+.el-mcol>span:last-child i{background:var(--ink)}
+.el-mcol em{font:500 10.5px var(--mono);font-style:normal;color:var(--muted);text-align:center}
 .el-tarjeta{display:grid;grid-template-rows:auto auto auto auto 1fr;gap:4px;text-decoration:none;color:var(--ink);background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card-lg);padding:16px 16px 14px;box-shadow:var(--sombra);transition:border-color .2s,transform .2s;min-height:220px}
 .el-tarjeta:hover{border-color:var(--line-strong);transform:translateY(-2px);text-decoration:none}
 .el-tarjeta .t{font-weight:600;font-size:16px}
@@ -510,6 +525,49 @@ function home(el){
   el.querySelector("[data-elh-prov]").addEventListener("click", ()=>{ const s = el.querySelector("#elh-provincia"); window.scrollTo({top: scrollY + s.getBoundingClientRect().top - 70, behavior: "smooth"}); });
   // Las tarjetas que necesitan el histórico se completan cuando llega (sin bloquear la portada).
   import("./elecciones-historico.js").then(m=>m.miniaturas(el, ctx)).catch(()=>{});
+  miniEncuestas(el);
+}
+
+/* Las tarjetas de «Lo que dicen las encuestas», con su dato de hoy: la media, la proyección, lo que apuestan los
+   mercados y cuánto fallaron las encuestas. Se completan cuando llegan los datos (sin bloquear la portada). */
+async function miniEncuestas(el){
+  const {esc} = ctx;
+  const pedirJ = n => fetch(`datos/encuestas/${n}.json`).then(r=>r.ok?r.json():null).catch(()=>null);
+  const [P, M, A] = await Promise.all(["proyeccion", "mercados", "aciertos"].map(pedirJ));
+  const d1 = x => x.toLocaleString("es-ES", {minimumFractionDigits: 1, maximumFractionDigits: 1});
+  const col = k => ctx.G?.[k]?.color || "var(--line-strong)";
+  const nom = k => ({PODEMOS: "Podemos", SUMAR: "Sumar", JUNTS: "Junts", BILDU: "Bildu", SALF: "SALF"}[k] || k);
+  const poner = (id, cifra, pie, vis) => {
+    const t = el.querySelector(`.el-tarjeta[href="/elecciones/${id}/"]`), v = t?.querySelector(".v"); if (!v) return;
+    if (!t.querySelector(".c")) v.insertAdjacentHTML("beforebegin", `<span class="c">${cifra}</span><span class="p">${esc(pie)}</span>`);
+    v.innerHTML = vis;
+  };
+  if (P?.media){
+    const top = Object.entries(P.media).sort((a, b)=>b[1] - a[1]).slice(0, 4), max = top[0][1];
+    poner("encuestas", `${d1(top[0][1])} %`, `${nom(top[0][0])} en la media de las encuestas`,
+      `<span class="el-mbar">${top.map(([k, v])=>`<span><b>${esc(nom(k))}</b><i style="--w:${(v/max*100).toFixed(1)}%;--c:${col(k)}"></i><em>${d1(v)}</em></span>`).join("")}</span>`);
+  }
+  if (P?.central){
+    const seg = Object.entries(P.central).sort((a, b)=>b[1] - a[1]), [lk, lv] = seg[0];
+    poner("proyeccion", String(lv), `escaños para el ${nom(lk)} si se votara hoy`,
+      `<span class="el-m350" role="img" aria-label="Reparto proyectado de los 350 escaños">${seg.map(([k, v])=>`<i style="flex:${v};background:${col(k)}"></i>`).join("")}<span class="m176"></span></span><span class="el-m350-p">176 para la mayoría absoluta</span>`);
+  }
+  const gan = M?.mercados?.find(m=>m.tipo === "ganador");
+  if (gan?.opciones?.length){
+    const o = gan.opciones.slice().sort((a, b)=>b.p - a.p)[0], h = (o.hist || []).map(x=>x[1]);
+    // La escala, la de sus valores con un margen (en 0–1 entero la línea saldría plana)
+    const lo = Math.max(0, Math.min(...h) - .1), hi = Math.min(1, Math.max(...h) + .1);
+    const W = 300, Hh = 64, xs = h.map((_, i)=>i/(Math.max(1, h.length - 1))*W), ys = h.map(v=>Hh - (v - lo)/((hi - lo) || 1)*Hh);
+    const linea = xs.map((x, i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
+    poner("mercados", `${Math.round(o.p*100)} %`, `de que gane el ${nom(o.nombre)}, según Polymarket`,
+      h.length > 1 ? `<svg class="el-mlinea" viewBox="0 -4 ${W} ${Hh + 8}" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,${Hh} ${linea} ${W},${Hh}"/><polyline points="${linea}"/></svg>` : "");
+  }
+  const E = (A?.elecciones?.filter(e=>e.media_mae != null) || []).sort((a, b)=>a.fecha.localeCompare(b.fecha));   // de la más antigua a la última
+  if (E.length){
+    const ult = E[E.length - 1], max = Math.max(...E.map(e=>e.media_mae));
+    poner("acierto", `${d1(ult.media_mae)} pt`, `de error medio de las encuestas en ${ult.nombre}`,
+      `<span class="el-mcol">${E.map(e=>`<span title="${esc(e.nombre)}: ${d1(e.media_mae)} pt"><i style="--h:${(e.media_mae/max*100).toFixed(1)}%"></i><em>${esc(e.fecha.slice(2, 4))}</em></span>`).join("")}</span>`);
+  }
 }
 
 /* ---------- tu provincia ---------- */
