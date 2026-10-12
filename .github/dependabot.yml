@@ -1,10 +1,8 @@
-# Avisa una vez al mes de versiones nuevas de las dependencias de Python y de las acciones de los workflows.
+# Avisa una vez al mes de versiones nuevas de las acciones de los workflows. Las dependencias de Python no: en
+# requirements.txt solo hay mínimos (>=) y subirlos dejaría fuera a Python 3.9. Sus avisos de seguridad llegan igual
+# (Dependabot security updates, en los ajustes del repositorio).
 version: 2
 updates:
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: monthly
   - package-ecosystem: github-actions
     directory: /
     schedule:
