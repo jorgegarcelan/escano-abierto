@@ -23,7 +23,7 @@ jobs:
       matrix:
         python-version: ["3.9", "3.12"]   # la mínima que pide el README y la de los workflows de datos
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
