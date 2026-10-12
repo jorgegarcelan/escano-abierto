@@ -886,7 +886,6 @@ html[data-marca="sol"] details.od-plegable[open]>summary::before{transform:rotat
    temas; y el chevrón a sus diputados. Las cajas antiguas (.panel), como las demás. */
 html[data-marca="sol"] .gr-cards{gap:var(--e-16);margin-top:var(--e-24)}
 html[data-marca="sol"] .gr-card{position:relative;isolation:isolate;overflow:hidden;gap:var(--e-16);padding:var(--e-24) var(--e-20) var(--e-20);border:0;border-radius:var(--r-20);box-shadow:0 0 0 1px var(--linea);transition:box-shadow var(--t-medio) var(--curva-salida)}
-html[data-marca="sol"] .gr-card::after{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--grupo)}
 html[data-marca="sol"] .gr-card::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(90% 55% at 50% 118%,#ffd34d 0%,rgb(255 190 11 / .45) 35%,rgb(255 122 26 / 0) 75%);opacity:0;transform:translateY(24%);transition:opacity var(--t-medio) var(--curva-salida),transform 420ms var(--curva-salida)}
 @media (hover:hover) and (pointer:fine){
   html[data-marca="sol"] .gr-card:hover{box-shadow:var(--sombra-suave)}
@@ -971,3 +970,12 @@ html[data-marca="sol"] .ficha-libre{color:var(--rojo)!important;font:500 11px va
 html[data-marca="sol"] .ficha-ult .chart>.linklike{justify-self:start}
 html[data-marca="sol"] .ficha-ult .chart>.linklike::after{content:"";display:inline-block;width:12px;height:12px;margin-left:.45em;vertical-align:-.05em;background:currentColor;-webkit-mask:var(--chevron) center/contain no-repeat;mask:var(--chevron) center/contain no-repeat}
 html[data-marca="sol"] .ficha-l-t small:not(.ficha-libre),html[data-marca="sol"] .ficha-l-t .linklike{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+/* Sin franja de color: el grupo se reconoce por el punto junto a la sigla y por sus escaños en el mini hemiciclo */
+html[data-marca="sol"] .gr-card{padding:var(--e-20)}
+html[data-marca="sol"] .gr-sigla{color:var(--tinta-2)}
+html[data-marca="sol"] .gr-sigla i{width:8px;height:8px;border-radius:50%}
+html[data-marca="sol"] .gr-mini{width:104px;margin:-4px -4px 0 0}
+html[data-marca="sol"] .gr-mini circle.off{fill:#e6e6e6}
+html[data-marca="sol"] .gr-esc-n{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 6px}
+html[data-marca="sol"] .gr-esc-n small{margin-left:var(--e-8);font:500 11px var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+

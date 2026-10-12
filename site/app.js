@@ -1991,9 +1991,11 @@ function renderGrupos(){
     const esc_ = DIP.filter(d=>d.g===g && !d.baja).length, coh = g==="GOB" ? null : cohesion(g);
     const temas = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
     const cifra = (n, l) => `<span><b>${n}</b>${l}</span>`;
-    return `<button type="button" class="gr-card" ${g==="GOB" ? `data-gr-or="GOB"` : `data-gr="${g}"`} style="--grupo:${G[g].color}">
-      <span class="gr-cab"><span class="gr-sigla">${esc(g==="GOB"?"Gobierno":g)}</span><b class="gr-nombre">${esc(G[g].nombre)}</b></span>
-      ${g==="GOB" ? `<span class="gr-esc gr-esc-gob">El Consejo de Ministros, en el banco azul</span>` : `<span class="gr-esc"><span class="gr-esc-n"><b>${esc_}</b> ${esc_===1?"escaño":"escaños"}</span><span class="gr-esc-b"><i style="width:${(esc_/350*100).toFixed(1)}%"></i><em></em></span></span>`}
+    // El color del grupo va en el dato, no en un adorno: un mini hemiciclo con sus escaños (en la vista de todas)
+    const mini = !grande && CON_PLANO && g!=="GOB" ? `<svg class="gr-mini" viewBox="-4 -4 ${PLANO.ancho+8} ${PLANO.alto+4}" aria-hidden="true">${DIP.filter(d=>!d.baja && DIPS[d.i][5]!=null).map(d=>`<circle cx="${DIPS[d.i][5]}" cy="${DIPS[d.i][6]}" r="${ESC_R*1.15}"${d.g===g?` fill="${G[g].color}"`:' class="off"'}></circle>`).join("")}</svg>` : "";
+    return `<button type="button" class="gr-card${grande?" grande":""}" ${g==="GOB" ? `data-gr-or="GOB"` : `data-gr="${g}"`} style="--grupo:${G[g].color}">
+      <span class="gr-cab"><span class="gr-cab-t"><span class="gr-sigla"><i></i>${esc(g==="GOB"?"Gobierno":g)}</span><b class="gr-nombre">${esc(G[g].nombre)}</b></span>${mini}</span>
+      ${g==="GOB" ? `<span class="gr-esc gr-esc-gob">El Consejo de Ministros, en el banco azul</span>` : `<span class="gr-esc"><span class="gr-esc-n"><b>${esc_}</b> ${esc_===1?"escaño":"escaños"}<small>${(esc_/350*100).toFixed(1).replace(".",",")} % de la Cámara</small></span>${grande?`<span class="gr-esc-b"><i style="width:${(esc_/350*100).toFixed(1)}%"></i><em></em></span>`:""}</span>`}
       <span class="gr-cifras">${cifra(ivs.length, "intervenciones")}${cifra(String(avg).replace(".",","), "intensidad")}${g==="GOB" ? "" : cifra(decided ? `${Math.round(win/decided*100)} %` : "–", "votaciones ganadas") + cifra(coh!=null ? `${(coh*100).toFixed(1).replace(".",",")} %` : "–", "cohesión")}</span>
       ${ivs.length ? `<span class="gr-tono">${toneBar(ivs)}</span>` : ""}
       ${temas.length ? `<span class="gr-temas">${temas.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</span>` : ""}

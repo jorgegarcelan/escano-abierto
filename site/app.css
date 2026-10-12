@@ -1107,7 +1107,7 @@ details.org-rama .dtable-wrap{margin:0 0 14px}
 details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
 /* grupos: una tarjeta por grupo */
 .gr-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px;margin-top:16px}
-.gr-card{appearance:none;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-content:start;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:var(--borde) solid var(--line);border-top:4px solid var(--grupo);border-radius:var(--r-card);padding:14px 16px;box-shadow:var(--sombra)}
+.gr-card{appearance:none;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-content:start;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:var(--borde) solid var(--line);border-radius:var(--r-card);padding:14px 16px;box-shadow:var(--sombra)}
 .gr-cab{display:grid;gap:2px}
 .gr-sigla{font:600 11px var(--mono);letter-spacing:.06em;color:var(--grupo)}
 .gr-nombre{font-size:18px;line-height:1.15}
@@ -1164,3 +1164,10 @@ details.od-plegable>summary{cursor:pointer;font-weight:600;font-size:14px;paddin
 .ficha-l-t small{font-size:12px;color:var(--muted)}
 .ficha-l-t .linklike{text-align:left;font-weight:400;text-decoration:none}
 .ficha-libre{color:var(--no)!important;font-weight:600}
+.gr-cab{display:flex!important;justify-content:space-between;align-items:flex-start;gap:12px}
+.gr-cab-t{display:grid;gap:2px;min-width:0}
+.gr-sigla{display:inline-flex;align-items:center;gap:6px}
+.gr-sigla i{width:8px;height:8px;border-radius:50%;background:var(--grupo)}
+.gr-mini{flex:none;width:92px;height:auto}
+.gr-mini circle.off{fill:var(--line)}
+.gr-esc-n small{margin-left:8px;font-size:12px;color:var(--muted)}
