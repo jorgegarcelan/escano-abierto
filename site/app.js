@@ -1187,6 +1187,8 @@ function interesesFicha(d){
 
 /* ---------- sobre el proyecto ---------- */
 const REPO = "https://github.com/jorgegarcelan/escano-abierto";
+// Quienes hacen Escaño Abierto (en «Sobre el proyecto»): nombre, usuario de X y foto en site/colaboradores/.
+const COLABORADORES = [{nombre: "Jorge Garcelán", x: "jgarcelan", foto: "/colaboradores/jorge-garcelan.webp"}];
 function renderSobre(){
   const nV = INDICE.meses.reduce((a,m)=>a+m.votaciones,0), nS = INDICE.meses.reduce((a,m)=>a+m.sesiones,0);
   const cifras = [[fmt(nV),"votaciones, con el voto de cada diputado"],[fmt(nS),"sesiones del Pleno y de las comisiones"],[fmt(DIP.length),"diputados de la legislatura"],
@@ -1214,13 +1216,13 @@ function renderSobre(){
     <section class="sec" id="aviso-legal"><div class="sec-h"><h2>Aviso legal</h2></div>
       <div class="legal">
         <h3>Independencia</h3>
-        <p>Escaño Abierto es un proyecto personal, independiente y sin ánimo de lucro. <b>No está asociado, patrocinado ni avalado por el Congreso de los Diputados, las Cortes Generales, el Senado, el Gobierno ni ningún otro organismo público, partido político o grupo parlamentario</b>, y no habla en nombre de ninguno de ellos. No usa sus logotipos ni su identidad visual.</p>
+        <p>Escaño Abierto es un proyecto independiente y sin ánimo de lucro, dentro de la iniciativa Reforma Digital. <b>No está asociado, patrocinado ni avalado por el Congreso de los Diputados, las Cortes Generales, el Senado, el Gobierno ni ningún otro organismo público, partido político o grupo parlamentario</b>, y no habla en nombre de ninguno de ellos. No usa sus logotipos ni su identidad visual.</p>
         <h3>Origen de los datos</h3>
         <p>La información procede de fuentes públicas del Congreso de los Diputados (datos abiertos, Diario de Sesiones, Boletín Oficial de las Cortes Generales, buscador de iniciativas y agenda) y se reutiliza de acuerdo con la normativa sobre reutilización de la información del sector público (Ley 37/2007), citando siempre la fuente y enlazando al documento original. Las fotografías de los diputados son las que publica el Congreso y se muestran directamente desde su web.</p>
         <h3>Exactitud</h3>
         <p>Los datos se procesan de forma automática y pueden contener errores u omisiones, o no estar al día. <b>La única fuente con valor oficial es la publicada por el Congreso</b>; ante cualquier discrepancia, prevalece. Los títulos abreviados, las clasificaciones por temas y los textos explicativos son una ayuda para entender y no tienen valor jurídico. Los textos generados con inteligencia artificial (resúmenes de sesiones e intervenciones, frases de síntesis, tono, intensidad, si el Gobierno contesta a lo que se le pregunta, el motivo de cada postura, compromisos, propuestas, cifras, territorios y leyes mencionados, además de la unificación de temas, la ubicación de los lugares y la agrupación de propuestas de la sección Explora) son orientativos, se indican como tales y pueden contener errores; ante cualquier duda, prevalece el Diario de Sesiones enlazado. Nada de lo publicado constituye asesoramiento jurídico.</p>
         <h3>Personas</h3>
-        <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a> o a través de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">jorgegarcelan.com</a>, y se revisará lo antes posible.</p>
+        <p>Se muestran datos de diputados y miembros del Gobierno en su condición de cargos públicos y tal como los publica el Congreso: votos, intervenciones, preguntas y declaraciones de actividades e intereses. Si detectas un error o crees que algo debe corregirse, puedes pedirlo <a href="${REPO}/issues" target="_blank" rel="noopener">en GitHub</a>, y se revisará lo antes posible.</p>
         <h3>Privacidad</h3>
         <p>Esta web no usa cookies ni publicidad y no recoge datos personales. Para saber cuánta gente la visita y si carga rápido usa Vercel Web Analytics y Speed Insights, que cuentan visitas y miden el rendimiento de forma anónima y agregada, sin cookies ni identificadores que te sigan de un día a otro. En tu propio navegador solo se guardan tus preferencias (periodo, provincia y estilo visual), que puedes borrar cuando quieras. Para mostrarse, carga tipografías de Google Fonts y las fotografías oficiales desde la web del Congreso, que pueden registrar tu dirección IP según sus propias políticas. Está alojada en Vercel.</p>
         <h3>Código</h3>
@@ -1233,7 +1235,14 @@ function renderSobre(){
         <p>Escaño Abierto forma parte de <b>Reforma Digital</b>, una iniciativa abierta para que lo público esté a la altura de las personas. Se hace en comunidad y con código abierto: cualquiera puede avisar de un error, proponer una mejora o sumarse.</p>
         <p class="autor-links"><a class="btn boton-claro" href="https://reforma-digital.es" target="_blank" rel="noopener">Conoce Reforma Digital ↗</a><a class="btn boton-claro" href="https://reforma-digital.es/#participar" target="_blank" rel="noopener">Participar ↗</a><a class="btn boton-claro" href="${REPO}" target="_blank" rel="noopener">El código de Escaño Abierto ↗</a></p>
       </div>
-      <p class="autor-nota">Empezó como un proyecto personal de <a href="https://jorgegarcelan.com" target="_blank" rel="noopener">Jorge Garcelán</a>.</p></section>
+</section>
+    <section class="sec" id="colaboradores"><div class="sec-h"><h2>Colaboradores</h2><p>Las personas que hacen Escaño Abierto. Se puede sumar cualquiera: con datos, textos, diseño o código.</p></div>
+      <ul class="colab">${COLABORADORES.map(c=>`<li><a class="colab-p" href="https://x.com/${esc(c.x)}" target="_blank" rel="noopener" aria-label="${esc(c.nombre)} en X (se abre en otra pestaña)">
+          <span class="colab-foto"><img src="${esc(c.foto)}" alt="" width="640" height="640" loading="lazy"></span>
+          <span class="colab-info"><span><b>${esc(c.nombre)}</b><small>@${esc(c.x)}</small></span><span class="colab-ir" aria-hidden="true">↗</span></span></a></li>`).join("")}
+        <li><a class="colab-p colab-tu" href="${REPO}/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">
+          <span class="colab-foto"><span class="colab-mas" aria-hidden="true"></span></span>
+          <span class="colab-info"><span><b>¿Te sumas?</b><small>Cómo colaborar</small></span><span class="colab-ir" aria-hidden="true">↗</span></span></a></li></ul></section>
   </div>`;
   if (!LEYES || !PREG) Promise.all([cargarLeyes(), cargarPreguntas()]).then(()=>{ if (!$("#sobre").hidden) renderSobre(); });
 }

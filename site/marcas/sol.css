@@ -605,3 +605,31 @@ html[data-marca="sol"] .cm-ley b{font:500 15px var(--font-mono);color:var(--tint
   html[data-marca="sol"] .cm-rejilla i.hoy{animation:sol-pixel 360ms var(--curva-salida) backwards,sol-hoy 1.8s var(--curva-salida) 1s infinite;animation-delay:calc(var(--k) * 9ms + 200ms),1s}
 }
 @media (max-width:420px){ html[data-marca="sol"] .elh-camino{grid-template-columns:1fr} }
+
+/* ---------- Sobre el proyecto: colaboradores ---------- */
+/* Como su equipo (core-team.css): rejilla de bordes compartidos, el retrato dentro de un marco del atardecer (o del
+   amanecer, alternando), el nombre en serif, el usuario debajo y la flecha de enlace externo en un círculo */
+/* La rejilla mide lo que sus tarjetas (de 280 px): con pocas personas no deja un marco vacío */
+html[data-marca="sol"] .colab{display:flex;flex-wrap:wrap;width:fit-content;max-width:100%;gap:0;border:1px solid var(--linea);border-radius:var(--r-20);overflow:hidden}
+html[data-marca="sol"] .colab>li{width:280px}
+html[data-marca="sol"] .colab>li+li{border-left:1px solid var(--linea)}
+html[data-marca="sol"] .colab-p{display:block;padding:var(--e-24)}
+html[data-marca="sol"] .colab-foto{border-radius:0;background:var(--atardecer);transition:transform var(--t-medio) var(--curva-salida)}
+html[data-marca="sol"] .colab-foto img{inset:var(--e-16);width:calc(100% - var(--e-32));height:calc(100% - var(--e-32))}
+html[data-marca="sol"] .colab-tu .colab-foto{background:radial-gradient(100% 90% at 0% 100%,var(--naranja),transparent 80%),var(--amarillo)}
+/* «¿Te sumas?»: el «+» pixelado de Sol, grande y en tinta */
+html[data-marca="sol"] .colab-mas{position:absolute;inset:0;margin:auto;width:30%;aspect-ratio:1;background:var(--tinta);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M6 0h3v3H6zM0 6h3v3H0zM6 6h3v3H6zM12 6h3v3h-3zM6 12h3v3H6z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M6 0h3v3H6zM0 6h3v3H0zM6 6h3v3H6zM12 6h3v3h-3zM6 12h3v3H6z'/%3E%3C/svg%3E") center/contain no-repeat;
+  transition:transform 420ms var(--curva-salida)}
+html[data-marca="sol"] .colab-info{padding-top:var(--e-20)}
+html[data-marca="sol"] .colab-info b{font:400 clamp(22px,2.2vw,26px)/1.15 var(--display);letter-spacing:-.01em}
+html[data-marca="sol"] .colab-info small{margin-top:var(--e-4);font-size:16px;color:var(--tinta-2)}
+html[data-marca="sol"] .colab-ir{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;box-shadow:0 0 0 1px var(--linea)}
+html[data-marca="sol"] .colab-ir svg.icono-fin{margin:0;transition:transform var(--t-medio) var(--curva-salida)}
+@media (hover:hover) and (pointer:fine){
+  html[data-marca="sol"] .colab-p:hover .colab-foto{transform:scale(.98)}
+  html[data-marca="sol"] .colab-p:hover .colab-ir svg{transform:translate(2px,-2px)}
+  html[data-marca="sol"] .colab-tu:hover .colab-mas{transform:rotate(90deg)}
+}
+@media (max-width:640px){ html[data-marca="sol"] .colab{width:100%} html[data-marca="sol"] .colab>li{width:50%} html[data-marca="sol"] .colab-p{padding:var(--e-16)} html[data-marca="sol"] .colab-ir{display:none} }
