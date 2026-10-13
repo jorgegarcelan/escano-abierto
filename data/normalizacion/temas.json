@@ -6615,6 +6615,10 @@
 "comercio de armas",
 "defensa"
 ],
+"contratos de arrendamiento": [
+"alquiler",
+"vivienda"
+],
 "contratos de defensa": [
 "industria de defensa",
 "defensa"
@@ -7953,6 +7957,10 @@
 ],
 "custodia compartida": [
 "familias",
+"justicia"
+],
+"custodia de menores": [
+"custodia de menores",
 "justicia"
 ],
 "cádiz": [
@@ -12467,6 +12475,10 @@
 "medicamentos",
 "sanidad"
 ],
+"farmacéuticas": [
+"medicamentos",
+"sanidad"
+],
 "farmacéuticos": [
 "medicamentos",
 "sanidad"
@@ -14243,6 +14255,10 @@
 "empresas",
 "empleo"
 ],
+"grupos de acción local": [
+"GALP",
+"campo"
+],
 "grupos de interés": [
 "grupos de interés",
 "democracia"
@@ -14686,6 +14702,10 @@
 "huelga educativa": [
 "educación",
 "educacion"
+],
+"huelga general": [
+"derechos laborales",
+"empleo"
 ],
 "huelga médica": [
 "profesionales sanitarios",
@@ -18199,6 +18219,10 @@
 "empleo",
 "empleo"
 ],
+"menudos corazones": [
+"menudos corazones",
+"social"
+],
 "menú halal": [
 "libertad religiosa",
 "social"
@@ -20476,6 +20500,10 @@
 "democracia"
 ],
 "participación ciudadana": [
+"participación ciudadana",
+"democracia"
+],
+"participación comunitaria": [
 "participación ciudadana",
 "democracia"
 ],
@@ -22863,6 +22891,10 @@
 "gobierno",
 "democracia"
 ],
+"programa leader": [
+"programa leader",
+"campo"
+],
 "programa moves": [
 "vehículo eléctrico",
 "transporte"
@@ -23682,6 +23714,10 @@
 "recurso previo de inconstitucionalidad": [
 "Tribunal Constitucional",
 "justicia"
+],
+"recursos": [
+"recursos públicos",
+"democracia"
 ],
 "recursos de acogida": [
 "asilo",

@@ -362,7 +362,7 @@
 }
 ],
 "tema": "campo",
-"total": 155,
+"total": 156,
 "total_sintesis": 149
 },
 "campo|GOB": {
@@ -3272,7 +3272,7 @@
 }
 ],
 "tema": "clima",
-"total": 148,
+"total": 149,
 "total_sintesis": 147
 },
 "clima|SUMAR": {
@@ -6389,7 +6389,7 @@
 }
 ],
 "tema": "defensa",
-"total": 199,
+"total": 201,
 "total_sintesis": 203
 },
 "defensa|PSOE": {
@@ -6962,7 +6962,7 @@
 }
 ],
 "tema": "defensa",
-"total": 141,
+"total": 142,
 "total_sintesis": 146
 },
 "democracia|BILDU": {
@@ -10457,7 +10457,7 @@
 }
 ],
 "tema": "educacion",
-"total": 258,
+"total": 259,
 "total_sintesis": 249
 },
 "educacion|VOX": {
@@ -11999,7 +11999,7 @@
 }
 ],
 "tema": "empleo",
-"total": 396,
+"total": 397,
 "total_sintesis": 383
 },
 "empleo|PSOE": {
@@ -14330,7 +14330,7 @@
 }
 ],
 "tema": "energia",
-"total": 167,
+"total": 169,
 "total_sintesis": 168
 },
 "exteriores|BILDU": {
@@ -15659,7 +15659,7 @@
 }
 ],
 "tema": "exteriores",
-"total": 394,
+"total": 396,
 "total_sintesis": 371
 },
 "exteriores|PSOE": {
@@ -16604,7 +16604,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 73,
+"total": 75,
 "total_sintesis": 66
 },
 "igualdad|GOB": {
@@ -17105,7 +17105,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 113,
+"total": 117,
 "total_sintesis": 109
 },
 "igualdad|PNV": {
@@ -17294,7 +17294,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 65,
+"total": 66,
 "total_sintesis": 64
 },
 "igualdad|PP": {
@@ -17672,7 +17672,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 143,
+"total": 146,
 "total_sintesis": 136
 },
 "igualdad|SUMAR": {
@@ -18062,7 +18062,7 @@
 }
 ],
 "tema": "igualdad",
-"total": 119,
+"total": 120,
 "total_sintesis": 113
 },
 "impuestos|BILDU": {
@@ -18263,7 +18263,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 134,
+"total": 137,
 "total_sintesis": 131
 },
 "impuestos|ERC": {
@@ -18464,7 +18464,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 370,
+"total": 373,
 "total_sintesis": 365
 },
 "impuestos|GOB": {
@@ -18647,7 +18647,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 91,
+"total": 92,
 "total_sintesis": 91
 },
 "impuestos|JUNTS": {
@@ -18848,7 +18848,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 177,
+"total": 182,
 "total_sintesis": 175
 },
 "impuestos|MIXTO": {
@@ -19250,7 +19250,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 221,
+"total": 222,
 "total_sintesis": 217
 },
 "impuestos|PP": {
@@ -19451,7 +19451,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 951,
+"total": 952,
 "total_sintesis": 964
 },
 "impuestos|PSOE": {
@@ -19853,7 +19853,7 @@
 }
 ],
 "tema": "impuestos",
-"total": 547,
+"total": 548,
 "total_sintesis": 545
 },
 "impuestos|VOX": {
@@ -20408,7 +20408,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 71,
+"total": 73,
 "total_sintesis": 69
 },
 "inmigracion|GOB": {
@@ -21227,7 +21227,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 260,
+"total": 262,
 "total_sintesis": 256
 },
 "inmigracion|PSOE": {
@@ -21629,7 +21629,7 @@
 }
 ],
 "tema": "inmigracion",
-"total": 238,
+"total": 240,
 "total_sintesis": 232
 },
 "inmigracion|VOX": {
@@ -22914,9 +22914,33 @@
 "total_sintesis": 71
 },
 "justicia|PP": {
-"firma": "7610f81361a522f7f5d28b9f876ccdd41ddbb3cb",
+"firma": "0e414bc2ba1b8a804e3c3cc6182edc7c1a7c1473",
 "grupo": "PP",
 "lineas": [
+{
+"ejemplos": [
+[
+"Disolver las Cortes y convocar elecciones generales de forma inmediata.",
+"Núñez Feijóo",
+"DSCD-15-PL-196",
+"2026-06-24"
+],
+[
+"convocar elecciones generales",
+"De Olano Vela",
+"DSCD-15-PL-196",
+"2026-06-24"
+],
+[
+"convocar elecciones generales",
+"Guardiola Salmerón",
+"DSCD-15-PL-194",
+"2026-06-18"
+]
+],
+"n": 35,
+"titulo": "Convocar elecciones generales anticipadas"
+},
 {
 "ejemplos": [
 [
@@ -22932,38 +22956,38 @@
 "2026-06-10"
 ],
 [
-"Dimisión del Gobierno",
-"Marí Bosó",
-"DSCD-15-PL-188",
-"2026-05-27"
+"dimisión del presidente del Gobierno",
+"Muñoz de la Iglesia",
+"DSCD-15-PL-182",
+"2026-04-29"
 ]
 ],
-"n": 44,
-"titulo": "Dimisión del presidente del Gobierno o de miembros del Ejecutivo"
+"n": 15,
+"titulo": "Dimisión del presidente del Gobierno, Pedro Sánchez"
 },
 {
 "ejemplos": [
 [
-"dimitir y convocar elecciones",
-"Rojas García",
-"DSCD-15-CO-600",
-"2026-06-25"
+"Dimisión inmediata del fiscal general del Estado",
+"Gamarra Ruiz-Clavijo",
+"DSCD-15-PL-133",
+"2025-08-26"
 ],
 [
-"Disolver las Cortes y convocar elecciones generales de forma inmediata.",
+"Cese del fiscal general del Estado",
+"Gamarra Ruiz-Clavijo",
+"DSCD-15-PL-133",
+"2025-08-26"
+],
+[
+"Cesar al fiscal general del Estado.",
 "Núñez Feijóo",
-"DSCD-15-PL-196",
-"2026-06-24"
-],
-[
-"convocar elecciones generales",
-"De Olano Vela",
-"DSCD-15-PL-196",
-"2026-06-24"
+"DSCD-15-PL-130",
+"2025-07-09"
 ]
 ],
-"n": 41,
-"titulo": "Disolver las Cortes y convocar elecciones generales"
+"n": 13,
+"titulo": "Cesar o exigir la dimisión del fiscal general del Estado"
 },
 {
 "ejemplos": [
@@ -22986,8 +23010,32 @@
 "2025-11-14"
 ]
 ],
-"n": 19,
-"titulo": "Cesar las acusaciones y ataques a jueces y retirar ofensas del Diario de Sesiones"
+"n": 13,
+"titulo": "Cesar los ataques al Poder Judicial y retirar del Diario de Sesiones las acusaciones a jueces"
+},
+{
+"ejemplos": [
+[
+"Dimisión o asunción de responsabilidades políticas del ministro Torres",
+"Muñoz Abrines",
+"DSCD-15-PL-153",
+"2025-11-19"
+],
+[
+"dimisión del ministro Ángel Víctor Torres",
+"Carazo Hermoso",
+"DSCD-15-PL-150",
+"2025-11-12"
+],
+[
+"Dimisión del ministro Ángel Víctor Torres",
+"Muñoz Abrines",
+"DSCD-15-PL-150",
+"2025-11-12"
+]
+],
+"n": 10,
+"titulo": "Dimisión o cese del ministro de Política Territorial, Ángel Víctor Torres"
 },
 {
 "ejemplos": [
@@ -23010,8 +23058,32 @@
 "2025-05-21"
 ]
 ],
-"n": 10,
-"titulo": "Elección directa de los vocales judiciales del CGPJ por los jueces"
+"n": 9,
+"titulo": "Reforma del sistema de elección de los vocales judiciales del CGPJ por los propios jueces"
+},
+{
+"ejemplos": [
+[
+"Dimitir el ministro Bolaños",
+"De Rosa Torner",
+"DSCD-15-CO-534",
+"2026-04-14"
+],
+[
+"Dimisión del ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+"Tellado Filgueira",
+"DSCD-15-PL-158",
+"2025-12-10"
+],
+[
+"Dimisión del ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+"Álvarez de Toledo Peralta-Ramos",
+"DSCD-15-PL-155",
+"2025-11-26"
+]
+],
+"n": 8,
+"titulo": "Dimisión del ministro de la Presidencia, Justicia y Relaciones con las Cortes, Félix Bolaños"
 },
 {
 "ejemplos": [
@@ -23035,84 +23107,12 @@
 ]
 ],
 "n": 7,
-"titulo": "Retirar o recurrir la proposición de ley de amnistía"
-},
-{
-"ejemplos": [
-[
-"Modificar el Código Penal para endurecer penas y reincidencia",
-"Hernando Fraile",
-"DSCD-15-PL-179",
-"2026-04-21"
-],
-[
-"Pena de prisión de seis a dieciocho meses tras tres condenas por delitos leves de hurto.",
-"Gamarra Ruiz-Clavijo",
-"DSCD-15-PL-165",
-"2026-02-12"
-],
-[
-"Pena de uno a tres años de prisión por multirreincidencia en hurtos",
-"Rodríguez Serra",
-"DSCD-15-CO-474",
-"2025-12-10"
-]
-],
-"n": 7,
-"titulo": "Reforma del Código Penal para endurecer penas frente a la multirreincidencia y hurtos"
-},
-{
-"ejemplos": [
-[
-"Tramitar el estatuto del tercero neutral.",
-"Moro Almaraz",
-"DSCD-15-PL-206",
-"2026-09-22"
-],
-[
-"Solucionar los problemas generados en los tribunales por los MASC",
-"Noriega Gómez",
-"DSCD-15-CO-534",
-"2026-04-14"
-],
-[
-"Modificar urgentemente la Ley Orgánica 1/2025 para excluir el requisito de los MASC en ciertos procedimientos",
-"Moro Almaraz",
-"DSCD-15-PL-149",
-"2025-11-11"
-]
-],
-"n": 6,
-"titulo": "Corregir disfunciones y reformar la regulación de los MASC"
-},
-{
-"ejemplos": [
-[
-"Prohibir que jueces y magistrados comparezcan en comisiones de investigación",
-"González Vázquez",
-"DSCD-15-PL-42",
-"2024-05-23"
-],
-[
-"Retirar las comisiones sobre lawfare",
-"Álvarez de Toledo Peralta-Ramos",
-"DSCD-15-PL-30",
-"2024-03-13"
-],
-[
-"renunciar a las comisiones de investigación parlamentarias sobre jueces",
-"Moro Almaraz",
-"DSCD-15-CO-31",
-"2023-12-21"
-]
-],
-"n": 3,
-"titulo": "Rechazar o prohibir las comisiones de investigación parlamentarias sobre 'lawfare' y jueces"
+"titulo": "Retirar, anular o recurrir judicialmente la ley de amnistía"
 }
 ],
 "tema": "justicia",
-"total": 387,
-"total_sintesis": 353
+"total": 389,
+"total_sintesis": 389
 },
 "justicia|PSOE": {
 "firma": "2022db08e7188e1c5a262aa1b02e8d6b1b3d152d",
@@ -23288,7 +23288,7 @@
 }
 ],
 "tema": "justicia",
-"total": 107,
+"total": 108,
 "total_sintesis": 100
 },
 "justicia|SUMAR": {
@@ -23489,7 +23489,7 @@
 }
 ],
 "tema": "justicia",
-"total": 193,
+"total": 195,
 "total_sintesis": 193
 },
 "justicia|VOX": {
@@ -25676,7 +25676,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 143,
+"total": 146,
 "total_sintesis": 141
 },
 "sanidad|GOB": {
@@ -26645,7 +26645,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 502,
+"total": 507,
 "total_sintesis": 491
 },
 "sanidad|PSOE": {
@@ -26846,7 +26846,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 338,
+"total": 342,
 "total_sintesis": 329
 },
 "sanidad|SUMAR": {
@@ -27047,7 +27047,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 406,
+"total": 408,
 "total_sintesis": 397
 },
 "sanidad|VOX": {
@@ -27248,7 +27248,7 @@
 }
 ],
 "tema": "sanidad",
-"total": 384,
+"total": 388,
 "total_sintesis": 378
 },
 "seguridad|BILDU": {
@@ -29456,7 +29456,7 @@
 }
 ],
 "tema": "social",
-"total": 67,
+"total": 68,
 "total_sintesis": 67
 },
 "social|MIXTO": {
@@ -30059,7 +30059,7 @@
 }
 ],
 "tema": "social",
-"total": 376,
+"total": 377,
 "total_sintesis": 368
 },
 "social|PSOE": {
@@ -30260,7 +30260,7 @@
 }
 ],
 "tema": "social",
-"total": 264,
+"total": 265,
 "total_sintesis": 260
 },
 "social|SUMAR": {
@@ -30662,7 +30662,7 @@
 }
 ],
 "tema": "social",
-"total": 239,
+"total": 241,
 "total_sintesis": 233
 },
 "tecnologia|BILDU": {
@@ -32258,7 +32258,7 @@
 }
 ],
 "tema": "tecnologia",
-"total": 97,
+"total": 98,
 "total_sintesis": 90
 },
 "territorial|BILDU": {
@@ -32792,7 +32792,7 @@
 }
 ],
 "tema": "territorial",
-"total": 133,
+"total": 134,
 "total_sintesis": 130
 },
 "territorial|MIXTO": {
@@ -33341,7 +33341,7 @@
 }
 ],
 "tema": "territorial",
-"total": 172,
+"total": 173,
 "total_sintesis": 167
 },
 "territorial|PSOE": {
@@ -33872,7 +33872,7 @@
 }
 ],
 "tema": "territorial",
-"total": 88,
+"total": 90,
 "total_sintesis": 86
 },
 "transporte|BILDU": {
@@ -35909,7 +35909,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 108,
+"total": 112,
 "total_sintesis": 108
 },
 "vivienda|ERC": {
@@ -36110,7 +36110,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 192,
+"total": 200,
 "total_sintesis": 185
 },
 "vivienda|GOB": {
@@ -36311,7 +36311,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 113,
+"total": 122,
 "total_sintesis": 113
 },
 "vivienda|JUNTS": {
@@ -36512,7 +36512,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 131,
+"total": 134,
 "total_sintesis": 132
 },
 "vivienda|MIXTO": {
@@ -36713,7 +36713,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 327,
+"total": 341,
 "total_sintesis": 325
 },
 "vivienda|PNV": {
@@ -36914,7 +36914,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 118,
+"total": 125,
 "total_sintesis": 118
 },
 "vivienda|PP": {
@@ -37115,7 +37115,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 544,
+"total": 556,
 "total_sintesis": 543
 },
 "vivienda|PSOE": {
@@ -37517,7 +37517,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 536,
+"total": 540,
 "total_sintesis": 526
 },
 "vivienda|VOX": {
@@ -37718,7 +37718,7 @@
 }
 ],
 "tema": "vivienda",
-"total": 341,
+"total": 345,
 "total_sintesis": 339
 }
 }
