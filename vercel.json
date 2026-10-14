@@ -4,6 +4,13 @@
   "installCommand": "",
   "buildCommand": "sh scripts/vercel-build.sh",
   "outputDirectory": "site",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://reforma-digital.es/congreso/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/|datos/|og/|_vercel/)[^.]*)",
