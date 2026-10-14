@@ -6,6 +6,11 @@
   "outputDirectory": "site",
   "redirects": [
     {
+      "source": "/",
+      "destination": "https://reforma-digital.es/congreso",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "destination": "https://reforma-digital.es/congreso/:path*",
       "permanent": false
